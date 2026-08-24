@@ -316,6 +316,76 @@ footer a:hover{text-decoration:underline;}
 .footer-cols{display:flex;gap:60px;flex-wrap:wrap;}
 .footer-note{max-width:280px;color:#8FA0C7;font-size:12.5px;line-height:1.6;}
 
+/* ===== Competency page (page dédiée + programmation 36 semaines) ===== */
+.comp-page{display:none;}
+.comp-page.open{display:block;}
+body.view-fiche .home-only{display:none;}
+.cp-shell{max-width:980px;margin:0 auto;padding:40px 24px 80px;}
+.cp-back{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--accent-sky);
+  background:none;border:none;padding:0;margin-bottom:18px;
+}
+.cp-back:hover{text-decoration:underline;}
+.cp-head{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:30px;}
+.cp-head h1{font-size:clamp(24px,3.4vw,34px);color:var(--navy);line-height:1.25;margin-top:10px;}
+.cp-head .drawer-tags{margin-top:14px;}
+.cp-block{margin-bottom:34px;}
+.cp-block h5{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-sky);margin-bottom:12px;
+}
+.cp-block ul{margin:0;padding-left:18px;}
+.cp-block li{font-size:14.5px;line-height:1.65;margin-bottom:8px;}
+
+/* Planner */
+.planner-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px;}
+.planner-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+.planner-head h4{font-size:16px;color:var(--navy);}
+.planner-sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:20px;}
+.period-row{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;margin-bottom:6px;}
+.period-label{
+  grid-column:span var(--span);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
+  text-align:center;padding-bottom:4px;border-bottom:2px solid var(--line);
+}
+.week-grid{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;margin-bottom:22px;}
+.week-cell{
+  aspect-ratio:1/1.15;background:#EEECE3;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--ink-soft);position:relative;cursor:pointer;border:1px solid transparent;
+}
+.week-cell:hover{border-color:var(--accent-sky);}
+.week-cell.in-range{color:#fff;}
+.week-cell.range-start,.week-cell.range-end{font-weight:700;}
+@media (max-width:720px){ .week-grid,.period-row{grid-template-columns:repeat(18,minmax(0,1fr));} .week-cell:nth-child(n+19){grid-row:2;} }
+
+.seq-form{
+  display:grid;grid-template-columns:1.4fr repeat(2,110px);gap:10px;align-items:end;margin-bottom:16px;
+  padding-top:18px;border-top:1px dashed var(--line);
+}
+.seq-form .fld{display:flex;flex-direction:column;gap:5px;}
+.seq-form label{font-size:11px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;}
+.seq-form input,.seq-form select,.seq-form textarea{
+  border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;color:var(--ink);
+}
+.seq-form textarea{grid-column:1/-1;resize:vertical;min-height:52px;}
+.seq-form .btn-add{
+  grid-column:1/-1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13.5px;font-weight:600;
+}
+.seq-form .btn-add:hover{background:var(--navy-deep);}
+
+.seq-list{display:flex;flex-direction:column;gap:10px;}
+.seq-row{border:1px solid var(--line);border-radius:8px;padding:14px 16px;background:#FAF9F5;}
+.seq-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.seq-row-top strong{font-size:14px;color:var(--navy);}
+.seq-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;}
+.seq-note{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+.seq-del{background:none;border:none;color:#B5502E;font-size:12px;font-weight:600;flex-shrink:0;}
+.seq-del:hover{text-decoration:underline;}
+.seq-empty{font-size:13px;color:var(--ink-soft);padding:14px 0;}
+.cp-open-full{
+  margin-top:18px;width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13.5px;font-weight:600;
+}
+.cp-open-full:hover{background:var(--navy-deep);}
+
 /* Utility */
 .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
 mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
@@ -357,7 +427,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <main id="main">
 
 <!-- ===================== HERO ===================== -->
-<section class="hero" id="top">
+<section class="hero home-only" id="top">
   <div class="hero-inner">
     <p class="eyebrow">Cycle 2 · Français · Source : BOEN, education.gouv.fr</p>
     <h1>Référentiel des compétences des programmes scolaires</h1>
@@ -375,7 +445,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 </section>
 
 <!-- ===================== NIVEAUX ===================== -->
-<section class="section" id="niveaux">
+<section class="section home-only" id="niveaux">
   <div class="section-head">
     <div>
       <p class="eyebrow">Cycle des apprentissages fondamentaux</p>
@@ -387,7 +457,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 </section>
 
 <!-- ===================== DISCIPLINES / DOMAINES ===================== -->
-<section class="section" id="disciplines">
+<section class="section home-only" id="disciplines">
   <div class="section-head">
     <div>
       <p class="eyebrow">Français — cinq domaines</p>
@@ -399,7 +469,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 </section>
 
 <!-- ===================== REPERTOIRE ===================== -->
-<section class="section" id="repertoire">
+<section class="section home-only" id="repertoire">
   <div class="section-head">
     <div>
       <p class="eyebrow">Répertoire structuré</p>
@@ -448,7 +518,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 </section>
 
 <!-- ===================== VUE D'ENSEMBLE ===================== -->
-<section class="section" id="vue-ensemble">
+<section class="section home-only" id="vue-ensemble">
   <div class="section-head">
     <div>
       <p class="eyebrow">Synthèse</p>
@@ -463,7 +533,65 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
   </div>
 </section>
 
-</main>
+
+<!-- ===================== PAGE COMPÉTENCE (programmation 36 semaines) ===================== -->
+<section class="comp-page" id="compPage">
+  <div class="cp-shell">
+    <button class="cp-back" id="cpBack">← Retour au répertoire</button>
+    <div class="cp-head">
+      <p class="eyebrow" id="cpEyebrow"></p>
+      <h1 id="cpTitle"></h1>
+      <div class="drawer-tags" id="cpTags"></div>
+    </div>
+
+    <div class="cp-block">
+      <h5>Objectifs d'apprentissage</h5>
+      <ul id="cpObjectifs"></ul>
+    </div>
+
+    <div class="cp-block" id="cpExemplesBlock">
+      <h5>Exemples de réussite</h5>
+      <ul id="cpExemples"></ul>
+    </div>
+
+    <div class="cp-block">
+      <div class="planner-panel">
+        <div class="planner-head">
+          <h4>Programmation annuelle — 36 semaines</h4>
+        </div>
+        <p class="planner-sub">Positionnez les séquences de travail consacrées à cette compétence sur l'année scolaire, répartie en 5 périodes.</p>
+
+        <div class="period-row" id="periodRow"></div>
+        <div class="week-grid" id="weekGrid"></div>
+
+        <form class="seq-form" id="seqForm">
+          <div class="fld" style="grid-column:1/-1;">
+            <label for="seqTitre">Intitulé de la séquence de travail</label>
+            <input type="text" id="seqTitre" placeholder="Ex. : Étude des CGP simples — période 1" required>
+          </div>
+          <div class="fld">
+            <label for="seqDebut">Semaine de début</label>
+            <select id="seqDebut"></select>
+          </div>
+          <div class="fld">
+            <label for="seqFin">Semaine de fin</label>
+            <select id="seqFin"></select>
+          </div>
+          <div class="fld" style="grid-column:1/-1;">
+            <label for="seqNote">Notes / contenu prévu (facultatif)</label>
+            <textarea id="seqNote" placeholder="Supports, modalités, évaluation prévue…"></textarea>
+          </div>
+          <button type="submit" class="btn-add">Ajouter la séquence</button>
+        </form>
+
+        <div id="seqListWrap">
+          <h5 style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-sky);margin-bottom:12px;">Séquences programmées</h5>
+          <div class="seq-list" id="seqList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
 
 <!-- ===================== DRAWER (fiche détaillée) ===================== -->
 <div class="drawer-overlay" id="drawerOverlay"></div>
@@ -1517,7 +1645,13 @@ const REFERENTIEL = {
         <h5>Compétences connexes du même domaine</h5>
         <div>${dom.sousDomaines.filter(sd=>sd.id!==f.sousDomaineId).map(sd=>`<span class="related-chip" data-jump-sd="${dom.id}|${sd.id}">${sd.nom}</span>`).join('')}</div>
       </div>
+
+      <button class="cp-open-full" id="drawerOpenFull">Ouvrir la page de programmation (36 semaines) →</button>
     `;
+    document.getElementById('drawerOpenFull').addEventListener('click', ()=>{
+      closeDrawer();
+      location.hash = '#/competence/' + f.id;
+    });
     drawer.classList.add('open');
     overlay.classList.add('open');
     drawer.setAttribute('aria-hidden','false');
@@ -1600,6 +1734,177 @@ const REFERENTIEL = {
 
   syncAll();
   renderOverview();
+
+  // ================= PAGE COMPÉTENCE — programmation 36 semaines =================
+  const PERIODES = [
+    {label:"Période 1", span:7},
+    {label:"Période 2", span:7},
+    {label:"Période 3", span:7},
+    {label:"Période 4", span:8},
+    {label:"Période 5", span:7}
+  ];
+
+  function ficheById(id){ return FICHES.find(f=>f.id===id); }
+
+  function seqStorageKey(ficheId){ return "sequences_" + ficheId; }
+  function loadSequences(ficheId){
+    try{
+      const raw = localStorage.getItem(seqStorageKey(ficheId));
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveSequences(ficheId, seqs){
+    try{ localStorage.setItem(seqStorageKey(ficheId), JSON.stringify(seqs)); }catch(e){}
+  }
+
+  let currentFicheId = null;
+
+  function renderCompPage(ficheId){
+    const f = ficheById(ficheId);
+    if(!f){ location.hash = ""; return; }
+    currentFicheId = ficheId;
+    const dom = REFERENTIEL.domaines.find(d=>d.id===f.domaineId);
+
+    document.getElementById('cpEyebrow').textContent = `${REFERENTIEL.cycle} · ${REFERENTIEL.discipline} · ${f.niveau}`;
+    document.getElementById('cpTitle').textContent = f.sousDomaineNom;
+    document.getElementById('cpTags').innerHTML = `
+      <span class="badge" style="--dcolor:${f.domaineCouleur}">${f.domaineNom}</span>
+      <span class="badge niveau">${f.niveau} · ${REFERENTIEL.niveauxLongs[f.niveau]}</span>
+      <span class="badge niveau">${REFERENTIEL.cycle}</span>
+    `;
+    document.getElementById('cpObjectifs').innerHTML = f.objectifs.map(o=>`<li>${o}</li>`).join('');
+    const exBlock = document.getElementById('cpExemplesBlock');
+    if(f.exemples.length){
+      exBlock.style.display = "";
+      document.getElementById('cpExemples').innerHTML = f.exemples.map(e=>`<li>${e}</li>`).join('');
+    } else {
+      exBlock.style.display = "none";
+    }
+
+    renderPeriodRow();
+    renderSeqOptions();
+    renderWeekGrid();
+    renderSeqList();
+
+    document.body.classList.add('view-fiche');
+    document.getElementById('compPage').classList.add('open');
+    window.scrollTo({top:0});
+  }
+
+  function closeCompPage(){
+    document.body.classList.remove('view-fiche');
+    document.getElementById('compPage').classList.remove('open');
+    currentFicheId = null;
+  }
+
+  function renderPeriodRow(){
+    const wrap = document.getElementById('periodRow');
+    wrap.innerHTML = "";
+    PERIODES.forEach(p=>{
+      const el = document.createElement('div');
+      el.className = "period-label";
+      el.style.setProperty('--span', p.span);
+      el.textContent = p.label;
+      wrap.appendChild(el);
+    });
+  }
+
+  function renderSeqOptions(){
+    const debut = document.getElementById('seqDebut');
+    const fin = document.getElementById('seqFin');
+    debut.innerHTML = ""; fin.innerHTML = "";
+    for(let i=1;i<=36;i++){
+      const o1 = document.createElement('option'); o1.value=i; o1.textContent="Semaine "+i; debut.appendChild(o1);
+      const o2 = document.createElement('option'); o2.value=i; o2.textContent="Semaine "+i; fin.appendChild(o2);
+    }
+    fin.value = 4;
+  }
+
+  function renderWeekGrid(){
+    const grid = document.getElementById('weekGrid');
+    grid.innerHTML = "";
+    const seqs = loadSequences(currentFicheId);
+    const f = ficheById(currentFicheId);
+    for(let w=1; w<=36; w++){
+      const cell = document.createElement('div');
+      cell.className = "week-cell";
+      cell.textContent = w;
+      const covering = seqs.filter(s=> w>=s.debut && w<=s.fin);
+      if(covering.length){
+        cell.classList.add('in-range');
+        cell.style.background = f.domaineCouleur;
+        cell.title = covering.map(s=>s.titre).join(" · ");
+      }
+      grid.appendChild(cell);
+    }
+  }
+
+  function renderSeqList(){
+    const wrap = document.getElementById('seqList');
+    const seqs = loadSequences(currentFicheId).slice().sort((a,b)=>a.debut-b.debut);
+    if(seqs.length===0){
+      wrap.innerHTML = `<div class="seq-empty">Aucune séquence programmée pour l'instant. Utilisez le formulaire ci-dessus pour en ajouter une.</div>`;
+      return;
+    }
+    wrap.innerHTML = seqs.map(s=>`
+      <div class="seq-row">
+        <div class="seq-row-top">
+          <div>
+            <strong>${s.titre}</strong>
+            <div class="seq-meta">Semaine ${s.debut} → Semaine ${s.fin} · ${s.fin-s.debut+1} semaine${s.fin-s.debut+1>1?'s':''}</div>
+          </div>
+          <button class="seq-del" data-del="${s.id}">Supprimer</button>
+        </div>
+        ${s.note ? `<div class="seq-note">${s.note}</div>` : ''}
+      </div>
+    `).join('');
+    wrap.querySelectorAll('[data-del]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-del');
+        const remaining = loadSequences(currentFicheId).filter(s=>s.id!==id);
+        saveSequences(currentFicheId, remaining);
+        renderWeekGrid(); renderSeqList();
+      });
+    });
+  }
+
+  document.getElementById('seqForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const titre = document.getElementById('seqTitre').value.trim();
+    let debut = parseInt(document.getElementById('seqDebut').value,10);
+    let fin = parseInt(document.getElementById('seqFin').value,10);
+    const note = document.getElementById('seqNote').value.trim();
+    if(!titre) return;
+    if(fin < debut){ const t=debut; debut=fin; fin=t; }
+    const seqs = loadSequences(currentFicheId);
+    seqs.push({ id: 'seq_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), titre, debut, fin, note });
+    saveSequences(currentFicheId, seqs);
+    document.getElementById('seqTitre').value = "";
+    document.getElementById('seqNote').value = "";
+    renderWeekGrid(); renderSeqList();
+  });
+
+  // Clicking a week cell prefills the start-week select for convenience
+  document.getElementById('weekGrid').addEventListener('click', e=>{
+    const cell = e.target.closest('.week-cell');
+    if(!cell) return;
+    document.getElementById('seqDebut').value = cell.textContent.trim();
+    document.getElementById('seqTitre').focus();
+  });
+
+  document.getElementById('cpBack').addEventListener('click', ()=>{ location.hash = ""; });
+
+  function handleRoute(){
+    const hash = location.hash;
+    const m = hash.match(/^#\/competence\/(.+)$/);
+    if(m){
+      renderCompPage(decodeURIComponent(m[1]));
+    } else {
+      closeCompPage();
+    }
+  }
+  window.addEventListener('hashchange', handleRoute);
+  handleRoute();
 })();
 </script>
 </body>
