@@ -1,0 +1,11 @@
+{
+  "id": "seq-p3-debat",
+  "competence_id": "oral",
+  "titre": "Argumenter un point de vue à l'oral",
+  "periode": 3,
+  "semaine_debut": 16,
+  "semaine_fin": 18,
+  "objectif_explicite": "Prendre la parole pour défendre un point de vue en justifiant son propos.",
+  "prerequis": ["Respect du tour de parole"],
+  "seances": []
+}

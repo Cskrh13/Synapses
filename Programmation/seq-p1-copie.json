@@ -1,0 +1,11 @@
+{
+  "id": "seq-p1-copie",
+  "competence_id": "ecriture",
+  "titre": "Copier sans erreur un texte court",
+  "periode": 1,
+  "semaine_debut": 3,
+  "semaine_fin": 5,
+  "objectif_explicite": "Copier un texte court en respectant l'orthographe et la ponctuation.",
+  "prerequis": ["Formation des lettres cursives"],
+  "seances": ["sea-copie-01"]
+}

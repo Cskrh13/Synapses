@@ -78,6 +78,35 @@
     color:var(--ink-soft);
     font-size:14.5px;
   }
+  .back-link{
+    display:inline-block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    text-decoration:none;
+    margin-bottom:10px;
+    border-bottom:1px solid transparent;
+  }
+  .back-link:hover{color:var(--ink); border-bottom-color:var(--ink-soft);}
+  .incoming-banner{
+    margin:0 clamp(16px,4vw,56px);
+    padding:10px 14px;
+    background:var(--stylo-soft);
+    border:1px solid var(--stylo);
+    border-radius:var(--radius);
+    font-size:13px;
+    color:var(--ink);
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+  }
+  .incoming-banner button{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    background:none; border:none; color:var(--ink-soft); cursor:pointer;
+    text-decoration:underline;
+  }
   .header-actions{
     display:flex;
     gap:10px;
@@ -285,6 +314,12 @@
     padding:6px;
   }
   .drawer-head .eyebrow{margin-bottom:4px;}
+  .drawer-competence-link{
+    display:inline-block;
+    text-decoration:none;
+    border-bottom:1px dashed var(--tableau);
+  }
+  .drawer-competence-link:hover{color:var(--tableau);}
   .drawer-head h3{
     font-family:'Fraunces', serif;
     font-size:23px;
@@ -448,6 +483,7 @@
 
 <header class="top">
   <div>
+    <a href="../index.html" class="back-link">← Référentiel des compétences</a>
     <p class="eyebrow">Cycle 2 · Français · Programmation annuelle</p>
     <h1>Séquences &amp; séances</h1>
     <p class="sub">Naviguez par compétence, positionnez-vous dans l'année, ouvrez une séquence pour voir ses séances structurées en dire / montrer / guider / autonomie.</p>
@@ -456,6 +492,7 @@
     <button class="btn primary" id="btn-generer">＋ Générer une séance (IA)</button>
   </div>
 </header>
+<p class="incoming-banner" id="incoming-banner" hidden></p>
 
 <nav class="competences-bar" id="competences-bar" aria-label="Filtrer par compétence">
   <span class="label">Compétences</span>
@@ -479,7 +516,7 @@
 <aside class="drawer" id="drawer" aria-hidden="true">
   <div class="drawer-head">
     <div>
-      <p class="eyebrow" id="drawer-competence">—</p>
+      <a class="eyebrow drawer-competence-link" id="drawer-competence" href="../index.html">—</a>
       <h3 id="drawer-titre">—</h3>
       <p class="objectif" id="drawer-objectif"></p>
     </div>
@@ -525,7 +562,6 @@
 </div>
 
 <script>
-const DATA_DIR = 'data';
 const state = { competences: [], sequencesIndex: [], activeCompetences: new Set() };
 
 async function loadJSON(path){
@@ -545,17 +581,38 @@ function domaineNom(id){
 
 async function init(){
   try{
-    state.competences = await loadJSON(`${DATA_DIR}/competences.json`);
-    state.sequencesIndex = await loadJSON(`${DATA_DIR}/sequences/index.json`);
+    state.competences = await loadJSON('competences.json');
+    state.sequencesIndex = await loadJSON('index.json');
   }catch(e){
     document.getElementById('frise').innerHTML =
       `<p style="padding:20px;font-size:13px;">Chargement impossible (${e.message}). Servez cette page via un serveur local plutôt qu'en fichier local.</p>`;
     return;
   }
   state.activeCompetences = new Set(state.competences.map(c => c.id));
+  applyIncomingDomaine();
   renderChips();
   renderFrise();
   populateGenCompetenceSelect();
+}
+
+function applyIncomingDomaine(){
+  const params = new URLSearchParams(location.search);
+  const domaine = params.get('domaine');
+  const banner = document.getElementById('incoming-banner');
+  if(!domaine || !state.competences.some(c => c.id === domaine)){
+    banner.hidden = true;
+    return;
+  }
+  state.activeCompetences = new Set([domaine]);
+  const nom = domaineNom(domaine);
+  banner.hidden = false;
+  banner.innerHTML = `Filtré depuis le référentiel : <strong>${nom}</strong> <button id="reset-filtre-domaine">Afficher toutes les compétences</button>`;
+  document.getElementById('reset-filtre-domaine').addEventListener('click', () => {
+    state.activeCompetences = new Set(state.competences.map(c => c.id));
+    banner.hidden = true;
+    renderChips();
+    renderFrise();
+  });
 }
 
 function renderChips(){
@@ -624,14 +681,16 @@ async function openSequence(seqMeta){
   drawer.classList.add('open');
   drawer.setAttribute('aria-hidden','false');
 
-  document.getElementById('drawer-competence').textContent = domaineNom(seqMeta.competence_id);
+  const competenceLink = document.getElementById('drawer-competence');
+  competenceLink.textContent = domaineNom(seqMeta.competence_id) + ' — voir dans le référentiel ↗';
+  competenceLink.href = `../index.html?domaine=${encodeURIComponent(seqMeta.competence_id)}`;
   document.getElementById('drawer-titre').textContent = seqMeta.titre;
   document.getElementById('drawer-objectif').textContent = '';
   document.getElementById('drawer-seances').innerHTML = '<p class="no-seances">Chargement…</p>';
 
   let seq;
   try{
-    seq = await loadJSON(`${DATA_DIR}/sequences/${seqMeta.fichier}`);
+    seq = await loadJSON(seqMeta.fichier);
   }catch(e){
     document.getElementById('drawer-seances').innerHTML = `<p class="no-seances">Erreur de chargement.</p>`;
     return;
@@ -657,7 +716,7 @@ async function openSequence(seqMeta){
 
   for(const seanceId of seq.seances){
     try{
-      const seance = await loadJSON(`${DATA_DIR}/seances/${seanceId}.json`);
+      const seance = await loadJSON(`${seanceId}.json`);
       container.appendChild(renderSeance(seance));
     }catch(e){
       // séance manquante, on ignore silencieusement dans ce prototype

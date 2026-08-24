@@ -2,7 +2,7 @@
   {
     "id": "seq-p2-fluence",
     "fichier": "seq-p2-fluence.json",
-    "competence_id": "fr-c2-lecture-comprehension",
+    "competence_id": "lecture",
     "titre": "Développer la fluence de lecture",
     "periode": 2,
     "semaine_debut": 8,
@@ -11,7 +11,7 @@
   {
     "id": "seq-p1-copie",
     "fichier": "seq-p1-copie.json",
-    "competence_id": "fr-c2-ecriture",
+    "competence_id": "ecriture",
     "titre": "Copier sans erreur un texte court",
     "periode": 1,
     "semaine_debut": 3,
@@ -20,7 +20,7 @@
   {
     "id": "seq-p3-debat",
     "fichier": "seq-p3-debat.json",
-    "competence_id": "fr-c2-langage-oral",
+    "competence_id": "oral",
     "titre": "Argumenter un point de vue à l'oral",
     "periode": 3,
     "semaine_debut": 16,

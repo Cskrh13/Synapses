@@ -87,6 +87,11 @@ nav.main-nav a{
   padding:8px 12px;border-radius:6px;transition:background .15s;
 }
 nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
+nav.main-nav a.nav-programmation{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);
+  margin-left:4px;color:#fff;
+}
+nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
 .header-actions{display:flex;align-items:center;gap:10px;}
 .btn-ghost-header{
   background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;
@@ -383,6 +388,7 @@ body.view-fiche .home-only{display:none;}
 .seq-empty{font-size:13px;color:var(--ink-soft);padding:14px 0;}
 .cp-open-full{
   margin-top:18px;width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13.5px;font-weight:600;
+  display:block;text-align:center;text-decoration:none;box-sizing:border-box;
 }
 .cp-open-full:hover{background:var(--navy-deep);}
 
@@ -416,6 +422,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
       <a href="#disciplines">Disciplines</a>
       <a href="#repertoire">Répertoire</a>
       <a href="#vue-ensemble">Vue d'ensemble</a>
+      <a href="Programmation/sequences.html" class="nav-programmation">Programmation →</a>
     </nav>
     <div class="header-actions">
       <div class="level-pill" id="headerLevelPill" role="group" aria-label="Changer de niveau"></div>
@@ -1646,12 +1653,8 @@ const REFERENTIEL = {
         <div>${dom.sousDomaines.filter(sd=>sd.id!==f.sousDomaineId).map(sd=>`<span class="related-chip" data-jump-sd="${dom.id}|${sd.id}">${sd.nom}</span>`).join('')}</div>
       </div>
 
-      <button class="cp-open-full" id="drawerOpenFull">Ouvrir la page de programmation (36 semaines) →</button>
+      <a class="cp-open-full" id="drawerOpenFull" href="Programmation/sequences.html?domaine=${encodeURIComponent(f.domaineId)}">Voir dans la programmation de l'année →</a>
     `;
-    document.getElementById('drawerOpenFull').addEventListener('click', ()=>{
-      closeDrawer();
-      location.hash = '#/competence/' + f.id;
-    });
     drawer.classList.add('open');
     overlay.classList.add('open');
     drawer.setAttribute('aria-hidden','false');
@@ -1731,6 +1734,18 @@ const REFERENTIEL = {
     renderDirectory();
     updateResultCount();
   }
+
+  // Arrivée depuis la page Programmation (lien "?domaine=") : pré-filtrer et défiler jusqu'au répertoire
+  (function applyIncomingParams(){
+    const params = new URLSearchParams(location.search);
+    const domaine = params.get('domaine');
+    if(domaine && REFERENTIEL.domaines.some(d=>d.id===domaine)){
+      state.domaine = domaine;
+      setTimeout(()=>{
+        document.getElementById('repertoire').scrollIntoView({behavior:'smooth'});
+      }, 50);
+    }
+  })();
 
   syncAll();
   renderOverview();
