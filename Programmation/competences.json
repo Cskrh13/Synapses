@@ -1,0 +1,35 @@
+[
+  {
+    "id": "fr-c2-lecture-comprehension",
+    "discipline": "Français",
+    "cycle": "Cycle 2",
+    "domaine": "Lecture et compréhension de l'écrit",
+    "couleur": "#2B4536",
+    "objectifs": [
+      "Identifier des mots de manière de plus en plus aisée",
+      "Comprendre un texte et contrôler sa compréhension"
+    ]
+  },
+  {
+    "id": "fr-c2-ecriture",
+    "discipline": "Français",
+    "cycle": "Cycle 2",
+    "domaine": "Écriture",
+    "couleur": "#5C6B2E",
+    "objectifs": [
+      "Copier de manière experte",
+      "Produire des écrits en commençant à s'approprier une démarche"
+    ]
+  },
+  {
+    "id": "fr-c2-langage-oral",
+    "discipline": "Français",
+    "cycle": "Cycle 2",
+    "domaine": "Langage oral",
+    "couleur": "#7A4A2B",
+    "objectifs": [
+      "Écouter pour comprendre des messages oraux ou des textes lus",
+      "Participer à des échanges dans des situations diversifiées"
+    ]
+  }
+]

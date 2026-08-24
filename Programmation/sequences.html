@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Séquences &amp; séances — Programmation de français</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #EDE9E0;
+    --paper-raised: #F4F1E9;
+    --ink: #1F2A24;
+    --ink-soft: #4B5750;
+    --tableau: #2B4536;
+    --tableau-light: #3E5B48;
+    --craie: #F4F1E8;
+    --stylo: #B23A2F;
+    --stylo-soft: #E8D9CF;
+    --ligne: #C9C2B2;
+    --ligne-forte: #ADA48F;
+    --dom-lecture: #2B4536;
+    --dom-ecriture: #5C6B2E;
+    --dom-oral: #7A4A2B;
+    --radius: 3px;
+    --shadow: 0 1px 0 rgba(31,42,36,0.06), 0 6px 16px -10px rgba(31,42,36,0.25);
+  }
+
+  *{box-sizing:border-box;}
+  html{-webkit-font-smoothing:antialiased;}
+  body{
+    margin:0;
+    background:
+      repeating-linear-gradient(to bottom, transparent, transparent 31px, rgba(173,164,143,0.35) 32px),
+      var(--paper);
+    color:var(--ink);
+    font-family:'Source Sans 3', sans-serif;
+    font-size:16px;
+    line-height:1.5;
+  }
+
+  a{color:inherit;}
+
+  ::selection{background:var(--stylo-soft);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
+  }
+
+  /* ---------- Header ---------- */
+  header.top{
+    padding:28px clamp(16px,4vw,56px) 22px;
+    border-bottom:2px solid var(--ink);
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:24px;
+    flex-wrap:wrap;
+  }
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    letter-spacing:0.14em;
+    text-transform:uppercase;
+    color:var(--tableau);
+    margin:0 0 6px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(28px, 4vw, 42px);
+    margin:0;
+    letter-spacing:-0.01em;
+  }
+  header.top p.sub{
+    margin:8px 0 0;
+    max-width:46ch;
+    color:var(--ink-soft);
+    font-size:14.5px;
+  }
+  .header-actions{
+    display:flex;
+    gap:10px;
+  }
+  .btn{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    letter-spacing:0.03em;
+    border:1.5px solid var(--ink);
+    background:transparent;
+    color:var(--ink);
+    padding:10px 16px;
+    border-radius:var(--radius);
+    cursor:pointer;
+    text-decoration:none;
+    display:inline-flex;
+    align-items:center;
+    gap:8px;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .btn:hover{transform:translateY(-1px);}
+  .btn.primary{
+    background:var(--stylo);
+    border-color:var(--stylo);
+    color:var(--craie);
+  }
+  .btn.primary:hover{background:#9C3126;}
+  .btn:focus-visible, button:focus-visible, [tabindex]:focus-visible{
+    outline:2.5px solid var(--stylo);
+    outline-offset:2px;
+  }
+
+  /* ---------- Filtres compétences ---------- */
+  .competences-bar{
+    padding:18px clamp(16px,4vw,56px);
+    display:flex;
+    gap:10px;
+    flex-wrap:wrap;
+    align-items:center;
+    border-bottom:1px solid var(--ligne);
+  }
+  .competences-bar .label{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.1em;
+    color:var(--ink-soft);
+    margin-right:4px;
+  }
+  .chip{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:12.5px;
+    padding:7px 12px 6px;
+    border-radius:999px;
+    border:1px solid var(--ligne-forte);
+    background:var(--paper-raised);
+    cursor:pointer;
+    display:inline-flex;
+    align-items:center;
+    gap:7px;
+    color:var(--ink);
+    transition:background .15s ease, color .15s ease, border-color .15s ease;
+  }
+  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none;}
+  .chip[aria-pressed="true"]{
+    background:var(--ink);
+    border-color:var(--ink);
+    color:var(--craie);
+  }
+  .chip:hover{border-color:var(--ink);}
+
+  /* ---------- Frise ---------- */
+  main{
+    padding:26px clamp(16px,4vw,56px) 80px;
+  }
+  .frise-head{
+    display:flex;
+    align-items:baseline;
+    justify-content:space-between;
+    margin-bottom:14px;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .frise-head h2{
+    font-family:'Fraunces', serif;
+    font-size:20px;
+    font-weight:600;
+    margin:0;
+  }
+  .frise-head .hint{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+  }
+
+  .frise{
+    border:1.5px solid var(--ink);
+    background:var(--paper-raised);
+    border-radius:var(--radius);
+    overflow:hidden;
+    box-shadow:var(--shadow);
+  }
+  .periode-row{
+    display:grid;
+    grid-template-columns:150px 1fr;
+    border-bottom:1px solid var(--ligne);
+  }
+  .periode-row:last-child{border-bottom:none;}
+  .periode-tab{
+    font-family:'IBM Plex Mono', monospace;
+    padding:16px 14px;
+    border-right:1.5px solid var(--ink);
+    background:repeating-linear-gradient(135deg, rgba(43,69,54,0.05) 0 8px, transparent 8px 16px);
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:2px;
+  }
+  .periode-tab .num{
+    font-size:11px;
+    letter-spacing:0.1em;
+    text-transform:uppercase;
+    color:var(--tableau);
+  }
+  .periode-tab .weeks{
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+  .periode-track{
+    position:relative;
+    min-height:74px;
+    padding:10px 0;
+    background-image: repeating-linear-gradient(to right, var(--ligne) 0, var(--ligne) 1px, transparent 1px, transparent calc(100%/36));
+  }
+  .seq-block{
+    position:absolute;
+    top:10px;
+    bottom:10px;
+    border-radius:var(--radius);
+    border:1.5px solid var(--ink);
+    padding:8px 10px;
+    cursor:pointer;
+    display:flex;
+    flex-direction:column;
+    justify-content:center;
+    gap:2px;
+    background:var(--craie);
+    box-shadow:1px 2px 0 rgba(31,42,36,0.18);
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .seq-block:hover, .seq-block:focus-visible{
+    transform:translateY(-2px);
+    box-shadow:2px 4px 0 rgba(31,42,36,0.22);
+  }
+  .seq-block .titre{
+    font-weight:600;
+    font-size:13px;
+    line-height:1.25;
+    color:var(--ink);
+  }
+  .seq-block .semaines{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    color:var(--ink-soft);
+  }
+
+  /* ---------- Overlay + drawer ---------- */
+  .overlay{
+    position:fixed; inset:0;
+    background:rgba(31,42,36,0.35);
+    opacity:0; pointer-events:none;
+    transition:opacity .2s ease;
+    z-index:20;
+  }
+  .overlay.open{opacity:1; pointer-events:auto;}
+
+  .drawer{
+    position:fixed;
+    top:0; right:0; bottom:0;
+    width:min(560px, 100vw);
+    background:var(--paper);
+    border-left:2px solid var(--ink);
+    transform:translateX(100%);
+    transition:transform .25s ease;
+    z-index:21;
+    overflow-y:auto;
+  }
+  .drawer.open{transform:translateX(0);}
+
+  .drawer-head{
+    padding:22px 26px 18px;
+    border-bottom:1.5px solid var(--ink);
+    position:sticky; top:0;
+    background:var(--paper);
+    display:flex;
+    justify-content:space-between;
+    align-items:flex-start;
+    gap:12px;
+  }
+  .drawer-close{
+    background:none;border:none;cursor:pointer;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:13px;
+    color:var(--ink-soft);
+    padding:6px;
+  }
+  .drawer-head .eyebrow{margin-bottom:4px;}
+  .drawer-head h3{
+    font-family:'Fraunces', serif;
+    font-size:23px;
+    margin:0 0 6px;
+    font-weight:600;
+  }
+  .drawer-head .objectif{
+    font-size:14px;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .drawer-body{padding:20px 26px 40px;}
+
+  .prerequis{
+    font-size:13px;
+    color:var(--ink-soft);
+    margin:0 0 20px;
+    padding:10px 12px;
+    border-left:3px solid var(--ligne-forte);
+    background:var(--paper-raised);
+  }
+  .prerequis strong{color:var(--ink); font-weight:600;}
+
+  .seance{
+    border:1px solid var(--ligne-forte);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    margin-bottom:14px;
+    overflow:hidden;
+  }
+  .seance-head{
+    width:100%;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:13px 16px;
+    background:none;
+    border:none;
+    cursor:pointer;
+    text-align:left;
+    font-family:inherit;
+    color:var(--ink);
+  }
+  .seance-head .titre{font-weight:600; font-size:14.5px;}
+  .seance-head .duree{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11.5px;
+    color:var(--ink-soft);
+    flex:none;
+    margin-left:10px;
+  }
+  .seance-body{
+    padding:0 16px 16px;
+    display:none;
+  }
+  .seance.open .seance-body{display:block;}
+  .seance-head .chevron{transition:transform .15s ease; margin-right:10px;}
+  .seance.open .chevron{transform:rotate(90deg);}
+
+  .etape{
+    display:grid;
+    grid-template-columns:96px 1fr;
+    gap:12px;
+    padding:9px 0;
+    border-top:1px solid var(--ligne);
+    align-items:start;
+  }
+  .etape:first-child{border-top:none;}
+  .tampon{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:10.5px;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+    font-weight:600;
+    padding:4px 7px;
+    border-radius:2px;
+    border:1.5px solid currentColor;
+    text-align:center;
+    transform:rotate(-2deg);
+    white-space:nowrap;
+    width:fit-content;
+  }
+  .tampon.dire{color:var(--tableau);}
+  .tampon.montrer{color:var(--stylo);}
+  .tampon.guider{color:#8A6D1E;}
+  .tampon.autonomie{color:var(--ink-soft); transform:rotate(2deg);}
+  .etape p{margin:2px 0 0; font-size:13.5px; color:var(--ink);}
+
+  .no-seances{
+    font-size:13.5px;
+    color:var(--ink-soft);
+    font-style:italic;
+    padding:14px 0;
+  }
+
+  /* ---------- Modale génération IA ---------- */
+  .modal-overlay{
+    position:fixed; inset:0;
+    background:rgba(31,42,36,0.45);
+    display:none;
+    align-items:center; justify-content:center;
+    z-index:30;
+    padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--craie);
+    border:2px solid var(--ink);
+    border-radius:var(--radius);
+    max-width:480px; width:100%;
+    padding:26px 28px 24px;
+    box-shadow:var(--shadow);
+  }
+  .modal h3{
+    font-family:'Fraunces', serif;
+    font-size:21px;
+    margin:0 0 4px;
+  }
+  .modal p.desc{font-size:13.5px; color:var(--ink-soft); margin:0 0 18px;}
+  .field{margin-bottom:14px;}
+  .field label{
+    display:block;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:var(--ink-soft);
+    margin-bottom:5px;
+  }
+  .field input, .field select, .field textarea{
+    width:100%;
+    font-family:'Source Sans 3', sans-serif;
+    font-size:14.5px;
+    padding:9px 10px;
+    border:1.5px solid var(--ligne-forte);
+    border-radius:var(--radius);
+    background:var(--paper-raised);
+    color:var(--ink);
+  }
+  .field textarea{resize:vertical; min-height:64px;}
+  .field input:focus, .field select:focus, .field textarea:focus{
+    outline:none; border-color:var(--tableau);
+  }
+  .modal-actions{
+    display:flex; justify-content:flex-end; gap:10px; margin-top:18px;
+  }
+  .modal-note{
+    font-size:11.5px; color:var(--ink-soft); margin-top:14px;
+    border-top:1px dashed var(--ligne-forte); padding-top:12px;
+  }
+
+  footer{
+    padding:24px clamp(16px,4vw,56px) 40px;
+    font-family:'IBM Plex Mono', monospace;
+    font-size:11px;
+    color:var(--ink-soft);
+  }
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div>
+    <p class="eyebrow">Cycle 2 · Français · Programmation annuelle</p>
+    <h1>Séquences &amp; séances</h1>
+    <p class="sub">Naviguez par compétence, positionnez-vous dans l'année, ouvrez une séquence pour voir ses séances structurées en dire / montrer / guider / autonomie.</p>
+  </div>
+  <div class="header-actions">
+    <button class="btn primary" id="btn-generer">＋ Générer une séance (IA)</button>
+  </div>
+</header>
+
+<nav class="competences-bar" id="competences-bar" aria-label="Filtrer par compétence">
+  <span class="label">Compétences</span>
+  <!-- chips injectés en JS -->
+</nav>
+
+<main>
+  <div class="frise-head">
+    <h2>Programmation — 36 semaines</h2>
+    <span class="hint">Cliquez une séquence pour l'ouvrir</span>
+  </div>
+  <div class="frise" id="frise" role="list" aria-label="Frise chronologique des séquences">
+    <!-- lignes de périodes injectées en JS -->
+  </div>
+</main>
+
+<footer>Synapses — Portail de consultation non institutionnel · Compétences issues du programme officiel de français, cycle 2.</footer>
+
+<!-- Drawer séquence -->
+<div class="overlay" id="overlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true">
+  <div class="drawer-head">
+    <div>
+      <p class="eyebrow" id="drawer-competence">—</p>
+      <h3 id="drawer-titre">—</h3>
+      <p class="objectif" id="drawer-objectif"></p>
+    </div>
+    <button class="drawer-close" id="drawer-close" aria-label="Fermer">✕ Fermer</button>
+  </div>
+  <div class="drawer-body">
+    <div class="prerequis" id="drawer-prerequis" style="display:none;">
+      <strong>Prérequis —</strong> <span id="drawer-prerequis-list"></span>
+    </div>
+    <div id="drawer-seances"></div>
+  </div>
+</aside>
+
+<!-- Modale génération IA -->
+<div class="modal-overlay" id="modal-overlay">
+  <div class="modal">
+    <h3>Générer une séance</h3>
+    <p class="desc">Décrivez le sujet, l'IA propose une séance clé en main sur le modèle dire / montrer / guider / autonomie.</p>
+    <form id="form-generer">
+      <div class="field">
+        <label for="gen-sujet">Sujet de la séance</label>
+        <input type="text" id="gen-sujet" placeholder="Ex. Repérer les substituts du nom dans un texte" required>
+      </div>
+      <div class="field">
+        <label for="gen-competence">Compétence visée</label>
+        <select id="gen-competence"></select>
+      </div>
+      <div class="field">
+        <label for="gen-duree">Durée souhaitée (minutes)</label>
+        <input type="number" id="gen-duree" value="45" min="15" max="90" step="5">
+      </div>
+      <div class="field">
+        <label for="gen-contexte">Contexte / contraintes (facultatif)</label>
+        <textarea id="gen-contexte" placeholder="Ex. classe REP+, élève allophone à intégrer, matériel limité à un tableau…"></textarea>
+      </div>
+      <div class="modal-actions">
+        <button type="button" class="btn" id="btn-annuler">Annuler</button>
+        <button type="submit" class="btn primary">Générer la séance</button>
+      </div>
+      <p class="modal-note">La proposition générée sera éditable avant d'être enregistrée dans <code>data/seances/</code>, dans le même format que les séances existantes.</p>
+    </form>
+  </div>
+</div>
+
+<script>
+const DATA_DIR = 'data';
+const state = { competences: [], sequencesIndex: [], activeCompetences: new Set() };
+
+async function loadJSON(path){
+  const res = await fetch(path);
+  if(!res.ok) throw new Error('Impossible de charger ' + path);
+  return res.json();
+}
+
+function domaineColor(id){
+  const c = state.competences.find(c => c.id === id);
+  return c ? c.couleur : '#888';
+}
+function domaineNom(id){
+  const c = state.competences.find(c => c.id === id);
+  return c ? c.domaine : '';
+}
+
+async function init(){
+  try{
+    state.competences = await loadJSON(`${DATA_DIR}/competences.json`);
+    state.sequencesIndex = await loadJSON(`${DATA_DIR}/sequences/index.json`);
+  }catch(e){
+    document.getElementById('frise').innerHTML =
+      `<p style="padding:20px;font-size:13px;">Chargement impossible (${e.message}). Servez cette page via un serveur local plutôt qu'en fichier local.</p>`;
+    return;
+  }
+  state.activeCompetences = new Set(state.competences.map(c => c.id));
+  renderChips();
+  renderFrise();
+  populateGenCompetenceSelect();
+}
+
+function renderChips(){
+  const bar = document.getElementById('competences-bar');
+  bar.querySelectorAll('.chip').forEach(el => el.remove());
+  state.competences.forEach(c => {
+    const chip = document.createElement('button');
+    chip.className = 'chip';
+    chip.setAttribute('aria-pressed', state.activeCompetences.has(c.id));
+    chip.innerHTML = `<span class="dot" style="background:${c.couleur}"></span>${c.domaine}`;
+    chip.addEventListener('click', () => {
+      if(state.activeCompetences.has(c.id)) state.activeCompetences.delete(c.id);
+      else state.activeCompetences.add(c.id);
+      chip.setAttribute('aria-pressed', state.activeCompetences.has(c.id));
+      renderFrise();
+    });
+    bar.appendChild(chip);
+  });
+}
+
+function renderFrise(){
+  const frise = document.getElementById('frise');
+  frise.innerHTML = '';
+  const periodes = [1,2,3,4,5];
+  const periodeSemaines = {1:[1,7],2:[8,13],3:[14,20],4:[21,28],5:[29,36]};
+
+  periodes.forEach(p => {
+    const row = document.createElement('div');
+    row.className = 'periode-row';
+
+    const tab = document.createElement('div');
+    tab.className = 'periode-tab';
+    tab.innerHTML = `<span class="num">Période ${p}</span><span class="weeks">Semaines ${periodeSemaines[p][0]}–${periodeSemaines[p][1]}</span>`;
+    row.appendChild(tab);
+
+    const track = document.createElement('div');
+    track.className = 'periode-track';
+    track.setAttribute('role','list');
+
+    state.sequencesIndex
+      .filter(s => s.periode === p && state.activeCompetences.has(s.competence_id))
+      .forEach(s => {
+        const block = document.createElement('button');
+        block.className = 'seq-block';
+        block.setAttribute('role','listitem');
+        const left = ((s.semaine_debut - 1) / 36) * 100;
+        const width = ((s.semaine_fin - s.semaine_debut + 1) / 36) * 100;
+        block.style.left = left + '%';
+        block.style.width = `calc(${width}% - 6px)`;
+        block.style.borderLeftColor = domaineColor(s.competence_id);
+        block.style.borderLeftWidth = '4px';
+        block.innerHTML = `<span class="titre">${s.titre}</span><span class="semaines">S${s.semaine_debut}–S${s.semaine_fin} · ${domaineNom(s.competence_id)}</span>`;
+        block.addEventListener('click', () => openSequence(s));
+        track.appendChild(block);
+      });
+
+    row.appendChild(track);
+    frise.appendChild(row);
+  });
+}
+
+async function openSequence(seqMeta){
+  const overlay = document.getElementById('overlay');
+  const drawer = document.getElementById('drawer');
+  overlay.classList.add('open');
+  drawer.classList.add('open');
+  drawer.setAttribute('aria-hidden','false');
+
+  document.getElementById('drawer-competence').textContent = domaineNom(seqMeta.competence_id);
+  document.getElementById('drawer-titre').textContent = seqMeta.titre;
+  document.getElementById('drawer-objectif').textContent = '';
+  document.getElementById('drawer-seances').innerHTML = '<p class="no-seances">Chargement…</p>';
+
+  let seq;
+  try{
+    seq = await loadJSON(`${DATA_DIR}/sequences/${seqMeta.fichier}`);
+  }catch(e){
+    document.getElementById('drawer-seances').innerHTML = `<p class="no-seances">Erreur de chargement.</p>`;
+    return;
+  }
+
+  document.getElementById('drawer-objectif').textContent = seq.objectif_explicite || '';
+
+  const prereqBox = document.getElementById('drawer-prerequis');
+  if(seq.prerequis && seq.prerequis.length){
+    prereqBox.style.display = 'block';
+    document.getElementById('drawer-prerequis-list').textContent = seq.prerequis.join(' · ');
+  }else{
+    prereqBox.style.display = 'none';
+  }
+
+  const container = document.getElementById('drawer-seances');
+  container.innerHTML = '';
+
+  if(!seq.seances || !seq.seances.length){
+    container.innerHTML = '<p class="no-seances">Aucune séance créée pour l\'instant. Utilisez « Générer une séance » pour en créer une.</p>';
+    return;
+  }
+
+  for(const seanceId of seq.seances){
+    try{
+      const seance = await loadJSON(`${DATA_DIR}/seances/${seanceId}.json`);
+      container.appendChild(renderSeance(seance));
+    }catch(e){
+      // séance manquante, on ignore silencieusement dans ce prototype
+    }
+  }
+}
+
+function renderSeance(seance){
+  const wrap = document.createElement('div');
+  wrap.className = 'seance';
+
+  const head = document.createElement('button');
+  head.className = 'seance-head';
+  head.innerHTML = `<span><span class="chevron">›</span><span class="titre">${seance.titre}</span></span><span class="duree">${seance.duree_min} min</span>`;
+  head.addEventListener('click', () => wrap.classList.toggle('open'));
+  wrap.appendChild(head);
+
+  const body = document.createElement('div');
+  body.className = 'seance-body';
+
+  const labels = {dire:'Dire', montrer:'Montrer', guider:'Guider', autonomie:'Autonomie'};
+  (seance.etapes || []).forEach(etape => {
+    const row = document.createElement('div');
+    row.className = 'etape';
+    row.innerHTML = `<span class="tampon ${etape.type}">${labels[etape.type] || etape.type}</span><p>${etape.contenu}</p>`;
+    body.appendChild(row);
+  });
+
+  if(seance.differenciation){
+    const diff = document.createElement('div');
+    diff.className = 'etape';
+    diff.innerHTML = `<span class="tampon autonomie" style="transform:none;">Différenciation</span><p>${seance.differenciation}</p>`;
+    body.appendChild(diff);
+  }
+
+  wrap.appendChild(body);
+  return wrap;
+}
+
+function closeDrawer(){
+  document.getElementById('overlay').classList.remove('open');
+  document.getElementById('drawer').classList.remove('open');
+  document.getElementById('drawer').setAttribute('aria-hidden','true');
+}
+document.getElementById('drawer-close').addEventListener('click', closeDrawer);
+document.getElementById('overlay').addEventListener('click', closeDrawer);
+document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
+
+/* ---------- Modale génération IA ---------- */
+function populateGenCompetenceSelect(){
+  const sel = document.getElementById('gen-competence');
+  sel.innerHTML = state.competences.map(c => `<option value="${c.id}">${c.domaine}</option>`).join('');
+}
+const modalOverlay = document.getElementById('modal-overlay');
+document.getElementById('btn-generer').addEventListener('click', () => modalOverlay.classList.add('open'));
+document.getElementById('btn-annuler').addEventListener('click', () => modalOverlay.classList.remove('open'));
+modalOverlay.addEventListener('click', e => { if(e.target === modalOverlay) modalOverlay.classList.remove('open'); });
+
+document.getElementById('form-generer').addEventListener('submit', e => {
+  e.preventDefault();
+  // Point d'intégration : appeler ici le service de génération (API Claude)
+  // avec un prompt imposant la structure dire/montrer/guider/autonomie,
+  // puis afficher le résultat pour édition avant sauvegarde dans data/seances/.
+  alert('Point d\'intégration IA — à connecter à l\'API de génération.\n\nSujet : ' + document.getElementById('gen-sujet').value);
+  modalOverlay.classList.remove('open');
+});
+
+init();
+</script>
+</body>
+</html>
