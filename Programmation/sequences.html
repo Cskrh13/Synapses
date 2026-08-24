@@ -470,6 +470,39 @@
     font-size:11.5px; color:var(--ink-soft); margin-top:14px;
     border-top:1px dashed var(--ligne-forte); padding-top:12px;
   }
+  #gen-result{max-height:60vh; overflow-y:auto; padding-right:2px;}
+  #gen-result .etape{padding:9px 0;}
+  .modal .btn:disabled{opacity:.6; cursor:wait;}
+
+  .api-key-box{
+    background:var(--paper-raised);
+    border:1px solid var(--ligne-forte);
+    border-radius:var(--radius);
+    padding:12px 14px;
+    margin-bottom:18px;
+  }
+  .api-key-row{
+    display:flex; align-items:center; gap:8px; justify-content:space-between;
+  }
+  .api-key-row + .api-key-row{margin-top:8px;}
+  .api-key-box label{
+    display:block; font-family:'IBM Plex Mono', monospace; font-size:11px;
+    text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); margin-bottom:2px;
+  }
+  .api-key-hint{font-size:12px; color:var(--ink-soft); margin:0;}
+  .api-key-hint a{color:var(--tableau);}
+  .api-key-status{
+    font-family:'IBM Plex Mono', monospace; font-size:11px;
+    padding:3px 8px; border-radius:999px; white-space:nowrap; flex:none;
+    background:var(--stylo-soft); color:var(--stylo);
+  }
+  .api-key-status.ok{background:#DCE7DC; color:var(--tableau);}
+  .api-key-box input[type="password"]{
+    flex:1; font-family:'IBM Plex Mono', monospace; font-size:13px;
+    padding:8px 10px; border:1.5px solid var(--ligne-forte); border-radius:var(--radius);
+    background:var(--craie); color:var(--ink);
+  }
+  .api-key-box .btn{padding:8px 12px; font-size:11.5px; flex:none;}
 
   footer{
     padding:24px clamp(16px,4vw,56px) 40px;
@@ -535,6 +568,22 @@
   <div class="modal">
     <h3>Générer une séance</h3>
     <p class="desc">Décrivez le sujet, l'IA propose une séance clé en main sur le modèle dire / montrer / guider / autonomie.</p>
+
+    <div class="api-key-box" id="api-key-box">
+      <div class="api-key-row">
+        <div>
+          <label for="gen-api-key">Votre clé API Claude</label>
+          <p class="api-key-hint">Elle reste dans votre navigateur, n'est jamais envoyée à personne d'autre qu'Anthropic. <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Créer une clé →</a></p>
+        </div>
+        <span class="api-key-status" id="api-key-status">Non renseignée</span>
+      </div>
+      <div class="api-key-row">
+        <input type="password" id="gen-api-key" placeholder="sk-ant-…" autocomplete="off">
+        <button type="button" class="btn" id="btn-save-key">Enregistrer</button>
+        <button type="button" class="btn" id="btn-clear-key" hidden>Oublier</button>
+      </div>
+    </div>
+
     <form id="form-generer">
       <div class="field">
         <label for="gen-sujet">Sujet de la séance</label>
@@ -554,10 +603,11 @@
       </div>
       <div class="modal-actions">
         <button type="button" class="btn" id="btn-annuler">Annuler</button>
-        <button type="submit" class="btn primary">Générer la séance</button>
+        <button type="submit" class="btn primary" id="btn-submit-gen">Générer la séance</button>
       </div>
       <p class="modal-note">La proposition générée sera éditable avant d'être enregistrée dans <code>data/seances/</code>, dans le même format que les séances existantes.</p>
     </form>
+    <div id="gen-result" hidden></div>
   </div>
 </div>
 
@@ -765,24 +815,186 @@ document.getElementById('drawer-close').addEventListener('click', closeDrawer);
 document.getElementById('overlay').addEventListener('click', closeDrawer);
 document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
 
-/* ---------- Modale génération IA ---------- */
+/* ---------- Modale génération IA (chaque enseignant utilise sa propre clé) ---------- */
+const CLAUDE_MODEL = 'claude-sonnet-5';
+const API_KEY_STORAGE = 'synapses_claude_api_key';
+
+const SEANCE_SYSTEM_PROMPT = `Tu es un formateur pédagogique spécialisé dans l'enseignement explicite
+(dire / montrer / guider / autonomie) pour le premier degré en France.
+
+On te donne : un sujet, une compétence visée, une durée, un contexte éventuel.
+
+Tu réponds UNIQUEMENT avec un objet JSON valide, sans texte autour, sans balises markdown,
+suivant exactement ce schéma :
+
+{
+  "titre": "string",
+  "duree_min": number,
+  "objectif_dit_aux_eleves": "string, formulé pour être dit tel quel aux élèves",
+  "etapes": [
+    { "type": "dire", "contenu": "string" },
+    { "type": "montrer", "contenu": "string" },
+    { "type": "guider", "contenu": "string" },
+    { "type": "autonomie", "contenu": "string" }
+  ],
+  "materiel": ["string", "..."],
+  "differenciation": "string"
+}
+
+Chaque étape doit être concrète et actionnable en classe, pas une généralité.`;
+
+function getStoredApiKey(){ return localStorage.getItem(API_KEY_STORAGE) || ''; }
+
+function refreshApiKeyStatus(){
+  const key = getStoredApiKey();
+  const status = document.getElementById('api-key-status');
+  const clearBtn = document.getElementById('btn-clear-key');
+  const input = document.getElementById('gen-api-key');
+  if(key){
+    status.textContent = 'Clé enregistrée';
+    status.classList.add('ok');
+    clearBtn.hidden = false;
+    input.value = '';
+    input.placeholder = 'sk-ant-••••••••••••' + key.slice(-4);
+  }else{
+    status.textContent = 'Non renseignée';
+    status.classList.remove('ok');
+    clearBtn.hidden = true;
+    input.placeholder = 'sk-ant-…';
+  }
+}
+
+document.getElementById('btn-save-key').addEventListener('click', () => {
+  const val = document.getElementById('gen-api-key').value.trim();
+  if(!val) return;
+  localStorage.setItem(API_KEY_STORAGE, val);
+  refreshApiKeyStatus();
+});
+document.getElementById('btn-clear-key').addEventListener('click', () => {
+  localStorage.removeItem(API_KEY_STORAGE);
+  refreshApiKeyStatus();
+});
+
 function populateGenCompetenceSelect(){
   const sel = document.getElementById('gen-competence');
   sel.innerHTML = state.competences.map(c => `<option value="${c.id}">${c.domaine}</option>`).join('');
 }
 const modalOverlay = document.getElementById('modal-overlay');
-document.getElementById('btn-generer').addEventListener('click', () => modalOverlay.classList.add('open'));
+document.getElementById('btn-generer').addEventListener('click', () => {
+  document.getElementById('form-generer').hidden = false;
+  document.getElementById('gen-result').hidden = true;
+  refreshApiKeyStatus();
+  modalOverlay.classList.add('open');
+});
 document.getElementById('btn-annuler').addEventListener('click', () => modalOverlay.classList.remove('open'));
 modalOverlay.addEventListener('click', e => { if(e.target === modalOverlay) modalOverlay.classList.remove('open'); });
 
-document.getElementById('form-generer').addEventListener('submit', e => {
+document.getElementById('form-generer').addEventListener('submit', async e => {
   e.preventDefault();
-  // Point d'intégration : appeler ici le service de génération (API Claude)
-  // avec un prompt imposant la structure dire/montrer/guider/autonomie,
-  // puis afficher le résultat pour édition avant sauvegarde dans data/seances/.
-  alert('Point d\'intégration IA — à connecter à l\'API de génération.\n\nSujet : ' + document.getElementById('gen-sujet').value);
-  modalOverlay.classList.remove('open');
+
+  const apiKey = getStoredApiKey();
+  if(!apiKey){
+    alert("Renseignez d'abord votre clé API Claude en haut de cette fenêtre (elle reste dans votre navigateur).");
+    document.getElementById('gen-api-key').focus();
+    return;
+  }
+
+  const submitBtn = document.getElementById('btn-submit-gen');
+  const sujet = document.getElementById('gen-sujet').value;
+  const competence = document.getElementById('gen-competence').value;
+  const duree = document.getElementById('gen-duree').value;
+  const contexte = document.getElementById('gen-contexte').value;
+
+  const userPrompt = `Sujet : ${sujet}
+Compétence visée : ${domaineNom(competence) || competence}
+Durée souhaitée : ${duree || 45} minutes
+Contexte / contraintes : ${contexte || 'aucun'}`;
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'Génération…';
+
+  try{
+    // Appel direct navigateur → Anthropic, avec la clé de l'enseignant.
+    // Le header ci-dessous est requis par Anthropic pour autoriser un appel
+    // depuis un site web plutôt que depuis un serveur (mode "bring your own key").
+    const res = await fetch('https://api.anthropic.com/v1/messages', {
+      method: 'POST',
+      headers: {
+        'content-type': 'application/json',
+        'x-api-key': apiKey,
+        'anthropic-version': '2023-06-01',
+        'anthropic-dangerous-direct-browser-access': 'true'
+      },
+      body: JSON.stringify({
+        model: CLAUDE_MODEL,
+        max_tokens: 1500,
+        system: SEANCE_SYSTEM_PROMPT,
+        messages: [{ role: 'user', content: userPrompt }]
+      })
+    });
+
+    const data = await res.json();
+    if(!res.ok){
+      throw new Error(data.error?.message || `Erreur API (${res.status})`);
+    }
+
+    const text = (data.content || [])
+      .map(b => b.type === 'text' ? b.text : '')
+      .join('')
+      .trim()
+      .replace(/^```json\s*|\s*```$/g, '');
+
+    let seance;
+    try{ seance = JSON.parse(text); }
+    catch{ throw new Error("La réponse de l'IA n'était pas un JSON exploitable."); }
+
+    showGenResult(seance);
+  }catch(err){
+    alert('La génération a échoué : ' + err.message);
+  }finally{
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'Générer la séance';
+  }
 });
+
+function showGenResult(seance){
+  document.getElementById('form-generer').hidden = true;
+  const box = document.getElementById('gen-result');
+  box.hidden = false;
+
+  const labels = {dire:'Dire', montrer:'Montrer', guider:'Guider', autonomie:'Autonomie'};
+  const etapesHtml = (seance.etapes || []).map(et =>
+    `<div class="etape"><span class="tampon ${et.type}">${labels[et.type] || et.type}</span><p>${et.contenu}</p></div>`
+  ).join('');
+
+  box.innerHTML = `
+    <h3 style="margin-top:0;">${seance.titre || 'Séance générée'}</h3>
+    <p class="objectif" style="margin:0 0 14px;">${seance.objectif_dit_aux_eleves || ''}</p>
+    ${etapesHtml}
+    ${seance.differenciation ? `<div class="etape"><span class="tampon autonomie" style="transform:none;">Différenciation</span><p>${seance.differenciation}</p></div>` : ''}
+    <div class="modal-actions">
+      <button type="button" class="btn" id="gen-recommencer">← Nouvelle proposition</button>
+      <button type="button" class="btn primary" id="gen-telecharger">Télécharger le JSON</button>
+    </div>
+  `;
+
+  document.getElementById('gen-recommencer').addEventListener('click', () => {
+    box.hidden = true;
+    document.getElementById('form-generer').hidden = false;
+  });
+
+  document.getElementById('gen-telecharger').addEventListener('click', () => {
+    const id = 'sea-' + (seance.titre || 'generee').toLowerCase()
+      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
+      .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 40);
+    const payload = { id, sequence_id: null, ...seance };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
+    const a = document.createElement('a');
+    a.href = URL.createObjectURL(blob);
+    a.download = id + '.json';
+    a.click();
+  });
+}
 
 init();
 </script>
