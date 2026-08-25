@@ -289,6 +289,32 @@ legend{font-family:'IBM Plex Mono',monospace;font-size:10.5px;text-transform:upp
 
 footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);}
 
+/* ===== Impression ===== */
+#print-area{display:none;}
+.print-doc{max-width:900px;margin:0 auto;}
+.print-doc h1{font-size:24px;color:var(--navy);}
+.print-doc .print-eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-sky);margin-bottom:6px;}
+.print-doc .print-tags{margin:10px 0 18px;}
+.print-doc .print-tags span{display:inline-block;font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;
+  padding:3px 8px;border-radius:20px;background:#EEECE3;color:var(--ink-soft);margin:0 6px 6px 0;}
+.print-doc h5{font-family:'IBM Plex Mono',monospace;font-size:10.5px;letter-spacing:.07em;text-transform:uppercase;color:var(--accent-sky);
+  margin:20px 0 8px;border-bottom:1px solid var(--line);padding-bottom:4px;}
+.print-doc p{font-size:13px;line-height:1.6;margin:0 0 4px;}
+.print-doc table{width:100%;border-collapse:collapse;font-size:11.5px;margin-top:4px;}
+.print-doc th{text-align:left;font-family:'IBM Plex Mono',monospace;font-size:9.5px;text-transform:uppercase;color:var(--ink-soft);
+  padding:5px 6px;border-bottom:1px solid var(--ink);}
+.print-doc td{padding:6px;border-bottom:1px solid var(--line);vertical-align:top;line-height:1.5;}
+.print-seance-block{border:1px solid var(--line);border-radius:8px;padding:14px 16px;margin:14px 0;page-break-inside:avoid;}
+.print-seance-block h4{font-size:14px;color:var(--navy);margin:0 0 6px;}
+.print-page-break{page-break-before:always;}
+
+@media print{
+  body *{visibility:hidden;}
+  #print-area, #print-area *{visibility:visible;}
+  #print-area{display:block;position:absolute;left:0;top:0;width:100%;}
+  header.site-header, footer, .drawer-overlay, .modal-overlay, .toast{display:none !important;}
+}
+
 @media(max-width:640px){
   .field-row,.field-row.three{grid-template-columns:1fr;}
   .niveau-grid{grid-template-columns:repeat(5,1fr);font-size:10px;}
@@ -347,6 +373,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <div class="drawer-tags" id="seq-tags"></div>
       </div>
       <div class="cp-head-actions">
+        <button class="btn on-panel small" id="btn-print-seq">Imprimer</button>
         <button class="btn on-panel small" id="btn-edit-seq">Modifier</button>
         <button class="btn on-panel small" id="btn-download-seq">Télécharger le JSON</button>
         <button class="btn danger small" id="btn-delete-seq">Supprimer</button>
@@ -356,6 +383,11 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
     <div class="cp-block">
       <h5>Objectif commun</h5>
       <p class="txt" id="seq-objectif"></p>
+    </div>
+
+    <div class="cp-block" id="seq-prerequis-block">
+      <h5>Pré-requis</h5>
+      <p class="txt" id="seq-prerequis"></p>
     </div>
 
     <div class="cp-block" id="seq-refs-block">
@@ -435,6 +467,10 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <div class="field">
           <label for="f-seq-competences">Compétences travaillées</label>
           <input type="text" id="f-seq-competences" placeholder="Séparées par des virgules">
+        </div>
+        <div class="field">
+          <label for="f-seq-prerequis">Pré-requis</label>
+          <input type="text" id="f-seq-prerequis" placeholder="Séparés par des virgules — serviront au graphe de relations">
         </div>
         <div class="field-row three">
           <div class="field">
@@ -577,6 +613,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 </div>
 
 <div class="toast" id="toast"></div>
+<div id="print-area"></div>
 
 <script>
 "use strict";
@@ -599,6 +636,26 @@ const PERIODES = [
   {n:5,label:"Période 5",span:7}
 ];
 const PHASES_DEFAUT = ["Présentation","Activité","Restitution","Institutionnalisation","Métacognition"];
+/* Les 7 séances-types (8 fiches, la 5 étant scindée en 5.1 / 5.2) */
+const SEANCES_TYPES = [
+  {numero:"1", type:"Diagnostique"},
+  {numero:"2", type:"Exploration"},
+  {numero:"3", type:"Références"},
+  {numero:"4", type:"Structuration"},
+  {numero:"5.1", type:"Systématisation"},
+  {numero:"5.2", type:"Systématisation"},
+  {numero:"6", type:"Approfondissement"},
+  {numero:"7", type:"Évaluation"}
+];
+function genererSeancesParDefaut(sequenceId, classe){
+  return SEANCES_TYPES.map(st=>({
+    id: uid("sea"), sequence_id: sequenceId, numero: st.numero, type: st.type,
+    titre:"", classe: classe||"", competence_cible:"", competences_peripheriques:"",
+    modalites_generales:"", niveaux:[], objectif_commun:"", objectifs_individuels:[],
+    problematique:"", deroule: PHASES_DEFAUT.map(p=>({phase:p,temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""})),
+    vigilance:""
+  }));
+}
 
 const STORE_SEQ = "planif_sequences";
 const STORE_SEA = "planif_seances";
@@ -629,16 +686,13 @@ function seedIfEmpty(){
     competences:"Lire un texte connu à voix haute avec fluidité",
     periode:2, semaine_debut:8, semaine_fin:10,
     objectif_commun:"Lire un texte connu à voix haute avec fluidité, pour mieux le comprendre.",
+    prerequis:["Identification des syllabes complexes","Déchiffrage sans hésitation des mots outils"],
     objectifs_individuels:[], references_theoriques:""
   });
-  state.seances.push({
-    id: uid("sea"), sequence_id: seqId, numero:"1", type:"Exploration", titre:"Découverte",
-    classe:"CE1", competence_cible:"", competences_peripheriques:"", modalites_generales:"",
-    niveaux:[], objectif_commun:"Lire un texte plusieurs fois pour le lire de mieux en mieux, sans buter sur les mots.",
-    objectifs_individuels:[], problematique:"",
-    deroule: PHASES_DEFAUT.map(p=>({phase:p,temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""})),
-    vigilance:""
-  });
+  const seances = genererSeancesParDefaut(seqId, "CE1");
+  seances[1].titre = "Découverte";
+  seances[1].objectif_commun = "Lire un texte plusieurs fois pour le lire de mieux en mieux, sans buter sur les mots.";
+  state.seances.push(...seances);
   saveSequences(state.sequences); saveSeances(state.seances);
 }
 seedIfEmpty();
@@ -801,6 +855,13 @@ function renderSeqDetail(){
   `;
   document.getElementById('seq-objectif').textContent = seq.objectif_commun || "—";
 
+  const prereqBlock = document.getElementById('seq-prerequis-block');
+  const prereqs = seq.prerequis || [];
+  if(prereqs.length){
+    prereqBlock.style.display = "";
+    document.getElementById('seq-prerequis').textContent = prereqs.join(" · ");
+  } else prereqBlock.style.display = "none";
+
   const refsBlock = document.getElementById('seq-refs-block');
   if(seq.references_theoriques){
     refsBlock.style.display=""; document.getElementById('seq-refs').textContent = seq.references_theoriques;
@@ -875,6 +936,7 @@ document.getElementById('btn-download-seq').addEventListener('click', ()=>{
   const seances = state.seances.filter(x=>x.sequence_id===seq.id);
   downloadJSON(slug(seq.titre)||seq.id, { ...seq, seances });
 });
+document.getElementById('btn-print-seq').addEventListener('click', ()=> printSequence(state.currentSeqId));
 
 /* ============================================================
    FORMULAIRE SÉQUENCE (repeater objectifs individuels)
@@ -906,6 +968,7 @@ function openSeqForm(seqId){
   document.getElementById('f-seq-domaine').value = seq? seq.domaine : "lecture";
   document.getElementById('f-seq-classe').value = seq? (seq.classe||"") : "";
   document.getElementById('f-seq-competences').value = seq? (seq.competences||"") : "";
+  document.getElementById('f-seq-prerequis').value = seq? (Array.isArray(seq.prerequis)? seq.prerequis.join(", ") : (seq.prerequis||"")) : "";
   document.getElementById('f-seq-periode').value = seq? seq.periode : "1";
   document.getElementById('f-seq-debut').value = seq? seq.semaine_debut : "1";
   document.getElementById('f-seq-fin').value = seq? seq.semaine_fin : "4";
@@ -931,11 +994,14 @@ document.getElementById('btn-save-seq').addEventListener('click', ()=>{
     objectif: row.querySelector('.seq-eleve-objectif').value.trim()
   })).filter(e=>e.nom||e.objectif);
 
+  const prerequis = document.getElementById('f-seq-prerequis').value.split(",").map(s=>s.trim()).filter(Boolean);
+
   const data = {
     titre,
     domaine: document.getElementById('f-seq-domaine').value,
     classe: document.getElementById('f-seq-classe').value.trim(),
     competences: document.getElementById('f-seq-competences').value.trim(),
+    prerequis,
     periode: parseInt(document.getElementById('f-seq-periode').value,10),
     semaine_debut: debut,
     semaine_fin: fin,
@@ -944,17 +1010,26 @@ document.getElementById('btn-save-seq').addEventListener('click', ()=>{
     references_theoriques: document.getElementById('f-seq-refs').value.trim()
   };
 
+  let isNew = false;
   if(state.editingSeqId){
     const idx = state.sequences.findIndex(s=>s.id===state.editingSeqId);
     state.sequences[idx] = { ...state.sequences[idx], ...data };
   } else {
+    isNew = true;
     const id = uid("seq");
     state.sequences.push({ id, ...data });
     state.currentSeqId = id;
   }
   saveSequences(state.sequences);
+
+  if(isNew){
+    // Confort : on pré-crée par défaut les 7 séances-types (8 fiches, 5.1/5.2), vides et prêtes à compléter.
+    state.seances.push(...genererSeancesParDefaut(state.currentSeqId, data.classe));
+    saveSeances(state.seances);
+  }
+
   closeModal('modal-seq');
-  toast("Séquence enregistrée");
+  toast(isNew? "Séquence créée avec ses 7 séances-types" : "Séquence enregistrée");
 
   if(document.getElementById('view-seq').classList.contains('open')){
     renderSeqDetail();
@@ -1145,12 +1220,14 @@ function openSeaDrawer(seaId){
     ${sea.vigilance? `<div class="drawer-section"><h5>Points de vigilance</h5><div class="vigilance-box">${escapeHTML(sea.vigilance)}</div></div>`:""}
 
     <div class="drawer-actions">
+      <button class="btn on-panel small" id="drawer-print-sea">Imprimer</button>
       <button class="btn on-panel small" id="drawer-edit-sea">Modifier</button>
       <button class="btn on-panel small" id="drawer-download-sea">Télécharger le JSON</button>
       <button class="btn danger small" id="drawer-delete-sea">Supprimer</button>
     </div>
   `;
 
+  document.getElementById('drawer-print-sea').addEventListener('click', ()=> printSeance(sea.id));
   document.getElementById('drawer-edit-sea').addEventListener('click', ()=>{
     closeSeaDrawer();
     openSeaForm(sea.id, sea.sequence_id);
@@ -1179,6 +1256,90 @@ function closeSeaDrawer(){
 }
 document.getElementById('sea-drawer-close').addEventListener('click', closeSeaDrawer);
 document.getElementById('sea-overlay').addEventListener('click', closeSeaDrawer);
+
+/* ============================================================
+   IMPRESSION
+   ============================================================ */
+function derouleTableHTML(deroule){
+  const rows = (deroule||[]).filter(p=>p.phase||p.deroulement).map(p=>`
+    <tr>
+      <td><strong>${escapeHTML(p.phase)}</strong>${p.temps? " ("+escapeHTML(p.temps)+")":""}</td>
+      <td>${escapeHTML(p.modalite_materiel)}</td>
+      <td>${escapeHTML(p.deroulement)}</td>
+      <td>${escapeHTML(p.analyse_tache)}</td>
+      <td>${escapeHTML(p.amenagement)}</td>
+      <td>${escapeHTML(p.posture)}</td>
+    </tr>`).join('');
+  if(!rows) return "";
+  return `<table>
+    <thead><tr><th>Phase</th><th>Modalité &amp; matériel</th><th>Déroulement</th><th>Analyse de la tâche</th><th>Aménagement</th><th>Posture</th></tr></thead>
+    <tbody>${rows}</tbody>
+  </table>`;
+}
+function eleveTableHTML(eleves){
+  const rows = (eleves||[]).filter(e=>e.nom).map(e=>`<tr><td style="width:30%;"><strong>${escapeHTML(e.nom)}</strong></td><td>${escapeHTML(e.objectif)}</td></tr>`).join('');
+  if(!rows) return "";
+  return `<table><tbody>${rows}</tbody></table>`;
+}
+function seanceBlockHTML(sea, withHeader){
+  withHeader = withHeader !== false;
+  return `<div class="print-seance-block">
+    ${withHeader? `<h4>Séance ${escapeHTML(sea.numero||"")} ${sea.type? "— "+escapeHTML(sea.type):""}${sea.titre? " · "+escapeHTML(sea.titre):""}</h4>`:""}
+    ${sea.classe? `<p><em>${escapeHTML(sea.classe)}</em></p>`:""}
+    ${sea.competence_cible? `<p><strong>Compétence cible :</strong> ${escapeHTML(sea.competence_cible)}</p>`:""}
+    ${sea.competences_peripheriques? `<p><strong>Compétences périphériques :</strong> ${escapeHTML(sea.competences_peripheriques)}</p>`:""}
+    ${sea.modalites_generales? `<p><strong>Modalités générales :</strong> ${escapeHTML(sea.modalites_generales)}</p>`:""}
+    ${sea.niveaux && sea.niveaux.length? `<p><strong>Niveaux :</strong> ${sea.niveaux.map(escapeHTML).join(', ')}</p>`:""}
+    ${sea.objectif_commun? `<p><strong>Objectif commun :</strong> ${escapeHTML(sea.objectif_commun)}</p>`:""}
+    ${eleveTableHTML(sea.objectifs_individuels)}
+    ${sea.problematique? `<p><strong>Problématique pour les élèves :</strong> ${escapeHTML(sea.problematique)}</p>`:""}
+    ${derouleTableHTML(sea.deroule)}
+    ${sea.vigilance? `<p><strong>Points de vigilance :</strong> ${escapeHTML(sea.vigilance)}</p>`:""}
+  </div>`;
+}
+
+function launchPrint(html, title){
+  const area = document.getElementById('print-area');
+  area.innerHTML = `<div class="print-doc">${html}</div>`;
+  const prevTitle = document.title;
+  document.title = title || document.title;
+  window.print();
+  document.title = prevTitle;
+}
+
+function printSequence(seqId){
+  const seq = state.sequences.find(s=>s.id===seqId);
+  if(!seq) return;
+  const dom = DOMAINES[seq.domaine] || {nom:seq.domaine};
+  const seances = state.seances.filter(x=>x.sequence_id===seqId);
+  const html = `
+    <p class="print-eyebrow">${escapeHTML(dom.nom)} · Période ${seq.periode} · Semaines ${seq.semaine_debut}–${seq.semaine_fin}</p>
+    <h1>${escapeHTML(seq.titre)}</h1>
+    <div class="print-tags">
+      ${seq.classe? `<span>${escapeHTML(seq.classe)}</span>`:""}
+      ${seq.competences? `<span>${escapeHTML(seq.competences)}</span>`:""}
+    </div>
+    <h5>Objectif commun</h5><p>${escapeHTML(seq.objectif_commun)||"—"}</p>
+    ${seq.prerequis && seq.prerequis.length? `<h5>Pré-requis</h5><p>${seq.prerequis.map(escapeHTML).join(' · ')}</p>`:""}
+    ${eleveTableHTML(seq.objectifs_individuels)? `<h5>Objectifs individuels</h5>${eleveTableHTML(seq.objectifs_individuels)}`:""}
+    ${seq.references_theoriques? `<h5>Références théoriques</h5><p>${escapeHTML(seq.references_theoriques)}</p>`:""}
+    <h5>Séances</h5>
+    ${seances.map(seanceBlockHTML).join('')}
+  `;
+  launchPrint(html, "Séquence — " + seq.titre);
+}
+
+function printSeance(seaId){
+  const sea = state.seances.find(s=>s.id===seaId);
+  if(!sea) return;
+  const seq = state.sequences.find(s=>s.id===sea.sequence_id);
+  const html = `
+    ${seq? `<p class="print-eyebrow">${escapeHTML(seq.titre)}</p>`:""}
+    <h1>Séance ${escapeHTML(sea.numero||"")} ${sea.type? "— "+escapeHTML(sea.type):""}${sea.titre? " · "+escapeHTML(sea.titre):""}</h1>
+    ${seanceBlockHTML(sea, false)}
+  `;
+  launchPrint(html, "Séance — " + (sea.titre||sea.numero));
+}
 
 /* ============================================================
    EXPORT / IMPORT JSON
