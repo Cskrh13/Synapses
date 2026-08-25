@@ -1,0 +1,15 @@
+{
+  "id": "seq-lecture-cgp",
+  "competence_programme": "lecture-identifier-mots",  // ID de la compétence dans competences.json
+  "titre": "Maîtriser les correspondances graphème-phonème",
+  "periode": 1,
+  "semaine_debut": 1,
+  "semaine_fin": 5,
+  "objectif_explicite": "Automatiser le décodage des CGP pour lire des mots de manière fluide.",
+  "seances": [
+    "sea-lecture-cgp-01",
+    "sea-lecture-cgp-02",
+    "sea-lecture-cgp-03"
+  ],
+  "competences_transversales": ["oral-ecoute", "ecriture-encoder"]
+}
