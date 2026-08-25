@@ -220,6 +220,14 @@ async function loadDatabase(){
 
     state.activeDomains = new Set(state.competencesData.domaines.map(d=>d.id));
 
+    // Paramètres reçus depuis index.html, par exemple :
+    // sequences.html?domaine=lecture
+    const urlParams = new URLSearchParams(window.location.search);
+    const requestedDomain = urlParams.get("domaine");
+    if (requestedDomain && state.competencesData.domaines.some(d => d.id === requestedDomain)) {
+      state.activeDomains = new Set([requestedDomain]);
+    }
+
     const entries=[];
     (state.index.niveaux || []).forEach(niveau=>{
       (niveau.disciplines || []).forEach(discipline=>{
