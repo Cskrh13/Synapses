@@ -80,7 +80,8 @@ input{width:300px;padding:8px 12px;margin-left:5px}
 </div>
 <div class="side card" id="help">
   <h3>Navigation</h3>
-  <div class="navrow">🖱 Glisser : tourner la sphère</div>
+  <div class="navrow">🖱 Glisser (clic gauche) : tourner la sphère</div>
+  <div class="navrow">🖱 Glisser (clic droit) : déplacer la vue</div>
   <div class="navrow">◉ Molette : zoomer</div>
   <div class="navrow">◌ Cliquer : ouvrir la fiche</div>
   <div class="navrow">⌖ Double-clic : recentrer</div>
@@ -127,7 +128,7 @@ function sphereCenter3D(niveau){
 }
 const state={
  levels:new Set(),domains:new Set(),search:"",nodes:[],links:[],selected:null,hover:null,
- yaw:.38,pitch:-.14,zoom:1,drag:false,lastX:0,lastY:0,anim:0,spin:true,focus:{x:0,y:0,z:0}
+ yaw:.38,pitch:-.14,zoom:1,drag:false,panning:false,lastX:0,lastY:0,anim:0,spin:true,focus:{x:0,y:0,z:0}
 };
 function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]))}
 function niveauLabel(v){return ({cp:"CP",ce1:"CE1",ce2:"CE2",cm1:"CM1",cm2:"CM2"}[String(v??"").toLowerCase()]||String(v??""))}
@@ -241,7 +242,7 @@ function draw(){
    const base=n.type==="competence"?(n.central?26:10):n.type==="sequence"?18:8;const r=Math.max(2,base*p.scale*(selected?1.22:1));
    ctx.save();if(selected||hover){ctx.shadowBlur=22;ctx.shadowColor=n.color}
    const g=ctx.createRadialGradient(p.x-r*.38,p.y-r*.48,r*.08,p.x,p.y,r);g.addColorStop(0,"rgba(255,255,255,.95)");g.addColorStop(.20,n.color);g.addColorStop(.72,n.color);g.addColorStop(1,"rgba(30,55,70,.25)");ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();ctx.strokeStyle=selected?"#ffffff":n.color;ctx.lineWidth=selected?2:1;ctx.stroke();
-   const show=n.type!=="seance"||p.scale>.8||hover||selected;
+   const show=hover||selected;
    if(show){ctx.shadowBlur=0;ctx.fillStyle=selected?"#102130":"#24323e";ctx.textAlign="center";ctx.font=(n.central?"600 14px":"600 11px")+" Georgia";const label=n.label.length>(n.central?42:34)?n.label.slice(0,n.central?41:33)+"…":n.label;ctx.fillText(label,p.x,p.y+r+15)}
    ctx.restore();
  }
@@ -272,9 +273,23 @@ $("search").addEventListener("input",e=>{state.search=e.target.value.trim();upda
 $("reset").onclick=()=>{state.search="";$("search").value="";state.levels=new Set(LEVELS_ORDER);state.domains=new Set(DATA.competences.map(c=>c.domaine_id).filter(Boolean));resetView();renderFilters();update()};
 $("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null};
 const canvas=$("graph");
-canvas.addEventListener("pointerdown",e=>{state.drag=true;state.spin=false;state.lastX=e.clientX;state.lastY=e.clientY;canvas.classList.add("dragging")});
-window.addEventListener("pointerup",e=>{if(!state.drag)return;const dx=Math.abs(e.clientX-state.lastX),dy=Math.abs(e.clientY-state.lastY);state.drag=false;canvas.classList.remove("dragging");if(dx<4&&dy<4){const n=hit(e.clientX,e.clientY);if(n)openNode(n)}});
-window.addEventListener("pointermove",e=>{if(state.drag){state.yaw+=(e.clientX-state.lastX)*.006;state.pitch+=(e.clientY-state.lastY)*.004;state.pitch=Math.max(-1.25,Math.min(1.25,state.pitch));state.lastX=e.clientX;state.lastY=e.clientY}else state.hover=hit(e.clientX,e.clientY)?.id||null});
+canvas.addEventListener("contextmenu",e=>e.preventDefault());
+canvas.addEventListener("pointerdown",e=>{state.drag=true;state.panning=e.button===2;state.spin=false;state.lastX=e.clientX;state.lastY=e.clientY;canvas.classList.add("dragging")});
+window.addEventListener("pointerup",e=>{if(!state.drag)return;const dx=Math.abs(e.clientX-state.lastX),dy=Math.abs(e.clientY-state.lastY);const wasPanning=state.panning;state.drag=false;state.panning=false;canvas.classList.remove("dragging");if(!wasPanning&&dx<4&&dy<4){const n=hit(e.clientX,e.clientY);if(n)openNode(n)}});
+window.addEventListener("pointermove",e=>{
+ if(state.drag){
+   const dx=e.clientX-state.lastX,dy=e.clientY-state.lastY;
+   if(state.panning){
+     // Clic droit : déplacement latéral et vertical (pan), relatif à l'orientation actuelle de la caméra.
+     const s=1/state.zoom,cy=Math.cos(state.yaw),sy=Math.sin(state.yaw),cp=Math.cos(state.pitch),sp=Math.sin(state.pitch);
+     state.focus.x-=dx*cy*s*.9; state.focus.z+=dx*sy*s*.9;
+     state.focus.y-=dy*cp*s*.9; state.focus.z-=dy*sp*s*.9;
+   } else {
+     state.yaw+=dx*.006;state.pitch+=dy*.004;state.pitch=Math.max(-1.25,Math.min(1.25,state.pitch));
+   }
+   state.lastX=e.clientX;state.lastY=e.clientY;
+ } else state.hover=hit(e.clientX,e.clientY)?.id||null;
+});
 canvas.addEventListener("wheel",e=>{e.preventDefault();state.zoom*=e.deltaY<0?1.07:.935;state.zoom=Math.max(.45,Math.min(2.5,state.zoom));$("zoomRange").value=state.zoom},{passive:false});
 canvas.addEventListener("dblclick",e=>{const n=hit(e.clientX,e.clientY);if(n){state.focus={x:n.x,y:n.y,z:n.z};state.yaw=0;state.pitch=0}});
 $("zoomRange").oninput=e=>state.zoom=+e.target.value;$("minus").onclick=()=>{state.zoom=Math.max(.45,state.zoom*.88);$("zoomRange").value=state.zoom};$("plus").onclick=()=>{state.zoom=Math.min(2.5,state.zoom*1.12);$("zoomRange").value=state.zoom};$("home").onclick=resetView;
