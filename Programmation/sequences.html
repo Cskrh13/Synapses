@@ -71,7 +71,7 @@ footer{padding:18px;text-align:center;color:#6b7280;font-size:12px;border-top:1p
 
 <header class="site-header">
   <div class="header-top">
-    <a class="brand" href="index.html">
+    <a class="brand" href="../index.html">
       <span class="brand-mark">PR</span>
       <span class="brand-text"><span class="top">Programmation pédagogique</span><span class="bottom">Séquences & séances</span></span>
     </a>
@@ -180,8 +180,9 @@ function status(message, error=false){
   const el=$("status"); el.textContent=message; el.classList.toggle("error",error);
 }
 async function fetchJSON(path){
-  const response = await fetch(path, {cache:"no-store"});
-  if(!response.ok) throw new Error(`${path} → HTTP ${response.status}`);
+  const url = new URL(path, window.location.href).href;
+  const response = await fetch(url, {cache:"no-store"});
+  if(!response.ok) throw new Error(`${url} → HTTP ${response.status}`);
   return response.json();
 }
 function competenceId(id){ return COMPETENCE_ALIASES[id] || id; }
@@ -266,7 +267,7 @@ async function loadDatabase(){
     console.error(error);
     status("Erreur de chargement : "+error.message,true);
     $("seq-grid").innerHTML = `<div class="empty"><strong>Impossible de charger la base.</strong><br><br>
-    Vérifie que sequences.html est bien à la racine de <code>Programmation/</code>, que <code>data/index.json</code> existe et que les chemins déclarés dans l'index correspondent exactement aux noms des fichiers.<br><br>
+    Vérifie que <code>sequences.html</code> est bien dans <code>Programmation/</code>, que <code>Programmation/data/index.json</code> existe et que les chemins déclarés dans l'index correspondent exactement aux noms des fichiers.<br><br>
     <small>Note : fetch() peut être bloqué si tu ouvres le HTML directement avec file://. Utilise un serveur local ou l'hébergement GitHub Pages.</small></div>`;
   }
 }
