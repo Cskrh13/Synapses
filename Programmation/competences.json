@@ -1,35 +1,980 @@
-[
-  {
-    "id": "lecture",
-    "discipline": "Français",
-    "cycle": "Cycle 2",
-    "domaine": "Lecture",
-    "couleur": "#B5502E",
-    "objectifs": [
-      "Identifier des mots de manière de plus en plus aisée",
-      "Comprendre un texte et contrôler sa compréhension"
+{
+  "meta": {
+    "titre": "Référentiel de compétences CP – Français et Mathématiques",
+    "version": "2.0-travail",
+    "description": "Base de travail structurée pour les séquences et séances. Les intitulés et objectifs sont organisés à partir des deux programmes officiels fournis.",
+    "sources": [
+      "Annexe 3 – Programme de français du cycle 2",
+      "Annexe 4 – Programme de mathématiques du cycle 2"
     ]
   },
-  {
-    "id": "ecriture",
-    "discipline": "Français",
-    "cycle": "Cycle 2",
-    "domaine": "Écriture",
-    "couleur": "#2A7F72",
-    "objectifs": [
-      "Copier de manière experte",
-      "Produire des écrits en commençant à s'approprier une démarche"
-    ]
-  },
-  {
-    "id": "oral",
-    "discipline": "Français",
-    "cycle": "Cycle 2",
-    "domaine": "Oral",
-    "couleur": "#6B4E8E",
-    "objectifs": [
-      "Écouter pour comprendre des messages oraux ou des textes lus",
-      "Participer à des échanges dans des situations diversifiées"
-    ]
-  }
-]
+  "domaines": [
+    {
+      "id": "lecture",
+      "discipline": "Français",
+      "nom": "Lecture",
+      "couleur": "#B5502E"
+    },
+    {
+      "id": "ecriture",
+      "discipline": "Français",
+      "nom": "Écriture",
+      "couleur": "#2A7F72"
+    },
+    {
+      "id": "oral",
+      "discipline": "Français",
+      "nom": "Oral",
+      "couleur": "#6B4E8E"
+    },
+    {
+      "id": "vocabulaire",
+      "discipline": "Français",
+      "nom": "Vocabulaire",
+      "couleur": "#B5871E"
+    },
+    {
+      "id": "grammaire_orthographe",
+      "discipline": "Français",
+      "nom": "Grammaire et orthographe",
+      "couleur": "#1E2A4A"
+    },
+    {
+      "id": "nombres_calcul_problemes",
+      "discipline": "Mathématiques",
+      "nom": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E"
+    },
+    {
+      "id": "grandeurs_mesures",
+      "discipline": "Mathématiques",
+      "nom": "Grandeurs et mesures",
+      "couleur": "#2A7F72"
+    },
+    {
+      "id": "espace_geometrie",
+      "discipline": "Mathématiques",
+      "nom": "Espace et géométrie",
+      "couleur": "#6B4E8E"
+    },
+    {
+      "id": "organisation_donnees",
+      "discipline": "Mathématiques",
+      "nom": "Organisation et gestion de données",
+      "couleur": "#B5871E"
+    }
+  ],
+  "competences": [
+    {
+      "id": "lecture_identifier_mots",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Identifier les mots de manière de plus en plus aisée",
+      "objectifs": [
+        "Décoder et encoder les correspondances graphophonémiques selon une progression structurée.",
+        "Déchiffrer des syllabes, des mots puis des phrases.",
+        "Mémoriser progressivement les mots fréquents et réguliers.",
+        "Automatiser progressivement le décodage pour accéder à une lecture plus fluide."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "décodage",
+        "encodage",
+        "graphème",
+        "phonème",
+        "CGP",
+        "mots fréquents"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_voix_haute",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire à voix haute",
+      "objectifs": [
+        "Lire à voix haute des syllabes et des mots avec une fluidité croissante.",
+        "Lire des phrases puis des textes courts en tenant compte de la ponctuation et des groupes de sens.",
+        "Développer la fluence et une oralisation qui traduit la compréhension."
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots"
+      ],
+      "mots_cles": [
+        "lecture à voix haute",
+        "fluence",
+        "ponctuation"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_comprendre",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Comprendre un texte",
+      "objectifs": [
+        "Comprendre des textes lus quotidiennement par l'adulte.",
+        "Acquérir progressivement des stratégies de compréhension.",
+        "À partir de la troisième période, mobiliser progressivement ces stratégies sur des textes décodés par l'élève.",
+        "Appuyer la compréhension sur le vocabulaire, la syntaxe et les connaissances construites à l'oral."
+      ],
+      "prerequis_competences": [
+        "oral_ecouter"
+      ],
+      "mots_cles": [
+        "compréhension",
+        "texte",
+        "stratégies",
+        "vocabulaire"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_devenir_lecteur",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Devenir lecteur",
+      "objectifs": [
+        "Renforcer la familiarité avec la langue, le texte et le livre.",
+        "Cultiver le goût personnel et le plaisir de lire.",
+        "Découvrir et fréquenter régulièrement des œuvres et des livres variés.",
+        "Commencer à construire une culture littéraire personnelle."
+      ],
+      "prerequis_competences": [
+        "lecture_comprendre"
+      ],
+      "mots_cles": [
+        "culture littéraire",
+        "livres",
+        "plaisir de lire"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_cursive",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Apprendre à écrire en écriture cursive",
+      "objectifs": [
+        "Apprendre à écrire en écriture cursive tous les graphèmes étudiés selon la progression en décodage.",
+        "Apprendre à les enchaîner avec fluidité dans des syllabes, des mots et des phrases."
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots"
+      ],
+      "mots_cles": [
+        "cursive",
+        "geste graphique",
+        "graphèmes"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_encoder_dictee",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Encoder puis écrire sous dictée",
+      "objectifs": [
+        "Encoder des syllabes simples puis des mots selon la progression des correspondances graphophonémiques.",
+        "Écrire progressivement sous la dictée des lettres, syllabes, mots puis phrases.",
+        "Écrire des mots avec les lettres muettes étudiées.",
+        "Mobiliser progressivement les connaissances orthographiques et les outils de la classe."
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots",
+        "ecriture_cursive"
+      ],
+      "mots_cles": [
+        "encodage",
+        "dictée",
+        "orthographe"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_copier",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Copier et acquérir des stratégies de copie",
+      "objectifs": [
+        "Copier progressivement des lettres, des syllabes, des mots puis des phrases.",
+        "À partir de la période 4, pratiquer des exercices de copie.",
+        "Développer progressivement exactitude, mémorisation et efficacité."
+      ],
+      "prerequis_competences": [
+        "ecriture_cursive"
+      ],
+      "mots_cles": [
+        "copie",
+        "mémorisation",
+        "exactitude"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_produire",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Produire des écrits",
+      "objectifs": [
+        "Produire progressivement des lettres, syllabes, mots, phrases puis textes.",
+        "Participer dès le CP à la rédaction d'écrits collaboratifs dirigés par le professeur.",
+        "Préparer, rédiger puis améliorer progressivement une production écrite.",
+        "S'appuyer sur l'oral et sur des outils d'aide à l'écriture."
+      ],
+      "prerequis_competences": [
+        "oral_dire",
+        "ecriture_encoder_dictee"
+      ],
+      "mots_cles": [
+        "production d'écrits",
+        "planification",
+        "révision"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_ecouter",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Écouter pour comprendre",
+      "objectifs": [
+        "Écouter pour comprendre des messages oraux et des textes lus.",
+        "Maintenir son attention et repérer des informations importantes.",
+        "Construire progressivement le sens en reliant les informations entendues.",
+        "Répondre à des questions de compréhension."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écoute",
+        "compréhension orale",
+        "attention"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_dire",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Dire pour être compris",
+      "objectifs": [
+        "Produire une parole audible et intelligible.",
+        "Organiser progressivement son propos pour raconter, décrire ou expliquer.",
+        "Oraliser un texte mémorisé ou préparé.",
+        "Tenir compte de son auditoire pour être compris."
+      ],
+      "prerequis_competences": [
+        "oral_ecouter"
+      ],
+      "mots_cles": [
+        "expression orale",
+        "articulation",
+        "récit"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_echanger",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Participer à des échanges",
+      "objectifs": [
+        "Participer aux échanges en respectant les règles de communication.",
+        "Écouter les autres et attendre son tour de parole.",
+        "Prendre la parole de manière pertinente.",
+        "Donner son avis et répondre aux sollicitations dans un échange."
+      ],
+      "prerequis_competences": [
+        "oral_ecouter",
+        "oral_dire"
+      ],
+      "mots_cles": [
+        "échanges",
+        "interaction",
+        "prise de parole"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_enrichir",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Enrichir son vocabulaire dans tous les enseignements",
+      "objectifs": [
+        "Enrichir en contexte le vocabulaire appris au cycle 1.",
+        "Être sensible à la polysémie et à la différence entre sens propre et sens figuré.",
+        "Commencer à mobiliser l'ordre alphabétique pour utiliser un dictionnaire adapté."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lexique",
+        "polysémie",
+        "ordre alphabétique"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_relations",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Établir des relations entre les mots",
+      "objectifs": [
+        "Constituer des répertoires de mots par thème, classe grammaticale, famille ou analogie morphologique.",
+        "Proposer et justifier une catégorisation d'un corpus de mots.",
+        "Trouver des synonymes et des antonymes."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_enrichir"
+      ],
+      "mots_cles": [
+        "catégorisation",
+        "synonymes",
+        "antonymes",
+        "familles de mots"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_reemployer",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Réemployer le vocabulaire étudié",
+      "objectifs": [
+        "Réemployer et mémoriser le vocabulaire appris en maternelle.",
+        "Réemployer les mots et expressions appris dans des productions orales ou écrites.",
+        "Percevoir progressivement la différence entre deux niveaux de langue et choisir le plus adapté à la situation."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_enrichir"
+      ],
+      "mots_cles": [
+        "réemploi",
+        "mémorisation",
+        "niveau de langue"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_orthographe_lexicale",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Mémoriser l'orthographe lexicale",
+      "objectifs": [
+        "Mémoriser progressivement l'orthographe des mots étudiés.",
+        "Constituer et utiliser des répertoires de mots.",
+        "Mobiliser les connaissances acquises lors des activités d'écriture et de dictée."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_enrichir"
+      ],
+      "mots_cles": [
+        "orthographe lexicale",
+        "mémorisation",
+        "mots fréquents"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "grammaire_phrase_simple",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Se repérer dans la phrase simple",
+      "objectifs": [
+        "S'approprier progressivement la notion de phrase simple et ses trois marqueurs essentiels : majuscule initiale, ponctuation finale forte et sens.",
+        "Comprendre que certains éléments fonctionnent ensemble et constituent un système.",
+        "S'appuyer sur la ponctuation pour reconnaître les types de phrases.",
+        "Reconnaître les formes négative et exclamative.",
+        "Constituer des corpus par classe de mots : noms, verbes, déterminants, adjectifs et pronoms personnels."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "phrase",
+        "ponctuation",
+        "nom",
+        "verbe",
+        "déterminant"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "grammaire_orthographe",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Découvrir, comprendre et mettre en œuvre l'orthographe grammaticale",
+      "objectifs": [
+        "Observer et manipuler les régularités orthographiques de la langue.",
+        "Mettre progressivement en relation lecture, écriture et orthographe.",
+        "Commencer à mobiliser les marques grammaticales étudiées dans les activités d'écriture et de dictée."
+      ],
+      "prerequis_competences": [
+        "grammaire_phrase_simple"
+      ],
+      "mots_cles": [
+        "orthographe grammaticale",
+        "accords",
+        "dictée"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_nombres_entiers",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Les nombres entiers jusqu'à 100",
+      "objectifs": [
+        "Lire, écrire et représenter les nombres entiers jusqu'à 100.",
+        "Comparer, ranger et encadrer des nombres dans le champ numérique étudié.",
+        "Comprendre les relations entre dizaines et unités.",
+        "Utiliser différentes représentations d'un même nombre et décomposer les nombres."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "nombres",
+        "numération",
+        "dizaines",
+        "unités",
+        "100"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_operations",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Comprendre et utiliser les quatre opérations",
+      "objectifs": [
+        "Donner du sens aux opérations à partir de situations de réunion, ajout, retrait, comparaison, partage ou groupement.",
+        "Utiliser progressivement l'addition et la soustraction pour traiter des situations adaptées au CP.",
+        "Découvrir des situations relevant de la multiplication et du partage selon la progression du programme."
+      ],
+      "prerequis_competences": [
+        "math_nombres_entiers"
+      ],
+      "mots_cles": [
+        "addition",
+        "soustraction",
+        "multiplication",
+        "partage"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_faits_numeriques",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Mémoriser des faits numériques",
+      "objectifs": [
+        "Mémoriser progressivement des résultats utiles pour calculer.",
+        "Connaître et mobiliser les résultats des tables d'addition étudiées.",
+        "Automatiser progressivement des résultats simples et des relations numériques utiles."
+      ],
+      "prerequis_competences": [
+        "math_nombres_entiers"
+      ],
+      "mots_cles": [
+        "calcul mental",
+        "tables d'addition",
+        "faits numériques"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_calcul_numeration",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Utiliser ses connaissances en numération pour calculer mentalement",
+      "objectifs": [
+        "S'appuyer sur la position des chiffres et sur les dizaines et unités pour effectuer des calculs mentalement.",
+        "Transformer ou décomposer les nombres pour faciliter un calcul.",
+        "Développer progressivement la rapidité et la fiabilité du calcul mental."
+      ],
+      "prerequis_competences": [
+        "math_nombres_entiers",
+        "math_faits_numeriques"
+      ],
+      "mots_cles": [
+        "numération",
+        "calcul mental",
+        "décomposition"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_procedures_calcul",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Apprendre des procédures de calcul mental",
+      "objectifs": [
+        "Élaborer et utiliser des procédures efficaces adaptées aux calculs rencontrés.",
+        "Mémoriser progressivement les procédures enseignées.",
+        "Passer progressivement de procédures accompagnées à des procédures plus autonomes."
+      ],
+      "prerequis_competences": [
+        "math_faits_numeriques",
+        "math_calcul_numeration"
+      ],
+      "mots_cles": [
+        "procédures",
+        "calcul mental",
+        "automatisation"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_resolution_problemes",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Résoudre des problèmes",
+      "objectifs": [
+        "Comprendre l'énoncé et la question d'un problème.",
+        "Reformuler la situation avec ses propres mots.",
+        "Modéliser une situation à l'aide de manipulations ou de représentations.",
+        "Calculer ou dénombrer pour obtenir un résultat.",
+        "Répondre à la question et exercer un regard critique sur la vraisemblance du résultat.",
+        "Résoudre des problèmes additifs en une étape, notamment de type parties-tout, selon la progression du programme."
+      ],
+      "prerequis_competences": [
+        "math_nombres_entiers",
+        "math_operations"
+      ],
+      "mots_cles": [
+        "problèmes",
+        "modéliser",
+        "calculer",
+        "répondre",
+        "régulation"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_longueurs",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grandeurs_mesures",
+      "domaine": "Grandeurs et mesures",
+      "couleur": "#2A7F72",
+      "intitule": "Les longueurs",
+      "objectifs": [
+        "Comparer et ordonner des longueurs.",
+        "Mesurer et reporter des longueurs dans des situations adaptées.",
+        "Utiliser progressivement les unités et instruments de mesure étudiés."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "longueur",
+        "mesure",
+        "règle"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_masses",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grandeurs_mesures",
+      "domaine": "Grandeurs et mesures",
+      "couleur": "#2A7F72",
+      "intitule": "Les masses",
+      "objectifs": [
+        "Comparer des masses dans des situations concrètes.",
+        "Estimer et vérifier des masses à l'aide d'outils adaptés.",
+        "Donner du sens aux unités de masse étudiées."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "masse",
+        "pesée",
+        "comparaison"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_monnaie",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grandeurs_mesures",
+      "domaine": "Grandeurs et mesures",
+      "couleur": "#2A7F72",
+      "intitule": "La monnaie",
+      "objectifs": [
+        "Reconnaître et utiliser les valeurs de monnaie étudiées.",
+        "Composer et décomposer des sommes simples.",
+        "Résoudre des situations de la vie courante impliquant des achats ou des échanges simples."
+      ],
+      "prerequis_competences": [
+        "math_nombres_entiers",
+        "math_operations"
+      ],
+      "mots_cles": [
+        "euro",
+        "monnaie",
+        "prix"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_temps",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grandeurs_mesures",
+      "domaine": "Grandeurs et mesures",
+      "couleur": "#2A7F72",
+      "intitule": "Le repérage dans le temps",
+      "objectifs": [
+        "Se repérer dans le temps à partir de repères familiers.",
+        "Utiliser des outils de repérage temporel adaptés au CP.",
+        "Ordonner des événements et mobiliser le vocabulaire temporel."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "temps",
+        "chronologie",
+        "calendrier"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_solides",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "espace_geometrie",
+      "domaine": "Espace et géométrie",
+      "couleur": "#6B4E8E",
+      "intitule": "Les solides",
+      "objectifs": [
+        "Reconnaître et nommer des solides usuels.",
+        "Décrire des solides à partir de caractéristiques simples.",
+        "Manipuler et représenter des objets de l'espace."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "solides",
+        "cube",
+        "pavé",
+        "espace"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_geometrie_plane",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "espace_geometrie",
+      "domaine": "Espace et géométrie",
+      "couleur": "#6B4E8E",
+      "intitule": "La géométrie plane",
+      "objectifs": [
+        "Reconnaître, nommer et décrire des figures planes usuelles.",
+        "Utiliser le vocabulaire géométrique étudié.",
+        "Manipuler les instruments et réaliser des tracés ou constructions adaptés au niveau."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "géométrie",
+        "figures planes",
+        "tracé"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_reperage_espace",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "espace_geometrie",
+      "domaine": "Espace et géométrie",
+      "couleur": "#6B4E8E",
+      "intitule": "Le repérage dans l'espace",
+      "objectifs": [
+        "Situer des objets et se situer dans l'espace.",
+        "Utiliser un vocabulaire spatial précis.",
+        "Décrire des positions et des déplacements dans des situations adaptées."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "espace",
+        "position",
+        "déplacement",
+        "repérage"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_donnees",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "Collecter, organiser et représenter des données",
+      "objectifs": [
+        "Collecter des données à partir d'une question simple.",
+        "Organiser les données recueillies sous forme de tableau.",
+        "Construire et lire un diagramme en barres simple.",
+        "Interpréter les informations obtenues pour répondre à une question."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "données",
+        "tableau",
+        "diagramme en barres",
+        "enquête"
+      ],
+      "source": {
+        "document": "Annexe 4 – Programme de mathématiques du cycle 2",
+        "fichier": "Annexe 4 – Programme de mathématiques du cycle 2-403821.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    }
+  ]
+}
