@@ -325,8 +325,8 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 /* ---- Réseau de compétences ---- */
 .reseau-wrap{position:relative;}
 .reseau-grid{
-  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:34px;align-items:start;
-  overflow-x:auto;padding-bottom:12px;position:relative;z-index:2;
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:20px;align-items:start;
+  position:relative;z-index:2;
 }
 .reseau-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;}
 .comp-node{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px;position:relative;}
@@ -378,6 +378,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
     </a>
     <div class="header-actions">
       <button class="btn" id="btn-view-reseau">🕸 Réseau de compétences</button>
+      <a class="btn" href="cartographie-competences.html" target="_blank" rel="noopener">🗺 Cartographie des compétences</a>
       <button class="btn" id="btn-export-competences">Exporter le référentiel</button>
       <button class="btn" id="btn-export-all">Exporter tout (JSON)</button>
       <button class="btn" id="btn-import-all">Importer un JSON</button>
@@ -473,6 +474,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <h1>Réseau de compétences</h1>
         <p>Chaque compétence peut correspondre à plusieurs séquences (et séances décrochées). Les flèches en pointillés indiquent qu'une compétence est un pré-requis d'une séquence liée à une autre compétence. Cliquez sur une séquence pour l'ouvrir.</p>
       </div>
+      <a class="btn on-panel" href="cartographie-competences.html" target="_blank" rel="noopener">🗺 Voir la cartographie interactive</a>
     </div>
     <div class="reseau-wrap" id="reseau-wrap">
       <div class="reseau-grid" id="reseau-grid"></div>
