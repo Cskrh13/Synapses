@@ -1,640 +1,3463 @@
+```html
 <!DOCTYPE html>
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cartographie des compétences — Synapses</title>
+
 <style>
 :root{
-  --bg:#f7f7f4;--text:#252b2d;--muted:#687275;--line:#c9ced0;
-  --panel:rgba(255,255,255,.94);--gold:#b18a43;
-  --competence:#4e9b72;--sequence:#c4953d;--seance:#4b9bc2;
+  --bg:#f7f7f4;
+  --text:#252b2d;
+  --muted:#687275;
+  --line:#c9ced0;
+  --panel:rgba(255,255,255,.96);
+  --gold:#b18a43;
+  --competence:#4e9b72;
+  --sequence:#c4953d;
+  --seance:#4b9bc2;
+  --prerequis:#956b9e;
 }
+
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Georgia,"Times New Roman",serif}
-#app{position:fixed;inset:0}
-canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
-canvas.dragging{cursor:grabbing}
+
+html,body{
+  margin:0;
+  width:100%;
+  height:100%;
+  overflow:hidden;
+  background:var(--bg);
+  color:var(--text);
+  font-family:Georgia,"Times New Roman",serif;
+}
+
+#app{
+  position:fixed;
+  inset:0;
+}
+
+canvas{
+  position:absolute;
+  inset:0;
+  width:100%;
+  height:100%;
+  cursor:grab;
+}
+
+canvas.dragging{
+  cursor:grabbing;
+}
+
 header{
- position:absolute;left:0;right:0;top:0;z-index:10;text-align:center;
- padding:16px 20px 12px;background:linear-gradient(#fff,rgba(255,255,255,.82),transparent);
- pointer-events:none
+  position:absolute;
+  left:0;
+  right:0;
+  top:0;
+  z-index:10;
+  text-align:center;
+  padding:16px 20px 12px;
+  background:linear-gradient(#fff,rgba(255,255,255,.82),transparent);
+  pointer-events:none;
 }
-h1{margin:0;font-size:clamp(20px,3vw,30px);letter-spacing:3px;font-weight:normal;text-transform:uppercase}
-.subtitle{margin-top:5px;color:var(--muted);font-size:12px;letter-spacing:.7px}
+
+h1{
+  margin:0;
+  font-size:clamp(20px,3vw,30px);
+  letter-spacing:3px;
+  font-weight:normal;
+  text-transform:uppercase;
+}
+
+.subtitle{
+  margin-top:5px;
+  color:var(--muted);
+  font-size:12px;
+  letter-spacing:.7px;
+}
+
 .toolbar{
- position:absolute;left:10px;right:10px;top:76px;z-index:11;display:flex;gap:7px;
- align-items:center;flex-wrap:wrap;padding:8px;background:var(--panel);
- border:1px solid var(--line);box-shadow:0 5px 22px rgba(0,0,0,.07)
+  position:absolute;
+  left:10px;
+  right:10px;
+  top:76px;
+  z-index:11;
+  display:flex;
+  gap:7px;
+  align-items:center;
+  flex-wrap:wrap;
+  padding:8px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  box-shadow:0 5px 22px rgba(0,0,0,.07);
 }
-.group{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
-.label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+
+.group{
+  display:flex;
+  gap:5px;
+  align-items:center;
+  flex-wrap:wrap;
+}
+
+.label{
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+  color:var(--muted);
+}
+
 button,input{
- border:1px solid var(--line);background:#fff;color:var(--text);padding:6px 9px;font:12px Georgia,serif
+  border:1px solid var(--line);
+  background:#fff;
+  color:var(--text);
+  padding:6px 9px;
+  font:12px Georgia,serif;
 }
-button{cursor:pointer} button.active{border-color:var(--gold);background:#f5eedf}
-input{width:230px}
-#status{margin-left:auto;color:var(--muted);font-size:11px}
+
+button{
+  cursor:pointer;
+}
+
+button.active{
+  border-color:var(--gold);
+  background:#f5eedf;
+}
+
+input{
+  width:250px;
+}
+
+#status{
+  margin-left:auto;
+  color:var(--muted);
+  font-size:11px;
+}
+
 #legend{
- position:absolute;left:12px;bottom:12px;z-index:10;padding:11px 13px;background:var(--panel);
- border:1px solid var(--line);font-size:11px;box-shadow:0 5px 22px rgba(0,0,0,.06)
+  position:absolute;
+  left:12px;
+  bottom:12px;
+  z-index:10;
+  padding:11px 13px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  font-size:11px;
+  box-shadow:0 5px 22px rgba(0,0,0,.06);
 }
-.legendrow{display:flex;align-items:center;gap:7px;margin:4px 0}
-.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+
+.legendrow{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  margin:4px 0;
+}
+
+.dot{
+  width:10px;
+  height:10px;
+  border-radius:50%;
+  display:inline-block;
+}
+
 #help{
- position:absolute;right:12px;bottom:12px;z-index:10;padding:10px 12px;background:var(--panel);
- border:1px solid var(--line);font-size:11px;color:var(--muted)
+  position:absolute;
+  right:12px;
+  bottom:12px;
+  z-index:10;
+  padding:10px 12px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  font-size:11px;
+  color:var(--muted);
 }
+
 #panel{
- position:absolute;right:0;top:0;bottom:0;width:min(430px,94vw);z-index:30;padding:22px;
- background:rgba(255,255,255,.98);border-left:1px solid var(--line);overflow:auto;
- transform:translateX(105%);transition:.22s ease;box-shadow:-8px 0 30px rgba(0,0,0,.08)
+  position:absolute;
+  right:0;
+  top:0;
+  bottom:0;
+  width:min(470px,94vw);
+  z-index:30;
+  padding:22px;
+  background:rgba(255,255,255,.98);
+  border-left:1px solid var(--line);
+  overflow:auto;
+  transform:translateX(105%);
+  transition:.22s ease;
+  box-shadow:-8px 0 30px rgba(0,0,0,.08);
 }
-#panel.open{transform:translateX(0)}
-.close{float:right;cursor:pointer;color:var(--muted);font-size:18px}
-.tag{display:inline-block;border:1px solid var(--gold);padding:3px 7px;color:#876a2e;font-size:10px;text-transform:uppercase;letter-spacing:1px}
-#panel h2{font-size:21px;font-weight:normal;margin:8px 30px 8px 0}
-.meta{color:var(--muted);font-size:11px;margin-bottom:14px}
-.section{margin:16px 0}
-.section h3{font-size:13px;font-weight:normal;border-bottom:1px dashed var(--line);padding-bottom:5px}
-.card{border:1px solid var(--line);border-left:3px solid var(--gold);padding:9px;margin:7px 0;background:#fafaf8}
-.card b{color:#202628}
-a{color:#8a6b2d;cursor:pointer}
+
+#panel.open{
+  transform:translateX(0);
+}
+
+.close{
+  float:right;
+  cursor:pointer;
+  color:var(--muted);
+  font-size:18px;
+}
+
+.tag{
+  display:inline-block;
+  border:1px solid var(--gold);
+  padding:3px 7px;
+  color:#876a2e;
+  font-size:10px;
+  text-transform:uppercase;
+  letter-spacing:1px;
+}
+
+.tag.prerequis{
+  border-color:var(--prerequis);
+  color:#76537f;
+}
+
+#panel h2{
+  font-size:21px;
+  font-weight:normal;
+  margin:8px 30px 8px 0;
+}
+
+.meta{
+  color:var(--muted);
+  font-size:11px;
+  margin-bottom:14px;
+}
+
+.section{
+  margin:16px 0;
+}
+
+.section h3{
+  font-size:13px;
+  font-weight:normal;
+  border-bottom:1px dashed var(--line);
+  padding-bottom:5px;
+}
+
+.card{
+  border:1px solid var(--line);
+  border-left:3px solid var(--gold);
+  padding:9px;
+  margin:7px 0;
+  background:#fafaf8;
+}
+
+.card.prerequis-card{
+  border-left-color:var(--prerequis);
+}
+
+.card.competence-card{
+  border-left-color:var(--competence);
+}
+
+.card.sequence-card{
+  border-left-color:var(--sequence);
+}
+
+.card.seance-card{
+  border-left-color:var(--seance);
+}
+
+.card b{
+  color:#202628;
+}
+
+.small{
+  font-size:10px;
+  color:var(--muted);
+}
+
+a{
+  color:#8a6b2d;
+  cursor:pointer;
+}
+
+.empty{
+  color:var(--muted);
+  font-style:italic;
+}
+
+pre.json{
+  white-space:pre-wrap;
+  word-break:break-word;
+  font:10px/1.45 Consolas,monospace;
+  background:#f3f3f0;
+  padding:9px;
+  border:1px solid var(--line);
+  max-height:260px;
+  overflow:auto;
+}
+
 #error{
- display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:40;
- width:min(650px,90vw);padding:22px;background:#fff;border:1px solid #b96f5e;
- box-shadow:0 20px 70px rgba(0,0,0,.2)
+  display:none;
+  position:absolute;
+  left:50%;
+  top:50%;
+  transform:translate(-50%,-50%);
+  z-index:40;
+  width:min(700px,90vw);
+  padding:22px;
+  background:#fff;
+  border:1px solid #b96f5e;
+  box-shadow:0 20px 70px rgba(0,0,0,.2);
 }
-#error h2{margin:0 0 10px;color:#9c4f40;font-size:18px}
-#error pre{white-space:pre-wrap;font:12px/1.5 Consolas,monospace;color:#444}
+
+#error h2{
+  margin:0 0 10px;
+  color:#9c4f40;
+  font-size:18px;
+}
+
+#error pre{
+  white-space:pre-wrap;
+  font:12px/1.5 Consolas,monospace;
+  color:#444;
+}
+
 @media(max-width:720px){
- .toolbar{top:70px}.toolbar input{width:160px}#status{width:100%;margin-left:0}
- #help{display:none}
+  .toolbar{
+    top:70px;
+  }
+
+  .toolbar input{
+    width:160px;
+  }
+
+  #status{
+    width:100%;
+    margin-left:0;
+  }
+
+  #help{
+    display:none;
+  }
 }
 </style>
 </head>
+
 <body>
+
 <div id="app">
+
 <canvas id="graph"></canvas>
 
 <header>
-  <h1>Cartographie des compétences</h1>
-  <div class="subtitle" id="subtitle">Chargement de l'index pédagogique…</div>
+  <h1>Cartographie des apprentissages</h1>
+  <div class="subtitle" id="subtitle">
+    Chargement de index.json et competences.json…
+  </div>
 </header>
 
 <div class="toolbar">
-  <div class="group"><span class="label">Niveaux</span><div id="levels"></div></div>
-  <div class="group"><span class="label">Domaines</span><div id="domains"></div></div>
-  <input id="search" placeholder="Rechercher compétence, séquence, séance…">
+
+  <div class="group">
+    <span class="label">Niveaux</span>
+    <div id="levels"></div>
+  </div>
+
+  <div class="group">
+    <span class="label">Domaines</span>
+    <div id="domains"></div>
+  </div>
+
+  <input
+    id="search"
+    placeholder="Rechercher compétence, séquence, séance…"
+  >
+
   <button id="reset">Réinitialiser</button>
+
   <span id="status">Chargement…</span>
+
 </div>
 
 <div id="legend">
-  <div class="legendrow"><span class="dot" style="background:#4e9b72"></span>Compétence</div>
-  <div class="legendrow"><span class="dot" style="background:#c4953d"></span>Séquence</div>
-  <div class="legendrow"><span class="dot" style="background:#4b9bc2"></span>Séance</div>
-  <div class="legendrow"><span class="dot" style="border:1px solid #999;background:white"></span>Sphère = niveau scolaire</div>
+
+  <div class="legendrow">
+    <span class="dot" style="background:#4e9b72"></span>
+    Compétence
+  </div>
+
+  <div class="legendrow">
+    <span class="dot" style="background:#c4953d"></span>
+    Séquence
+  </div>
+
+  <div class="legendrow">
+    <span class="dot" style="background:#4b9bc2"></span>
+    Séance
+  </div>
+
+  <div class="legendrow">
+    <span class="dot" style="background:#956b9e"></span>
+    Prérequis
+  </div>
+
+  <div class="legendrow">
+    <span class="dot"
+          style="border:1px solid #999;background:white"></span>
+    Sphère = niveau scolaire
+  </div>
+
 </div>
 
-<div id="help">Glisser pour tourner · Molette pour zoomer · Cliquer sur un nœud pour ouvrir sa fiche</div>
-<div id="error"><h2>Impossible de construire la cartographie</h2><pre id="errorText"></pre></div>
+<div id="help">
+  Glisser pour tourner · Molette pour zoomer · Cliquer sur un nœud pour ouvrir sa fiche
+</div>
+
+<div id="error">
+  <h2>Impossible de construire la cartographie</h2>
+  <pre id="errorText"></pre>
+</div>
 
 <aside id="panel">
+
   <span class="close" id="close">✕</span>
+
   <div id="panelContent"></div>
+
 </aside>
+
 </div>
 
 <script>
 "use strict";
 
 /*
-  SYNAPSES — CARTOGRAPHIE 3D
-  --------------------------
-  CONTRAT D'ARCHITECTURE
+====================================================================
+ SYNAPSES — CARTOGRAPHIE 3D
+====================================================================
 
-  index.json :
-    niveau -> discipline -> domaine -> séquence -> séances
-    = source de vérité pour l'appartenance spatiale.
+ SOURCES UTILISÉES
+ -----------------
 
-  competences.json :
-    compétences + niveau + domaine + prérequis
-    = source de vérité pédagogique.
+ 1. Programmation/data/index.json
 
-  cartographie-competences.html :
-    = moteur de représentation uniquement.
+    niveau
+       ↓
+    discipline
+       ↓
+    domaine
+       ↓
+    séquence
+       ↓
+    séance
 
-  AUCUN niveau scolaire n'est codé en dur.
-  Chaque entrée de index.niveaux crée automatiquement UNE SPHÈRE 3D.
-  Une séquence ne peut pas tomber dans l'univers central : elle appartient
-  toujours à la sphère correspondant à son niveau dans index.json.
+    Ce fichier détermine :
+      - les sphères de niveaux ;
+      - la localisation des séquences ;
+      - la localisation des séances ;
+      - les relations séquence → compétence via competence_id ;
+      - les relations séquence → séances.
+
+ 2. Programmation/data/competences.json
+
+    Ce fichier détermine :
+      - les compétences ;
+      - leur niveau ;
+      - leur domaine ;
+      - leurs informations pédagogiques ;
+      - leurs prerequis_competences.
+
+ 3. Aucun index-pedagogie.json n'est chargé ici.
+
+====================================================================
+ RÈGLE IMPORTANTE
+====================================================================
+
+ La cartographie NE DEVINE PAS les compétences.
+
+ Si une séquence possède :
+
+    "competence_id": "lecture_identifier_mots"
+
+ elle est reliée à cette compétence.
+
+ Si competence_id est absent ou invalide :
+
+    la séquence reste affichée,
+    mais elle n'est pas artificiellement reliée à une compétence.
+
+====================================================================
 */
 
+
 const ROOT="./Programmation/";
+
 const $=id=>document.getElementById(id);
 
 const state={
- index:null,competences:[],sequences:[],seances:[],
- levels:new Set(),domains:new Set(),
- search:"",
- nodes:[],links:[],selected:null,hover:null,
- levelSpheres:{},
- yaw:.28,pitch:-.18,zoom:1,drag:false,lastX:0,lastY:0
+
+  index:null,
+
+  competences:[],
+
+  sequences:[],
+
+  seances:[],
+
+  levels:new Set(),
+
+  domains:new Set(),
+
+  search:"",
+
+  nodes:[],
+
+  links:[],
+
+  selected:null,
+
+  hover:null,
+
+  levelSpheres:{},
+
+  yaw:.28,
+
+  pitch:-.18,
+
+  zoom:1,
+
+  drag:false,
+
+  lastX:0,
+
+  lastY:0
+
 };
+
+
+/* ---------------------------------------------------------------
+   COULEURS
+---------------------------------------------------------------- */
 
 const DOMAIN_COLORS={
- lecture:"#c66b43",ecriture:"#3e9c8c",oral:"#8160a5",vocabulaire:"#c99a27",
- grammaire_orthographe:"#334c8d",nombres_calcul_problemes:"#c66b43",
- grandeurs_mesures:"#3e9c8c",espace_geometrie:"#8160a5",
- organisation_donnees:"#c99a27",enseignement_moral_civique:"#668394"
+
+  lecture:"#c66b43",
+
+  ecriture:"#3e9c8c",
+
+  oral:"#8160a5",
+
+  vocabulaire:"#c99a27",
+
+  grammaire_orthographe:"#334c8d",
+
+  nombres_calcul_problemes:"#c66b43",
+
+  grandeurs_mesures:"#3e9c8c",
+
+  espace_geometrie:"#8160a5",
+
+  organisation_donnees:"#c99a27",
+
+  enseignement_moral_civique:"#668394"
+
 };
 
-const COMPETENCE_ALIASES={"lecture_code":"lecture_identifier_mots"};
+
+/* ---------------------------------------------------------------
+   UTILITAIRES
+---------------------------------------------------------------- */
 
 function esc(v){
- return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+
+  return String(v??"")
+    .replace(
+      /[&<>"']/g,
+      m=>({
+        "&":"&amp;",
+        "<":"&lt;",
+        ">":"&gt;",
+        '"':"&quot;",
+        "'":"&#39;"
+      }[m])
+    );
+
 }
+
+
 function niveauLabel(v){
- const s=String(v??"").trim();
- const m={cp:"CP",ce1:"CE1",ce2:"CE2",cm1:"CM1",cm2:"CM2",sixeme:"6e","6e":"6e"};
- return m[s.toLowerCase()]||s;
+
+  const s=String(v??"").trim();
+
+  const m={
+    cp:"CP",
+    ce1:"CE1",
+    ce2:"CE2",
+    cm1:"CM1",
+    cm2:"CM2",
+    sixeme:"6e",
+    "6e":"6e"
+  };
+
+  return m[s.toLowerCase()]||s;
+
 }
-function normalizePath(p){return String(p||"").replace(/^\.?\//,"")}
-function dataUrl(relative){return ROOT+normalizePath(relative)}
+
+
+function normalizePath(p){
+
+  return String(p||"").replace(/^\.?\//,"");
+
+}
+
+
+function dataUrl(relative){
+
+  return ROOT+normalizePath(relative);
+
+}
+
+
 async function getJSON(url){
- const r=await fetch(url,{cache:"no-cache"});
- if(!r.ok)throw new Error(`HTTP ${r.status} — ${url}`);
- return await r.json();
+
+  const r=await fetch(url,{cache:"no-cache"});
+
+  if(!r.ok){
+
+    throw new Error(
+      `HTTP ${r.status} — ${url}`
+    );
+
+  }
+
+  return await r.json();
+
 }
-function setStatus(t){$("status").textContent=t}
+
+
+function setStatus(t){
+
+  $("status").textContent=t;
+
+}
+
+
 function showError(e){
- console.error(e);$("error").style.display="block";
- $("errorText").textContent=(e&&e.stack)||String(e);setStatus("Erreur de chargement");
+
+  console.error(e);
+
+  $("error").style.display="block";
+
+  $("errorText").textContent=
+    (e&&e.stack)||String(e);
+
+  setStatus("Erreur de chargement");
+
 }
 
-function competenceById(id){return state.competences.find(c=>c.id===id)}
-function resolveCompetenceId(rawId){
- if(!rawId)return null;
- if(competenceById(rawId))return rawId;
- const alias=COMPETENCE_ALIASES[rawId];
- if(alias&&competenceById(alias))return alias;
- return null;
-}
-function inferCompetence(sequence){
- const exact=resolveCompetenceId(sequence.competence_id);
- if(exact)return exact;
 
- const level=String(sequence.niveau||sequence.classe||"").toLowerCase();
- const pool=state.competences.filter(c=>{
-   const cn=String(c.niveau||"").toLowerCase();
-   if(cn!==level)return false;
-   if(!sequence.domaine)return true;
-   return String(c.domaine||"").toLowerCase().includes(
-     String(sequence.domaine).split("-").pop().trim().toLowerCase()
-   );
- });
- const text=[sequence.titre,sequence.competences,sequence.objectif_commun,
-   ...(sequence.prerequis_competences||[])].join(" ").toLowerCase();
- let best=null,score=0;
- for(const c of pool){
-   const words=[c.intitule,...(c.mots_cles||[]),...(c.objectifs||[])]
-    .join(" ").toLowerCase().split(/[^a-zàâäéèêëîïôöùûüÿçœæ0-9]+/i)
-    .filter(w=>w.length>=4);
-   let s=0;
-   for(const w of [...new Set(words)])if(text.includes(w))s++;
-   if(s>score){score=s;best=c.id}
- }
- return score>=2?best:null;
+/* ---------------------------------------------------------------
+   COMPÉTENCES
+---------------------------------------------------------------- */
+
+function competenceById(id){
+
+  return state.competences.find(
+    c=>String(c.id)===String(id)
+  );
+
 }
+
+
+function resolveCompetenceId(id){
+
+  if(!id)return null;
+
+  return competenceById(id)
+    ? String(id)
+    : null;
+
+}
+
+
+/* ---------------------------------------------------------------
+   INDEX.JSON → STRUCTURE PLATE
+---------------------------------------------------------------- */
 
 function flattenIndex(index){
- const seqs=[],seas=[];
- for(const niveau of (index.niveaux||[])){
-   for(const discipline of (niveau.disciplines||[])){
-     for(const domaine of (discipline.domaines||[])){
-       for(const s of (domaine.sequences||[])){
-         seqs.push({...s,niveau:niveau.id,niveau_nom:niveau.nom,
-           discipline_id:discipline.id,discipline:discipline.nom,
-           domaine_id:domaine.id,domaine:domaine.nom,
-           _indexPath:s.fichier_sequence||s.fichier||null});
-         for(const se of (s.seances||[])){
-           seas.push({...se,niveau:niveau.id,discipline:discipline.nom,
-             domaine_id:domaine.id,domaine:domaine.nom,
-             sequence_id:s.id,sequence_titre:s.titre,
-             _indexPath:se.fichier||null});
-         }
-       }
-     }
-   }
- }
- return {seqs,seas};
+
+  const seqs=[];
+
+  const seas=[];
+
+  for(const niveau of (index.niveaux||[])){
+
+    for(const discipline of (niveau.disciplines||[])){
+
+      for(const domaine of (discipline.domaines||[])){
+
+        for(const s of (domaine.sequences||[])){
+
+          const sequence={
+
+            ...s,
+
+            niveau:niveau.id,
+
+            niveau_nom:niveau.nom,
+
+            discipline_id:discipline.id,
+
+            discipline:discipline.nom,
+
+            domaine_id:domaine.id,
+
+            domaine:domaine.nom,
+
+            _indexPath:
+              s.fichier_sequence||
+              s.fichier||
+              null
+
+          };
+
+          seqs.push(sequence);
+
+
+          for(const se of (s.seances||[])){
+
+            seas.push({
+
+              ...se,
+
+              niveau:niveau.id,
+
+              niveau_nom:niveau.nom,
+
+              discipline_id:discipline.id,
+
+              discipline:discipline.nom,
+
+              domaine_id:domaine.id,
+
+              domaine:domaine.nom,
+
+              sequence_id:s.id,
+
+              sequence_titre:s.titre,
+
+              _indexPath:se.fichier||null
+
+            });
+
+          }
+
+        }
+
+      }
+
+    }
+
+  }
+
+  return {seqs,seas};
+
 }
+
+
+/* ---------------------------------------------------------------
+   CHARGEMENT DES FICHIERS DE SÉQUENCE / SÉANCE
+---------------------------------------------------------------- */
 
 async function enrichSequences(seqs){
- let count=0;
- await Promise.all(seqs.map(async s=>{
-   if(s._indexPath){
-     try{
-       const raw=await getJSON(dataUrl(s._indexPath));
-       const obj=Array.isArray(raw?.sequences)?raw.sequences[0]:raw;
-       if(obj&&typeof obj==="object")Object.assign(s,obj);
-     }catch(e){console.warn("Séquence non chargée :",s.id,e)}
-   }
-   setStatus(`Lecture des séquences… ${++count}/${seqs.length}`);
- }));
+
+  let count=0;
+
+  await Promise.all(
+
+    seqs.map(async s=>{
+
+      if(s._indexPath){
+
+        try{
+
+          const raw=
+            await getJSON(dataUrl(s._indexPath));
+
+          const obj=
+            Array.isArray(raw?.sequences)
+              ? raw.sequences[0]
+              : raw;
+
+          if(
+            obj &&
+            typeof obj==="object"
+          ){
+
+            /*
+             Les données administratives de index.json
+             restent prioritaires pour le niveau,
+             discipline, domaine et rattachement.
+            */
+
+            const niveau=s.niveau;
+            const domaine_id=s.domaine_id;
+            const domaine=s.domaine;
+            const discipline=s.discipline;
+
+            Object.assign(s,obj);
+
+            s.niveau=niveau;
+            s.domaine_id=domaine_id;
+            s.domaine=domaine;
+            s.discipline=discipline;
+
+          }
+
+        }catch(e){
+
+          console.warn(
+            "Séquence non chargée :",
+            s.id,
+            e
+          );
+
+        }
+
+      }
+
+      setStatus(
+        `Lecture des séquences… ${++count}/${seqs.length}`
+      );
+
+    })
+
+  );
+
 }
+
+
 async function enrichSessions(seas){
- await Promise.all(seas.map(async s=>{
-   if(s._indexPath){
-     try{
-       const raw=await getJSON(dataUrl(s._indexPath));
-       if(raw&&typeof raw==="object")Object.assign(s,raw);
-     }catch(e){console.warn("Séance non chargée :",s.id,e)}
-   }
- }));
+
+  await Promise.all(
+
+    seas.map(async s=>{
+
+      if(s._indexPath){
+
+        try{
+
+          const raw=
+            await getJSON(dataUrl(s._indexPath));
+
+          if(
+            raw &&
+            typeof raw==="object"
+          ){
+
+            const niveau=s.niveau;
+            const domaine_id=s.domaine_id;
+            const domaine=s.domaine;
+            const discipline=s.discipline;
+            const sequence_id=s.sequence_id;
+
+            Object.assign(s,raw);
+
+            s.niveau=niveau;
+            s.domaine_id=domaine_id;
+            s.domaine=domaine;
+            s.discipline=discipline;
+            s.sequence_id=sequence_id;
+
+          }
+
+        }catch(e){
+
+          console.warn(
+            "Séance non chargée :",
+            s.id,
+            e
+          );
+
+        }
+
+      }
+
+    })
+
+  );
+
 }
+
+
+/* ---------------------------------------------------------------
+   CHARGEMENT CENTRAL
+---------------------------------------------------------------- */
 
 async function load(){
- try{
-   setStatus("Lecture de l'index…");
-   state.index=await getJSON(ROOT+"data/index.json");
 
-   const compPath=state.index?.meta?.competences||"data/competences.json";
-   setStatus("Lecture du référentiel…");
-   const compRaw=await getJSON(dataUrl(compPath));
-   state.competences=Array.isArray(compRaw)?compRaw:(compRaw.competences||[]);
+  try{
 
-   const flat=flattenIndex(state.index);
-   state.sequences=flat.seqs;state.seances=flat.seas;
-   state.levels=new Set((state.index.niveaux||[]).map(n=>String(n.id)));
-   state.domains=new Set(state.competences.map(c=>c.domaine_id).filter(Boolean));
+    setStatus("Lecture de index.json…");
 
-   await enrichSequences(state.sequences);
-   await enrichSessions(state.seances);
+    state.index=
+      await getJSON(
+        ROOT+"data/index.json"
+      );
 
-   buildNodes();renderFilters();updateSubtitle();
-   setStatus(`${state.nodes.length} nœuds · ${state.links.length} relations · ${Object.keys(state.levelSpheres).length} sphères`);
- }catch(e){showError(e)}
+
+    setStatus("Lecture de competences.json…");
+
+    const compPath=
+      state.index?.meta?.competences ||
+      "data/competences.json";
+
+    const compRaw=
+      await getJSON(
+        dataUrl(compPath)
+      );
+
+
+    /*
+      Accepte :
+
+        {
+          "competences":[...]
+        }
+
+      ou directement :
+
+        [...]
+    */
+
+    state.competences=
+      Array.isArray(compRaw)
+        ? compRaw
+        : (
+            Array.isArray(compRaw?.competences)
+              ? compRaw.competences
+              : []
+          );
+
+
+    const flat=
+      flattenIndex(state.index);
+
+
+    state.sequences=flat.seqs;
+
+    state.seances=flat.seas;
+
+
+    /*
+      Les niveaux viennent UNIQUEMENT de index.json.
+      C'est donc lui qui crée les sphères.
+    */
+
+    state.levels=
+      new Set(
+        (state.index.niveaux||[])
+          .map(n=>String(n.id))
+      );
+
+
+    /*
+      Les domaines viennent des DEUX fichiers.
+    */
+
+    const domains=
+      new Set();
+
+    for(const c of state.competences){
+
+      if(c.domaine_id)
+        domains.add(String(c.domaine_id));
+
+    }
+
+    for(const s of state.sequences){
+
+      if(s.domaine_id)
+        domains.add(String(s.domaine_id));
+
+    }
+
+    for(const s of state.seances){
+
+      if(s.domaine_id)
+        domains.add(String(s.domaine_id));
+
+    }
+
+    state.domains=domains;
+
+
+    await enrichSequences(
+      state.sequences
+    );
+
+    await enrichSessions(
+      state.seances
+    );
+
+
+    buildNodes();
+
+    renderFilters();
+
+    updateSubtitle();
+
+    setStatus(
+      `${state.nodes.length} nœuds · `+
+      `${state.links.length} relations · `+
+      `${Object.keys(state.levelSpheres).length} sphères`
+    );
+
+  }catch(e){
+
+    showError(e);
+
+  }
+
 }
+
+
+/* ---------------------------------------------------------------
+   CONSTRUCTION DES SPHÈRES ET DES NŒUDS
+---------------------------------------------------------------- */
 
 function buildNodes(){
- state.nodes=[];state.links=[];state.levelSpheres={};
 
- const levels=[...(state.index?.niveaux||[])];
- const count=Math.max(1,levels.length);
- const separation=Math.max(390,Math.min(560,1700/count));
- const sphereRadius=Math.max(250,Math.min(315,separation*.62));
+  state.nodes=[];
 
- /*
-   Chaque niveau devient un objet spatial.
-   Aucun "fond" : la sphère est la référence géométrique de tous ses nœuds.
- */
- levels.forEach((level,i)=>{
-   const a=(i/count)*Math.PI*2-Math.PI/2;
-   state.levelSpheres[String(level.id)]={
-     id:String(level.id),
-     label:level.nom||niveauLabel(level.id),
-     x:Math.cos(a)*separation,
-     y:0,
-     z:Math.sin(a)*separation,
-     radius:sphereRadius
-   };
- });
+  state.links=[];
 
- const sphereFor=(id)=>state.levelSpheres[String(id)]||null;
- const normalizeLevel=(value)=>{
-   const wanted=String(value||"");
-   if(sphereFor(wanted))return wanted;
-   const found=levels.find(l=>String(l.id).toLowerCase()===wanted.toLowerCase());
-   return found?String(found.id):(levels[0]?String(levels[0].id):"");
- };
+  state.levelSpheres={};
 
- // Compétences
- for(const c of state.competences){
-   const niveau=normalizeLevel(c.niveau);
-   state.nodes.push({
-     id:"c:"+c.id,type:"competence",ref:c.id,
-     label:c.intitule||c.nom||c.id,niveau,
-     domaine_id:c.domaine_id,domaine:c.domaine,
-     color:c.couleur||DOMAIN_COLORS[c.domaine_id]||"#4e9b72"
-   });
- }
 
- // Séquences : niveau IMPÉRATIVEMENT hérité de index.json.
- for(const s of state.sequences){
-   const niveau=normalizeLevel(s.niveau||s.classe);
-   const compId=resolveCompetenceId(s.competence_id)||inferCompetence(s);
-   const sid="s:"+s.id;
-   state.nodes.push({
-     id:sid,type:"sequence",ref:s.id,label:s.titre||s.id,titre:s.titre,
-     niveau,classe:s.classe||niveau,domaine_id:s.domaine_id,domaine:s.domaine,
-     discipline:s.discipline,competenceId:compId,color:"#c4953d"
-   });
-   if(compId)state.links.push({source:"c:"+compId,target:sid,type:"sequence"});
- }
+  const levels=
+    [...(state.index?.niveaux||[])];
 
- // Séances : niveau hérité de la séquence.
- for(const s of state.seances){
-   const parent=state.sequences.find(x=>x.id===s.sequence_id);
-   const niveau=parent?.niveau||normalizeLevel(s.niveau||s.classe);
-   const sid="a:"+s.id;
-   state.nodes.push({
-     id:sid,type:"seance",ref:s.id,label:s.titre||s.id,titre:s.titre,
-     numero:s.numero,niveau,domaine_id:s.domaine_id,domaine:s.domaine,
-     discipline:s.discipline,sequenceId:s.sequence_id,color:"#4b9bc2"
-   });
-   if(s.sequence_id)state.links.push({source:"s:"+s.sequence_id,target:sid,type:"seance"});
- }
+  const count=
+    Math.max(1,levels.length);
 
- // Placement déterministe dans chaque sphère.
- const place=(node,index,total,ratio,phase)=>{
-   const sp=sphereFor(node.niveau);if(!sp)return;
-   const golden=Math.PI*(3-Math.sqrt(5));
-   const t=(index+.5)/Math.max(1,total);
-   const r=Math.sqrt(t)*sp.radius*ratio;
-   const a=index*golden+phase;
-   node.x=sp.x+Math.cos(a)*r;
-   node.y=sp.y+Math.sin(a*1.31)*r*.64;
-   node.z=sp.z+Math.sin(a)*r;
- };
 
- for(const level of levels){
-   const id=String(level.id),sp=sphereFor(id);
-   const comps=state.nodes.filter(n=>n.type==="competence"&&n.niveau===id);
-   const seqs=state.nodes.filter(n=>n.type==="sequence"&&n.niveau===id);
-   comps.forEach((n,i)=>place(n,i,comps.length,.54,0));
-   seqs.forEach((n,i)=>place(n,i,seqs.length,.70,1.4));
+  const separation=
+    Math.max(
+      390,
+      Math.min(
+        560,
+        1700/count
+      )
+    );
 
-   // Les séances orbitent autour de leur séquence, avec contrainte sphérique.
-   const seas=state.nodes.filter(n=>n.type==="seance"&&n.niveau===id);
-   seas.forEach(n=>{
-     const parent=state.nodes.find(x=>x.type==="sequence"&&x.ref===n.sequenceId);
-     const arr=seas.filter(x=>x.sequenceId===n.sequenceId);
-     const i=Math.max(0,arr.indexOf(n));
-     const a=i/Math.max(1,arr.length)*Math.PI*2;
-     const orbit=Math.min(62,sp.radius*.18);
-     n.x=(parent?.x??sp.x)+Math.cos(a)*orbit;
-     n.y=(parent?.y??sp.y)+Math.sin(a)*orbit*.72;
-     n.z=(parent?.z??sp.z)+Math.sin(a)*orbit*.65;
 
-     const dx=n.x-sp.x,dy=n.y-sp.y,dz=n.z-sp.z,d=Math.hypot(dx,dy,dz);
-     const max=sp.radius*.88;
-     if(d>max){const k=max/d;n.x=sp.x+dx*k;n.y=sp.y+dy*k;n.z=sp.z+dz*k}
-   });
- }
+  const sphereRadius=
+    Math.max(
+      250,
+      Math.min(
+        315,
+        separation*.62
+      )
+    );
+
+
+  /*
+    UNE SPHÈRE PAR NIVEAU.
+
+    CP, CE1, CE2, CM1, CM2, 6e...
+    ne sont jamais des images de fond.
+    Ce sont de véritables objets spatiaux.
+  */
+
+  levels.forEach((level,i)=>{
+
+    const a=
+      (i/count)*Math.PI*2-
+      Math.PI/2;
+
+
+    state.levelSpheres[
+      String(level.id)
+    ]={
+
+      id:String(level.id),
+
+      label:
+        level.nom||
+        niveauLabel(level.id),
+
+      x:Math.cos(a)*separation,
+
+      y:0,
+
+      z:Math.sin(a)*separation,
+
+      radius:sphereRadius
+
+    };
+
+  });
+
+
+  const sphereFor=
+    id=>
+      state.levelSpheres[
+        String(id)
+      ]||null;
+
+
+  const normalizeLevel=value=>{
+
+    const wanted=
+      String(value||"");
+
+
+    if(
+      sphereFor(wanted)
+    )
+      return wanted;
+
+
+    const found=
+      levels.find(
+        l=>
+          String(l.id).toLowerCase()===
+          wanted.toLowerCase()
+      );
+
+
+    return found
+      ? String(found.id)
+      : "";
+
+  };
+
+
+  /* -----------------------------------------------------------
+     COMPÉTENCES
+  ----------------------------------------------------------- */
+
+  for(const c of state.competences){
+
+    const niveau=
+      normalizeLevel(c.niveau);
+
+
+    state.nodes.push({
+
+      id:"c:"+c.id,
+
+      type:"competence",
+
+      ref:c.id,
+
+      label:
+        c.intitule||
+        c.nom||
+        c.id,
+
+      niveau,
+
+      domaine_id:c.domaine_id,
+
+      domaine:c.domaine,
+
+      color:
+        c.couleur||
+        DOMAIN_COLORS[c.domaine_id]||
+        "#4e9b72"
+
+    });
+
+
+  }
+
+
+  /* -----------------------------------------------------------
+     PRÉREQUIS DES COMPÉTENCES
+  ----------------------------------------------------------- */
+
+  for(const c of state.competences){
+
+    const prereqs=
+      Array.isArray(
+        c.prerequis_competences
+      )
+      ? c.prerequis_competences
+      : [];
+
+
+    for(const prereqId of prereqs){
+
+      const target=
+        competenceById(prereqId);
+
+
+      /*
+        On ne crée la relation que si
+        la compétence existe réellement.
+      */
+
+      if(!target)
+        continue;
+
+
+      state.links.push({
+
+        source:"c:"+prereqId,
+
+        target:"c:"+c.id,
+
+        type:"prerequis"
+
+      });
+
+    }
+
+  }
+
+
+  /* -----------------------------------------------------------
+     SÉQUENCES — UNIQUEMENT DEPUIS index.json
+  ----------------------------------------------------------- */
+
+  for(const s of state.sequences){
+
+    const niveau=
+      normalizeLevel(
+        s.niveau
+      );
+
+
+    const compId=
+      resolveCompetenceId(
+        s.competence_id
+      );
+
+
+    const sid=
+      "s:"+s.id;
+
+
+    state.nodes.push({
+
+      id:sid,
+
+      type:"sequence",
+
+      ref:s.id,
+
+      label:
+        s.titre||
+        s.id,
+
+      titre:s.titre,
+
+      niveau,
+
+      classe:
+        s.classe||
+        niveau,
+
+      domaine_id:s.domaine_id,
+
+      domaine:s.domaine,
+
+      discipline:s.discipline,
+
+      competenceId:compId,
+
+      color:"#c4953d"
+
+    });
+
+
+    /*
+      Pas d'inférence.
+
+      Si competence_id existe et correspond
+      à competences.json, on crée le lien.
+    */
+
+    if(compId){
+
+      state.links.push({
+
+        source:"c:"+compId,
+
+        target:sid,
+
+        type:"sequence"
+
+      });
+
+    }
+
+  }
+
+
+  /* -----------------------------------------------------------
+     SÉANCES — UNIQUEMENT DEPUIS index.json
+  ----------------------------------------------------------- */
+
+  for(const s of state.seances){
+
+    const parent=
+      state.sequences.find(
+        x=>x.id===s.sequence_id
+      );
+
+
+    const niveau=
+      parent?.niveau||
+      normalizeLevel(
+        s.niveau
+      );
+
+
+    const sid=
+      "a:"+s.id;
+
+
+    state.nodes.push({
+
+      id:sid,
+
+      type:"seance",
+
+      ref:s.id,
+
+      label:
+        s.titre||
+        s.id,
+
+      titre:s.titre,
+
+      numero:s.numero,
+
+      niveau,
+
+      domaine_id:s.domaine_id,
+
+      domaine:s.domaine,
+
+      discipline:s.discipline,
+
+      sequenceId:s.sequence_id,
+
+      color:"#4b9bc2"
+
+    });
+
+
+    if(s.sequence_id){
+
+      state.links.push({
+
+        source:
+          "s:"+s.sequence_id,
+
+        target:sid,
+
+        type:"seance"
+
+      });
+
+    }
+
+  }
+
+
+  /* -----------------------------------------------------------
+     PLACEMENT
+  ----------------------------------------------------------- */
+
+  const place=
+    (
+      node,
+      index,
+      total,
+      ratio,
+      phase
+    )=>{
+
+      const sp=
+        sphereFor(node.niveau);
+
+
+      if(!sp)
+        return;
+
+
+      const golden=
+        Math.PI*
+        (3-Math.sqrt(5));
+
+
+      const t=
+        (index+.5)/
+        Math.max(1,total);
+
+
+      const r=
+        Math.sqrt(t)*
+        sp.radius*
+        ratio;
+
+
+      const a=
+        index*golden+
+        phase;
+
+
+      node.x=
+        sp.x+
+        Math.cos(a)*r;
+
+
+      node.y=
+        sp.y+
+        Math.sin(a*1.31)*
+        r*.64;
+
+
+      node.z=
+        sp.z+
+        Math.sin(a)*r;
+
+    };
+
+
+  for(const level of levels){
+
+    const id=
+      String(level.id);
+
+
+    const sp=
+      sphereFor(id);
+
+
+    const comps=
+      state.nodes.filter(
+        n=>
+          n.type==="competence"&&
+          n.niveau===id
+      );
+
+
+    const seqs=
+      state.nodes.filter(
+        n=>
+          n.type==="sequence"&&
+          n.niveau===id
+      );
+
+
+    comps.forEach(
+      (n,i)=>
+        place(
+          n,
+          i,
+          comps.length,
+          .54,
+          0
+        )
+    );
+
+
+    seqs.forEach(
+      (n,i)=>
+        place(
+          n,
+          i,
+          seqs.length,
+          .70,
+          1.4
+        )
+    );
+
+
+    /*
+      Les séances orbitent autour
+      de leur séquence.
+    */
+
+    const seas=
+      state.nodes.filter(
+        n=>
+          n.type==="seance"&&
+          n.niveau===id
+      );
+
+
+    seas.forEach(n=>{
+
+      const parent=
+        state.nodes.find(
+          x=>
+            x.type==="sequence"&&
+            x.ref===n.sequenceId
+        );
+
+
+      const arr=
+        seas.filter(
+          x=>
+            x.sequenceId===
+            n.sequenceId
+        );
+
+
+      const i=
+        Math.max(
+          0,
+          arr.indexOf(n)
+        );
+
+
+      const a=
+        i/
+        Math.max(
+          1,
+          arr.length
+        )*
+        Math.PI*2;
+
+
+      const orbit=
+        Math.min(
+          62,
+          sp.radius*.18
+        );
+
+
+      n.x=
+        (parent?.x??sp.x)+
+        Math.cos(a)*orbit;
+
+
+      n.y=
+        (parent?.y??sp.y)+
+        Math.sin(a)*orbit*.72;
+
+
+      n.z=
+        (parent?.z??sp.z)+
+        Math.sin(a)*orbit*.65;
+
+
+      /*
+        Sécurité :
+        la séance reste dans sa sphère.
+      */
+
+      const dx=
+        n.x-sp.x;
+
+      const dy=
+        n.y-sp.y;
+
+      const dz=
+        n.z-sp.z;
+
+      const d=
+        Math.hypot(
+          dx,
+          dy,
+          dz
+        );
+
+
+      const max=
+        sp.radius*.88;
+
+
+      if(d>max){
+
+        const k=max/d;
+
+        n.x=sp.x+dx*k;
+
+        n.y=sp.y+dy*k;
+
+        n.z=sp.z+dz*k;
+
+      }
+
+    });
+
+  }
+
 }
 
-/* ---------- PROJECTION 3D ---------- */
+
+/* ---------------------------------------------------------------
+   PROJECTION 3D
+---------------------------------------------------------------- */
+
 function rotate(n){
- const cy=Math.cos(state.yaw),sy=Math.sin(state.yaw);
- const cp=Math.cos(state.pitch),sp=Math.sin(state.pitch);
- const x=n.x*cy-n.z*sy;
- const z=n.x*sy+n.z*cy;
- const y=n.y*cp-z*sp;
- const zz=n.y*sp+z*cp;
- return {x,y,z:zz};
+
+  const cy=
+    Math.cos(state.yaw);
+
+  const sy=
+    Math.sin(state.yaw);
+
+  const cp=
+    Math.cos(state.pitch);
+
+  const sp=
+    Math.sin(state.pitch);
+
+
+  const x=
+    n.x*cy-
+    n.z*sy;
+
+
+  const z=
+    n.x*sy+
+    n.z*cy;
+
+
+  const y=
+    n.y*cp-
+    z*sp;
+
+
+  const zz=
+    n.y*sp+
+    z*cp;
+
+
+  return {
+    x,
+    y,
+    z:zz
+  };
+
 }
+
+
 function project(n){
- const r=rotate(n),d=1500;
- const scale=(d/(d+r.z))*state.zoom;
- return {x:innerWidth/2+r.x*scale,y:innerHeight/2+r.y*scale,z:r.z,scale};
+
+  const r=
+    rotate(n);
+
+
+  const d=1500;
+
+
+  const scale=
+    (d/(d+r.z))*
+    state.zoom;
+
+
+  return {
+
+    x:
+      innerWidth/2+
+      r.x*scale,
+
+    y:
+      innerHeight/2+
+      r.y*scale,
+
+    z:r.z,
+
+    scale
+
+  };
+
 }
+
+
+/* ---------------------------------------------------------------
+   FILTRAGE
+---------------------------------------------------------------- */
+
 function visibleNodes(){
- return state.nodes.filter(n=>{
-   if(n.niveau&&!state.levels.has(n.niveau))return false;
-   if(n.domaine_id&&!state.domains.has(n.domaine_id))return false;
-   if(!state.search)return true;
-   const q=state.search.toLowerCase();
-   return [n.id,n.label,n.type,n.domaine,n.discipline,n.niveau,n.titre,n.description]
-     .join(" ").toLowerCase().includes(q);
- });
+
+  return state.nodes.filter(n=>{
+
+    if(
+      n.niveau&&
+      !state.levels.has(
+        n.niveau
+      )
+    )
+      return false;
+
+
+    if(
+      n.domaine_id&&
+      !state.domains.has(
+        String(n.domaine_id)
+      )
+    )
+      return false;
+
+
+    if(!state.search)
+      return true;
+
+
+    const q=
+      state.search.toLowerCase();
+
+
+    return [
+
+      n.id,
+
+      n.label,
+
+      n.type,
+
+      n.domaine,
+
+      n.discipline,
+
+      n.niveau,
+
+      n.titre,
+
+      n.description
+
+    ]
+      .join(" ")
+      .toLowerCase()
+      .includes(q);
+
+  });
+
 }
+
+
 function visibleLinks(){
- const ids=new Set(visibleNodes().map(n=>n.id));
- return state.links.filter(l=>ids.has(l.source)&&ids.has(l.target));
+
+  const ids=
+    new Set(
+      visibleNodes()
+        .map(n=>n.id)
+    );
+
+
+  return state.links.filter(
+    l=>
+      ids.has(l.source)&&
+      ids.has(l.target)
+  );
+
 }
 
-/*
-  Dessin des vraies sphères de niveau.
-  Elles sont centrées sur leurs coordonnées 3D et suivent les rotations/zoom.
-  Les méridiens et parallèles donnent une surface sphérique lisible.
-*/
+
+/* ---------------------------------------------------------------
+   SPHÈRES DE NIVEAU
+---------------------------------------------------------------- */
+
 function drawLevelSpheres(ctx){
- const spheres=Object.values(state.levelSpheres);
- for(const sp of spheres){
-   const c=project(sp);
-   const e=project({x:sp.x+sp.radius,y:sp.y,z:sp.z});
-   const r=Math.max(25,Math.abs(e.x-c.x));
-   const depth=c.z;
 
-   ctx.save();
-   ctx.globalAlpha=Math.max(.18,Math.min(.62,.50-depth/2400));
-   ctx.strokeStyle="#8f999b";
-   ctx.lineWidth=1;
+  const spheres=
+    Object.values(
+      state.levelSpheres
+    );
 
-   // contour
-   ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.stroke();
 
-   // latitudes
-   for(let j=-3;j<=3;j++){
-     const lat=j/4;
-     const yy=c.y+lat*r*.92;
-     const rx=r*Math.sqrt(Math.max(.02,1-lat*lat));
-     ctx.beginPath();ctx.ellipse(c.x,yy,rx,Math.max(2,r*.045),0,0,Math.PI*2);ctx.stroke();
-   }
+  for(const sp of spheres){
 
-   // méridiens
-   for(let j=0;j<6;j++){
-     const k=(j/6)*Math.PI;
-     const rx=Math.max(2,Math.abs(Math.cos(k))*r);
-     ctx.beginPath();ctx.ellipse(c.x,c.y,rx,r,0,0,Math.PI*2);ctx.stroke();
-   }
+    const c=
+      project(sp);
 
-   ctx.globalAlpha=.95;
-   ctx.fillStyle="#3e4648";
-   ctx.font="bold 16px Georgia";
-   ctx.textAlign="center";
-   ctx.fillText(niveauLabel(sp.label||sp.id),c.x,c.y-r-12);
-   ctx.restore();
- }
+
+    const e=
+      project({
+        x:sp.x+sp.radius,
+        y:sp.y,
+        z:sp.z
+      });
+
+
+    const r=
+      Math.max(
+        25,
+        Math.abs(
+          e.x-c.x
+        )
+      );
+
+
+    const depth=c.z;
+
+
+    ctx.save();
+
+
+    ctx.globalAlpha=
+      Math.max(
+        .18,
+        Math.min(
+          .62,
+          .50-depth/2400
+        )
+      );
+
+
+    ctx.strokeStyle="#8f999b";
+
+    ctx.lineWidth=1;
+
+
+    ctx.beginPath();
+
+    ctx.arc(
+      c.x,
+      c.y,
+      r,
+      0,
+      Math.PI*2
+    );
+
+    ctx.stroke();
+
+
+    /*
+      Latitudes
+    */
+
+    for(
+      let j=-3;
+      j<=3;
+      j++
+    ){
+
+      const lat=j/4;
+
+      const yy=
+        c.y+
+        lat*r*.92;
+
+
+      const rx=
+        r*
+        Math.sqrt(
+          Math.max(
+            .02,
+            1-lat*lat
+          )
+        );
+
+
+      ctx.beginPath();
+
+      ctx.ellipse(
+        c.x,
+        yy,
+        rx,
+        Math.max(
+          2,
+          r*.045
+        ),
+        0,
+        0,
+        Math.PI*2
+      );
+
+      ctx.stroke();
+
+    }
+
+
+    /*
+      Méridiens
+    */
+
+    for(
+      let j=0;
+      j<6;
+      j++
+    ){
+
+      const k=
+        (j/6)*Math.PI;
+
+
+      const rx=
+        Math.max(
+          2,
+          Math.abs(
+            Math.cos(k)
+          )*r
+        );
+
+
+      ctx.beginPath();
+
+      ctx.ellipse(
+        c.x,
+        c.y,
+        rx,
+        r,
+        0,
+        0,
+        Math.PI*2
+      );
+
+      ctx.stroke();
+
+    }
+
+
+    ctx.globalAlpha=.95;
+
+    ctx.fillStyle="#3e4648";
+
+    ctx.font=
+      "bold 16px Georgia";
+
+    ctx.textAlign="center";
+
+
+    ctx.fillText(
+      niveauLabel(
+        sp.label||
+        sp.id
+      ),
+      c.x,
+      c.y-r-12
+    );
+
+
+    ctx.restore();
+
+  }
+
 }
+
+
+/* ---------------------------------------------------------------
+   DESSIN
+---------------------------------------------------------------- */
 
 function draw(){
- const c=$("graph"),ctx=c.getContext("2d");
- c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;
- ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
- ctx.clearRect(0,0,innerWidth,innerHeight);
- ctx.fillStyle="#f7f7f4";ctx.fillRect(0,0,innerWidth,innerHeight);
 
- drawLevelSpheres(ctx);
+  const c=
+    $("graph");
 
- const ps=new Map();
- for(const n of visibleNodes())ps.set(n.id,project(n));
 
- // Relations
- for(const l of visibleLinks()){
-   const a=ps.get(l.source),b=ps.get(l.target);if(!a||!b)continue;
-   ctx.save();
-   ctx.strokeStyle=l.type==="sequence"?"rgba(196,149,61,.72)":"rgba(75,155,194,.55)";
-   ctx.lineWidth=1;
-   ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
-   ctx.restore();
- }
+  const ctx=
+    c.getContext("2d");
 
- // Nœuds : noms uniquement sur activation / survol.
- const sorted=visibleNodes().slice().sort((a,b)=>ps.get(a.id).z-ps.get(b.id).z);
- for(const n of sorted){
-   const p=ps.get(n.id),selected=state.selected===n.id,hovered=state.hover===n.id;
-   const base=n.type==="competence"?11:n.type==="sequence"?8:4.8;
-   const r=base*p.scale*(selected?1.35:1);
-   ctx.save();
-   if(selected||hovered){ctx.shadowBlur=18;ctx.shadowColor=n.color}
-   const g=ctx.createRadialGradient(p.x-r*.4,p.y-r*.5,r*.1,p.x,p.y,r);
-   g.addColorStop(0,"#fff");g.addColorStop(.25,n.color);g.addColorStop(1,"#263033");
-   ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(2,r),0,Math.PI*2);ctx.fill();
-   ctx.strokeStyle=selected?"#222":n.color;ctx.lineWidth=selected?2:1;ctx.stroke();
 
-   if(selected||hovered){
-     ctx.shadowBlur=0;ctx.fillStyle="#252b2d";
-     ctx.font=(n.type==="competence"?"12px":"10px")+" Georgia";
-     ctx.textAlign="center";
-     const label=n.label.length>42?n.label.slice(0,41)+"…":n.label;
-     ctx.fillText(label,p.x,p.y+r+14);
-   }
-   ctx.restore();
- }
+  c.width=
+    innerWidth*
+    devicePixelRatio;
+
+
+  c.height=
+    innerHeight*
+    devicePixelRatio;
+
+
+  ctx.setTransform(
+    devicePixelRatio,
+    0,
+    0,
+    devicePixelRatio,
+    0,
+    0
+  );
+
+
+  ctx.clearRect(
+    0,
+    0,
+    innerWidth,
+    innerHeight
+  );
+
+
+  ctx.fillStyle="#f7f7f4";
+
+  ctx.fillRect(
+    0,
+    0,
+    innerWidth,
+    innerHeight
+  );
+
+
+  drawLevelSpheres(ctx);
+
+
+  const ps=
+    new Map();
+
+
+  for(
+    const n of visibleNodes()
+  ){
+
+    ps.set(
+      n.id,
+      project(n)
+    );
+
+  }
+
+
+  /*
+    Relations
+  */
+
+  for(
+    const l of visibleLinks()
+  ){
+
+    const a=
+      ps.get(l.source);
+
+    const b=
+      ps.get(l.target);
+
+
+    if(!a||!b)
+      continue;
+
+
+    ctx.save();
+
+
+    if(
+      l.type==="prerequis"
+    ){
+
+      ctx.strokeStyle=
+        "rgba(149,107,158,.65)";
+
+      ctx.lineWidth=1.4;
+
+      ctx.setLineDash(
+        [5,4]
+      );
+
+    }else if(
+      l.type==="sequence"
+    ){
+
+      ctx.strokeStyle=
+        "rgba(196,149,61,.72)";
+
+      ctx.lineWidth=1;
+
+      ctx.setLineDash([]);
+
+    }else{
+
+      ctx.strokeStyle=
+        "rgba(75,155,194,.55)";
+
+      ctx.lineWidth=1;
+
+      ctx.setLineDash([]);
+
+    }
+
+
+    ctx.beginPath();
+
+    ctx.moveTo(
+      a.x,
+      a.y
+    );
+
+    ctx.lineTo(
+      b.x,
+      b.y
+    );
+
+    ctx.stroke();
+
+    ctx.restore();
+
+  }
+
+
+  /*
+    Nœuds.
+    Le nom n'apparaît que sur
+    survol ou activation.
+  */
+
+  const sorted=
+    visibleNodes()
+      .slice()
+      .sort(
+        (a,b)=>
+          ps.get(a.id).z-
+          ps.get(b.id).z
+      );
+
+
+  for(const n of sorted){
+
+    const p=
+      ps.get(n.id);
+
+
+    const selected=
+      state.selected===
+      n.id;
+
+
+    const hovered=
+      state.hover===
+      n.id;
+
+
+    const base=
+      n.type==="competence"
+        ?11
+        :n.type==="sequence"
+          ?8
+          :4.8;
+
+
+    const r=
+      base*
+      p.scale*
+      (
+        selected
+          ?1.35
+          :1
+      );
+
+
+    ctx.save();
+
+
+    if(
+      selected||
+      hovered
+    ){
+
+      ctx.shadowBlur=18;
+
+      ctx.shadowColor=
+        n.color;
+
+    }
+
+
+    const g=
+      ctx.createRadialGradient(
+        p.x-r*.4,
+        p.y-r*.5,
+        r*.1,
+        p.x,
+        p.y,
+        r
+      );
+
+
+    g.addColorStop(
+      0,
+      "#fff"
+    );
+
+
+    g.addColorStop(
+      .25,
+      n.color
+    );
+
+
+    g.addColorStop(
+      1,
+      "#263033"
+    );
+
+
+    ctx.fillStyle=g;
+
+    ctx.beginPath();
+
+    ctx.arc(
+      p.x,
+      p.y,
+      Math.max(2,r),
+      0,
+      Math.PI*2
+    );
+
+    ctx.fill();
+
+
+    ctx.strokeStyle=
+      selected
+        ?"#222"
+        :n.color;
+
+
+    ctx.lineWidth=
+      selected
+        ?2
+        :1;
+
+
+    ctx.stroke();
+
+
+    if(
+      selected||
+      hovered
+    ){
+
+      ctx.shadowBlur=0;
+
+      ctx.fillStyle=
+        "#252b2d";
+
+      ctx.font=
+        (
+          n.type==="competence"
+            ?"12px"
+            :"10px"
+        )+
+        " Georgia";
+
+      ctx.textAlign="center";
+
+
+      const label=
+        String(n.label||"");
+
+
+      const short=
+        label.length>42
+          ?label.slice(0,41)+"…"
+          :label;
+
+
+      ctx.fillText(
+        short,
+        p.x,
+        p.y+r+14
+      );
+
+    }
+
+
+    ctx.restore();
+
+  }
+
 }
+
+
+/* ---------------------------------------------------------------
+   HIT TEST
+---------------------------------------------------------------- */
 
 function hit(x,y){
- let best=null,dist=Infinity;
- for(const n of visibleNodes()){
-   const p=project(n),r=Math.max(7,(n.type==="competence"?11:n.type==="sequence"?8:5)*p.scale);
-   const d=Math.hypot(x-p.x,y-p.y);
-   if(d<r+7&&d<dist){dist=d;best=n}
- }
- return best;
+
+  let best=null;
+
+  let dist=Infinity;
+
+
+  for(
+    const n of visibleNodes()
+  ){
+
+    const p=
+      project(n);
+
+
+    const r=
+      Math.max(
+        7,
+        (
+          n.type==="competence"
+            ?11
+            :n.type==="sequence"
+              ?8
+              :5
+        )*
+        p.scale
+      );
+
+
+    const d=
+      Math.hypot(
+        x-p.x,
+        y-p.y
+      );
+
+
+    if(
+      d<r+7&&
+      d<dist
+    ){
+
+      dist=d;
+
+      best=n;
+
+    }
+
+  }
+
+
+  return best;
+
 }
 
-$("graph").addEventListener("pointerdown",e=>{
- state.drag=true;state.lastX=e.clientX;state.lastY=e.clientY;
- $("graph").classList.add("dragging");
-});
-window.addEventListener("pointerup",e=>{
- if(!state.drag)return;
- const dx=Math.abs(e.clientX-state.lastX),dy=Math.abs(e.clientY-state.lastY);
- state.drag=false;$("graph").classList.remove("dragging");
- if(dx<4&&dy<4){const n=hit(e.clientX,e.clientY);if(n)openNode(n)}
-});
-window.addEventListener("pointermove",e=>{
- if(state.drag){
-   state.yaw+=(e.clientX-state.lastX)*.008;
-   state.pitch+=(e.clientY-state.lastY)*.006;
-   state.pitch=Math.max(-1.25,Math.min(1.25,state.pitch));
-   state.lastX=e.clientX;state.lastY=e.clientY;
- }else state.hover=hit(e.clientX,e.clientY)?.id||null;
-});
-$("graph").addEventListener("wheel",e=>{
- e.preventDefault();state.zoom*=e.deltaY<0?1.08:.92;
- state.zoom=Math.max(.35,Math.min(3.5,state.zoom));
-},{passive:false});
+
+/* ---------------------------------------------------------------
+   INTERACTION 3D
+---------------------------------------------------------------- */
+
+$("graph")
+.addEventListener(
+  "pointerdown",
+  e=>{
+
+    state.drag=true;
+
+    state.lastX=e.clientX;
+
+    state.lastY=e.clientY;
+
+    $("graph")
+      .classList
+      .add("dragging");
+
+  }
+);
+
+
+window.addEventListener(
+  "pointerup",
+  e=>{
+
+    if(!state.drag)
+      return;
+
+
+    const dx=
+      Math.abs(
+        e.clientX-
+        state.lastX
+      );
+
+
+    const dy=
+      Math.abs(
+        e.clientY-
+        state.lastY
+      );
+
+
+    state.drag=false;
+
+
+    $("graph")
+      .classList
+      .remove("dragging");
+
+
+    if(
+      dx<4&&
+      dy<4
+    ){
+
+      const n=
+        hit(
+          e.clientX,
+          e.clientY
+        );
+
+
+      if(n)
+        openNode(n);
+
+    }
+
+  }
+);
+
+
+window.addEventListener(
+  "pointermove",
+  e=>{
+
+    if(state.drag){
+
+      state.yaw+=
+        (
+          e.clientX-
+          state.lastX
+        )*.008;
+
+
+      state.pitch+=
+        (
+          e.clientY-
+          state.lastY
+        )*.006;
+
+
+      state.pitch=
+        Math.max(
+          -1.25,
+          Math.min(
+            1.25,
+            state.pitch
+          )
+        );
+
+
+      state.lastX=
+        e.clientX;
+
+
+      state.lastY=
+        e.clientY;
+
+
+    }else{
+
+      state.hover=
+        hit(
+          e.clientX,
+          e.clientY
+        )?.id||
+        null;
+
+      draw();
+
+    }
+
+  }
+);
+
+
+$("graph")
+.addEventListener(
+  "wheel",
+  e=>{
+
+    e.preventDefault();
+
+
+    state.zoom*=
+      e.deltaY<0
+        ?1.08
+        :.92;
+
+
+    state.zoom=
+      Math.max(
+        .35,
+        Math.min(
+          3.5,
+          state.zoom
+        )
+      );
+
+
+    draw();
+
+  },
+  {passive:false}
+);
+
+
+/* ---------------------------------------------------------------
+   FILTRES
+---------------------------------------------------------------- */
 
 function renderFilters(){
- $("levels").innerHTML="";
- for(const l of (state.index?.niveaux||[])){
-   const b=document.createElement("button");b.textContent=niveauLabel(l.id);
-   b.className=state.levels.has(String(l.id))?"active":"";
-   b.onclick=()=>{
-     const id=String(l.id);
-     if(state.levels.has(id)){if(state.levels.size>1)state.levels.delete(id)}
-     else state.levels.add(id);
-     renderFilters();updateSubtitle();
-   };
-   $("levels").appendChild(b);
- }
- $("domains").innerHTML="";
- const seen=new Set();
- for(const c of state.competences){
-   if(!c.domaine_id||seen.has(c.domaine_id))continue;
-   seen.add(c.domaine_id);
-   const b=document.createElement("button");b.textContent=c.domaine||c.domaine_id;
-   b.className=state.domains.has(c.domaine_id)?"active":"";
-   b.onclick=()=>{
-     if(state.domains.has(c.domaine_id))state.domains.delete(c.domaine_id);
-     else state.domains.add(c.domaine_id);
-     renderFilters();updateSubtitle();
-   };
-   $("domains").appendChild(b);
- }
+
+  $("levels").innerHTML="";
+
+
+  for(
+    const l of
+    (
+      state.index?.niveaux||
+      []
+    )
+  ){
+
+    const b=
+      document.createElement(
+        "button"
+      );
+
+
+    b.textContent=
+      niveauLabel(l.id);
+
+
+    b.className=
+      state.levels.has(
+        String(l.id)
+      )
+        ?"active"
+        :"";
+
+
+    b.onclick=()=>{
+
+      const id=
+        String(l.id);
+
+
+      if(
+        state.levels.has(id)
+      ){
+
+        if(
+          state.levels.size>1
+        )
+          state.levels.delete(id);
+
+      }else{
+
+        state.levels.add(id);
+
+      }
+
+
+      renderFilters();
+
+      updateSubtitle();
+
+      draw();
+
+    };
+
+
+    $("levels")
+      .appendChild(b);
+
+  }
+
+
+  $("domains").innerHTML="";
+
+
+  const seen=
+    new Set();
+
+
+  /*
+    Les domaines sont issus des
+    compétences ET de index.json.
+  */
+
+  const domainEntries=[];
+
+
+  for(
+    const c of state.competences
+  ){
+
+    if(
+      c.domaine_id&&
+      !seen.has(
+        String(c.domaine_id)
+      )
+    ){
+
+      seen.add(
+        String(c.domaine_id)
+      );
+
+      domainEntries.push({
+
+        id:String(c.domaine_id),
+
+        label:
+          c.domaine||
+          c.domaine_id
+
+      });
+
+    }
+
+  }
+
+
+  for(
+    const s of state.sequences
+  ){
+
+    if(
+      s.domaine_id&&
+      !seen.has(
+        String(s.domaine_id)
+      )
+    ){
+
+      seen.add(
+        String(s.domaine_id)
+      );
+
+      domainEntries.push({
+
+        id:String(s.domaine_id),
+
+        label:
+          s.domaine||
+          s.domaine_id
+
+      });
+
+    }
+
+  }
+
+
+  for(
+    const d of domainEntries
+  ){
+
+    const b=
+      document.createElement(
+        "button"
+      );
+
+
+    b.textContent=d.label;
+
+
+    b.className=
+      state.domains.has(d.id)
+        ?"active"
+        :"";
+
+
+    b.onclick=()=>{
+
+      if(
+        state.domains.has(d.id)
+      ){
+
+        state.domains.delete(d.id);
+
+      }else{
+
+        state.domains.add(d.id);
+
+      }
+
+
+      renderFilters();
+
+      updateSubtitle();
+
+      draw();
+
+    };
+
+
+    $("domains")
+      .appendChild(b);
+
+  }
+
 }
+
+
+/* ---------------------------------------------------------------
+   SOUS-TITRE
+---------------------------------------------------------------- */
+
 function updateSubtitle(){
- const n=visibleNodes();
- $("subtitle").textContent=
-   `${[...state.levels].map(niveauLabel).join(" · ")} · `+
-   `${n.filter(x=>x.type==="competence").length} compétences · `+
-   `${n.filter(x=>x.type==="sequence").length} séquences · `+
-   `${n.filter(x=>x.type==="seance").length} séances`;
+
+  const n=
+    visibleNodes();
+
+
+  $("subtitle")
+    .textContent=
+      `${[...state.levels]
+        .map(niveauLabel)
+        .join(" · ")} · `+
+      `${n.filter(
+        x=>x.type==="competence"
+      ).length} compétences · `+
+      `${n.filter(
+        x=>x.type==="sequence"
+      ).length} séquences · `+
+      `${n.filter(
+        x=>x.type==="seance"
+      ).length} séances`;
+
 }
-$("search").addEventListener("input",e=>{state.search=e.target.value.trim();updateSubtitle()});
+
+
+/* ---------------------------------------------------------------
+   RECHERCHE
+---------------------------------------------------------------- */
+
+$("search")
+.addEventListener(
+  "input",
+  e=>{
+
+    state.search=
+      e.target.value.trim();
+
+    updateSubtitle();
+
+    draw();
+
+  }
+);
+
+
+/* ---------------------------------------------------------------
+   RESET
+---------------------------------------------------------------- */
+
 $("reset").onclick=()=>{
- state.search="";$("search").value="";
- state.levels=new Set((state.index?.niveaux||[]).map(n=>String(n.id)));
- state.domains=new Set(state.competences.map(c=>c.domaine_id).filter(Boolean));
- renderFilters();updateSubtitle();
+
+  state.search="";
+
+  $("search").value="";
+
+
+  state.levels=
+    new Set(
+      (
+        state.index?.niveaux||
+        []
+      )
+      .map(
+        n=>String(n.id)
+      )
+    );
+
+
+  const domains=
+    new Set();
+
+
+  for(
+    const c of state.competences
+  ){
+
+    if(c.domaine_id)
+      domains.add(
+        String(c.domaine_id)
+      );
+
+  }
+
+
+  for(
+    const s of state.sequences
+  ){
+
+    if(s.domaine_id)
+      domains.add(
+        String(s.domaine_id)
+      );
+
+  }
+
+
+  state.domains=domains;
+
+
+  renderFilters();
+
+  updateSubtitle();
+
+  draw();
+
 };
 
-function openNode(n){
- state.selected=n.id;
- const p=$("panelContent");
 
- if(n.type==="competence"){
-   const c=competenceById(n.ref);
-   const seqs=state.sequences.filter(s=>
-     (resolveCompetenceId(s.competence_id)||inferCompetence(s))===n.ref);
-   p.innerHTML=`
-    <span class="tag">${esc(c?.domaine||n.domaine||"Compétence")}</span>
-    <h2>${esc(c?.intitule||n.label)}</h2>
-    <div class="meta">Niveau : ${esc(niveauLabel(c?.niveau||n.niveau))}</div>
-    <div class="section"><h3>Objectifs</h3>
-      ${(c?.objectifs||[]).map(x=>`<div class="card">${esc(x)}</div>`).join("")||
-      "<div class=\"card\">Aucun objectif renseigné.</div>"}</div>
-    <div class="section"><h3>Séquences rattachées</h3>
-      ${seqs.map(s=>`<div class="card"><a data-open="s:${esc(s.id)}">${esc(s.titre||s.id)}</a></div>`).join("")||
-      "<div class=\"card\">Aucune séquence reliée.</div>"}</div>`;
- }else if(n.type==="sequence"){
-   const s=state.sequences.find(x=>x.id===n.ref);
-   const linked=n.competenceId?competenceById(n.competenceId):null;
-   const sessions=state.seances.filter(x=>x.sequence_id===n.ref);
-   p.innerHTML=`
-    <span class="tag">${esc(s?.domaine||n.domaine||"Séquence")}</span>
-    <h2>${esc(s?.titre||n.label)}</h2>
-    <div class="meta">Niveau : ${esc(niveauLabel(s?.niveau||s?.classe||n.niveau))} · Période ${esc(s?.periode??"—")}</div>
-    <div class="section"><h3>Compétence</h3>
-      <div class="card">${linked?`<a data-open="c:${esc(linked.id)}">${esc(linked.intitule)}</a>`:"Aucune compétence reliée"}</div>
+/* ---------------------------------------------------------------
+   AFFICHAGE DES COMPÉTENCES
+---------------------------------------------------------------- */
+
+function openCompetence(n){
+
+  const c=
+    competenceById(n.ref);
+
+
+  if(!c)
+    return;
+
+
+  const seqs=
+    state.sequences.filter(
+      s=>
+        resolveCompetenceId(
+          s.competence_id
+        )===n.ref
+    );
+
+
+  const prereqIds=
+    Array.isArray(
+      c.prerequis_competences
+    )
+      ?c.prerequis_competences
+      :[];
+
+
+  const prereqs=
+    prereqIds
+      .map(
+        id=>competenceById(id)
+      )
+      .filter(Boolean);
+
+
+  const dependants=
+    state.competences.filter(
+      x=>
+        Array.isArray(
+          x.prerequis_competences
+        )&&
+        x.prerequis_competences
+          .includes(n.ref)
+    );
+
+
+  const p=
+    $("panelContent");
+
+
+  p.innerHTML=`
+
+    <span class="tag">
+      COMPÉTENCE
+    </span>
+
+    <h2>
+      ${esc(
+        c.intitule||
+        c.nom||
+        c.id
+      )}
+    </h2>
+
+    <div class="meta">
+
+      Niveau :
+      ${esc(
+        niveauLabel(
+          c.niveau||
+          n.niveau
+        )
+      )}
+
+      ·
+
+      Domaine :
+      ${esc(
+        c.domaine||
+        c.domaine_id||
+        "—"
+      )}
+
     </div>
-    <div class="section"><h3>Séances</h3>
-      ${sessions.map(x=>`<div class="card"><b>Séance ${esc(x.numero)}</b> — ${esc(x.titre||x.id)}</div>`).join("")||
-      "<div class=\"card\">Aucune séance.</div>"}</div>`;
- }else{
-   const s=state.seances.find(x=>x.id===n.ref);
-   p.innerHTML=`
-    <span class="tag">Séance ${esc(s?.numero||n.numero||"")}</span>
-    <h2>${esc(s?.titre||n.label)}</h2>
-    <div class="meta">${esc(niveauLabel(s?.classe||s?.niveau||n.niveau))} · ${esc(s?.type||"")}</div>
-    <div class="section"><h3>Compétence ciblée</h3>
-      <div class="card">${esc(s?.competence_cible||"Non renseignée")}</div></div>
-    <div class="section"><h3>Objectif commun</h3>
-      <div class="card">${esc(s?.objectif_commun||"Non renseigné")}</div></div>`;
- }
- $("panel").classList.add("open");
- p.querySelectorAll("[data-open]").forEach(a=>{
-   a.onclick=()=>{const x=state.nodes.find(n=>n.id===a.dataset.open);if(x)openNode(x)}
- });
-}
-$("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null};
-window.addEventListener("resize",draw);
 
-load().then(()=>draw());
+
+    <div class="section">
+
+      <h3>Identifiant</h3>
+
+      <div class="card">
+        <b>${esc(c.id)}</b>
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Objectifs</h3>
+
+      ${
+        Array.isArray(c.objectifs)&&
+        c.objectifs.length
+          ?c.objectifs
+            .map(
+              x=>
+                `<div class="card">
+                  ${esc(x)}
+                </div>`
+            )
+            .join("")
+          :`<div class="card empty">
+              Aucun objectif renseigné.
+            </div>`
+      }
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Prérequis</h3>
+
+      ${
+        prereqs.length
+          ?prereqs
+            .map(
+              x=>
+                `<div class="card prerequis-card">
+                  <a data-open="c:${esc(x.id)}">
+                    ${esc(
+                      x.intitule||
+                      x.nom||
+                      x.id
+                    )}
+                  </a>
+                  <div class="small">
+                    ${esc(x.id)}
+                  </div>
+                </div>`
+            )
+            .join("")
+          :`<div class="card empty">
+              Aucun prérequis déclaré.
+            </div>`
+      }
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Compétences qui utilisent cette compétence comme prérequis</h3>
+
+      ${
+        dependants.length
+          ?dependants
+            .map(
+              x=>
+                `<div class="card">
+                  <a data-open="c:${esc(x.id)}">
+                    ${esc(
+                      x.intitule||
+                      x.nom||
+                      x.id
+                    )}
+                  </a>
+                </div>`
+            )
+            .join("")
+          :`<div class="card empty">
+              Aucune compétence dépendante déclarée.
+            </div>`
+      }
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Séquences rattachées</h3>
+
+      ${
+        seqs.length
+          ?seqs
+            .map(
+              s=>
+                `<div class="card sequence-card">
+                  <a data-open="s:${esc(s.id)}">
+                    ${esc(
+                      s.titre||
+                      s.id
+                    )}
+                  </a>
+                  <div class="small">
+                    ${esc(
+                      niveauLabel(
+                        s.niveau
+                      )
+                    )}
+                    ·
+                    ${esc(
+                      s.domaine||
+                      ""
+                    )}
+                  </div>
+                </div>`
+            )
+            .join("")
+          :`<div class="card empty">
+              Aucune séquence reliée.
+            </div>`
+      }
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Données de competences.json</h3>
+
+      <pre class="json">
+${esc(
+  JSON.stringify(
+    c,
+    null,
+    2
+  )
+)}
+      </pre>
+
+    </div>
+
+  `;
+
+
+  bindPanelLinks();
+
+}
+
+
+/* ---------------------------------------------------------------
+   AFFICHAGE DES SÉQUENCES
+---------------------------------------------------------------- */
+
+function openSequence(n){
+
+  const s=
+    state.sequences.find(
+      x=>x.id===n.ref
+    );
+
+
+  if(!s)
+    return;
+
+
+  const linked=
+    n.competenceId
+      ?competenceById(
+        n.competenceId
+      )
+      :null;
+
+
+  const sessions=
+    state.seances.filter(
+      x=>
+        x.sequence_id===
+        n.ref
+    );
+
+
+  const p=
+    $("panelContent");
+
+
+  p.innerHTML=`
+
+    <span class="tag">
+      SÉQUENCE
+    </span>
+
+    <h2>
+      ${esc(
+        s.titre||
+        s.id
+      )}
+    </h2>
+
+    <div class="meta">
+
+      Niveau :
+      ${esc(
+        niveauLabel(
+          s.niveau
+        )
+      )}
+
+      ·
+
+      Discipline :
+      ${esc(
+        s.discipline||
+        "—"
+      )}
+
+      ·
+
+      Domaine :
+      ${esc(
+        s.domaine||
+        "—"
+      )}
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Identifiant</h3>
+
+      <div class="card">
+        <b>${esc(s.id)}</b>
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Compétence reliée</h3>
+
+      ${
+        linked
+          ?`<div class="card competence-card">
+
+              <a data-open="c:${esc(linked.id)}">
+                ${esc(
+                  linked.intitule||
+                  linked.nom||
+                  linked.id
+                )}
+              </a>
+
+              <div class="small">
+                ${esc(linked.id)}
+              </div>
+
+            </div>`
+          :`<div class="card empty">
+              Aucune compétence reliée par
+              competence_id.
+            </div>`
+      }
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Séances (${sessions.length})</h3>
+
+      ${
+        sessions.length
+          ?sessions
+            .sort(
+              (a,b)=>
+                Number(a.numero||0)-
+                Number(b.numero||0)
+            )
+            .map(
+              x=>
+                `<div class="card seance-card">
+                  <a data-open="a:${esc(x.id)}">
+                    <b>
+                      Séance ${esc(x.numero??"")}
+                    </b>
+                    —
+                    ${esc(
+                      x.titre||
+                      x.id
+                    )}
+                  </a>
+                </div>`
+            )
+            .join("")
+          :`<div class="card empty">
+              Aucune séance.
+            </div>`
+      }
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Données de index.json</h3>
+
+      <pre class="json">
+${esc(
+  JSON.stringify(
+    s,
+    null,
+    2
+  )
+)}
+      </pre>
+
+    </div>
+
+  `;
+
+
+  bindPanelLinks();
+
+}
+
+
+/* ---------------------------------------------------------------
+   AFFICHAGE DES SÉANCES
+---------------------------------------------------------------- */
+
+function openSession(n){
+
+  const s=
+    state.seances.find(
+      x=>x.id===n.ref
+    );
+
+
+  if(!s)
+    return;
+
+
+  const parent=
+    state.sequences.find(
+      x=>
+        x.id===
+        s.sequence_id
+    );
+
+
+  const p=
+    $("panelContent");
+
+
+  p.innerHTML=`
+
+    <span class="tag">
+      SÉANCE
+    </span>
+
+    <h2>
+      ${esc(
+        s.titre||
+        s.id
+      )}
+    </h2>
+
+    <div class="meta">
+
+      Niveau :
+      ${esc(
+        niveauLabel(
+          s.niveau
+        )
+      )}
+
+      ·
+
+      ${esc(
+        s.type||
+        ""
+      )}
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Identifiant</h3>
+
+      <div class="card">
+        <b>${esc(s.id)}</b>
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Séquence</h3>
+
+      ${
+        parent
+          ?`<div class="card sequence-card">
+
+              <a data-open="s:${esc(parent.id)}">
+                ${esc(
+                  parent.titre||
+                  parent.id
+                )}
+              </a>
+
+            </div>`
+          :`<div class="card empty">
+              Séquence introuvable.
+            </div>`
+      }
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Compétence ciblée</h3>
+
+      <div class="card">
+
+        ${esc(
+          s.competence_cible||
+          "Non renseignée"
+        )}
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Objectif commun</h3>
+
+      <div class="card">
+
+        ${esc(
+          s.objectif_commun||
+          "Non renseigné"
+        )}
+
+      </div>
+
+    </div>
+
+
+    <div class="section">
+
+      <h3>Données de index.json</h3>
+
+      <pre class="json">
+${esc(
+  JSON.stringify(
+    s,
+    null,
+    2
+  )
+)}
+      </pre>
+
+    </div>
+
+  `;
+
+
+  bindPanelLinks();
+
+}
+
+
+/* ---------------------------------------------------------------
+   OUVERTURE D'UN NŒUD
+---------------------------------------------------------------- */
+
+function openNode(n){
+
+  state.selected=n.id;
+
+
+  if(n.type==="competence"){
+
+    openCompetence(n);
+
+  }else if(n.type==="sequence"){
+
+    openSequence(n);
+
+  }else{
+
+    openSession(n);
+
+  }
+
+
+  $("panel")
+    .classList
+    .add("open");
+
+
+  draw();
+
+}
+
+
+/* ---------------------------------------------------------------
+   LIENS DANS LE PANNEAU
+---------------------------------------------------------------- */
+
+function bindPanelLinks(){
+
+  $("panelContent")
+    .querySelectorAll(
+      "[data-open]"
+    )
+    .forEach(a=>{
+
+      a.onclick=()=>{
+
+        const x=
+          state.nodes.find(
+            n=>
+              n.id===
+              a.dataset.open
+          );
+
+
+        if(x)
+          openNode(x);
+
+      };
+
+    });
+
+}
+
+
+/* ---------------------------------------------------------------
+   FERMETURE
+---------------------------------------------------------------- */
+
+$("close").onclick=()=>{
+
+  $("panel")
+    .classList
+    .remove("open");
+
+  state.selected=null;
+
+  draw();
+
+};
+
+
+/* ---------------------------------------------------------------
+   REDIMENSIONNEMENT
+---------------------------------------------------------------- */
+
+window.addEventListener(
+  "resize",
+  draw
+);
+
+
+/* ---------------------------------------------------------------
+   DÉMARRAGE
+---------------------------------------------------------------- */
+
+load()
+  .then(
+    ()=>draw()
+  );
+
 </script>
+
 </body>
 </html>
+```
