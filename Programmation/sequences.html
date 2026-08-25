@@ -24,6 +24,7 @@
   --oral:#6B4E8E;
   --vocabulaire:#B5871E;
   --grammaire:#1E2A4A;
+  --orthographe:#7A4A9E;
   --radius:10px;
   --radius-sm:6px;
 }
@@ -42,6 +43,12 @@ button{font-family:inherit;cursor:pointer;}
   text-transform:uppercase;color:var(--accent-sky);font-weight:500;
 }
 :focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
+.chemin-data{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);
+  background:var(--panel-raised);border:1px solid var(--line);border-radius:6px;
+  padding:4px 9px;display:inline-block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%;
+}
+.field-hint{font-size:11.5px;color:var(--ink-soft);margin-top:4px;}
 
 /* ===== Header ===== */
 header.site-header{
@@ -317,25 +324,9 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 
 /* ---- Réseau de compétences ---- */
 .reseau-wrap{position:relative;}
-.reseau-toolbar{
-  display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;
-  margin:18px 0 20px;
-}
-.reseau-search{
-  flex:1 1 360px;min-width:240px;position:relative;
-}
-.reseau-search input{
-  width:100%;box-sizing:border-box;padding:12px 14px 12px 40px;border:1px solid var(--line);
-  border-radius:10px;background:var(--panel);color:var(--ink);font:500 13px 'Inter',sans-serif;
-  outline:none;
-}
-.reseau-search input:focus{border-color:var(--accent-sky);box-shadow:0 0 0 3px rgba(46,94,170,.10);}
-.reseau-search::before{content:"⌕";position:absolute;left:14px;top:8px;font-size:21px;color:var(--ink-soft);z-index:1;}
-.reseau-actions{display:flex;gap:8px;align-items:center;flex-wrap:wrap;}
-.reseau-count{font:500 11px 'IBM Plex Mono',monospace;color:var(--ink-soft);white-space:nowrap;}
 .reseau-grid{
-  display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:20px;align-items:start;
-  padding:0 0 20px;position:relative;z-index:2;
+  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:34px;align-items:start;
+  overflow-x:auto;padding-bottom:12px;position:relative;z-index:2;
 }
 .reseau-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;}
 .comp-node{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px;position:relative;}
@@ -371,8 +362,6 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
   .field-row,.field-row.three{grid-template-columns:1fr;}
   .niveau-grid{grid-template-columns:repeat(5,1fr);font-size:10px;}
   .repeater-row{grid-template-columns:1fr;}
-  .reseau-grid{grid-template-columns:1fr;}
-  .reseau-actions{width:100%;justify-content:space-between;}
 }
 </style>
 </head>
@@ -389,7 +378,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
     </a>
     <div class="header-actions">
       <button class="btn" id="btn-view-reseau">🕸 Réseau de compétences</button>
-      <a class="btn" href="../cartographie-competences.html" target="_blank" rel="noopener">🗺 Cartographie 3D</a>
+      <button class="btn" id="btn-export-competences">Exporter le référentiel</button>
       <button class="btn" id="btn-export-all">Exporter tout (JSON)</button>
       <button class="btn" id="btn-import-all">Importer un JSON</button>
       <input type="file" id="file-import" accept="application/json">
@@ -406,7 +395,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
       <div>
         <p class="eyebrow">Cycle 2 · Français · Programmation</p>
         <h1>Séquences &amp; séances</h1>
-        <p>Chaque séquence est une brique de l'année. Ouvrez-la pour composer ses séances (sous-briques) selon vos modèles habituels. Les données du site sont chargées depuis index.json et les fichiers JSON de /data/. Les modifications locales restent enregistrées dans ce navigateur.</p>
+        <p>Chaque séquence est une brique de l'année. Ouvrez-la pour composer ses séances (sous-briques) selon vos modèles habituels. Tout est enregistré en JSON, dans ce navigateur.</p>
       </div>
     </div>
 
@@ -485,15 +474,6 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <p>Chaque compétence peut correspondre à plusieurs séquences (et séances décrochées). Les flèches en pointillés indiquent qu'une compétence est un pré-requis d'une séquence liée à une autre compétence. Cliquez sur une séquence pour l'ouvrir.</p>
       </div>
     </div>
-    <div class="reseau-toolbar">
-      <div class="reseau-search">
-        <input type="search" id="reseau-search" placeholder="Rechercher une compétence ou une séquence…" autocomplete="off">
-      </div>
-      <div class="reseau-actions">
-        <span class="reseau-count" id="reseau-count"></span>
-        <a class="btn primary" href="../cartographie-competences.html" target="_blank" rel="noopener">🗺 Ouvrir la cartographie 3D</a>
-      </div>
-    </div>
     <div class="reseau-wrap" id="reseau-wrap">
       <div class="reseau-grid" id="reseau-grid"></div>
       <svg class="reseau-svg" id="reseau-svg">
@@ -535,19 +515,37 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
           <label for="f-seq-titre">Intitulé de la séquence</label>
           <input type="text" id="f-seq-titre" required placeholder="Ex. : Développer la fluence de lecture">
         </div>
-        <div class="field-row">
+        <div class="field-row three">
           <div class="field">
-            <label for="f-seq-competence">Compétence ciblée</label>
-            <select id="f-seq-competence"></select>
+            <label for="f-seq-niveau">Niveau</label>
+            <select id="f-seq-niveau">
+              <option value="CP">CP</option>
+              <option value="CE1">CE1</option>
+              <option value="CE2">CE2</option>
+              <option value="CM1">CM1</option>
+              <option value="CM2">CM2</option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="f-seq-domaine">Domaine (matière)</label>
+            <input type="text" id="f-seq-domaine" list="dl-matieres" placeholder="Ex. : Français">
+            <datalist id="dl-matieres"><option value="Français"></datalist>
           </div>
           <div class="field">
             <label for="f-seq-classe">Classe</label>
-            <input type="text" id="f-seq-classe" placeholder="Ex. : CE1">
+            <input type="text" id="f-seq-classe" placeholder="Ex. : CE1 A">
           </div>
         </div>
-        <div class="field">
-          <label for="f-seq-competences">Compétences travaillées</label>
-          <input type="text" id="f-seq-competences" placeholder="Séparées par des virgules">
+        <div class="field-row">
+          <div class="field">
+            <label for="f-seq-competence">Champ d'apprentissage ciblé</label>
+            <select id="f-seq-competence"></select>
+            <div class="field-hint" id="seq-chemin-preview"></div>
+          </div>
+          <div class="field">
+            <label for="f-seq-competences">Compétences travaillées</label>
+            <input type="text" id="f-seq-competences" placeholder="Séparées par des virgules">
+          </div>
         </div>
         <div class="field">
           <label for="f-seq-prerequis">Pré-requis (notes libres)</label>
@@ -709,47 +707,59 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 /* ============================================================
    DONNÉES — domaines, périodes, stockage local (JSON)
    ============================================================ */
-/* ============================================================
-   CHEMINS DES DONNÉES
-   sequences.html se trouve à la racine de /Programmation/.
-   Tous les chemins déclarés dans index.json sont donc relatifs à
-   cette même racine.
-   ============================================================ */
-const DATA_INDEX = "data/index.json";
-const DATA_COMPETENCES = "data/competences.json";
-
 const DOMAINES = {
   lecture:     { nom:"Lecture",               couleur:"#B5502E" },
   ecriture:    { nom:"Écriture",               couleur:"#2A7F72" },
   oral:        { nom:"Oral",                   couleur:"#6B4E8E" },
   vocabulaire: { nom:"Vocabulaire",            couleur:"#B5871E" },
-  grammaire:   { nom:"Grammaire & orthographe",couleur:"#1E2A4A" }
+  orthographe: { nom:"Orthographe & grammaire",couleur:"#7A4A9E" }
 };
-/* Référentiel chargé depuis data/competences.json.
-   On conserve un tableau mutable afin de pouvoir le remplacer au démarrage. */
-let COMPETENCES = [];
+/* Niveaux de classe gérés par l'application — structurent l'arborescence data/{niveau}/... */
+const NIVEAUX = ["CP","CE1","CE2","CM1","CM2"];
+const MATIERE_DEFAUT = "Français";
 
-function getCompetence(id){
-  return COMPETENCES.find(c=>c.id===id);
+/* Référentiel de compétences — reflète competences.json.
+   Une séquence pointe vers UNE compétence "cible" (competence_id), qui correspond
+   à un "champ d'apprentissage" (lecture, écriture, oral, vocabulaire, orthographe…) au
+   sein d'un domaine/matière (ex. Français). Une même compétence peut être la cible de
+   plusieurs séquences/séances. Une séquence peut aussi lister des compétences
+   "antérieures" (pré-requis), ce qui construit un réseau plutôt qu'une progression
+   strictement linéaire. */
+const COMPETENCES = [
+  { id:"lecture", discipline:"Français", cycle:"Cycle 2", domaine:"Lecture", couleur:"#B5502E",
+    objectifs:["Identifier des mots de manière de plus en plus aisée","Comprendre un texte et contrôler sa compréhension"] },
+  { id:"ecriture", discipline:"Français", cycle:"Cycle 2", domaine:"Écriture", couleur:"#2A7F72",
+    objectifs:["Copier de manière experte","Produire des écrits en commençant à s'approprier une démarche"] },
+  { id:"oral", discipline:"Français", cycle:"Cycle 2", domaine:"Oral", couleur:"#6B4E8E",
+    objectifs:["Écouter pour comprendre des messages oraux ou des textes lus","Participer à des échanges dans des situations diversifiées"] },
+  { id:"vocabulaire", discipline:"Français", cycle:"Cycle 2", domaine:"Vocabulaire", couleur:"#B5871E",
+    objectifs:["Acquérir un vocabulaire juste et précis","Maîtriser le sens des mots"] },
+  { id:"orthographe", discipline:"Français", cycle:"Cycle 2", domaine:"Orthographe & grammaire", couleur:"#7A4A9E",
+    objectifs:["Maîtriser les correspondances graphophonologiques","Raisonner pour réaliser les accords"] }
+];
+function getCompetence(id){ return COMPETENCES.find(c=>c.id===id); }
+
+/* ------------------------------------------------------------
+   Arborescence de stockage : data/{niveau}/{matiere}/{champ}/…
+   Toute séquence (et par héritage ses séances) est rattachée à :
+     - un niveau      (CP, CE1, CE2, CM1 ou CM2)
+     - un domaine     (matière, ex. "Français")
+     - un champ       (champ d'apprentissage : lecture, ecriture, oral, vocabulaire, orthographe…)
+   Cette fonction calcule le chemin de dossier correspondant, utilisé pour
+   nommer les fichiers JSON exportés (data/CP/francais/lecture/…).
+   ------------------------------------------------------------ */
+function seqNiveau(seq){ return (seq && seq.niveau) || NIVEAUX[0]; }
+function seqMatiere(seq){ return (seq && seq.matiere) || MATIERE_DEFAUT; }
+function seqChamp(seq){ return (seq && (seq.competence_id || seq.domaine)) || "lecture"; }
+function seqChemin(seq){
+  return `data/${seqNiveau(seq)}/${slug(seqMatiere(seq))}/${seqChamp(seq)}`;
 }
-
-function normaliserCompetence(c){
-  if(!c) return null;
-  return {
-    id: c.id,
-    discipline: c.discipline || "",
-    cycle: c.cycle || "Cycle 2",
-    domaine: c.domaine || c.nom || c.intitule || c.domaine_id || "",
-    domaine_id: c.domaine_id || "",
-    couleur: c.couleur || (DOMAINES[c.domaine_id] && DOMAINES[c.domaine_id].couleur) || "#2E5EAA",
-    intitule: c.intitule || c.nom || "",
-    objectifs: Array.isArray(c.objectifs) && c.objectifs.length
-      ? c.objectifs
-      : [c.intitule || c.nom || ""],
-    prerequis_competences: Array.isArray(c.prerequis_competences)
-      ? c.prerequis_competences
-      : []
-  };
+function updateSeqCheminPreview(){
+  const niveau = document.getElementById('f-seq-niveau').value || NIVEAUX[0];
+  const matiere = document.getElementById('f-seq-domaine').value.trim() || MATIERE_DEFAUT;
+  const champ = document.getElementById('f-seq-competence').value || "lecture";
+  const el = document.getElementById('seq-chemin-preview');
+  if(el) el.textContent = `Sera enregistré dans : data/${niveau}/${slug(matiere)}/${champ}/…`;
 }
 
 const PERIODES = [
@@ -771,11 +781,12 @@ const SEANCES_TYPES = [
   {numero:"6", type:"Approfondissement"},
   {numero:"7", type:"Évaluation"}
 ];
-function genererSeancesParDefaut(sequenceId, classe){
+function genererSeancesParDefaut(sequenceId, classe, seq){
+  const niveauxParDefaut = seq && seq.niveau ? [seq.niveau] : [];
   return SEANCES_TYPES.map(st=>({
     id: uid("sea"), sequence_id: sequenceId, numero: st.numero, type: st.type,
     titre:"", classe: classe||"", competence_cible:"", competences_peripheriques:"",
-    modalites_generales:"", niveaux:[], objectif_commun:"", objectifs_individuels:[],
+    modalites_generales:"", niveaux: niveauxParDefaut, objectif_commun:"", objectifs_individuels:[],
     problematique:"", deroule: PHASES_DEFAUT.map(p=>({phase:p,temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""})),
     vigilance:""
   }));
@@ -801,290 +812,27 @@ const state = {
 
 function uid(prefix){ return prefix + "_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,7); }
 
-/* ============================================================
-   CHARGEMENT DES DONNÉES DU SITE
-   ------------------------------------------------------------
-   Arborescence attendue :
-   Programmation/
-   ├── index.json
-   ├── sequences.html
-   └── data/
-       ├── competences.json
-       └── CP/
-           └── francais/
-               └── ...
-   Les chemins sont repris tels quels depuis data/index.json et résolus depuis Programmation/.
-   ============================================================ */
-
-function absoluteDataURL(relativePath){
-  /*
-   * IMPORTANT :
-   * Les chemins présents dans data/index.json sont utilisés tels quels
-   * depuis la page Programmation/sequences.html.
-   *
-   * Exemple :
-   *   data/competences.json
-   *   data/CP/francais/lecture/...
-   *
-   * On ne les résout donc PAS par rapport à data/index.json, sinon
-   * "data/..." deviendrait "data/data/...".
-   */
-  return new URL(relativePath, window.location.href).href;
+/* Données d'exemple au tout premier lancement, pour ne pas ouvrir sur du vide */
+function seedIfEmpty(){
+  if(state.sequences.length || state.seances.length) return;
+  const seqId = uid("seq");
+  state.sequences.push({
+    id: seqId, titre:"Développer la fluence de lecture", niveau:"CE1", matiere:"Français", domaine:"lecture", classe:"CE1",
+    competence_id:"lecture", prerequis_competences:[],
+    competences:"Lire un texte connu à voix haute avec fluidité",
+    periode:2, semaine_debut:8, semaine_fin:10,
+    objectif_commun:"Lire un texte connu à voix haute avec fluidité, pour mieux le comprendre.",
+    prerequis:["Identification des syllabes complexes","Déchiffrage sans hésitation des mots outils"],
+    objectifs_individuels:[], references_theoriques:"",
+    chemin:"data/CE1/francais/lecture"
+  });
+  const seances = genererSeancesParDefaut(seqId, "CE1", state.sequences[0]);
+  seances[1].titre = "Découverte";
+  seances[1].objectif_commun = "Lire un texte plusieurs fois pour le lire de mieux en mieux, sans buter sur les mots.";
+  state.seances.push(...seances);
+  saveSequences(state.sequences); saveSeances(state.seances);
 }
-
-async function fetchJSON(relativePath){
-  const url = absoluteDataURL(relativePath);
-  const response = await fetch(url, {cache:"no-store"});
-  if(!response.ok){
-    throw new Error(`${url} → HTTP ${response.status}`);
-  }
-  return response.json();
-}
-
-function sequenceDepuisJSON(data){
-  if(!data) return [];
-
-  if(Array.isArray(data.sequences)){
-    return data.sequences.filter(Boolean);
-  }
-
-  if(data.sequence && typeof data.sequence === "object"){
-    return [data.sequence];
-  }
-
-  if(data.id && (data.titre || data.nom)){
-    return [data];
-  }
-
-  return [];
-}
-
-function seancesDepuisJSON(data){
-  if(!data) return [];
-
-  if(Array.isArray(data.seances)){
-    return data.seances.filter(Boolean);
-  }
-
-  if(Array.isArray(data)){
-    return data.filter(Boolean);
-  }
-
-  if(data.seance && typeof data.seance === "object"){
-    return [data.seance];
-  }
-
-  if(data.id && (data.titre || data.numero)){
-    return [data];
-  }
-
-  return [];
-}
-
-function trouverDomainDepuisIndex(index, sequenceId){
-  const result = {
-    domaine: "",
-    competence_id: "",
-    classe: "",
-    niveau: "",
-    discipline: ""
-  };
-
-  for(const niveau of (index.niveaux || [])){
-    for(const discipline of (niveau.disciplines || [])){
-      for(const domaine of (discipline.domaines || [])){
-        for(const seq of (domaine.sequences || [])){
-          if(seq.id === sequenceId){
-            result.domaine = domaine.id || domaine.nom || "";
-            result.classe = niveau.id || "";
-            result.niveau = niveau.id || "";
-            result.discipline = discipline.nom || discipline.id || "";
-            return result;
-          }
-        }
-      }
-    }
-  }
-  return result;
-}
-
-function normaliserSequence(seq, index){
-  const meta = trouverDomainDepuisIndex(index, seq.id);
-  const domaineJSON = seq.domaine || meta.domaine || "";
-  const competence = getCompetence(seq.competence_id);
-
-  /* Le champ domaine des anciens fichiers peut contenir "Français - Lecture...".
-     Pour les filtres de l'interface, on privilégie le domaine_id de la compétence
-     puis le domaine déclaré dans l'index. */
-  let domaine = competence && (competence.domaine_id || competence.domaine)
-    ? (competence.domaine_id || competence.domaine)
-    : meta.domaine || domaineJSON;
-
-  if(!DOMAINES[domaine]){
-    const domaineTrouve = Object.entries(DOMAINES).find(([id, d]) =>
-      id === domaine ||
-      d.nom === domaine ||
-      domaineJSON.toLowerCase().includes(d.nom.toLowerCase())
-    );
-    if(domaineTrouve) domaine = domaineTrouve[0];
-  }
-
-  return {
-    ...seq,
-    domaine,
-    classe: seq.classe || meta.classe || "",
-    competence_id: seq.competence_id || "",
-    prerequis_competences: Array.isArray(seq.prerequis_competences)
-      ? seq.prerequis_competences
-      : []
-  };
-}
-
-async function chargerDonneesDuSite(){
-  const index = await fetchJSON(DATA_INDEX);
-
-  const competencesData = await fetchJSON(index.meta?.competences || DATA_COMPETENCES);
-  if(Array.isArray(competencesData.competences)){
-    COMPETENCES = competencesData.competences
-      .map(normaliserCompetence)
-      .filter(Boolean);
-  } else if(Array.isArray(competencesData)){
-    COMPETENCES = competencesData.map(normaliserCompetence).filter(Boolean);
-  }
-
-  const sequenceEntries = [];
-  for(const niveau of (index.niveaux || [])){
-    for(const discipline of (niveau.disciplines || [])){
-      for(const domaine of (discipline.domaines || [])){
-        for(const seqMeta of (domaine.sequences || [])){
-          sequenceEntries.push({niveau, discipline, domaine, seqMeta});
-        }
-      }
-    }
-  }
-
-  const sequences = [];
-  const seances = [];
-
-  for(const entry of sequenceEntries){
-    let sequenceData;
-    try{
-      sequenceData = await fetchJSON(entry.seqMeta.fichier_sequence);
-    }catch(error){
-      console.warn("Séquence non chargée :", entry.seqMeta.fichier_sequence, error);
-      continue;
-    }
-
-    const seqList = sequenceDepuisJSON(sequenceData);
-
-    for(const rawSeq of seqList){
-      const seq = normaliserSequence(rawSeq, index);
-      sequences.push(seq);
-
-      /* Les fichiers de séances sont déclarés dans data/index.json.
-         Leurs chemins sont repris exactement tels qu'ils sont déclarés
-         dans l'index. */
-      for(const seaMeta of (entry.seqMeta.seances || [])){
-        try{
-          const seaData = await fetchJSON(seaMeta.fichier);
-          const loaded = seancesDepuisJSON(seaData);
-          if(loaded.length){
-            loaded.forEach(sea => seances.push({
-              ...sea,
-              id: sea.id || seaMeta.id,
-              sequence_id: sea.sequence_id || seq.id,
-              numero: sea.numero ?? seaMeta.numero,
-              type: sea.type || seaMeta.type,
-              titre: sea.titre || seaMeta.titre,
-              classe: sea.classe || seq.classe || ""
-            }));
-          }else if(seaData && (seaData.id || seaData.titre)){
-            seances.push({
-              ...seaData,
-              id: seaData.id || seaMeta.id,
-              sequence_id: seaData.sequence_id || seq.id,
-              numero: seaData.numero ?? seaMeta.numero,
-              type: seaData.type || seaMeta.type,
-              titre: seaData.titre || seaMeta.titre,
-              classe: seaData.classe || seq.classe || ""
-            });
-          }
-        }catch(error){
-          console.warn("Séance non chargée :", seaMeta.fichier, error);
-        }
-      }
-
-      /* Si le fichier de séquence contient déjà des séances, on les conserve. */
-      const embedded = seancesDepuisJSON(sequenceData);
-      embedded.forEach(sea => {
-        if(!seances.some(x=>x.id===sea.id)){
-          seances.push({
-            ...sea,
-            sequence_id: sea.sequence_id || seq.id,
-            classe: sea.classe || seq.classe || ""
-          });
-        }
-      });
-    }
-  }
-
-  return { index, sequences, seances };
-}
-
-async function initialiserDonnees(){
-  try{
-    const remote = await chargerDonneesDuSite();
-
-    if(remote.sequences.length){
-      state.sequences = remote.sequences;
-      state.seances = remote.seances;
-
-      /* Le stockage local reste disponible pour les créations/modifications
-         effectuées dans l'interface après le chargement. */
-      saveSequences(state.sequences);
-      saveSeances(state.seances);
-
-      toast(`${remote.sequences.length} séquence${remote.sequences.length > 1 ? "s" : ""} chargée${remote.sequences.length > 1 ? "s" : ""} depuis le site`);
-      return;
-    }
-
-    throw new Error("Aucune séquence déclarée dans index.json");
-  }catch(error){
-    console.warn("Chargement des données du site impossible :", error);
-
-    /* Fallback : si le site est ouvert hors serveur ou si les JSON sont
-       temporairement indisponibles, on conserve les données locales. */
-    if(!state.sequences.length && !state.seances.length){
-      const seqId = uid("seq");
-      state.sequences.push({
-        id: seqId,
-        titre:"Développer la fluence de lecture",
-        domaine:"lecture",
-        classe:"CE1",
-        competence_id:"lecture",
-        prerequis_competences:[],
-        competences:"Lire un texte connu à voix haute avec fluidité",
-        periode:2,
-        semaine_debut:8,
-        semaine_fin:10,
-        objectif_commun:"Lire un texte connu à voix haute avec fluidité, pour mieux le comprendre.",
-        prerequis:["Identification des syllabes complexes","Déchiffrage sans hésitation des mots outils"],
-        objectifs_individuels:[],
-        references_theoriques:""
-      });
-
-      const seances = genererSeancesParDefaut(seqId, "CE1");
-      seances[1].titre = "Découverte";
-      seances[1].objectif_commun = "Lire un texte plusieurs fois pour le lire de mieux en mieux, sans buter sur les mots.";
-      state.seances.push(...seances);
-
-      saveSequences(state.sequences);
-      saveSeances(state.seances);
-    }
-
-    toast("Données locales utilisées — impossible de charger les JSON du site");
-  }
-}
+seedIfEmpty();
 
 /* ============================================================
    UTILITAIRES UI
@@ -1169,8 +917,7 @@ function renderSeqGrid(){
   const grid = document.getElementById('seq-grid');
   grid.innerHTML = "";
   const list = state.sequences.filter(s=>{
-    const domaineId = s.domaine || s.competence_id || "";
-    if(!state.activeDomains.has(domaineId)) return false;
+    if(!state.activeDomains.has(s.domaine)) return false;
     if(state.activePeriode!==null && s.periode!==state.activePeriode) return false;
     return true;
   });
@@ -1194,6 +941,7 @@ function renderSeqGrid(){
     card.innerHTML = `
       <div class="sb-top">
         <span class="badge">${dom.nom}</span>
+        <span class="badge plain">${escapeHTML(seqNiveau(seq))}</span>
         <span class="badge plain">P${seq.periode}</span>
       </div>
       <h3>${escapeHTML(seq.titre)}</h3>
@@ -1249,30 +997,17 @@ function closeReseau(){
 document.getElementById('btn-view-reseau').addEventListener('click', openReseau);
 document.getElementById('reseau-back').addEventListener('click', closeReseau);
 
-const reseauSearch = document.getElementById('reseau-search');
-if(reseauSearch){
-  reseauSearch.addEventListener('input', renderReseau);
-}
-
 function renderReseau(){
   const grid = document.getElementById('reseau-grid');
   const svg = document.getElementById('reseau-svg');
-  const search = (document.getElementById('reseau-search')?.value || '').trim().toLocaleLowerCase('fr');
   grid.innerHTML = "";
 
-  const visibleCompetences = COMPETENCES.filter(c=>{
-    if(!search) return true;
-    const seqs = state.sequences.filter(s=>(s.competence_id||s.domaine)===c.id || s.domaine===c.domaine_id);
-    const haystack = [c.domaine, ...(c.objectifs||[]), ...seqs.flatMap(s=>[s.titre, s.competences, s.objectif_commun])].filter(Boolean).join(' ').toLocaleLowerCase('fr');
-    return haystack.includes(search);
-  });
-
-  visibleCompetences.forEach(c=>{
+  COMPETENCES.forEach(c=>{
     const node = document.createElement('div');
     node.className = "comp-node";
     node.id = "cnode-" + c.id;
     node.style.setProperty('--ccolor', c.couleur);
-    const seqsForComp = state.sequences.filter(s=>(s.competence_id||s.domaine)===c.id || s.domaine===c.domaine_id);
+    const seqsForComp = state.sequences.filter(s=>(s.competence_id||s.domaine)===c.id);
     const seqsHTML = seqsForComp.length ? seqsForComp.map(s=>{
       const nb = state.seances.filter(x=>x.sequence_id===s.id).length;
       return `<button class="cn-seq-item" data-open-seq="${s.id}">${escapeHTML(s.titre)}<span class="csi-meta">P${s.periode} · S${s.semaine_debut}–S${s.semaine_fin} · ${nb} séance${nb>1?'s':''}</span></button>`;
@@ -1299,13 +1034,6 @@ function renderReseau(){
       fillPrereqPicker(btn.getAttribute('data-add-for'), []);
     });
   });
-
-  const count = document.getElementById('reseau-count');
-  if(count){
-    count.textContent = search
-      ? `${visibleCompetences.length} compétence${visibleCompetences.length>1?'s':''} affichée${visibleCompetences.length>1?'s':''} sur ${COMPETENCES.length}`
-      : `${COMPETENCES.length} compétence${COMPETENCES.length>1?'s':''}`;
-  }
 
   // Dessiner les flèches de pré-requis entre compétences (réseau non linéaire)
   requestAnimationFrame(()=>{
@@ -1354,12 +1082,15 @@ function renderSeqDetail(){
   if(!seq){ backToList(); return; }
   const dom = DOMAINES[seq.domaine] || {nom:seq.domaine,couleur:"#2E5EAA"};
 
-  document.getElementById('seq-eyebrow').textContent = `${dom.nom} · Période ${seq.periode} · Semaines ${seq.semaine_debut}–${seq.semaine_fin}`;
+  document.getElementById('seq-eyebrow').textContent = `${seqNiveau(seq)} · ${seqMatiere(seq)} · ${dom.nom} · Période ${seq.periode} · Semaines ${seq.semaine_debut}–${seq.semaine_fin}`;
   document.getElementById('seq-title').textContent = seq.titre;
   document.getElementById('seq-tags').innerHTML = `
+    <span class="badge plain">${escapeHTML(seqNiveau(seq))}</span>
+    <span class="badge plain">${escapeHTML(seqMatiere(seq))}</span>
     <span class="badge" style="--dcolor:${dom.couleur}">${dom.nom}</span>
     ${seq.classe? `<span class="badge plain">${escapeHTML(seq.classe)}</span>`:""}
     ${seq.competences? `<span class="badge plain">${escapeHTML(seq.competences)}</span>`:""}
+    <span class="chemin-data">${escapeHTML(seqChemin(seq))}/</span>
   `;
   document.getElementById('seq-objectif').textContent = seq.objectif_commun || "—";
 
@@ -1451,7 +1182,7 @@ document.getElementById('btn-delete-seq').addEventListener('click', ()=>{
 document.getElementById('btn-download-seq').addEventListener('click', ()=>{
   const seq = state.sequences.find(s=>s.id===state.currentSeqId);
   const seances = state.seances.filter(x=>x.sequence_id===seq.id);
-  downloadJSON(slug(seq.titre)||seq.id, { ...seq, seances });
+  downloadJSON(seqChemin(seq) + "/" + (slug(seq.titre)||seq.id), { ...seq, seances });
 });
 document.getElementById('btn-print-seq').addEventListener('click', ()=> printSequence(state.currentSeqId));
 
@@ -1478,9 +1209,7 @@ function addSeqEleveRow(nom,objectif){
 document.getElementById('add-seq-eleve').addEventListener('click', ()=> addSeqEleveRow("",""));
 
 function competenceLabel(c){
-  const domaine = c.domaine || c.domaine_id || "";
-  const objectif = (c.objectifs && c.objectifs[0]) || c.intitule || "";
-  return `${domaine} — ${objectif.slice(0,46)}${objectif.length>46?'…':''}`;
+  return `${c.domaine} — ${c.objectifs[0].slice(0,46)}${c.objectifs[0].length>46?'…':''}`;
 }
 function fillCompetenceSelect(selected){
   const sel = document.getElementById('f-seq-competence');
@@ -1500,7 +1229,10 @@ function fillPrereqPicker(currentCompetenceId, checkedIds){
 document.getElementById('f-seq-competence').addEventListener('change', (e)=>{
   const checked = [...document.querySelectorAll('.seq-prereq-comp:checked')].map(cb=>cb.value);
   fillPrereqPicker(e.target.value, checked);
+  updateSeqCheminPreview();
 });
+document.getElementById('f-seq-niveau').addEventListener('change', updateSeqCheminPreview);
+document.getElementById('f-seq-domaine').addEventListener('input', updateSeqCheminPreview);
 
 function openSeqForm(seqId){
   state.editingSeqId = seqId;
@@ -1510,6 +1242,8 @@ function openSeqForm(seqId){
   const compId = seq ? (seq.competence_id || seq.domaine || (COMPETENCES[0]&&COMPETENCES[0].id)) : (COMPETENCES[0]&&COMPETENCES[0].id);
   fillCompetenceSelect(compId);
   fillPrereqPicker(compId, seq ? (seq.prerequis_competences||[]) : []);
+  document.getElementById('f-seq-niveau').value = seq? (seq.niveau||NIVEAUX[0]) : NIVEAUX[0];
+  document.getElementById('f-seq-domaine').value = seq? (seq.matiere||MATIERE_DEFAUT) : MATIERE_DEFAUT;
   document.getElementById('f-seq-classe').value = seq? (seq.classe||"") : "";
   document.getElementById('f-seq-competences').value = seq? (seq.competences||"") : "";
   document.getElementById('f-seq-prerequis').value = seq? (Array.isArray(seq.prerequis)? seq.prerequis.join(", ") : (seq.prerequis||"")) : "";
@@ -1523,6 +1257,7 @@ function openSeqForm(seqId){
   const eleves = seq && seq.objectifs_individuels && seq.objectifs_individuels.length ? seq.objectifs_individuels : [{nom:"",objectif:""}];
   eleves.forEach(e=> addSeqEleveRow(e.nom,e.objectif));
 
+  updateSeqCheminPreview();
   openModal('modal-seq');
 }
 
@@ -1542,10 +1277,15 @@ document.getElementById('btn-save-seq').addEventListener('click', ()=>{
   const competenceId = document.getElementById('f-seq-competence').value;
   const prerequisCompetences = [...document.querySelectorAll('.seq-prereq-comp:checked')].map(cb=>cb.value);
 
+  const niveau = document.getElementById('f-seq-niveau').value || NIVEAUX[0];
+  const matiere = document.getElementById('f-seq-domaine').value.trim() || MATIERE_DEFAUT;
+
   const data = {
     titre,
+    niveau,
+    matiere,
     competence_id: competenceId,
-    domaine: competenceId,
+    domaine: competenceId, // = champ d'apprentissage (lecture, ecriture, oral, vocabulaire, orthographe…)
     classe: document.getElementById('f-seq-classe').value.trim(),
     competences: document.getElementById('f-seq-competences').value.trim(),
     prerequis,
@@ -1557,6 +1297,7 @@ document.getElementById('btn-save-seq').addEventListener('click', ()=>{
     objectifs_individuels: eleves,
     references_theoriques: document.getElementById('f-seq-refs').value.trim()
   };
+  data.chemin = seqChemin(data); // ex. "data/CE1/francais/lecture" — dossier cible dans l'arborescence
 
   let isNew = false;
   if(state.editingSeqId){
@@ -1572,7 +1313,7 @@ document.getElementById('btn-save-seq').addEventListener('click', ()=>{
 
   if(isNew){
     // Confort : on pré-crée par défaut les 7 séances-types (8 fiches, 5.1/5.2), vides et prêtes à compléter.
-    state.seances.push(...genererSeancesParDefaut(state.currentSeqId, data.classe));
+    state.seances.push(...genererSeancesParDefaut(state.currentSeqId, data.classe, data));
     saveSeances(state.seances);
   }
 
@@ -1719,7 +1460,7 @@ function openSeaDrawer(seaId){
   const seq = state.sequences.find(s=>s.id===sea.sequence_id);
   const dom = seq ? (DOMAINES[seq.domaine]||{nom:seq.domaine}) : {nom:""};
 
-  document.getElementById('sea-drawer-eyebrow').textContent = `${dom.nom||""} · Séance ${sea.numero||""} ${sea.type? "· "+sea.type:""}`;
+  document.getElementById('sea-drawer-eyebrow').textContent = `${seq? seqNiveau(seq)+" · "+seqMatiere(seq)+" · " : ""}${dom.nom||""} · Séance ${sea.numero||""} ${sea.type? "· "+sea.type:""}`;
 
   const niveauxHTML = ["CP","CE1","CE2","CM1","CM2"].map(n=>
     `<div class="nv ${sea.niveaux&&sea.niveaux.includes(n)?'active':''}">${n}</div>`
@@ -1744,6 +1485,7 @@ function openSeaDrawer(seaId){
     <div class="drawer-tags">
       ${sea.classe? `<span class="badge plain">${escapeHTML(sea.classe)}</span>`:""}
       ${sea.competence_cible? `<span class="badge plain">${escapeHTML(sea.competence_cible)}</span>`:""}
+      ${seq? `<span class="chemin-data">${escapeHTML(seqChemin(seq))}/seances/</span>`:""}
     </div>
 
     ${sea.niveaux && sea.niveaux.length ? `<div class="drawer-section"><h5>Niveaux</h5><div class="niveau-grid">${niveauxHTML}</div></div>`:""}
@@ -1781,7 +1523,8 @@ function openSeaDrawer(seaId){
     openSeaForm(sea.id, sea.sequence_id);
   });
   document.getElementById('drawer-download-sea').addEventListener('click', ()=>{
-    downloadJSON("seance-"+(slug(sea.titre)||sea.id), sea);
+    const dossier = seq ? seqChemin(seq) + "/seances" : "data/seances";
+    downloadJSON(dossier + "/" + (sea.numero? "seance-"+slug(sea.numero) : sea.id) + "-" + (slug(sea.titre)||sea.id), sea);
   });
   document.getElementById('drawer-delete-sea').addEventListener('click', ()=>{
     if(!confirm("Supprimer cette séance ?")) return;
@@ -1861,11 +1604,12 @@ function printSequence(seqId){
   const dom = DOMAINES[seq.domaine] || {nom:seq.domaine};
   const seances = state.seances.filter(x=>x.sequence_id===seqId);
   const html = `
-    <p class="print-eyebrow">${escapeHTML(dom.nom)} · Période ${seq.periode} · Semaines ${seq.semaine_debut}–${seq.semaine_fin}</p>
+    <p class="print-eyebrow">${escapeHTML(seq.niveau||"")} · ${escapeHTML(seq.matiere||MATIERE_DEFAUT)} · ${escapeHTML(dom.nom)} · Période ${seq.periode} · Semaines ${seq.semaine_debut}–${seq.semaine_fin}</p>
     <h1>${escapeHTML(seq.titre)}</h1>
     <div class="print-tags">
       ${seq.classe? `<span>${escapeHTML(seq.classe)}</span>`:""}
       ${seq.competences? `<span>${escapeHTML(seq.competences)}</span>`:""}
+      <span>${escapeHTML(seqChemin(seq))}/</span>
     </div>
     <h5>Objectif commun</h5><p>${escapeHTML(seq.objectif_commun)||"—"}</p>
     ${seq.prerequis && seq.prerequis.length? `<h5>Pré-requis</h5><p>${seq.prerequis.map(escapeHTML).join(' · ')}</p>`:""}
@@ -1896,14 +1640,25 @@ function slug(str){
   return (str||"").toString().toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'')
     .replace(/[^a-z0-9]+/g,'-').replace(/(^-|-$)/g,'').slice(0,50);
 }
-function downloadJSON(filename, data){
+function downloadJSON(pathSansExtension, data){
+  // pathSansExtension peut contenir des "/" (ex. "data/CE1/francais/lecture/ma-sequence") :
+  // les navigateurs à base de Chromium recréent alors l'arborescence de sous-dossiers
+  // sous le dossier de téléchargements, ce qui reproduit fidèlement data/{niveau}/{matiere}/{champ}/…
   const blob = new Blob([JSON.stringify(data, null, 2)], {type:'application/json'});
   const a = document.createElement('a');
   a.href = URL.createObjectURL(blob);
-  a.download = filename + ".json";
+  a.download = pathSansExtension + ".json";
   a.click();
   URL.revokeObjectURL(a.href);
 }
+document.getElementById('btn-export-competences').addEventListener('click', ()=>{
+  // Une compétence = un champ d'apprentissage (lecture, ecriture, oral, vocabulaire, orthographe…)
+  // au sein d'une matière (discipline). On range chaque fiche dans data/competences/{matiere}/{champ}.json
+  COMPETENCES.forEach(c=>{
+    downloadJSON(`data/competences/${slug(c.discipline)}/${c.id}`, c);
+  });
+  toast("Référentiel de compétences exporté (" + COMPETENCES.length + " fichiers)");
+});
 document.getElementById('btn-export-all').addEventListener('click', ()=>{
   downloadJSON("programmation-complete", { sequences: state.sequences, seances: state.seances });
 });
@@ -1948,20 +1703,8 @@ document.getElementById('file-import').addEventListener('change', e=>{
 /* ============================================================
    INIT
    ============================================================ */
-async function init(){
-  renderFilters();
-  renderSeqGrid();
-  await initialiserDonnees();
-  renderFilters();
-  renderSeqGrid();
-
-  const sequenceId = new URLSearchParams(location.search).get("sequence");
-  if(sequenceId && state.sequences.some(s => s.id === sequenceId)){
-    openSeqDetail(sequenceId);
-  }
-}
-
-init();
+renderFilters();
+renderSeqGrid();
 </script>
 </body>
 </html>
