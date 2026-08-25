@@ -1,0 +1,84 @@
+{
+"id": "guide-lecture-ecriture-cp-2019",
+"type": "guide_officiel",
+"auteurs": [
+"Ministère de l'Éducation nationale et de la Jeunesse"
+],
+"annee": 2019,
+"titre": "Pour enseigner la lecture et l’écriture au CP",
+"sous_titre": "Un guide fondé sur l’état de la recherche",
+"source": "Ministère de l'Éducation nationale et de la Jeunesse",
+"fichier_source": "guide-pour-enseigner-la-lecture-et-l-ecriture-au-cp-67854.pdf",
+"fichier_analyse": "bibliotheque-pedagogique/analyses/guide-lecture-ecriture-cp-2019.json",
+
+"niveau": [
+"CP"
+],
+
+"domaines": [
+"français"
+],
+
+"thematiques": [
+"lecture",
+"ecriture",
+"comprehension",
+"decodage",
+"fluence",
+"vocabulaire",
+"grammaire",
+"orthographe",
+"oral",
+"litterature"
+],
+
+"concepts": [
+"code_alphabetique",
+"correspondances_grapheme_phoneme",
+"identification_des_mots",
+"decodage",
+"automatisation",
+"fluidite",
+"comprehension_orale",
+"comprehension_ecrite",
+"comprehension_litterale",
+"comprehension_inferentielle",
+"anaphores",
+"lexique",
+"syntaxe",
+"dechiffrabilite",
+"enseignement_explicite",
+"progression",
+"consolidation",
+"evaluation",
+"differenciation"
+],
+
+"pertinence": {
+"CP": "tres_forte",
+"CE1": "forte",
+"lecture": "tres_forte",
+"comprehension": "tres_forte",
+"ecriture": "tres_forte",
+"mathematiques": "aucune"
+},
+
+"contenu_a_extraire": [
+"principes d'apprentissage de la lecture",
+"relations entre code alphabétique et compréhension",
+"progression des correspondances graphème-phonème",
+"conditions de déchiffrabilité",
+"fluence",
+"compréhension orale",
+"compréhension écrite",
+"vocabulaire",
+"syntaxe",
+"inférences",
+"anaphores",
+"production écrite",
+"dictée",
+"évaluation",
+"difficultés de lecture",
+"différenciation"
+]
+}
