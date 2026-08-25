@@ -1,0 +1,554 @@
+{
+  "meta": {
+    "titre": "Référentiel des compétences — Français CP",
+    "version": "1.0",
+    "niveau": "CP",
+    "cycle": "Cycle 2",
+    "discipline": "Français",
+    "usage": "Référentiel destiné à être appelé par les fichiers de séquence, les fichiers de séance et l'application HTML.",
+    "note": "Les identifiants sont stables et peuvent être utilisés comme clés de liaison. Les formulations sont structurées pour l'usage pédagogique et numérique ; elles s'appuient sur les cinq champs du français au cycle 2."
+  },
+  "domaines": [
+    {
+      "id": "lecture",
+      "nom": "Lecture",
+      "couleur": "#B5502E"
+    },
+    {
+      "id": "ecriture",
+      "nom": "Écriture",
+      "couleur": "#2A7F72"
+    },
+    {
+      "id": "oral",
+      "nom": "Oral",
+      "couleur": "#6B4E8E"
+    },
+    {
+      "id": "vocabulaire",
+      "nom": "Vocabulaire",
+      "couleur": "#B5871E"
+    },
+    {
+      "id": "grammaire_orthographe",
+      "nom": "Grammaire et orthographe",
+      "couleur": "#1E2A4A"
+    }
+  ],
+  "competences": [
+    {
+      "id": "lecture_identifier_mots",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Identifier des mots de manière de plus en plus aisée",
+      "objectifs": [
+        "Discriminer et connaître le nom des lettres",
+        "Reconnaître les différentes écritures d'une lettre",
+        "Distinguer les lettres des autres signes",
+        "Développer la conscience phonologique",
+        "Manipuler phonèmes et syllabes",
+        "Maîtriser progressivement les correspondances graphèmes-phonèmes",
+        "Combiner les correspondances étudiées pour lire des syllabes",
+        "Lire des mots réguliers et des mots fréquents",
+        "Mémoriser des mots fréquents",
+        "Décoder avec une exactitude croissante"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "cp",
+        "discriminer et connaître le nom des lettres",
+        "reconnaître les différentes écritures d'une lettre"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_voix_haute",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire à voix haute",
+      "objectifs": [
+        "Lire des syllabes, mots et phrases de manière intelligible",
+        "Respecter progressivement la ponctuation",
+        "Adapter le débit et le phrasé",
+        "Développer la fluidité et l'automatisation"
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots"
+      ],
+      "mots_cles": [
+        "lecture",
+        "cp",
+        "lire des syllabes, mots et phrases de manière intelligible",
+        "respecter progressivement la ponctuation"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_comprendre",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Comprendre des textes et contrôler sa compréhension",
+      "objectifs": [
+        "Comprendre des textes lus par l'enseignant",
+        "Comprendre des textes courts lus par soi-même",
+        "Repérer des informations explicites",
+        "Relier les informations entre elles",
+        "Construire une représentation mentale",
+        "Répondre à des questions sur le texte",
+        "Formuler des hypothèses",
+        "Justifier sa compréhension",
+        "Contrôler et réguler sa compréhension"
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots",
+        "oral_ecouter"
+      ],
+      "mots_cles": [
+        "lecture",
+        "cp",
+        "comprendre des textes lus par l'enseignant",
+        "comprendre des textes courts lus par soi-même"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_pratiques",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Pratiquer différentes formes de lecture et développer le goût de lire",
+      "objectifs": [
+        "Découvrir des œuvres et textes variés",
+        "Écouter des lectures offertes",
+        "Lire des textes adaptés à son niveau",
+        "Fréquenter régulièrement des livres",
+        "Commencer à construire une culture littéraire"
+      ],
+      "prerequis_competences": [
+        "lecture_comprendre"
+      ],
+      "mots_cles": [
+        "lecture",
+        "cp",
+        "découvrir des œuvres et textes variés",
+        "écouter des lectures offertes"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_transcrire",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Transcrire de l'oral à l'écrit",
+      "objectifs": [
+        "Encoder des syllabes",
+        "Encoder des mots réguliers",
+        "Encoder des mots et phrases dictés adaptés aux correspondances étudiées",
+        "Segmenter correctement les mots dans une phrase",
+        "Mobiliser les correspondances graphèmes-phonèmes connues"
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots"
+      ],
+      "mots_cles": [
+        "ecriture",
+        "cp",
+        "encoder des syllabes",
+        "encoder des mots réguliers"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_geste",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Maîtriser progressivement le geste graphique et l'écriture cursive",
+      "objectifs": [
+        "Adopter une posture et une tenue adaptées",
+        "Former correctement les lettres",
+        "Respecter le sens du tracé",
+        "Enchaîner les lettres avec une fluidité croissante",
+        "Respecter l'organisation de la ligne et de la page"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "ecriture",
+        "cp",
+        "adopter une posture et une tenue adaptées",
+        "former correctement les lettres"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_copier",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Copier avec exactitude et efficacité",
+      "objectifs": [
+        "Copier des lettres, mots puis phrases",
+        "Respecter le modèle",
+        "Utiliser des stratégies de mémorisation",
+        "Relire pour vérifier la conformité de la copie"
+      ],
+      "prerequis_competences": [
+        "ecriture_geste",
+        "lecture_identifier_mots"
+      ],
+      "mots_cles": [
+        "ecriture",
+        "cp",
+        "copier des lettres, mots puis phrases",
+        "respecter le modèle"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_produire",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Produire des écrits courts",
+      "objectifs": [
+        "Trouver des idées avec guidage",
+        "Oraliser avant d'écrire",
+        "Produire une phrase syntaxiquement simple",
+        "Enchaîner quelques phrases simples avec aide",
+        "Utiliser les outils de la classe",
+        "Commencer à relire et améliorer son écrit"
+      ],
+      "prerequis_competences": [
+        "oral_dire",
+        "ecriture_transcrire",
+        "grammaire_phrase",
+        "orthographe_lexicale"
+      ],
+      "mots_cles": [
+        "ecriture",
+        "cp",
+        "trouver des idées avec guidage",
+        "oraliser avant d'écrire"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "oral_ecouter",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Écouter pour comprendre",
+      "objectifs": [
+        "Écouter un message oral ou un texte lu",
+        "Maintenir son attention",
+        "Repérer et mémoriser des informations importantes",
+        "Relier les informations pour construire le sens",
+        "Répondre à des questions de compréhension"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "cp",
+        "écouter un message oral ou un texte lu",
+        "maintenir son attention"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "oral_dire",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Dire pour être compris",
+      "objectifs": [
+        "S'exprimer avec une articulation intelligible",
+        "Produire des phrases compréhensibles",
+        "Raconter ou décrire de manière organisée",
+        "Dire un texte mémorisé avec expressivité",
+        "Adapter sa prise de parole à la situation"
+      ],
+      "prerequis_competences": [
+        "oral_ecouter"
+      ],
+      "mots_cles": [
+        "oral",
+        "cp",
+        "s'exprimer avec une articulation intelligible",
+        "produire des phrases compréhensibles"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "oral_echanger",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Participer à des échanges",
+      "objectifs": [
+        "Écouter les autres",
+        "Prendre la parole à bon escient",
+        "Respecter les règles de communication",
+        "Répondre à une question",
+        "Formuler une question",
+        "Justifier simplement un point de vue",
+        "Reformuler ou compléter une intervention"
+      ],
+      "prerequis_competences": [
+        "oral_ecouter",
+        "oral_dire"
+      ],
+      "mots_cles": [
+        "oral",
+        "cp",
+        "écouter les autres",
+        "prendre la parole à bon escient"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_enrichir",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Enrichir son vocabulaire dans tous les enseignements",
+      "objectifs": [
+        "Découvrir des mots nouveaux",
+        "Comprendre le sens d'un mot en contexte",
+        "Préciser progressivement le sens des mots",
+        "Employer un vocabulaire plus précis",
+        "Constituer des traces et outils de mémorisation"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "cp",
+        "découvrir des mots nouveaux",
+        "comprendre le sens d'un mot en contexte"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_relations",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Établir des relations entre les mots",
+      "objectifs": [
+        "Classer des mots",
+        "Identifier des mots de la même famille lorsque cela est accessible",
+        "Repérer des relations de sens simples",
+        "Commencer à distinguer synonymie et antonymie dans des cas simples",
+        "Observer les mots dans différents contextes"
+      ],
+      "prerequis_competences": [
+        "vocabulaire_enrichir"
+      ],
+      "mots_cles": [
+        "vocabulaire",
+        "cp",
+        "classer des mots",
+        "identifier des mots de la même famille lorsque cela est accessible"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_reemployer",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Réemployer le vocabulaire étudié",
+      "objectifs": [
+        "Réutiliser un mot nouveau à l'oral",
+        "Réutiliser un mot nouveau à l'écrit",
+        "Choisir un mot adapté au contexte",
+        "Mémoriser progressivement le vocabulaire étudié"
+      ],
+      "prerequis_competences": [
+        "vocabulaire_enrichir"
+      ],
+      "mots_cles": [
+        "vocabulaire",
+        "cp",
+        "réutiliser un mot nouveau à l'oral",
+        "réutiliser un mot nouveau à l'écrit"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_orthographe",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Mémoriser l'orthographe des mots étudiés",
+      "objectifs": [
+        "Observer les régularités graphiques",
+        "Mémoriser des mots fréquents",
+        "Réinvestir les mots mémorisés en dictée et en production"
+      ],
+      "prerequis_competences": [
+        "vocabulaire_enrichir"
+      ],
+      "mots_cles": [
+        "vocabulaire",
+        "cp",
+        "observer les régularités graphiques",
+        "mémoriser des mots fréquents"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "grammaire_phrase",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Se repérer dans la phrase simple",
+      "objectifs": [
+        "Reconnaître une phrase",
+        "Identifier les mots qui composent une phrase",
+        "Respecter la segmentation en mots",
+        "Repérer la majuscule et le point",
+        "Construire et manipuler des phrases simples",
+        "Observer la place et le rôle de groupes de mots"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire_orthographe",
+        "cp",
+        "reconnaître une phrase",
+        "identifier les mots qui composent une phrase"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "grammaire_sujet_verbe",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Identifier progressivement les principaux constituants de la phrase",
+      "objectifs": [
+        "Repérer le verbe dans des phrases simples adaptées",
+        "Repérer le sujet dans des phrases simples adaptées",
+        "Comprendre le lien élémentaire entre sujet et verbe"
+      ],
+      "prerequis_competences": [
+        "grammaire_phrase"
+      ],
+      "mots_cles": [
+        "grammaire_orthographe",
+        "cp",
+        "repérer le verbe dans des phrases simples adaptées",
+        "repérer le sujet dans des phrases simples adaptées"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "orthographe_grammaticale",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Découvrir et mettre en œuvre l'orthographe grammaticale",
+      "objectifs": [
+        "Mémoriser et appliquer des régularités étudiées",
+        "Utiliser la majuscule et la ponctuation de base",
+        "Commencer à prendre en compte certaines marques grammaticales fréquentes",
+        "Relire pour repérer des erreurs simples"
+      ],
+      "prerequis_competences": [
+        "grammaire_phrase"
+      ],
+      "mots_cles": [
+        "grammaire_orthographe",
+        "cp",
+        "mémoriser et appliquer des régularités étudiées",
+        "utiliser la majuscule et la ponctuation de base"
+      ],
+      "statut": "actif"
+    },
+    {
+      "id": "orthographe_lexicale",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Maîtriser progressivement l'orthographe des mots",
+      "objectifs": [
+        "Mobiliser les correspondances graphèmes-phonèmes",
+        "Mémoriser des mots fréquents",
+        "Repérer et mémoriser certaines régularités orthographiques",
+        "Utiliser les mots outils et référents de la classe"
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots",
+        "vocabulaire_orthographe"
+      ],
+      "mots_cles": [
+        "grammaire_orthographe",
+        "cp",
+        "mobiliser les correspondances graphèmes-phonèmes",
+        "mémoriser des mots fréquents"
+      ],
+      "statut": "actif"
+    }
+  ]
+}
