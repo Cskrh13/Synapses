@@ -687,8 +687,8 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
    Tous les chemins déclarés dans index.json sont donc relatifs à
    cette même racine.
    ============================================================ */
-const DATA_INDEX = "./index.json";
-const DATA_COMPETENCES = "./data/competences.json";
+const DATA_INDEX = "data/index.json";
+const DATA_COMPETENCES = "data/competences.json";
 
 const DOMAINES = {
   lecture:     { nom:"Lecture",               couleur:"#B5502E" },
@@ -785,32 +785,71 @@ function uid(prefix){ return prefix + "_" + Date.now().toString(36) + "_" + Math
        └── CP/
            └── francais/
                └── ...
-   Les chemins contenus dans index.json sont relatifs à /Programmation/.
+   Les chemins sont repris tels quels depuis data/index.json et résolus depuis Programmation/.
    ============================================================ */
 
 function absoluteDataURL(relativePath){
-  return new URL(relativePath, new URL(DATA_INDEX, window.location.href)).href;
+  /*
+   * IMPORTANT :
+   * Les chemins présents dans data/index.json sont utilisés tels quels
+   * depuis la page Programmation/sequences.html.
+   *
+   * Exemple :
+   *   data/competences.json
+   *   data/CP/francais/lecture/...
+   *
+   * On ne les résout donc PAS par rapport à data/index.json, sinon
+   * "data/..." deviendrait "data/data/...".
+   */
+  return new URL(relativePath, window.location.href).href;
 }
 
 async function fetchJSON(relativePath){
   const url = absoluteDataURL(relativePath);
-  const response = await fetch(url, {cache:"no-cache"});
+  const response = await fetch(url, {cache:"no-store"});
   if(!response.ok){
-    throw new Error(`HTTP ${response.status} — ${relativePath}`);
+    throw new Error(`${url} → HTTP ${response.status}`);
   }
   return response.json();
 }
 
 function sequenceDepuisJSON(data){
   if(!data) return [];
-  if(Array.isArray(data.sequences)) return data.sequences;
-  if(data.id && data.titre) return [data];
+
+  if(Array.isArray(data.sequences)){
+    return data.sequences.filter(Boolean);
+  }
+
+  if(data.sequence && typeof data.sequence === "object"){
+    return [data.sequence];
+  }
+
+  if(data.id && (data.titre || data.nom)){
+    return [data];
+  }
+
   return [];
 }
 
 function seancesDepuisJSON(data){
   if(!data) return [];
-  if(Array.isArray(data.seances)) return data.seances;
+
+  if(Array.isArray(data.seances)){
+    return data.seances.filter(Boolean);
+  }
+
+  if(Array.isArray(data)){
+    return data.filter(Boolean);
+  }
+
+  if(data.seance && typeof data.seance === "object"){
+    return [data.seance];
+  }
+
+  if(data.id && (data.titre || data.numero)){
+    return [data];
+  }
+
   return [];
 }
 
@@ -900,15 +939,23 @@ async function chargerDonneesDuSite(){
   const seances = [];
 
   for(const entry of sequenceEntries){
-    const sequenceData = await fetchJSON(entry.seqMeta.fichier_sequence);
+    let sequenceData;
+    try{
+      sequenceData = await fetchJSON(entry.seqMeta.fichier_sequence);
+    }catch(error){
+      console.warn("Séquence non chargée :", entry.seqMeta.fichier_sequence, error);
+      continue;
+    }
+
     const seqList = sequenceDepuisJSON(sequenceData);
 
     for(const rawSeq of seqList){
       const seq = normaliserSequence(rawSeq, index);
       sequences.push(seq);
 
-      /* Les fichiers de séances sont déclarés dans index.json.
-         Ils sont eux aussi relatifs à /Programmation/. */
+      /* Les fichiers de séances sont déclarés dans data/index.json.
+         Leurs chemins sont repris exactement tels qu'ils sont déclarés
+         dans l'index. */
       for(const seaMeta of (entry.seqMeta.seances || [])){
         try{
           const seaData = await fetchJSON(seaMeta.fichier);
