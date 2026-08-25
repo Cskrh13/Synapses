@@ -35,12 +35,14 @@
       "important": "Ne pas créer de prerequis_competences dans index.json à partir de simples suppositions ou de l'ordre d'apparition des programmes."
     }
   },
-  "meta": {
+"meta": {
     "titre": "Index central de la programmation pédagogique",
-    "version": "1.1",
+    "version": "1.2",
     "description": "Structure administrative et chronologique de la programmation. Le niveau, la discipline, le domaine, les séquences et les séances déterminent la localisation spatiale dans la cartographie.",
     "competences": "data/competences.json",
-    "regle_cartographie": "Le niveau déclaré ici est prioritaire pour le placement d'une séquence et de ses séances. competence_id sert uniquement à créer le lien pédagogique avec une compétence."
+    "index_pedagogique": "data/index-pedagogie.json",
+    "regle_cartographie": "Le niveau déclaré ici est prioritaire pour le placement d'une séquence et de ses séances. competence_id sert uniquement à créer le lien pédagogique avec une compétence.",
+    "regle_prerequis": "Les prérequis pédagogiques sont déterminés dans competences.json à partir des compétences réellement présentes. index-pedagogie.json sert de référence analytique mais n'est pas utilisé directement par la cartographie."
   },
   "niveaux": [
     {
@@ -60,6 +62,7 @@
                   "id": "seq_son_a_cp_01",
                   "titre": "Découvrir et maîtriser le son [a]",
                   "competence_id": "lecture_identifier_mots",
+                  "prerequis_competences": [],
                   "dossier": "data/CP/francais/lecture/sequence_son_a_CP/",
                   "fichier_sequence": "data/CP/francais/lecture/sequence_son_a_CP/sequence_son_a_CP.json",
                   "seances": [
@@ -68,49 +71,56 @@
                       "id": "sea_son_a_cp_01",
                       "type": "Diagnostique",
                       "titre": "Que savons-nous déjà du son [a] ?",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_01_diagnostique.json"
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_01_diagnostique.json",
+                      "prerequis_competences": []
                     },
                     {
                       "numero": 2,
                       "id": "sea_son_a_cp_02",
                       "type": "Exploration",
                       "titre": "J'entends le son [a]",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_02_exploration.json"
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_02_exploration.json",
+                      "prerequis_competences": []
                     },
                     {
                       "numero": 3,
                       "id": "sea_son_a_cp_03",
                       "type": "Références",
                       "titre": "Quelle lettre écrit le son [a] ?",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_03_references.json"
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_03_references.json",
+                      "prerequis_competences": []
                     },
                     {
                       "numero": 4,
                       "id": "sea_son_a_cp_04",
                       "type": "Structuration",
                       "titre": "Lire et écrire avec a",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_04_structuration.json"
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_04_structuration.json",
+                      "prerequis_competences": []
                     },
                     {
                       "numero": 5,
                       "id": "sea_son_a_cp_05",
                       "type": "Systématisation",
                       "titre": "Je m'entraîne avec le son [a]",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_05_systematisation.json"
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_05_systematisation.json",
+                      "prerequis_competences": []
                     },
                     {
                       "numero": 6,
                       "id": "sea_son_a_cp_06",
                       "type": "Approfondissement",
                       "titre": "Lire des mots et une phrase avec le son [a]",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_06_approfondissement.json"
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_06_approfondissement.json",
+                      "prerequis_competences": []
                     },
                     {
                       "numero": 7,
                       "id": "sea_son_a_cp_07",
                       "type": "Évaluation",
                       "titre": "Je montre ce que je sais faire avec le son [a]",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_07_evaluation.json"
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_07_evaluation.json",
+                      "prerequis_competences": []
                     }
                   ]
                 }
