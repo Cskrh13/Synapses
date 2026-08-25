@@ -1,0 +1,422 @@
+{
+"id": "triangle-pedagogique-houssaye-2014",
+"type": "ouvrage_pedagogique_scientifique",
+"statut": "analyse_source",
+
+"bibliographie": {
+"auteur": "Jean Houssaye",
+"annee": 2014,
+"titre": "Le triangle pédagogique",
+"sous_titre": "Les différentes facettes de la pédagogie",
+"editeur": "ESF éditeur",
+"isbn": "978-2-7101-2976-9",
+"collection": "Pédagogies",
+"source_fichier": "9782710129769.pdf"
+},
+
+"destination": {
+"dossier": "Programmation/data/reference/",
+"fichier": "triangle-pedagogique-houssaye-2014.json"
+},
+
+"mots_cles": {
+"domaines": [
+"transversal"
+],
+"thematiques": [
+"pedagogie",
+"situation_pedagogique",
+"relation_pedagogique",
+"enseignement",
+"apprentissage",
+"formation",
+"role_de_l_enseignant",
+"role_de_l_eleve",
+"rapport_au_savoir",
+"differenciation",
+"organisation_pedagogique"
+],
+"concepts": [
+"triangle_pedagogique",
+"savoir",
+"professeur",
+"eleves",
+"enseigner",
+"former",
+"apprendre",
+"relation_professeur_savoir",
+"relation_professeur_eleves",
+"relation_eleves_savoir",
+"processus_pedagogique",
+"place_du_tiers",
+"institution",
+"equilibre_pedagogique",
+"pratique_pedagogique",
+"theorie_et_pratique"
+]
+},
+
+"pertinence": {
+"français": "indirecte",
+"mathématiques": "indirecte",
+"sciences": "indirecte",
+"transversal": "tres_forte",
+"lecture": "indirecte",
+"comprehension": "indirecte",
+"numeration": "indirecte",
+"pre_requis_disciplinaires": "faible",
+"conception_des_sequences": "forte",
+"conception_des_seances": "forte",
+"analyse_des_pratiques": "tres_forte"
+},
+
+"mode_emploi_ia": {
+"objectif": "Utiliser cet ouvrage pour analyser la structure d'une situation pédagogique et les choix de processus pédagogiques, et non pour déduire directement des prérequis disciplinaires.",
+
+```
+"regles": [
+  "Ne pas utiliser cet ouvrage comme preuve directe qu'une compétence disciplinaire constitue le prérequis d'une autre.",
+  "Utiliser l'ouvrage pour analyser les conditions pédagogiques dans lesquelles un apprentissage peut être organisé.",
+  "Distinguer systématiquement les relations entre savoir, professeur et élèves des relations entre compétences disciplinaires.",
+  "Ne pas transformer automatiquement un principe pédagogique général en relation de prérequis dans competences.json.",
+  "Utiliser les concepts de l'ouvrage comme informations transversales pouvant éclairer la conception des séquences et des séances.",
+  "Toute affirmation attribuée à Houssaye doit pouvoir être reliée à une page du document."
+]
+```
+
+},
+
+"resume": {
+"objet": "L'ouvrage présente le triangle pédagogique comme un modèle de compréhension de la situation pédagogique. Il met en relation trois éléments génériques : le savoir, le professeur et les élèves.",
+"intention": "L'ouvrage cherche à fournir un modèle permettant de comprendre comment fonctionne une situation pédagogique et comment différentes pédagogies organisent les relations entre ces trois éléments.",
+"structure": "Le triangle pédagogique est complété par plusieurs textes consacrés à différentes facettes de la pédagogie. La lecture linéaire de l'ensemble n'est pas présentée comme indispensable.",
+"source": {
+"pages": "7-8",
+"preuve": "La présentation explique que le triangle pédagogique est un modèle de compréhension du fonctionnement de la situation éducative et que les textes suivants proposent différents éclairages sur les pratiques pédagogiques."
+}
+},
+
+"concepts_fondamentaux": [
+{
+"id": "triangle_pedagogique",
+"nom": "Triangle pédagogique",
+"definition_source": "Modèle de compréhension de la situation pédagogique construit autour de trois éléments : le savoir, le professeur et les élèves.",
+"source": {
+"pages": [
+9,
+10,
+11
+]
+}
+},
+{
+"id": "savoir",
+"nom": "Savoir",
+"definition_source": "Le terme désigne notamment les contenus, les disciplines, les programmes et les acquisitions.",
+"source": {
+"pages": [
+11
+]
+}
+},
+{
+"id": "professeur",
+"nom": "Professeur",
+"definition_source": "Le terme est utilisé dans un sens générique et peut désigner notamment l'instituteur, le formateur, l'éducateur, l'initiateur ou l'accompagnateur.",
+"source": {
+"pages": [
+11
+]
+}
+},
+{
+"id": "eleves",
+"nom": "Élèves",
+"definition_source": "Le terme désigne de manière générique les éduqués, formés, enseignés, apprenants ou s'éduquants.",
+"source": {
+"pages": [
+11
+]
+}
+},
+{
+"id": "place_du_tiers",
+"nom": "Place du mort",
+"definition_source": "Dans la modélisation présentée, deux des trois éléments se constituent comme sujets tandis que le troisième occupe la place du mort, sans pour autant disparaître totalement de la situation.",
+"source": {
+"pages": [
+11,
+12
+]
+}
+}
+],
+
+"principes_pedagogiques": [
+{
+"id": "principe-01",
+"type": "structure_situation_pedagogique",
+"enonce": "La situation pédagogique peut être comprise comme une configuration entre le savoir, le professeur et les élèves.",
+"source": {
+"pages": [
+11
+]
+},
+"niveau_de_confiance": "fort"
+},
+{
+"id": "principe-02",
+"type": "relation_pedagogique",
+"enonce": "Une pédagogie privilégie une relation entre deux des trois éléments du triangle et attribue au troisième une position spécifique.",
+"source": {
+"pages": [
+12
+]
+},
+"niveau_de_confiance": "fort"
+},
+{
+"id": "principe-03",
+"type": "processus",
+"enonce": "Trois processus sont distingués : enseigner, former et apprendre.",
+"source": {
+"pages": [
+12
+]
+},
+"niveau_de_confiance": "fort"
+},
+{
+"id": "principe-04",
+"type": "processus",
+"enonce": "Le processus enseigner privilégie l'axe professeur-savoir.",
+"source": {
+"pages": [
+12,
+13
+]
+},
+"niveau_de_confiance": "fort"
+},
+{
+"id": "principe-05",
+"type": "processus",
+"enonce": "Le processus former privilégie l'axe professeur-élèves.",
+"source": {
+"pages": [
+12,
+13
+]
+},
+"niveau_de_confiance": "fort"
+},
+{
+"id": "principe-06",
+"type": "processus",
+"enonce": "Le processus apprendre privilégie l'axe élèves-savoir.",
+"source": {
+"pages": [
+12,
+14
+]
+},
+"niveau_de_confiance": "fort"
+},
+{
+"id": "principe-07",
+"type": "coherence_pedagogique",
+"enonce": "Les trois processus possèdent des logiques distinctes et le passage d'un processus à un autre implique une restructuration de la situation pédagogique.",
+"source": {
+"pages": [
+14
+]
+},
+"niveau_de_confiance": "fort"
+},
+{
+"id": "principe-08",
+"type": "equilibre",
+"enonce": "Un processus pédagogique se maintient lorsque l'axe central reste prioritaire tout en laissant suffisamment de jeu et de compensation aux deux autres axes.",
+"source": {
+"pages": [
+16,
+17
+]
+},
+"niveau_de_confiance": "fort"
+},
+{
+"id": "principe-09",
+"type": "variation_pedagogique",
+"enonce": "Un même processus peut donner lieu à des pratiques pédagogiques différentes selon la place accordée aux deux axes annexes.",
+"source": {
+"pages": [
+17,
+18
+]
+},
+"niveau_de_confiance": "fort"
+}
+],
+
+"relations_apprentissage": [
+{
+"id": "relation-01",
+"source": "professeur",
+"cible": "savoir",
+"type": "relation_pedagogique",
+"processus": "enseigner",
+"force": "forte",
+"nature": "relation_structurelle",
+"source_pages": [
+12,
+13
+],
+"peut_produire_un_prerequis_competence": false
+},
+{
+"id": "relation-02",
+"source": "professeur",
+"cible": "eleves",
+"type": "relation_pedagogique",
+"processus": "former",
+"force": "forte",
+"nature": "relation_structurelle",
+"source_pages": [
+12,
+13
+],
+"peut_produire_un_prerequis_competence": false
+},
+{
+"id": "relation-03",
+"source": "eleves",
+"cible": "savoir",
+"type": "relation_pedagogique",
+"processus": "apprendre",
+"force": "forte",
+"nature": "relation_structurelle",
+"source_pages": [
+12,
+14
+],
+"peut_produire_un_prerequis_competence": false
+}
+],
+
+"implications_pour_synapses": [
+{
+"id": "implication-01",
+"type": "sequence",
+"enonce": "Le choix d'une organisation pédagogique peut être analysé selon la relation privilégiée entre savoir, professeur et élèves.",
+"utilisation": "Analyse de la conception d'une séquence.",
+"source_pages": [
+12,
+13,
+14
+],
+"niveau_de_confiance": "fort"
+},
+{
+"id": "implication-02",
+"type": "seance",
+"enonce": "Une séance peut être analysée selon le processus pédagogique dominant et selon la place laissée aux deux autres dimensions.",
+"utilisation": "Analyse pédagogique d'une séance.",
+"source_pages": [
+16,
+17
+],
+"niveau_de_confiance": "fort"
+},
+{
+"id": "implication-03",
+"type": "pre_requis",
+"enonce": "L'ouvrage ne fournit pas, à lui seul, de base suffisante pour établir des prérequis entre compétences disciplinaires.",
+"utilisation": "Exclusion de l'utilisation directe de cette référence pour créer des prerequis_competences.",
+"niveau_de_confiance": "fort"
+}
+],
+
+"limites_d_utilisation": [
+"Le modèle porte sur la situation pédagogique et non sur une progression disciplinaire particulière.",
+"Les relations professeur-savoir, professeur-élèves et élèves-savoir ne doivent pas être confondues avec des relations de dépendance entre compétences.",
+"La présence du mot « apprendre » dans le modèle ne constitue pas une preuve qu'un apprentissage A précède un apprentissage B.",
+"Les concepts de l'ouvrage peuvent éclairer la conception pédagogique mais ne remplacent pas les sources disciplinaires nécessaires pour établir des prérequis.",
+"Les applications à une discipline particulière doivent être distinguées des propositions explicitement formulées dans l'ouvrage."
+],
+
+"sources_precises": [
+{
+"pages": [
+7,
+8
+],
+"contenu": "Présentation et origine du modèle."
+},
+{
+"pages": [
+9,
+10,
+11
+],
+"contenu": "Définition de la pédagogie et présentation des éléments constitutifs de la situation pédagogique."
+},
+{
+"pages": [
+11,
+12
+],
+"contenu": "Première et deuxième propositions du triangle pédagogique."
+},
+{
+"pages": [
+12,
+13,
+14
+],
+"contenu": "Trois processus : enseigner, former, apprendre."
+},
+{
+"pages": [
+14,
+15
+],
+"contenu": "Logique propre des processus et impossibilité de passer progressivement de l'un à l'autre sans restructuration."
+},
+{
+"pages": [
+16,
+17
+],
+"contenu": "Maintien du processus et équilibre entre les axes."
+},
+{
+"pages": [
+17,
+18
+],
+"contenu": "Diversité des pratiques pédagogiques à l'intérieur d'un même processus."
+}
+],
+
+"synthese_pour_index_pedagogie": {
+"a_retenir": [
+"triangle_pedagogique",
+"savoir",
+"professeur",
+"eleves",
+"enseigner",
+"former",
+"apprendre",
+"processus_pedagogique",
+"equilibre_pedagogique",
+"coherence_pedagogique"
+],
+"a_ne_pas_utiliser_comme_preuve_de": [
+"prerequis_competence",
+"ordre_chronologique_des_competences",
+"progression_disciplinaire",
+"dependance_directe_entre_deux_connaissances"
+]
+}
+}
