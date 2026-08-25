@@ -1,12 +1,15 @@
 {
   "meta": {
-    "titre": "Référentiel de compétences CP – Français, Mathématiques et EMC",
-    "version": "2.1-travail",
-    "description": "Base de travail structurée pour les séquences et séances. Les compétences sont organisées à partir des programmes officiels fournis.",
+    "titre": "Référentiel de compétences – Cycles 2 et 3 – Français, Mathématiques, Histoire-Géographie et EMC",
+    "version": "3.0-travail",
+    "description": "Base de travail structurée pour les séquences et séances. Les compétences sont organisées à partir des programmes officiels fournis pour le cycle 2 et des programmes officiels du cycle 3 joints.",
     "sources": [
       "Annexe 3 – Programme de français du cycle 2",
       "Annexe 4 – Programme de mathématiques du cycle 2",
-      "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale"
+      "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+      "Programme de français pour le cycle 3",
+      "Programme de mathématiques pour le cycle 3",
+      "Programme d’histoire-géographie pour le cycle 3"
     ]
   },
   "domaines": [
@@ -69,6 +72,18 @@
       "discipline": "Enseignement moral et civique",
       "nom": "Enseignement moral et civique",
       "couleur": "#4F6D7A"
+    },
+    {
+      "id": "histoire",
+      "discipline": "Histoire",
+      "nom": "Histoire",
+      "couleur": "#8A5A44"
+    },
+    {
+      "id": "geographie",
+      "discipline": "Géographie",
+      "nom": "Géographie",
+      "couleur": "#3F7D5A"
     }
   ],
   "competences": [
@@ -1143,6 +1158,3283 @@
         "niveau_source": "Cours préparatoire"
       },
       "statut": "actif"
+    },
+    {
+      "id": "fr_lire_fluidite_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire avec fluidité",
+      "objectifs": [
+        "Lire sans effort un texte d’une page silencieusement ou à voix haute",
+        "Lire à voix haute un texte court, après préparation, en tenant compte des marques de ponctuation",
+        "Mémoriser de plus en plus de mots fréquents et irréguliers",
+        "Lire correctement en ciblant 110 mots par minute en moyenne"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Lire avec fluidité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_fluidite_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire avec fluidité",
+      "objectifs": [
+        "Poursuivre l’entraînement à la lecture à voix haute et à la lecture silencieuse",
+        "Lire à voix haute, après préparation, un texte long en tenant compte des marques de ponctuation, des liaisons et des unités syntaxiques",
+        "Lire correctement en ciblant 120 mots par minute en moyenne"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Lire avec fluidité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_fluidite_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire avec fluidité",
+      "objectifs": [
+        "Poursuivre l’entraînement à la lecture silencieuse et à la lecture à voix haute en renforçant le phrasé et la prosodie",
+        "Prendre en compte les groupes syntaxiques, les marques de ponctuation et les liaisons",
+        "Lire correctement en ciblant 130 mots par minute en moyenne"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Lire avec fluidité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_expressivite_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire à voix haute avec expressivité",
+      "objectifs": [
+        "Lire à voix haute, avec aisance et expressivité, un texte court travaillé en amont",
+        "Respecter la ponctuation et les groupes de sens",
+        "Gérer l’intensité de la voix (volume, débit)"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Lire à voix haute avec expressivité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_expressivite_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire à voix haute avec expressivité",
+      "objectifs": [
+        "Lire à voix haute, avec aisance et expressivité, un texte travaillé en amont",
+        "Travailler la mise en voix d’un texte (intonation, effets)",
+        "S’entraîner à faire vivre le texte et prendre du plaisir à le lire"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Lire à voix haute avec expressivité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_expressivite_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire à voix haute avec expressivité",
+      "objectifs": [
+        "Lire à voix haute, avec aisance et expressivité, un texte de 10 à 20 lignes en regardant l’auditoire",
+        "Rendre compte des émotions et sentiments des personnages et des intentions de l’auteur",
+        "Rendre l’intonation, le rythme et la caractérisation des personnages dans le dialogue de récit"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Lire à voix haute avec expressivité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_comprendre_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire et comprendre seul des textes, des documents et des images",
+      "objectifs": [
+        "Développer des stratégies de compréhension",
+        "Repérer les informations explicites et pointer des informations implicites",
+        "Distinguer, par la mise en page et les caractéristiques d’écriture, un extrait de théâtre, un poème ou un texte narratif"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Lire et comprendre seul des textes, des documents et des images"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_comprendre_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire et comprendre seul des textes, des documents et des images",
+      "objectifs": [
+        "Poursuivre son apprentissage de lecteur autonome face à des textes de plus en plus longs et complexes",
+        "Restituer l’essentiel d’un texte contenant des informations explicites et implicites",
+        "Reconnaître et nommer les principaux genres littéraires à l’aide de critères travaillés en classe"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Lire et comprendre seul des textes, des documents et des images"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_comprendre_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire et comprendre seul des textes, des documents et des images",
+      "objectifs": [
+        "Dégager le sens global d’un texte et affiner sa compréhension",
+        "Repérer les informations explicites et implicites, les liens logiques et les reprises nominales",
+        "Justifier ses interprétations en prenant appui sur le texte ou ses connaissances"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Lire et comprendre seul des textes, des documents et des images"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_documents_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire et comprendre des textes, des documents et des images pour apprendre dans toutes les disciplines",
+      "objectifs": [
+        "Donner la nature et la source d’un document",
+        "Identifier les genres représentés et leurs caractéristiques majeures",
+        "Trouver dans des documents simples les réponses à des questions",
+        "Découvrir des documents composites et y repérer des informations"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Lire et comprendre des textes, des documents et des images pour apprendre dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_documents_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire et comprendre des textes, des documents et des images pour apprendre dans toutes les disciplines",
+      "objectifs": [
+        "Reconnaître et nommer les caractéristiques des différents éléments d’un document composite",
+        "Rapprocher deux documents convergents de genres différents",
+        "Prélever et combiner des informations pour donner un sens global aux documents"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Lire et comprendre des textes, des documents et des images pour apprendre dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_documents_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire et comprendre des textes, des documents et des images pour apprendre dans toutes les disciplines",
+      "objectifs": [
+        "Identifier la nature et la source des documents",
+        "Rencontrer des textes, œuvres et documents variés",
+        "Comparer des documents de genres différents",
+        "Mettre en relation les informations de documents composites",
+        "Prendre appui sur les éléments essentiels d’une image fixe et les interpréter"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Lire et comprendre des textes, des documents et des images pour apprendre dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_oeuvre_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire une œuvre et se l’approprier",
+      "objectifs": [
+        "Mettre en relation le texte lu avec une œuvre lue en classe",
+        "Créer des liens avec ses expériences personnelles et ses connaissances",
+        "Varier les expériences de lecture",
+        "S’engager et persévérer dans sa lecture"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Lire une œuvre et se l’approprier"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_oeuvre_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire une œuvre et se l’approprier",
+      "objectifs": [
+        "Mettre en relation le texte lu avec une autre œuvre ou une autre référence culturelle",
+        "Mettre en relation le texte avec ses expériences personnelles",
+        "Développer le plaisir de lire, notamment avec des œuvres choisies",
+        "S’engager et persévérer dans sa lecture"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Lire une œuvre et se l’approprier"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_lire_oeuvre_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire une œuvre et se l’approprier",
+      "objectifs": [
+        "Lire et étudier trois œuvres du patrimoine en lecture intégrale et trois œuvres complètes en lecture cursive",
+        "Développer sa culture littéraire et artistique",
+        "Mettre en relation le texte avec d’autres références",
+        "Fonder sa compréhension fine sur des éléments précis et engager son interprétation",
+        "Partager ses impressions et confronter ses jugements"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "lecture",
+        "compréhension"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Lire une œuvre et se l’approprier"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_ecrire_main_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Écrire à la main de manière fluide et efficace",
+      "objectifs": [
+        "Copier et produire des textes",
+        "Acquérir des stratégies de copie"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Écrire à la main de manière fluide et efficace"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_ecrire_main_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Écrire à la main de manière fluide et efficace",
+      "objectifs": [
+        "Copier et produire des textes",
+        "Acquérir des stratégies de copie"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Écrire à la main de manière fluide et efficace"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_ecrire_main_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Écrire à la main de manière fluide et efficace",
+      "objectifs": [
+        "Copier des textes de façon lisible, régulière, soignée et sans erreur d’orthographe ou de ponctuation",
+        "Produire des textes en veillant à leur lisibilité et à leur mise en forme"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Écrire à la main de manière fluide et efficace"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_ecrire_reflechir_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Écrire pour réfléchir, apprendre et mémoriser",
+      "objectifs": [
+        "Écrire pour repérer et trier les informations pertinentes",
+        "Produire des écrits réflexifs courts pour s’entraîner à expliquer un point de vue",
+        "Reformuler l’essentiel d’une leçon ou d’une activité",
+        "Produire des écrits courts pour appliquer une règle de grammaire ou employer et mémoriser le lexique appris"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Écrire pour réfléchir, apprendre et mémoriser"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_ecrire_reflechir_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Écrire pour réfléchir, apprendre et mémoriser",
+      "objectifs": [
+        "Écrire pour comparer deux documents",
+        "Produire des écrits réflexifs courts pour expliquer un point de vue intégrant plusieurs documents",
+        "Reformuler l’essentiel d’une leçon, y compris de manière schématique",
+        "Produire des écrits courts pour appliquer une règle de grammaire ou employer et mémoriser le lexique appris"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Écrire pour réfléchir, apprendre et mémoriser"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_ecrire_reflechir_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Écrire pour réfléchir, apprendre et mémoriser",
+      "objectifs": [
+        "Écrire pour résumer et/ou synthétiser",
+        "Produire des écrits réflexifs courts pour argumenter et justifier ses choix",
+        "S’approprier individuellement l’essentiel d’une leçon",
+        "Hiérarchiser des idées",
+        "Produire des écrits courts pour appliquer une règle de grammaire ou employer et mémoriser le lexique appris"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Écrire pour réfléchir, apprendre et mémoriser"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_produire_ecrits_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Produire des écrits variés",
+      "objectifs": [
+        "Découvrir et explorer des situations variées d’écriture : raconter, expliquer",
+        "Écrire au quotidien des textes personnels",
+        "Utiliser le brouillon pour préparer son texte",
+        "Respecter les codes de l’écrit et construire la cohérence textuelle",
+        "Améliorer son texte à partir des pistes de l’enseignant et/ou des pairs"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Produire des écrits variés"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_produire_ecrits_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Produire des écrits variés",
+      "objectifs": [
+        "Découvrir et manipuler des situations variées d’écriture : décrire, dialoguer",
+        "Écrire au quotidien des textes personnels",
+        "Faire preuve d’autonomie dans le respect des codes de l’écrit",
+        "Appliquer les principes de la cohérence textuelle",
+        "Utiliser le brouillon et améliorer son texte avec l’enseignant, les pairs ou l’autoévaluation"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Produire des écrits variés"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_produire_ecrits_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Produire des écrits variés",
+      "objectifs": [
+        "Découvrir et expérimenter des situations variées d’écriture : résumer, synthétiser",
+        "Écrire fréquemment des textes personnels",
+        "Utiliser le brouillon de façon autonome",
+        "Respecter les codes et la cohérence textuelle",
+        "Réviser un texte en prenant en compte les normes de l’écrit"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "écriture",
+        "production d'écrits"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Produire des écrits variés"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_ecouter_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Écouter pour comprendre",
+      "objectifs": [
+        "Construire une posture d’auditeur en maintenant une écoute active orientée par le but",
+        "Comprendre un message oral provenant d’un tiers ou d’un média",
+        "Manifester sa compréhension des textes entendus",
+        "Identifier les caractéristiques des différents genres de discours",
+        "Manifester sa sensibilité à l’écoute d’un texte"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Écouter pour comprendre"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_ecouter_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Écouter pour comprendre",
+      "objectifs": [
+        "Construire une posture d’auditeur en maintenant une écoute active orientée par le but",
+        "Comprendre un message oral provenant d’un tiers ou d’un média",
+        "Manifester sa compréhension des textes entendus",
+        "Identifier les caractéristiques des différents genres de discours",
+        "Manifester sa sensibilité à l’écoute d’un texte"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Écouter pour comprendre"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_ecouter_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Écouter pour comprendre",
+      "objectifs": [
+        "Construire une posture d’auditeur en maintenant une écoute active orientée par le but",
+        "Comprendre un message oral provenant d’un tiers ou d’un média",
+        "Reformuler avec ses mots des informations explicites et implicites d’un texte entendu",
+        "Identifier les caractéristiques des différents genres de discours",
+        "Exprimer son ressenti à l’écoute d’un texte"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Écouter pour comprendre"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_dire_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Dire pour être compris dans toutes les disciplines",
+      "objectifs": [
+        "Réaliser une production orale claire et organisée pour raconter, expliquer, argumenter, justifier ou partager des connaissances",
+        "Faire vivre un texte littéraire, historique ou documentaire par une lecture expressive",
+        "Utiliser l’oral comme outil réflexif"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Dire pour être compris dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_dire_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Dire pour être compris dans toutes les disciplines",
+      "objectifs": [
+        "Réaliser une production orale claire et organisée pour raconter, expliquer, argumenter, justifier ou partager des connaissances",
+        "Faire vivre un texte littéraire, historique ou documentaire par une lecture expressive",
+        "Utiliser l’oral comme outil réflexif"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Dire pour être compris dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_dire_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Dire pour être compris dans toutes les disciplines",
+      "objectifs": [
+        "Réaliser une production orale claire et organisée pour raconter, expliquer, argumenter, justifier ou partager des connaissances",
+        "Lire devant un public, de manière claire et expressive, un texte littéraire ou documentaire",
+        "Utiliser l’oral comme outil réflexif"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Dire pour être compris dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_echanges_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Participer à des échanges verbaux",
+      "objectifs": [
+        "Prendre la parole en respectant les codes de la communication",
+        "Utiliser des structures de langage en fonction du but recherché",
+        "Construire et ajuster son propos de façon claire et ordonnée",
+        "Construire une analyse collective en interaction",
+        "Adapter son discours à la situation",
+        "Porter un regard critique sur l’oral produit"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Participer à des échanges verbaux"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_echanges_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Participer à des échanges verbaux",
+      "objectifs": [
+        "Prendre la parole en respectant les codes de la communication",
+        "Utiliser des structures de langage en fonction du but recherché",
+        "Construire et ajuster son propos de façon claire et ordonnée",
+        "Construire une analyse collective en interaction",
+        "Adapter son discours à la situation",
+        "Porter un regard critique sur l’oral produit"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Participer à des échanges verbaux"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_oral_echanges_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Participer à des échanges verbaux",
+      "objectifs": [
+        "Prendre la parole en respectant les codes de la communication",
+        "Construire et ajuster son propos de façon claire et ordonnée",
+        "Adapter son discours à la situation",
+        "Intervenir en tenant compte de ce qui a précédemment été dit par autrui",
+        "Porter un regard critique sur l’oral produit"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "oral",
+        "expression",
+        "écoute"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Participer à des échanges verbaux"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_enrichir_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Enrichir son vocabulaire dans toutes les disciplines",
+      "objectifs": [
+        "Approfondir, en contexte, le vocabulaire appris au cycle 2",
+        "Mémoriser des mots et expressions issus de corpus variés",
+        "Identifier les mots inconnus et rechercher leur signification en s’appuyant sur la morphologie et le contexte"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Enrichir son vocabulaire dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_enrichir_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Enrichir son vocabulaire dans toutes les disciplines",
+      "objectifs": [
+        "Acquérir un vocabulaire précis dans différents univers de référence",
+        "Se servir du contexte et de la morphologie pour comprendre les mots inconnus",
+        "Utiliser des dictionnaires"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Enrichir son vocabulaire dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_enrichir_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Enrichir son vocabulaire dans toutes les disciplines",
+      "objectifs": [
+        "Développer un vocabulaire spécifique dans différents univers de référence",
+        "Choisir de manière autonome les stratégies efficaces pour comprendre un mot inconnu",
+        "Prendre l’initiative de déduire, vérifier ou rechercher le sens d’un mot"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Enrichir son vocabulaire dans toutes les disciplines"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_relations_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Établir des relations entre les mots",
+      "objectifs": [
+        "Établir des relations morphologiques et sémantiques entre les mots",
+        "Comprendre et utiliser la synonymie et l’antonymie"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Établir des relations entre les mots"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_relations_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Établir des relations entre les mots",
+      "objectifs": [
+        "Approfondir la notion de polysémie",
+        "Approfondir les relations morphologiques et sémantiques entre les mots"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Établir des relations entre les mots"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_relations_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Établir des relations entre les mots",
+      "objectifs": [
+        "Composer et décomposer des mots en s’appuyant sur les relations morphologiques et sémantiques",
+        "Différencier mots simples, dérivés et composés",
+        "Donner des exemples de synonymes et d’antonymes respectant la classe grammaticale",
+        "Se sensibiliser à l’étymologie et à l’évolution du sens des mots"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Établir des relations entre les mots"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_reemployer_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Réemployer le vocabulaire étudié",
+      "objectifs": [
+        "À l’oral et à l’écrit, utiliser à bon escient les mots appris",
+        "Utiliser à bon escient les mots polysémiques dans différents contextes disciplinaires"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Réemployer le vocabulaire étudié"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_reemployer_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Réemployer le vocabulaire étudié",
+      "objectifs": [
+        "À l’oral et à l’écrit, utiliser précisément le vocabulaire de différents univers de référence",
+        "Utiliser à bon escient les mots polysémiques dans différents contextes disciplinaires"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Réemployer le vocabulaire étudié"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_reemployer_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Réemployer le vocabulaire étudié",
+      "objectifs": [
+        "Utiliser à bon escient le vocabulaire spécifique de différents univers de référence en respectant le registre de langue",
+        "Utiliser à bon escient les mots polysémiques dans différents contextes disciplinaires"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Réemployer le vocabulaire étudié"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_orthographe_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Mémoriser l’orthographe des mots",
+      "objectifs": [
+        "Écrire correctement les mots les plus fréquents en s’appuyant sur les régularités et la formation",
+        "S’appuyer sur la dimension morphologique des mots pour les orthographier"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Mémoriser l’orthographe des mots"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_orthographe_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Mémoriser l’orthographe des mots",
+      "objectifs": [
+        "Écrire correctement les mots fréquents en s’appuyant sur les régularités et la formation"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Mémoriser l’orthographe des mots"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_vocab_orthographe_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Mémoriser l’orthographe des mots",
+      "objectifs": [
+        "Écrire correctement les mots fréquents en situation autonome"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vocabulaire",
+        "lexique"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Mémoriser l’orthographe des mots"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_identifier_phrase_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Identifier les constituants d’une phrase simple",
+      "objectifs": [
+        "Identifier les trois types de phrases et leurs formes",
+        "Analyser une phrase simple : verbe, sujet, compléments, natures et fonctions",
+        "Identifier et analyser le groupe nominal",
+        "Utiliser les manipulations syntaxiques"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Identifier les constituants d’une phrase simple"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_identifier_phrase_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Identifier les constituants d’une phrase simple",
+      "objectifs": [
+        "Consolider l’identification des constituants de la phrase simple",
+        "Différencier attribut du sujet et complément d’objet",
+        "Différencier COD, COI et compléments circonstanciels",
+        "Mobiliser les manipulations syntaxiques"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Identifier les constituants d’une phrase simple"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_identifier_phrase_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Identifier les constituants d’une phrase simple",
+      "objectifs": [
+        "Consolider l’analyse de la phrase simple",
+        "Identifier COD, COI et attribut du sujet",
+        "Identifier les constituants et les fonctions dans des phrases plus complexes"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Identifier les constituants d’une phrase simple"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_phrase_complexe_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Se repérer dans la phrase complexe",
+      "objectifs": [
+        "Se préparer à distinguer les notions de nature et fonction et à reconnaître les constituants de la phrase",
+        "Mobiliser les connaissances grammaticales dans les activités langagières"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Se repérer dans la phrase complexe"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_phrase_complexe_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Se repérer dans la phrase complexe",
+      "objectifs": [
+        "Identifier et comprendre la phrase complexe",
+        "Distinguer juxtaposition, coordination et subordination",
+        "Mobiliser la syntaxe pour produire et améliorer les écrits"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Se repérer dans la phrase complexe"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_phrase_complexe_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Se repérer dans la phrase complexe",
+      "objectifs": [
+        "Se repérer dans la phrase complexe",
+        "Identifier proposition, juxtaposition, coordination et subordination",
+        "Comprendre la valeur des temps dans les textes littéraires"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Se repérer dans la phrase complexe"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_orthographe_grammaticale_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Acquérir l’orthographe grammaticale",
+      "objectifs": [
+        "Identifier les classes de mots variables",
+        "Réaliser la chaîne d’accords dans le groupe nominal",
+        "Accorder le sujet et le verbe",
+        "Approfondir la conjugaison et mémoriser les temps étudiés"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Acquérir l’orthographe grammaticale"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_orthographe_grammaticale_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Acquérir l’orthographe grammaticale",
+      "objectifs": [
+        "Consolider les chaînes d’accords",
+        "Accorder le sujet et le verbe dans des phrases de plus en plus complexes",
+        "Maîtriser les principales conjugaisons et marques de temps et de personne"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Acquérir l’orthographe grammaticale"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_gram_orthographe_grammaticale_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe grammaticale",
+      "couleur": "#1E2A4A",
+      "intitule": "Acquérir l’orthographe grammaticale",
+      "objectifs": [
+        "Maîtriser les chaînes d’accords dans le groupe nominal et entre sujet et verbe",
+        "Mobiliser les connaissances grammaticales dans les productions",
+        "Consolider la conjugaison et l’usage des temps verbaux"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "grammaire",
+        "orthographe",
+        "conjugaison"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Acquérir l’orthographe grammaticale"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_d_couvrir_des_h_ro_nes_des_h_ros_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Découvrir des héroïnes, des héros",
+      "objectifs": [
+        "Comprendre les motivations et fragilités des personnages et s’interroger sur les valeurs morales et culturelles qu’ils portent."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_d_couvrir_des_h_ro_nes_des_h_ros_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Découvrir des héroïnes, des héros",
+      "objectifs": [
+        "Comprendre les motivations et fragilités des personnages et s’interroger sur les valeurs morales et culturelles qu’ils portent."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_se_confronter_au_merveilleux_l_trange_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Se confronter au merveilleux, à l’étrange",
+      "objectifs": [
+        "Explorer l’inconnu, le rêve et la peur ; développer l’esprit critique et la créativité."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_se_confronter_au_merveilleux_l_trange_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Se confronter au merveilleux, à l’étrange",
+      "objectifs": [
+        "Explorer l’inconnu, le rêve et la peur ; développer l’esprit critique et la créativité."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_imaginer_et_vivre_d_autres_vies_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Imaginer et vivre d’autres vies",
+      "objectifs": [
+        "S’identifier ou se démarquer des personnages ; développer sensibilité, empathie, créativité et goût de la lecture."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_imaginer_et_vivre_d_autres_vies_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Imaginer et vivre d’autres vies",
+      "objectifs": [
+        "S’identifier ou se démarquer des personnages ; développer sensibilité, empathie, créativité et goût de la lecture."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_comprendre_et_interroger_la_morale_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Comprendre et interroger la morale",
+      "objectifs": [
+        "Comprendre les valeurs de justice, tolérance, liberté, respect des différences et préservation de l’environnement ; développer l’esprit critique."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_comprendre_et_interroger_la_morale_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Comprendre et interroger la morale",
+      "objectifs": [
+        "Comprendre les valeurs de justice, tolérance, liberté, respect des différences et préservation de l’environnement ; développer l’esprit critique."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_savourer_le_go_t_des_mots_imaginer_et_cr_er_en_po_sie_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Savourer le goût des mots, imaginer et créer en poésie",
+      "objectifs": [
+        "Développer une posture sensible de lecteur et jouer avec les écarts à la norme poétique."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_savourer_le_go_t_des_mots_imaginer_et_cr_er_en_po_sie_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Savourer le goût des mots, imaginer et créer en poésie",
+      "objectifs": [
+        "Développer une posture sensible de lecteur et jouer avec les écarts à la norme poétique."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_se_d_couvrir_s_affirmer_dans_le_rapport_aux_autres_cm1",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Se découvrir, s’affirmer dans le rapport aux autres",
+      "objectifs": [
+        "S’ouvrir à la complexité humaine et grandir grâce aux lectures, échanges et activités."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_se_d_couvrir_s_affirmer_dans_le_rapport_aux_autres_cm2",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Se découvrir, s’affirmer dans le rapport aux autres",
+      "objectifs": [
+        "S’ouvrir à la complexité humaine et grandir grâce aux lectures, échanges et activités."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_cr_er_recr_er_le_monde_r_cits_des_origines_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Créer, recréer le monde : récits des origines",
+      "objectifs": [
+        "Comparer des textes fondateurs, mythes et contes étiologiques ; être sensible aux symboles, métaphores, représentations et valeurs ; produire des écrits créatifs."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_chanter_et_enchanter_le_monde_mots_et_merveilles_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Chanter et enchanter le monde : mots et merveilles",
+      "objectifs": [
+        "Explorer différentes traditions poétiques, manipuler les ressources de la langue et comprendre le pouvoir d’évocation de la poésie."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_se_masquer_jouer_d_jouer_ruses_en_action_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Se masquer, jouer, déjouer : ruses en action",
+      "objectifs": [
+        "Comprendre le rapport entre illusion et réel au théâtre ; pratiquer mise en voix, mise en jeu et mise en scène ; développer écoute, concentration, expression, créativité et jugement critique."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_partir_l_aventure_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Partir à l’aventure !",
+      "objectifs": [
+        "Interroger l’élan de l’aventure, enrichir sa culture et sa réflexion et engager son imagination par la production de récits personnels."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "fr_culture_rencontrer_des_monstres_exp_rience_de_l_autre_exp_rience_de_soi_6e",
+      "discipline": "Français",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Rencontrer des monstres : expérience de l’autre, expérience de soi",
+      "objectifs": [
+        "Comprendre la figure du monstre, sa portée éducative et sa permanence ; créer de nouveaux monstres et les intégrer dans des récits ou mises en scène."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "culture littéraire",
+        "lecture"
+      ],
+      "source": {
+        "document": "Programme de français pour le cycle 3",
+        "fichier": "Programme de français pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Culture littéraire et artistique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_nombres_cycle3_cm1",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Nombres, calcul et résolution de problèmes",
+      "objectifs": [
+        "Lire, écrire, comparer et utiliser les nombres entiers",
+        "Travailler les fractions et les nombres décimaux",
+        "Construire et automatiser le calcul mental",
+        "Maîtriser les quatre opérations",
+        "Résoudre des problèmes en mobilisant chercher, modéliser, représenter, calculer, raisonner et communiquer",
+        "S’initier à la pensée algébrique par des nombres inconnus représentés par des symboles ou des mots"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "nombres",
+        "calcul",
+        "problèmes",
+        "fractions",
+        "décimaux"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Nombres, calcul et résolution de problèmes"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_nombres_cycle3_cm2",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Nombres, calcul et résolution de problèmes",
+      "objectifs": [
+        "Poursuivre la compréhension du système de numération et mobiliser ses propriétés dans les calculs",
+        "Approfondir les nombres entiers, fractions et nombres décimaux",
+        "Automatiser des faits numériques et procédures de calcul",
+        "Mobiliser les quatre opérations dans les problèmes",
+        "Résoudre des problèmes arithmétiques en choisissant une stratégie adaptée",
+        "Utiliser des modèles pré-algébriques pour raisonner sur des nombres inconnus"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "nombres",
+        "calcul",
+        "problèmes",
+        "fractions",
+        "décimaux"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Nombres, calcul et résolution de problèmes"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_nombres_cycle3_6e",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "nombres_calcul_problemes",
+      "domaine": "Nombres, calcul et résolution de problèmes",
+      "couleur": "#B5502E",
+      "intitule": "Nombres, calcul et résolution de problèmes",
+      "objectifs": [
+        "Maîtriser les nombres entiers et décimaux",
+        "Utiliser les fractions et leurs différentes représentations",
+        "Mobiliser des automatismes et des procédures de calcul",
+        "Résoudre des problèmes en donnant du sens aux notions étudiées",
+        "Raisonner sur des nombres inconnus dans des situations pré-algébriques"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "nombres",
+        "calcul",
+        "problèmes",
+        "fractions",
+        "décimaux"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Nombres, calcul et résolution de problèmes"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_grandeurs_mesures_cm1",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "grandeurs_mesures",
+      "domaine": "Grandeurs et mesures",
+      "couleur": "#2A7F72",
+      "intitule": "Mobiliser les grandeurs et les mesures",
+      "objectifs": [
+        "Mesurer et comparer des longueurs, masses et contenances avec des unités adaptées",
+        "Calculer et comparer des aires",
+        "Utiliser et construire des angles",
+        "Repérer des dates, horaires et durées"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "longueurs",
+        "masses",
+        "contenances",
+        "aires",
+        "angles",
+        "durées"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Grandeurs et mesures"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_grandeurs_mesures_cm2",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "grandeurs_mesures",
+      "domaine": "Grandeurs et mesures",
+      "couleur": "#2A7F72",
+      "intitule": "Mobiliser les grandeurs et les mesures",
+      "objectifs": [
+        "Approfondir les calculs d’aires et les mesures d’angles",
+        "Résoudre des problèmes de durées et de repérage dans le temps",
+        "Mobiliser les grandeurs et leurs unités dans les problèmes"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "longueurs",
+        "masses",
+        "contenances",
+        "aires",
+        "angles",
+        "durées"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Grandeurs et mesures"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_grandeurs_mesures_6e",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "grandeurs_mesures",
+      "domaine": "Grandeurs et mesures",
+      "couleur": "#2A7F72",
+      "intitule": "Mobiliser les grandeurs et les mesures",
+      "objectifs": [
+        "Mesurer et convertir des longueurs",
+        "Calculer et comparer des aires",
+        "Comprendre et calculer des volumes",
+        "Résoudre des problèmes de repérage dans le temps et de durées"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "longueurs",
+        "masses",
+        "contenances",
+        "aires",
+        "angles",
+        "durées"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Grandeurs et mesures"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_espace_geometrie_cm1",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "espace_geometrie",
+      "domaine": "Espace et géométrie",
+      "couleur": "#6B4E8E",
+      "intitule": "Construire, représenter et raisonner en géométrie",
+      "objectifs": [
+        "Construire et reconnaître des figures planes",
+        "Utiliser et représenter des solides",
+        "Se repérer dans l’espace"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "géométrie",
+        "figures",
+        "solides",
+        "espace"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Espace et géométrie"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_espace_geometrie_cm2",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "espace_geometrie",
+      "domaine": "Espace et géométrie",
+      "couleur": "#6B4E8E",
+      "intitule": "Construire, représenter et raisonner en géométrie",
+      "objectifs": [
+        "Construire et reconnaître des figures planes plus complexes",
+        "Décrire et construire des solides",
+        "Décrire et réaliser des déplacements dans l’espace"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "géométrie",
+        "figures",
+        "solides",
+        "espace"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Espace et géométrie"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_espace_geometrie_6e",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "espace_geometrie",
+      "domaine": "Espace et géométrie",
+      "couleur": "#6B4E8E",
+      "intitule": "Construire, représenter et raisonner en géométrie",
+      "objectifs": [
+        "Étudier des configurations planes",
+        "Utiliser des propriétés et des relations géométriques pour raisonner",
+        "Développer la vision dans l’espace et représenter des objets"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "géométrie",
+        "figures",
+        "solides",
+        "espace"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Espace et géométrie"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_donnees_probabilites_cm1",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "Organiser et interpréter des données et des probabilités",
+      "objectifs": [
+        "Lire, produire et interpréter des tableaux et représentations de données",
+        "Organiser des données issues de situations variées",
+        "S’initier à la probabilité par l’étude de situations simples de hasard"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "données",
+        "tableaux",
+        "graphiques",
+        "probabilités"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Organisation et gestion de données et probabilités"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_donnees_probabilites_cm2",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "Organiser et interpréter des données et des probabilités",
+      "objectifs": [
+        "Organiser, représenter et interpréter des données",
+        "Résoudre des problèmes à partir de données",
+        "Estimer et comparer des probabilités dans des situations simples"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "données",
+        "tableaux",
+        "graphiques",
+        "probabilités"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Organisation et gestion de données et probabilités"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_donnees_probabilites_6e",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "Organiser et interpréter des données et des probabilités",
+      "objectifs": [
+        "Lire, produire et interpréter tableaux, diagrammes et graphiques",
+        "Résoudre des problèmes de données",
+        "Modéliser et comparer des situations simples de probabilités"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "données",
+        "tableaux",
+        "graphiques",
+        "probabilités"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Organisation et gestion de données et probabilités"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_proportionnalite_cm1",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "Résoudre des problèmes de proportionnalité",
+      "objectifs": [
+        "Identifier une situation de proportionnalité",
+        "Résoudre un problème de proportionnalité"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "proportionnalité",
+        "échelles"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "La proportionnalité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_proportionnalite_cm2",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "Résoudre des problèmes de proportionnalité",
+      "objectifs": [
+        "Identifier une situation de proportionnalité",
+        "Résoudre un problème de proportionnalité en utilisant les propriétés de linéarité pour la multiplication ou l’addition"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "proportionnalité",
+        "échelles"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "La proportionnalité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_proportionnalite_6e",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "Résoudre des problèmes de proportionnalité",
+      "objectifs": [
+        "Connaître la définition de la proportionnalité entre deux grandeurs",
+        "Identifier une situation relevant du modèle de la proportionnalité",
+        "Résoudre un problème par linéarité multiplicative ou additive ou retour à l’unité",
+        "Représenter une situation de proportionnalité à l’aide d’un tableau ou de notations symboliques",
+        "S’initier à la résolution de problèmes d’échelles"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "proportionnalité",
+        "échelles"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "La proportionnalité"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_pensee_informatique_cm1",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "S’initier à la pensée informatique",
+      "objectifs": [
+        "Développer des raisonnements relevant de la pensée informatique dans des activités liées aux mathématiques",
+        "S’initier à l’algorithmique, à la logique et à la résolution de problèmes complexes avec ou sans machine"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "pensée informatique",
+        "algorithmique",
+        "logique",
+        "numérique"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Initiation à la pensée informatique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_pensee_informatique_cm2",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "S’initier à la pensée informatique",
+      "objectifs": [
+        "Développer des raisonnements relevant de la pensée informatique dans des activités mathématiques",
+        "Utiliser des procédures et des représentations favorisant l’algorithmique et la logique"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "pensée informatique",
+        "algorithmique",
+        "logique",
+        "numérique"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Initiation à la pensée informatique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "math_pensee_informatique_6e",
+      "discipline": "Mathématiques",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "organisation_donnees",
+      "domaine": "Organisation et gestion de données",
+      "couleur": "#B5871E",
+      "intitule": "S’initier à la pensée informatique",
+      "objectifs": [
+        "Comprendre la pensée informatique comme une démarche de résolution de problèmes",
+        "Développer des compétences en algorithmique et en logique avec ou sans machine",
+        "Relier ces apprentissages aux enjeux contemporains du numérique et au cadre de référence des compétences numériques"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "pensée informatique",
+        "algorithmique",
+        "logique",
+        "numérique"
+      ],
+      "source": {
+        "document": "Programme de mathématiques pour le cycle 3",
+        "fichier": "Programme de mathématiques pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Initiation à la pensée informatique"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_th_me_1_la_vie_quotidienne_au_moyen_ge_xie_xiiie_si_cles",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 1 : La vie quotidienne au Moyen Âge (XIe - XIIIe siècles)",
+      "objectifs": [
+        "Connaître et comprendre les principaux aspects de la vie quotidienne au Moyen Âge",
+        "Décrire le fonctionnement d’une seigneurie et les relations entre les différents groupes sociaux",
+        "Décrire les activités des villes au Moyen Âge",
+        "Situer le Moyen Âge sur une frise chronologique"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Moyen Âge",
+        "XIe-XIIIe siècles",
+        "seigneurie",
+        "ville",
+        "Église"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Thème 1 : La vie quotidienne au Moyen Âge (XIe - XIIIe siècles)"
+      },
+      "statut": "actif",
+      "question": "Comment les femmes et les hommes vivaient-ils au Moyen Âge ?"
+    },
+    {
+      "id": "hist_th_me_2_la_monarchie_en_france_xvie_xviie_si_cles",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 2 : La monarchie en France (XVIe – XVIIe siècles)",
+      "objectifs": [
+        "Connaître et comprendre la monarchie française des XVIe-XVIIe siècles",
+        "Comprendre la société d’ordres et les rapports entre le roi et les différents groupes sociaux",
+        "Identifier les transformations du pouvoir royal et de la monarchie absolue"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "XVIe-XVIIe siècles",
+        "monarchie absolue",
+        "société d’ordres",
+        "Louis XIV"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Thème 2 : La monarchie en France (XVIe – XVIIe siècles)"
+      },
+      "statut": "actif",
+      "question": "Comment le roi incarne-t-il le pouvoir aux XVIe et XVIIe siècles ?"
+    },
+    {
+      "id": "hist_th_me_3_explorations_et_conqu_tes_par_les_europ_ens_du_xve_au_xviie_si_cle",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 3 : Explorations et conquêtes par les Européens du XVe au XVIIe siècle",
+      "objectifs": [
+        "Connaître les grandes explorations européennes et leurs motivations",
+        "Comprendre les conséquences des explorations : conquêtes, colonisation, traite et esclavage",
+        "Utiliser cartes et documents pour situer les espaces concernés"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "XVe-XVIIe siècles",
+        "explorations",
+        "colonisation",
+        "traite",
+        "esclavage"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Thème 3 : Explorations et conquêtes par les Européens du XVe au XVIIe siècle"
+      },
+      "statut": "actif",
+      "question": "Pourquoi les Européens explorent-ils le monde et comment cela mène-t-il à la première colonisation ?"
+    },
+    {
+      "id": "hist_th_me_4_1789_une_ann_e_r_volutionnaire_en_france",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 4 : 1789, une année révolutionnaire en France",
+      "objectifs": [
+        "Comprendre les causes et les principaux événements de 1789",
+        "Identifier la fin de la monarchie absolue et de la société d’ordres",
+        "Comprendre la Déclaration des droits de l’homme et du citoyen et les notions de liberté et d’égalité"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "1789",
+        "Révolution française",
+        "14 juillet 1789",
+        "Déclaration des droits de l’homme et du citoyen"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Thème 4 : 1789, une année révolutionnaire en France"
+      },
+      "statut": "actif",
+      "question": "Comment l’année 1789 met-elle fin à la monarchie absolue et à la société d’ordres ?"
+    },
+    {
+      "id": "hist_th_me_1_de_la_r_publique_l_empire_1792_1815",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 1 : De la République à l’Empire (1792-1815)",
+      "objectifs": [
+        "Connaître la naissance de la République et les transformations politiques de la période",
+        "Comprendre les transformations apportées par la Révolution et l’Empire",
+        "Identifier les changements institutionnels et sociaux, dont le Code civil"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "1792",
+        "République",
+        "1804",
+        "Empire",
+        "1815"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 1 : De la République à l’Empire (1792-1815)"
+      },
+      "statut": "actif",
+      "question": "Comment la République et l’Empire ont-ils transformé la vie des Français et des Françaises ?"
+    },
+    {
+      "id": "hist_th_me_2_vers_une_france_r_publicaine_la_iie_r_publique_1848_1852_et_la_iiie_r_publique_de_1870_1914",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 2 : Vers une France républicaine : la IIe République (1848-1852) et la IIIe République de 1870 à 1914",
+      "objectifs": [
+        "Comprendre les étapes de l’installation de la République",
+        "Identifier les acquis de la IIe et de la IIIe République : suffrage universel masculin, abolition de l’esclavage, laïcité",
+        "Comprendre les transformations de la société française et l’expansion coloniale"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "1848-1852",
+        "1870-1914",
+        "IIe République",
+        "IIIe République"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 2 : Vers une France républicaine : la IIe République (1848-1852) et la IIIe République de 1870 à 1914"
+      },
+      "statut": "actif",
+      "question": "Comment la France est-elle devenue une République ?"
+    },
+    {
+      "id": "hist_th_me_3_l_ge_industriel_en_france_au_xixe_si_cle",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 3 : L’âge industriel en France au XIXe siècle",
+      "objectifs": [
+        "Connaître les principales transformations liées à l’industrialisation",
+        "Décrire les conditions de travail et de vie des ouvriers et les transformations des villes",
+        "Comprendre les évolutions sociales, économiques et scientifiques"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "XIXe siècle",
+        "industrialisation",
+        "usine",
+        "ouvrier",
+        "urbanisation"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 3 : L’âge industriel en France au XIXe siècle"
+      },
+      "statut": "actif",
+      "question": "Quelles sont les transformations économiques et sociales en France au XIXe siècle ?"
+    },
+    {
+      "id": "hist_th_me_4_la_france_dans_la_premi_re_guerre_mondiale_1914_1918",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 4 : La France dans la Première Guerre mondiale (1914-1918)",
+      "objectifs": [
+        "Connaître le front occidental, la vie des soldats et la mobilisation de toute la population et de l’économie",
+        "Situer la Première Guerre mondiale sur une frise",
+        "Raconter la vie sur le front",
+        "Expliquer la mobilisation humaine, économique, industrielle et culturelle",
+        "Mémoriser quelques éléments du bilan humain"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "1914-1918",
+        "Première Guerre mondiale",
+        "11 novembre 1918",
+        "armistice"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 4 : La France dans la Première Guerre mondiale (1914-1918)"
+      },
+      "statut": "actif",
+      "question": "Comment la Première Guerre mondiale a-t-elle bouleversé la société française ?"
+    },
+    {
+      "id": "hist_th_me_5_la_france_pendant_la_seconde_guerre_mondiale_1939_1945",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 5 : La France pendant la Seconde Guerre mondiale (1939-1945)",
+      "objectifs": [
+        "Connaître les principales phases de la Seconde Guerre mondiale en France",
+        "Décrire les difficultés de la vie sous l’Occupation",
+        "Identifier le rôle de la Résistance",
+        "Décrire le rôle de Philippe Pétain et la politique antisémite du régime de Vichy et expliquer sa participation à l’extermination des Juifs"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "1939-1945",
+        "18 juin 1940",
+        "1942",
+        "6 juin 1944"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 5 : La France pendant la Seconde Guerre mondiale (1939-1945)"
+      },
+      "statut": "actif",
+      "question": "Comment la France a-t-elle vécu la défaite, l’Occupation puis la Libération ?"
+    },
+    {
+      "id": "hist_th_me_6_la_france_depuis_1945_80_ans_de_transformations",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 6 : La France depuis 1945 : 80 ans de transformations",
+      "objectifs": [
+        "Connaître les grandes transformations politiques, sociales, économiques et culturelles depuis 1945",
+        "Comprendre les principales étapes de la construction européenne et de la société de consommation",
+        "Identifier des transformations des modes de vie, du travail, des loisirs et des innovations"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Depuis 1945",
+        "Sécurité sociale",
+        "construction européenne",
+        "société de consommation"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 6 : La France depuis 1945 : 80 ans de transformations"
+      },
+      "statut": "actif",
+      "question": "Comment expliquer la longue période de paix et de transformation depuis 1945 ?"
+    },
+    {
+      "id": "hist_th_me_introductif_se_rep_rer_dans_le_temps",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème introductif : Se repérer dans le temps",
+      "objectifs": [
+        "Construire et utiliser une frise chronologique",
+        "Ordonner des événements et périodes et mobiliser des repères temporels",
+        "Distinguer durée, période et événement"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Paléolithique",
+        "Néolithique",
+        "Antiquité"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème introductif : Se repérer dans le temps"
+      },
+      "statut": "actif",
+      "question": "Comment les humains se repèrent-ils dans le temps ?"
+    },
+    {
+      "id": "hist_th_me_1_du_pal_olithique_au_n_olithique",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 1 : Du Paléolithique au Néolithique",
+      "objectifs": [
+        "Comprendre le passage des sociétés de chasseurs-cueilleurs aux sociétés d’agriculteurs-éleveurs",
+        "Identifier les transformations de l’environnement, des modes de vie et des sociétés",
+        "S’appuyer sur des traces archéologiques pour construire des connaissances"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Paléolithique",
+        "Néolithique",
+        "agriculture",
+        "élevage"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème 1 : Du Paléolithique au Néolithique"
+      },
+      "statut": "actif",
+      "question": "Comment les hommes et les femmes du Néolithique ont-ils transformé leur environnement par la pratique et la maîtrise de l’agriculture et de l’élevage ?"
+    },
+    {
+      "id": "hist_th_me_2_des_soci_t_s_des_tats_des_dieux_ive_ier_mill_naire_av_j_c_proche_orient_et_gypte_pharaonique",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 2 : Des sociétés, des États, des dieux (IVe-Ier millénaire av. J.-C.) : Proche-Orient et Égypte pharaonique",
+      "objectifs": [
+        "Comprendre l’apparition des premiers États et des premières écritures",
+        "Identifier le rôle des pouvoirs et des religions",
+        "Étudier des traces et documents pour comprendre les sociétés anciennes"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Proche-Orient",
+        "Égypte",
+        "écriture",
+        "premiers États"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème 2 : Des sociétés, des États, des dieux (IVe-Ier millénaire av. J.-C.) : Proche-Orient et Égypte pharaonique"
+      },
+      "statut": "actif",
+      "question": "Quelles sont les transformations politiques et religieuses fondatrices apparaissant au Proche-Orient et en Égypte ?"
+    },
+    {
+      "id": "hist_th_me_3_le_monde_grec_des_cit_s_tats_aux_conqu_tes_d_alexandre_le_grand",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 3 : Le monde grec : des cités-États aux conquêtes d’Alexandre le Grand",
+      "objectifs": [
+        "Identifier les caractéristiques des cités grecques",
+        "Comprendre citoyenneté, démocratie, religion et colonisation grecques",
+        "Situer les conquêtes d’Alexandre le Grand et leurs conséquences"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Ve siècle av. J.-C.",
+        "323 av. J.-C.",
+        "Athènes",
+        "Alexandre le Grand"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème 3 : Le monde grec : des cités-États aux conquêtes d’Alexandre le Grand"
+      },
+      "statut": "actif",
+      "question": "Quelles sont les caractéristiques du monde grec ?"
+    },
+    {
+      "id": "hist_th_me_4_les_mondes_celtes_des_soci_t_s_en_relation_avec_les_mondes_m_diterran_ens",
+      "discipline": "Histoire",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Thème 4 : Les mondes celtes, des sociétés en relation avec les mondes méditerranéens",
+      "objectifs": [
+        "Identifier les sociétés celtes et leur diversité",
+        "Comprendre leurs relations avec les mondes méditerranéens",
+        "Étudier les traces archéologiques et les phénomènes de romanisation"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "VIIIe-milieu du Ier siècle av. J.-C.",
+        "Gaules",
+        "oppidum",
+        "romanisation"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème 4 : Les mondes celtes, des sociétés en relation avec les mondes méditerranéens"
+      },
+      "statut": "actif",
+      "question": "Qui sont les Celtes ?"
+    },
+    {
+      "id": "geo_th_me_1_se_nourrir",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 1 : Se nourrir",
+      "objectifs": [
+        "Connaître et comprendre la diversité des pratiques alimentaires dans le monde",
+        "Connaître la provenance des principaux aliments consommés",
+        "Décrire les différences entre un pays riche et un pays en développement",
+        "Décrire la différence entre produits agricoles et produits transformés",
+        "Décrire la chaîne de production d’un aliment"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Afrique",
+        "Asie",
+        "Amérique",
+        "pays riche",
+        "pays en développement"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Thème 1 : Se nourrir"
+      },
+      "statut": "actif",
+      "question": "Comment se nourrit-on dans le monde ?"
+    },
+    {
+      "id": "geo_th_me_2_les_in_galit_s_dans_le_monde",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 2 : Les inégalités dans le monde",
+      "objectifs": [
+        "Connaître et comprendre l’inégal accès à l’eau, à la santé ou à l’éducation",
+        "Identifier les manifestations des inégalités de niveau de vie",
+        "Localiser et nommer les grandes aires régionales sur un planisphère"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Afrique subsaharienne",
+        "Maghreb",
+        "Amérique du Nord",
+        "Amérique du Sud",
+        "Asie du Sud-Est",
+        "Asie de l’Est",
+        "Europe",
+        "Océanie"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Thème 2 : Les inégalités dans le monde"
+      },
+      "statut": "actif",
+      "question": "Comment décrire les inégalités de niveau de vie dans le monde ?"
+    },
+    {
+      "id": "geo_th_me_3_se_d_placer",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 3 : Se déplacer",
+      "objectifs": [
+        "Connaître les modalités de déplacement des élèves à différentes échelles de temps",
+        "Connaître les principaux modes de transport de personnes et les infrastructures associées",
+        "Identifier la diversité des déplacements et les associer aux distances à parcourir"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "distance kilométrique",
+        "distance en temps"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Thème 3 : Se déplacer"
+      },
+      "statut": "actif",
+      "question": "Comment se déplace-t-on dans le monde ?"
+    },
+    {
+      "id": "geo_th_me_4_communiquer_dans_le_monde_avec_internet",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 4 : Communiquer dans le monde avec Internet",
+      "objectifs": [
+        "Comprendre les usages d’Internet et la circulation de l’information",
+        "Identifier les réseaux et infrastructures qui permettent la communication à l’échelle mondiale",
+        "Comprendre que l’accès et les usages du numérique varient selon les territoires"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Internet",
+        "réseau",
+        "satellite",
+        "câble sous-marin"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM1",
+        "section": "Thème 4 : Communiquer dans le monde avec Internet"
+      },
+      "statut": "actif",
+      "question": "Comment communique-t-on avec Internet dans le monde ?"
+    },
+    {
+      "id": "geo_th_me_1_l_organisation_du_territoire_fran_ais",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 1 : L’organisation du territoire français",
+      "objectifs": [
+        "Connaître les principaux niveaux d’organisation territoriale",
+        "Identifier les grandes caractéristiques de l’organisation du territoire français",
+        "Localiser et situer les principaux espaces et réseaux"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "commune",
+        "département",
+        "région",
+        "France",
+        "TGV"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 1 : L’organisation du territoire français"
+      },
+      "statut": "actif",
+      "question": "Comment est organisé le territoire français ?"
+    },
+    {
+      "id": "geo_th_me_2_les_usages_de_l_eau_douce_en_france",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 2 : Les usages de l’eau douce en France",
+      "objectifs": [
+        "Connaître les principaux usages de l’eau douce",
+        "Identifier les ressources, besoins et tensions liés à l’eau",
+        "Comprendre la nécessité de gérer durablement l’eau et les conflits d’usages"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "eau douce",
+        "nappe phréatique",
+        "conflit d’usages"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 2 : Les usages de l’eau douce en France"
+      },
+      "statut": "actif",
+      "question": "Pourquoi gérer l’eau douce en France ?"
+    },
+    {
+      "id": "geo_th_me_3_l_union_europ_enne",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 3 : L’Union européenne",
+      "objectifs": [
+        "Connaître les principaux éléments de l’Union européenne",
+        "Identifier la place de la France dans l’Union européenne",
+        "Localiser et situer les États membres et les grands repères européens"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "Europe",
+        "Union européenne"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "CM2",
+        "section": "Thème 3 : L’Union européenne"
+      },
+      "statut": "actif",
+      "question": "Qu’est-ce que l’Union européenne ?"
+    },
+    {
+      "id": "geo_th_me_introductif_je_me_rep_re_la_surface_de_la_terre",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème introductif : Je me repère à la surface de la Terre",
+      "objectifs": [
+        "Utiliser différents outils de représentation de la Terre",
+        "Se repérer à la surface de la Terre",
+        "Lire et construire des cartes et des schémas",
+        "Mobiliser les grands repères géographiques"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "équateur",
+        "continents",
+        "océans",
+        "planisphère"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème introductif : Je me repère à la surface de la Terre"
+      },
+      "statut": "actif",
+      "question": "Comment représenter le monde et se situer sur un planisphère ?"
+    },
+    {
+      "id": "geo_th_me_1_le_peuplement_de_la_terre",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 1 : Le peuplement de la Terre",
+      "objectifs": [
+        "Connaître les grands foyers de peuplement",
+        "Comprendre les dynamiques de peuplement et leurs facteurs",
+        "Décrire et expliquer les contrastes de peuplement à différentes échelles"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "foyers de peuplement",
+        "croissance démographique",
+        "solde migratoire",
+        "espérance de vie"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème 1 : Le peuplement de la Terre"
+      },
+      "statut": "actif",
+      "question": "Où sont les femmes et les hommes sur la Terre ?"
+    },
+    {
+      "id": "geo_th_me_2_habiter_une_m_tropole",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 2 : Habiter une métropole",
+      "objectifs": [
+        "Comprendre les différentes manières d’habiter une métropole",
+        "Comparer deux métropoles et leurs organisations",
+        "Identifier les principales métropoles et leurs fonctions"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "métropole",
+        "centre",
+        "périphérie",
+        "mobilités"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème 2 : Habiter une métropole"
+      },
+      "statut": "actif",
+      "question": "Comment habite-t-on une métropole ?"
+    },
+    {
+      "id": "geo_th_me_3_habiter_un_espace_soumis_des_contraintes_naturelles",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 3 : Habiter un espace soumis à des contraintes naturelles",
+      "objectifs": [
+        "Connaître différentes contraintes naturelles",
+        "Comprendre comment les sociétés s’adaptent à ces contraintes",
+        "Identifier les aménagements et stratégies d’adaptation"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "contrainte naturelle",
+        "adaptation",
+        "aménagement"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème 3 : Habiter un espace soumis à des contraintes naturelles"
+      },
+      "statut": "actif",
+      "question": "Comment habite-t-on un espace soumis à des contraintes naturelles ?"
+    },
+    {
+      "id": "geo_th_me_4_habiter_un_espace_expos_aux_risques_dans_le_contexte_du_d_r_glement_climatique",
+      "discipline": "Géographie",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Thème 4 : Habiter un espace exposé aux risques dans le contexte du dérèglement climatique",
+      "objectifs": [
+        "Identifier des espaces exposés aux risques",
+        "Comprendre la vulnérabilité des sociétés et les stratégies de prévention",
+        "Mettre en relation risques, dérèglement climatique et adaptation des sociétés"
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "risque",
+        "vulnérabilité",
+        "dérèglement climatique",
+        "prévention",
+        "adaptation"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 3",
+        "fichier": "Programme d’histoire-géographie pour le cycle 3",
+        "niveau_source": "6e",
+        "section": "Thème 4 : Habiter un espace exposé aux risques dans le contexte du dérèglement climatique"
+      },
+      "statut": "actif",
+      "question": "Comment les sociétés vivent-elles avec le risque dans le contexte du dérèglement climatique ?"
     }
   ]
 }
