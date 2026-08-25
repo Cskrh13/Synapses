@@ -1,350 +1,509 @@
 {
-"meta": {
-"id": "index-pedagogie",
-"version": "1.0",
-"statut": "index_de_bibliotheque_pedagogique",
-"description": "Index permettant à une IA de sélectionner les références pédagogiques pertinentes, de lire leurs abrégés structurés et d'en compiler les connaissances utiles pour analyser les relations entre apprentissages.",
-"principe": "Les ouvrages et documents sont analysés séparément. Le présent fichier ne contient pas le contenu détaillé des ouvrages : il indique où les trouver, à quels domaines ils sont pertinents et comment exploiter leurs abrégés.",
-"fichier_source_des_competences": "competences.json",
-"fichier_source_de_programmation": "index.json"
-},
+  "meta": {
+    "id": "index-pedagogie",
+    "version": "1.1",
+    "statut": "index_de_references_pedagogiques",
+    "description": "Index central des références pédagogiques utilisées pour analyser les apprentissages, les progressions et les relations potentielles entre compétences.",
+    "emplacement": "Programmation/data/index-pedagogie.json",
+    "repertoire_references": "Programmation/data/references/",
+    "fichier_competences": "Programmation/data/competences.json",
+    "fichier_programmation": "Programmation/data/index.json",
+    "principe": "L'index permet à une IA d'identifier les références pertinentes. Le contenu détaillé de chaque ouvrage est conservé dans un fichier JSON distinct du dossier references."
+  },
 
-"architecture": {
-"bibliotheque": "bibliotheque-pedagogique/",
-"index": "index-pedagogie.json",
-"references": "bibliotheque-pedagogique/references/",
-"analyses": "bibliotheque-pedagogique/analyses/",
-"regle": "Un document source possède une référence bibliographique et une analyse structurée distincte."
-},
+  "architecture": {
+    "racine_donnees": "Programmation/data/",
+    "index_pedagogie": "Programmation/data/index-pedagogie.json",
+    "references": "Programmation/data/references/",
+    "competences": "Programmation/data/competences.json",
+    "programmation": "Programmation/data/index.json",
 
-"mode_emploi": {
-"objectif": "Permettre à une IA d'ajouter de nouveaux ouvrages scientifiques, guides institutionnels, articles, rapports ou autres références pédagogiques sans modifier la structure de Synapses.",
+    "organisation": {
+      "index-pedagogie.json": "Catalogue et système d'orientation vers les références.",
+      "references/*.json": "Analyse structurée d'un ouvrage ou document pédagogique.",
+      "competences.json": "Compétences, relations et prérequis finalement retenus.",
+      "index.json": "Organisation des niveaux, disciplines, domaines, séquences et séances."
+    }
+  },
 
-```
-"procedure_ajout_document": [
-  {
-    "etape": 1,
-    "action": "Identifier précisément le document.",
-    "sortie": "Une référence bibliographique unique."
+  "mode_emploi": {
+    "objectif": "Permettre à une IA d'intégrer de nouvelles références pédagogiques à Synapses sans modifier l'architecture générale des données.",
+
+    "ajouter_une_reference": [
+      "Identifier précisément le document source.",
+      "Créer un fichier JSON correspondant au document dans Programmation/data/references/.",
+      "Attribuer un identifiant unique à la référence.",
+      "Renseigner les informations bibliographiques disponibles.",
+      "Analyser le document à partir de sa totalité lorsqu'elle est disponible.",
+      "Extraire les concepts, principes, progressions et relations pédagogiques réellement présents dans le document.",
+      "Attribuer des mots-clés permettant de déterminer dans quels cas cette référence est pertinente.",
+      "Indiquer les niveaux scolaires concernés.",
+      "Indiquer les domaines et thématiques concernés.",
+      "Indiquer les pages ou sections permettant de vérifier les conclusions importantes.",
+      "Ajouter la référence au présent index.",
+      "Ne jamais recopier l'intégralité de l'analyse de l'ouvrage dans index-pedagogie.json."
+    ],
+
+    "selectionner_une_reference": [
+      "Identifier le niveau de la compétence.",
+      "Identifier son domaine.",
+      "Identifier sa thématique.",
+      "Identifier ses concepts.",
+      "Chercher les références correspondant à ces éléments dans index-pedagogie.json.",
+      "Prioriser les références dont les concepts correspondent directement à la compétence.",
+      "Consulter ensuite le fichier JSON correspondant dans references/.",
+      "Ne pas utiliser une référence uniquement parce qu'elle traite globalement de pédagogie."
+    ],
+
+    "compiler_plusieurs_references": [
+      "Sélectionner les références pertinentes.",
+      "Lire leurs analyses individuelles.",
+      "Comparer les concepts communs.",
+      "Comparer les progressions.",
+      "Identifier les convergences.",
+      "Identifier les divergences.",
+      "Distinguer les relations explicitement établies des interprétations de l'IA.",
+      "Attribuer un niveau de confiance.",
+      "Ne proposer un prerequis_competences que lorsque la relation est suffisamment justifiée.",
+      "Conserver les références ayant permis d'établir la proposition."
+    ],
+
+    "regle_fondamentale": "Une référence pédagogique sert à éclairer les données de Synapses. Elle ne modifie jamais directement index.json ou competences.json."
   },
-  {
-    "etape": 2,
-    "action": "Créer son fichier dans bibliotheque-pedagogique/references/.",
-    "sortie": "Un fichier JSON contenant les informations bibliographiques et les mots-clés de pertinence."
+
+  "mots_cles": {
+    "niveaux": [
+      "CP",
+      "CE1",
+      "CE2",
+      "CM1",
+      "CM2",
+      "6e",
+      "cycle_2",
+      "cycle_3"
+    ],
+
+    "domaines": [
+      "français",
+      "mathématiques",
+      "sciences",
+      "histoire",
+      "géographie",
+      "enseignement_moral_et_civique",
+      "arts",
+      "education_physique_et_sportive",
+      "langues_vivantes",
+      "transversal"
+    ],
+
+    "thematiques": [
+      "lecture",
+      "ecriture",
+      "comprehension",
+      "decodage",
+      "fluence",
+      "vocabulaire",
+      "grammaire",
+      "orthographe",
+      "oral",
+      "litterature",
+      "phonologie",
+      "morphologie",
+      "syntaxe",
+      "production_ecrite",
+      "comprehension_orale",
+      "comprehension_ecrite",
+      "mathematiques",
+      "nombres",
+      "numeration",
+      "calcul",
+      "resolution_de_problemes",
+      "grandeurs_et_mesures",
+      "geometrie",
+      "phrase",
+      "sujet",
+      "groupe_nominal",
+      "groupe_verbal",
+      "complements",
+      "fonctions_grammaticales",
+      "nature_des_mots",
+      "verbe",
+      "conjugaison",
+      "accord",
+      "phrase_complexe",
+      "coordination",
+      "subordination",
+      "types_de_phrases",
+      "formes_de_phrases",
+      "lexique",
+      "morphologie_lexicale",
+      "semantique_lexicale",
+      "manipulation_syntaxique",
+      "corpus_grammatical"
+    ],
+
+    "concepts": [
+      "code_alphabetique",
+      "correspondances_grapheme_phoneme",
+      "identification_des_mots",
+      "decodage",
+      "automatisation",
+      "fluidite",
+      "comprehension_litterale",
+      "comprehension_inferentielle",
+      "anaphores",
+      "connecteurs",
+      "structure_textuelle",
+      "enseignement_explicite",
+      "progression",
+      "consolidation",
+      "evaluation",
+      "differenciation",
+      "phrase_simple",
+      "phrase_complexe",
+      "constituants_de_la_phrase",
+      "groupe_sujet",
+      "groupe_nominal",
+      "groupe_verbal",
+      "sujet_verbe",
+      "accord_sujet_verbe",
+      "nom",
+      "determinant",
+      "adjectif",
+      "verbe",
+      "conjugaison",
+      "temps",
+      "modes",
+      "nature_grammaticale",
+      "fonction_grammaticale",
+      "cod",
+      "coi",
+      "attribut_du_sujet",
+      "complements_circonstanciels",
+      "preposition",
+      "pronom_personnel",
+      "conjonction",
+      "adverbe",
+      "coordination",
+      "juxtaposition",
+      "subordination",
+      "morphologie_verbale",
+      "accords_grammaticaux",
+      "manipulation_syntaxique",
+      "observation_de_la_langue",
+      "transformation_de_phrases",
+      "structures_prototypiques",
+      "progression_du_simple_au_complexe",
+      "corpus",
+      "semantique",
+      "morphologie_lexicale",
+      "semantique_lexicale",
+      "synonymie",
+      "antonymie",
+      "polysemie",
+      "homonymie",
+      "champ_lexical"
+    ]
   },
-  {
-    "etape": 3,
-    "action": "Lire le document fourni intégralement lorsque cela est possible.",
-    "regle": "Ne pas produire l'abrégé à partir de quelques extraits seulement si le document complet est disponible."
+
+  "references": [
+    {
+      "id": "guide-lecture-ecriture-cp-2019",
+      "fichier": "references/guide-lecture-ecriture-cp-2019.json",
+      "type": "guide_officiel",
+      "niveaux": [
+        "CP",
+        "CE1"
+      ],
+      "domaines": [
+        "français"
+      ],
+      "thematiques": [
+        "lecture",
+        "ecriture",
+        "comprehension",
+        "decodage",
+        "fluence",
+        "vocabulaire",
+        "grammaire",
+        "orthographe",
+        "oral"
+      ],
+      "concepts": [
+        "code_alphabetique",
+        "correspondances_grapheme_phoneme",
+        "identification_des_mots",
+        "decodage",
+        "automatisation",
+        "fluidite",
+        "comprehension_orale",
+        "comprehension_ecrite",
+        "comprehension_litterale",
+        "comprehension_inferentielle",
+        "anaphores",
+        "lexique",
+        "syntaxe",
+        "enseignement_explicite",
+        "progression",
+        "evaluation"
+      ]
+    },
+
+    {
+      "id": "guide-lecture-ecriture-ce1-2019",
+      "fichier": "references/guide-lecture-ecriture-ce1-2019.json",
+      "type": "guide_officiel",
+      "niveaux": [
+        "CE1",
+        "CE2"
+      ],
+      "domaines": [
+        "français"
+      ],
+      "thematiques": [
+        "lecture",
+        "ecriture",
+        "comprehension",
+        "vocabulaire",
+        "grammaire",
+        "orthographe",
+        "litterature"
+      ],
+      "concepts": [
+        "comprehension_ecrite",
+        "comprehension_orale",
+        "decodage",
+        "automatisation",
+        "fluence",
+        "anaphores",
+        "connecteurs",
+        "structure_textuelle",
+        "lexique",
+        "syntaxe",
+        "morphologie",
+        "enseignement_explicite",
+        "progression",
+        "consolidation",
+        "evaluation",
+        "differenciation"
+      ]
+    },
+
+    {
+      "id": "la-grammaire-du-francais-du-cp-a-la-6e",
+      "fichier": "references/la-grammaire-du-francais-du-cp-a-la-6e.json",
+      "type": "guide_officiel",
+
+      "niveaux": [
+        "CP",
+        "CE1",
+        "CE2",
+        "CM1",
+        "CM2",
+        "6e"
+      ],
+
+      "cycles": [
+        "cycle_2",
+        "cycle_3"
+      ],
+
+      "domaines": [
+        "français"
+      ],
+
+      "thematiques": [
+        "grammaire",
+        "syntaxe",
+        "morphologie",
+        "phrase",
+        "sujet",
+        "groupe_nominal",
+        "groupe_verbal",
+        "fonctions_grammaticales",
+        "nature_des_mots",
+        "verbe",
+        "conjugaison",
+        "accord",
+        "phrase_complexe",
+        "coordination",
+        "subordination",
+        "types_de_phrases",
+        "formes_de_phrases",
+        "lexique",
+        "morphologie_lexicale",
+        "semantique_lexicale",
+        "manipulation_syntaxique",
+        "corpus_grammatical"
+      ],
+
+      "concepts": [
+        "phrase_simple",
+        "phrase_complexe",
+        "constituants_de_la_phrase",
+        "groupe_sujet",
+        "groupe_nominal",
+        "groupe_verbal",
+        "sujet_verbe",
+        "accord_sujet_verbe",
+        "nom",
+        "determinant",
+        "adjectif",
+        "verbe",
+        "conjugaison",
+        "temps",
+        "modes",
+        "nature_grammaticale",
+        "fonction_grammaticale",
+        "cod",
+        "coi",
+        "attribut_du_sujet",
+        "complements_circonstanciels",
+        "preposition",
+        "pronom_personnel",
+        "conjonction",
+        "adverbe",
+        "coordination",
+        "juxtaposition",
+        "subordination",
+        "morphologie_verbale",
+        "accords_grammaticaux",
+        "manipulation_syntaxique",
+        "observation_de_la_langue",
+        "transformation_de_phrases",
+        "structures_prototypiques",
+        "progression_du_simple_au_complexe",
+        "corpus",
+        "semantique",
+        "morphologie_lexicale",
+        "semantique_lexicale",
+        "synonymie",
+        "antonymie",
+        "polysemie",
+        "homonymie",
+        "champ_lexical",
+        "progression",
+        "enseignement_explicite"
+      ],
+
+      "pertinence": {
+        "CP": "forte",
+        "CE1": "tres_forte",
+        "CE2": "tres_forte",
+        "CM1": "tres_forte",
+        "CM2": "tres_forte",
+        "6e": "forte",
+        "français": "tres_forte",
+        "grammaire": "tres_forte",
+        "syntaxe": "tres_forte",
+        "morphologie": "tres_forte",
+        "lexique": "forte",
+        "conjugaison": "tres_forte",
+        "orthographe": "forte",
+        "lecture": "secondaire",
+        "comprehension": "secondaire",
+        "ecriture": "secondaire",
+        "mathematiques": "aucune"
+      },
+
+      "relations_utilisables": [
+        "necessaire",
+        "structurant",
+        "consolidation",
+        "parallele"
+      ],
+
+      "relations_non_automatiques": [
+        "ordre_de_presentation",
+        "modalite_pedagogique",
+        "activite",
+        "exemple",
+        "choix_de_corpus",
+        "approche_semantique",
+        "approche_morphologique",
+        "approche_syntaxique"
+      ]
+    }
+  ],
+
+  "regles_de_pertinence": {
+    "ordre_de_filtrage": [
+      "niveau",
+      "domaine",
+      "thematique",
+      "concept"
+    ],
+
+    "principe": "Plus les mots-clés d'une compétence correspondent précisément à ceux d'une référence, plus cette référence est prioritaire.",
+
+    "exclusion": "Une référence ne doit pas être utilisée uniquement parce qu'elle concerne globalement le même domaine scolaire.",
+
+    "exemple": {
+      "competence": "Comprendre un texte lu.",
+      "references_prioritaires": [
+        "guide-lecture-ecriture-cp-2019",
+        "guide-lecture-ecriture-ce1-2019"
+      ],
+      "reference_secondaire": "la-grammaire-du-francais-du-cp-a-la-6e"
+    },
+
+    "contre_exemple": {
+      "competence": "Lire et écrire les nombres de 0 à 100.",
+      "reference_non_pertinente": "la-grammaire-du-francais-du-cp-a-la-6e",
+      "raison": "Le domaine et les concepts du guide ne correspondent pas à l'apprentissage mathématique ciblé."
+    }
   },
-  {
-    "etape": 4,
-    "action": "Produire un abrégé structuré dans bibliotheque-pedagogique/analyses/.",
-    "regle": "L'abrégé doit distinguer les idées de l'auteur, les concepts, les principes pédagogiques, les relations entre apprentissages et les limites d'interprétation."
+
+  "regles_prerequis": [
+    "Ne jamais transformer automatiquement l'ordre d'une progression en prerequis_competences.",
+    "Ne jamais considérer une activité pédagogique comme une compétence préalable.",
+    "Ne jamais considérer un exemple comme une compétence préalable.",
+    "Une relation doit être justifiée par une référence, une analyse ou plusieurs sources convergentes.",
+    "Une relation simplement plausible doit rester une proposition et ne pas être automatiquement ajoutée à competences.json.",
+    "Lorsque plusieurs références convergent, le niveau de confiance peut être augmenté.",
+    "Lorsque les références divergent, conserver la divergence.",
+    "Chaque prérequis finalement retenu doit pouvoir être expliqué et relié à sa source."
+  ],
+
+  "format_reference": {
+    "fichier": "references/*.json",
+
+    "champs_recommandes": [
+      "id",
+      "bibliographie",
+      "mots_cles",
+      "resume",
+      "concepts",
+      "principes_pedagogiques",
+      "progressions",
+      "relations_potentielles",
+      "garde_fous",
+      "sources_precises",
+      "implications_pour_synapses",
+      "limites"
+    ],
+
+    "distinction": {
+      "source": "Ce que le document affirme explicitement.",
+      "interpretation": "Ce que l'IA peut raisonnablement déduire.",
+      "proposition": "Ce que l'IA propose éventuellement pour Synapses."
+    }
   },
-  {
-    "etape": 5,
-    "action": "Attribuer des mots-clés contrôlés.",
-    "regle": "Utiliser les domaines, thématiques et concepts existants lorsque ceux-ci correspondent réellement au document."
+
+  "regles_ia": {
+    "ne_pas_inventer": "Si une information n'est pas présente dans la référence, l'IA doit le signaler.",
+    "ne_pas_generaliser": "Une conclusion portant sur un domaine ne doit pas être appliquée automatiquement à un autre domaine.",
+    "ne_pas_confondre": "Une progression pédagogique ne doit pas être confondue avec une relation de prérequis.",
+    "tracabilite": "Toute proposition importante doit pouvoir être reliée à une référence et, lorsque possible, à des pages précises.",
+    "competences": "Les identifiants utilisés dans les propositions doivent correspondre aux compétences existantes dans competences.json.",
+    "index": "La localisation des séquences et séances reste déterminée par index.json.",
+    "cartographie": "La cartographie 3D ne consulte pas les références pédagogiques et ne gère pas leur compilation."
   },
-  {
-    "etape": 6,
-    "action": "Ajouter de nouveaux mots-clés uniquement lorsqu'un concept important ne peut pas être représenté par le vocabulaire existant.",
-    "regle": "Un nouveau mot-clé doit être explicite, stable et réutilisable."
-  },
-  {
-    "etape": 7,
-    "action": "Mettre à jour le présent index.",
-    "regle": "Ajouter uniquement la référence, ses mots-clés, son domaine de pertinence et son chemin d'analyse."
-  },
-  {
-    "etape": 8,
-    "action": "Lorsqu'une compétence de competences.json doit être analysée, sélectionner les références pertinentes.",
-    "regle": "Ne pas consulter indistinctement toute la bibliothèque."
-  },
-  {
-    "etape": 9,
-    "action": "Comparer la compétence avec les concepts et relations contenus dans les analyses sélectionnées.",
-    "regle": "Une référence peut proposer une relation mais ne modifie jamais directement competences.json."
-  },
-  {
-    "etape": 10,
-    "action": "Produire une proposition de prerequis_competences.",
-    "regle": "Chaque proposition doit pouvoir être reliée à une ou plusieurs références et à des passages précis."
+
+  "statut": {
+    "index": "actif",
+    "references": "extensible",
+    "prerequis": "a_construire",
+    "cartographie": "independante_de_la_bibliotheque_pedagogique"
   }
-],
-
-"procedure_compilation": [
-  "Lire les mots-clés de la compétence cible.",
-  "Chercher dans l'index les références dont les domaines correspondent.",
-  "Filtrer ensuite par thématiques.",
-  "Filtrer enfin par concepts.",
-  "Lire les analyses JSON des références retenues.",
-  "Comparer les conclusions des différentes références.",
-  "Identifier les convergences.",
-  "Identifier les divergences.",
-  "Identifier les relations nécessaires, structurantes, parallèles ou de consolidation.",
-  "Ne transformer en prérequis que les relations suffisamment justifiées.",
-  "Conserver la trace des références ayant conduit à la proposition.",
-  "Ne jamais inventer une relation absente des sources."
-],
-
-"procedure_compilation_sequence": [
-  "Lire la séquence dans index.json.",
-  "Identifier les compétences associées.",
-  "Identifier les concepts pédagogiques concernés.",
-  "Sélectionner les références pertinentes.",
-  "Comparer les apprentissages de la séquence avec les relations pédagogiques documentées.",
-  "Proposer les liens entre compétences si les sources les justifient.",
-  "Ne pas déduire un prérequis uniquement parce qu'une compétence apparaît avant une autre dans index.json."
-],
-
-"procedure_compilation_seance": [
-  "Identifier la séquence parent dans index.json.",
-  "Identifier les compétences travaillées.",
-  "Utiliser les références pédagogiques pertinentes pour comprendre la nature de l'apprentissage.",
-  "Ne pas créer de nouveau concept pédagogique uniquement à partir du titre d'une séance.",
-  "Les séances servent à localiser et contextualiser les apprentissages ; elles ne constituent pas à elles seules une preuve de prérequis."
-]
-```
-
-},
-
-"mots_cles": {
-"regle": "Les mots-clés servent à déterminer la pertinence documentaire. Ils ne constituent pas des relations pédagogiques.",
-"niveaux": {
-"domaines": [
-"français",
-"mathématiques",
-"sciences",
-"histoire",
-"géographie",
-"enseignement_moral_et_civique",
-"arts",
-"education_physique_et_sportive",
-"langues_vivantes",
-"transversal"
-],
-"thematiques": [
-"lecture",
-"ecriture",
-"comprehension",
-"decodage",
-"fluence",
-"vocabulaire",
-"grammaire",
-"orthographe",
-"oral",
-"litterature",
-"phonologie",
-"morphologie",
-"syntax",
-"inferences",
-"comprehension_orale",
-"comprehension_ecrite",
-"production_ecrite",
-"copie",
-"dictee",
-"mathematiques",
-"nombres",
-"numeration",
-"calcul",
-"resolution_de_problemes",
-"grandeurs_et_mesures",
-"geometrie"
-],
-"concepts": [
-"code_alphabetique",
-"correspondances_grapheme_phoneme",
-"identification_des_mots",
-"decodage",
-"automatisation",
-"fluidite",
-"comprehension_litterale",
-"comprehension_inferentielle",
-"anaphores",
-"connecteurs",
-"structure_textuelle",
-"langage_oral",
-"lexique",
-"syntaxe",
-"morphologie",
-"dechiffrabilite",
-"enseignement_explicite",
-"progression",
-"consolidation",
-"evaluation",
-"differenciation"
-]
-}
-},
-
-"references": [
-{
-"id": "guide-lecture-ecriture-cp-2019",
-"fichier_reference": "bibliotheque-pedagogique/references/guide-lecture-ecriture-cp-2019.json",
-"fichier_analyse": "bibliotheque-pedagogique/analyses/guide-lecture-ecriture-cp-2019.json",
-"type": "guide_officiel",
-"niveau": [
-"CP"
-],
-"domaines": [
-"français"
-],
-"thematiques": [
-"lecture",
-"ecriture",
-"comprehension",
-"decodage",
-"fluence",
-"vocabulaire",
-"grammaire",
-"orthographe",
-"oral"
-],
-"concepts": [
-"code_alphabetique",
-"correspondances_grapheme_phoneme",
-"identification_des_mots",
-"decodage",
-"automatisation",
-"fluidite",
-"comprehension_orale",
-"comprehension_ecrite",
-"comprehension_litterale",
-"comprehension_inferentielle",
-"anaphores",
-"lexique",
-"syntaxe",
-"dechiffrabilite",
-"enseignement_explicite",
-"progression",
-"evaluation"
-],
-"pertinence": {
-"CP": "tres_forte",
-"CE1": "forte",
-"lecture": "tres_forte",
-"comprehension": "tres_forte",
-"mathematiques": "aucune"
-}
-},
-{
-"id": "guide-lecture-ecriture-ce1-2019",
-"fichier_reference": "bibliotheque-pedagogique/references/guide-lecture-ecriture-ce1-2019.json",
-"fichier_analyse": "bibliotheque-pedagogique/analyses/guide-lecture-ecriture-ce1-2019.json",
-"type": "guide_officiel",
-"niveau": [
-"CE1"
-],
-"domaines": [
-"français"
-],
-"thematiques": [
-"lecture",
-"ecriture",
-"comprehension",
-"vocabulaire",
-"grammaire",
-"orthographe",
-"litterature"
-],
-"concepts": [
-"comprehension_ecrite",
-"comprehension_orale",
-"decodage",
-"automatisation",
-"fluence",
-"anaphores",
-"connecteurs",
-"structure_textuelle",
-"lexique",
-"syntaxe",
-"morphologie",
-"enseignement_explicite",
-"progression",
-"consolidation",
-"evaluation",
-"differenciation"
-],
-"pertinence": {
-"CP": "forte",
-"CE1": "tres_forte",
-"CE2": "forte",
-"lecture": "tres_forte",
-"comprehension": "tres_forte",
-"mathematiques": "aucune"
-}
-}
-],
-
-"regles_pertinence": {
-"priorite_1": "Le domaine de la compétence doit correspondre au domaine principal de la référence.",
-"priorite_2": "La thématique de la compétence doit apparaître dans les thématiques de la référence.",
-"priorite_3": "Les concepts doivent être comparés lorsque la question concerne un prérequis précis.",
-"priorite_4": "Le niveau scolaire sert de filtre secondaire et ne doit pas exclure une référence explicitement pertinente pour une continuité entre niveaux.",
-"exclusion": "Une référence dont le domaine et les concepts ne correspondent pas à la compétence ne doit pas être utilisée uniquement parce qu'elle traite de pédagogie générale.",
-"exemple_exclusion": "Un ouvrage consacré à la compréhension en lecture ne doit pas être utilisé pour déterminer les prérequis d'une compétence portant spécifiquement sur les nombres de 0 à 100, sauf si l'ouvrage contient explicitement un principe transversal pertinent pour cette compétence."
-},
-
-"format_des_references": {
-"obligatoire": [
-"id",
-"type",
-"auteurs",
-"annee",
-"titre",
-"source",
-"fichier_source",
-"fichier_analyse",
-"domaines",
-"thematiques",
-"concepts"
-],
-"recommandé": [
-"editeur",
-"isbn",
-"doi",
-"url",
-"pages",
-"date_consultation"
-]
-},
-
-"format_des_analyses": {
-"obligatoire": [
-"reference_id",
-"resume",
-"concepts",
-"principes_pedagogiques",
-"relations_apprentissage",
-"points_de_vigilance",
-"sources_precises"
-],
-"regle": "Chaque affirmation importante doit pouvoir être reliée à une page, un chapitre ou une section du document source.",
-"interdiction": "Ne pas présenter comme conclusion de l'auteur une déduction personnelle de l'IA.",
-"distinction": {
-"source": "Ce que dit explicitement le document.",
-"interpretation": "Ce que l'IA peut raisonnablement déduire.",
-"proposition": "Ce que l'IA propose d'utiliser dans Synapses."
-}
-},
-
-"regles_de_preuve": {
-"forte": "Le document établit explicitement la relation ou la condition.",
-"moyenne": "La relation est fortement soutenue par plusieurs éléments convergents du document.",
-"faible": "La relation est plausible mais insuffisamment établie.",
-"regle": "Une preuve faible ne doit pas produire automatiquement un prerequis_competences."
-},
-
-"relations_autorisables": [
-"necessaire",
-"structurant",
-"consolidation",
-"parallele",
-"bidirectionnel",
-"transversal"
-],
-
-"regle_finale": "index-pedagogie.json documente et oriente l'analyse. Les fichiers individuels documentent les ouvrages. competences.json contient les compétences et les prérequis finalement retenus. index.json décrit la programmation. Aucun de ces fichiers ne doit absorber le rôle des autres."
 }
