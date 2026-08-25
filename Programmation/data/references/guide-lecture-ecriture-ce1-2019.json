@@ -1,0 +1,78 @@
+{
+"id": "guide-lecture-ecriture-ce1-2019",
+"type": "guide_officiel",
+"auteurs": [
+"Ministère de l'Éducation nationale et de la Jeunesse"
+],
+"annee": 2019,
+"titre": "Pour enseigner la lecture et l’écriture au CE1",
+"source": "Ministère de l'Éducation nationale et de la Jeunesse",
+"fichier_source": "guide-pour-enseigner-la-lecture-et-l-ecriture-au-ce1-67857.pdf",
+"fichier_analyse": "bibliotheque-pedagogique/analyses/guide-lecture-ecriture-ce1-2019.json",
+
+"niveau": [
+"CE1"
+],
+
+"domaines": [
+"français"
+],
+
+"thematiques": [
+"lecture",
+"ecriture",
+"comprehension",
+"vocabulaire",
+"grammaire",
+"orthographe",
+"litterature",
+"langage_oral"
+],
+
+"concepts": [
+"comprehension_ecrite",
+"comprehension_orale",
+"decodage",
+"automatisation",
+"fluence",
+"anaphores",
+"connecteurs",
+"structure_textuelle",
+"lexique",
+"syntaxe",
+"morphologie",
+"enseignement_explicite",
+"progression",
+"consolidation",
+"evaluation",
+"differenciation"
+],
+
+"pertinence": {
+"CP": "forte",
+"CE1": "tres_forte",
+"CE2": "forte",
+"lecture": "tres_forte",
+"comprehension": "tres_forte",
+"ecriture": "tres_forte",
+"mathematiques": "aucune"
+},
+
+"contenu_a_extraire": [
+"compréhension autonome des textes",
+"stratégies de compréhension",
+"types de textes",
+"indices morphosyntaxiques",
+"ponctuation",
+"connecteurs",
+"reprises anaphoriques",
+"vigilance orthographique",
+"vocabulaire",
+"grammaire",
+"relations entre lecture et écriture",
+"production écrite",
+"automatisation",
+"réinvestissement",
+"évaluation"
+]
+}
