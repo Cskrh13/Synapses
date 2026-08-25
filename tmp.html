@@ -1,0 +1,1911 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Référentiel des compétences — Programmes scolaires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2A4A;
+  --navy-deep:#141d33;
+  --bg:#F6F5F1;
+  --panel:#FFFFFF;
+  --line:#DEDBD2;
+  --ink:#20242E;
+  --ink-soft:#5B5F6B;
+  --accent-sky:#2E5EAA;
+  --ring:#2E5EAA;
+  --lecture:#B5502E;
+  --ecriture:#2A7F72;
+  --oral:#6B4E8E;
+  --vocabulaire:#B5871E;
+  --grammaire:#1E2A4A;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  margin:0;
+  letter-spacing:-0.01em;
+}
+a{color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--accent-sky);
+  font-weight:500;
+}
+:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
+
+/* ===== Skip link ===== */
+.skip-link{
+  position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;z-index:999;border-radius:0 0 8px 0;
+}
+.skip-link:focus{left:0;}
+
+/* ===== Header ===== */
+header.site-header{
+  background:var(--navy);
+  color:#fff;
+  position:sticky;top:0;z-index:50;
+  border-bottom:3px solid var(--accent-sky);
+}
+.header-top{
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1240px;margin:0 auto;padding:14px 24px;
+  gap:20px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.brand-mark{
+  width:40px;height:40px;border-radius:8px;
+  background:linear-gradient(160deg,var(--accent-sky),#5486d6);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:#fff;
+  flex-shrink:0;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
+.brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;}
+nav.main-nav a{
+  color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;
+  padding:8px 12px;border-radius:6px;transition:background .15s;
+}
+nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
+.header-actions{display:flex;align-items:center;gap:10px;}
+.btn-ghost-header{
+  background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;
+  padding:8px 14px;border-radius:6px;font-size:13px;font-weight:500;
+}
+.btn-ghost-header:hover{background:rgba(255,255,255,.1);}
+.level-pill{
+  display:flex;gap:2px;background:rgba(0,0,0,.2);padding:3px;border-radius:8px;
+}
+.level-pill button{
+  background:transparent;border:none;color:#B9C6E5;font-size:12px;font-weight:600;
+  padding:6px 10px;border-radius:6px;font-family:'IBM Plex Mono',monospace;
+}
+.level-pill button.active{background:#fff;color:var(--navy);}
+
+/* ===== Hero ===== */
+.hero{
+  background:
+    radial-gradient(1200px 480px at 15% -10%, rgba(46,94,170,.16), transparent 60%),
+    var(--panel);
+  border-bottom:1px solid var(--line);
+  padding:64px 24px 48px;
+}
+.hero-inner{max-width:900px;margin:0 auto;text-align:center;}
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.05;color:var(--navy);}
+.hero p.lead{
+  max-width:620px;margin:18px auto 0;color:var(--ink-soft);font-size:16.5px;
+}
+.search-wrap{
+  margin:34px auto 0;max-width:620px;position:relative;
+}
+.search-box{
+  display:flex;align-items:center;gap:10px;
+  background:#fff;border:1.5px solid var(--line);border-radius:12px;
+  padding:6px 6px 6px 18px;
+  box-shadow:0 10px 30px -14px rgba(30,42,74,.25);
+}
+.search-box:focus-within{border-color:var(--accent-sky);}
+.search-box svg{flex-shrink:0;color:var(--ink-soft);}
+.search-box input{
+  border:none;outline:none;flex:1;font-size:15.5px;padding:12px 0;font-family:'Inter',sans-serif;background:transparent;color:var(--ink);
+}
+.search-box button{
+  background:var(--navy);color:#fff;border:none;border-radius:8px;
+  padding:11px 18px;font-size:14px;font-weight:600;flex-shrink:0;
+}
+.search-box button:hover{background:var(--navy-deep);}
+.hero-quicklinks{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px;
+}
+.quicklink{
+  font-size:13px;font-weight:500;color:var(--navy);background:#EFEDE5;
+  border:1px solid var(--line);padding:7px 13px;border-radius:20px;text-decoration:none;
+}
+.quicklink:hover{background:#E4E1D6;}
+
+/* ===== Section shell ===== */
+.section{max-width:1240px;margin:0 auto;padding:56px 24px;}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:26px;flex-wrap:wrap;}
+.section-head h2{font-size:26px;color:var(--navy);}
+.section-head p{color:var(--ink-soft);font-size:14.5px;margin-top:6px;max-width:560px;}
+
+/* ===== Navigation cards (cycle/niveau/discipline) ===== */
+.crumb-strip{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin-bottom:8px;
+}
+.crumb-strip .dot{width:4px;height:4px;border-radius:50%;background:var(--ink-soft);}
+.level-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+.level-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;text-align:left;transition:transform .15s,box-shadow .15s,border-color .15s;
+}
+.level-card:hover{transform:translateY(-2px);box-shadow:0 14px 28px -18px rgba(30,42,74,.35);border-color:#c7c2b3;}
+.level-card.active{border-color:var(--accent-sky);box-shadow:0 0 0 2px rgba(46,94,170,.18);}
+.level-card .lc-code{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--accent-sky);font-weight:600;
+}
+.level-card h3{font-size:18px;margin-top:6px;color:var(--navy);}
+.level-card p{font-size:13px;color:var(--ink-soft);margin-top:6px;}
+.level-card .lc-count{margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);}
+
+/* Domain cards */
+.domain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+.domain-card{
+  border-radius:var(--radius);padding:20px;border:1px solid var(--line);background:var(--panel);
+  position:relative;overflow:hidden;text-align:left;
+}
+.domain-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--dcolor,var(--accent-sky));
+}
+.domain-card h3{font-size:17px;color:var(--navy);padding-left:10px;}
+.domain-card p{font-size:12.5px;color:var(--ink-soft);margin-top:8px;padding-left:10px;}
+.domain-card .dc-tag{
+  display:inline-block;margin-left:10px;margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;
+  padding:3px 8px;border-radius:20px;background:color-mix(in srgb, var(--dcolor) 12%, white);color:var(--dcolor);font-weight:600;
+}
+.domain-card.active{box-shadow:0 0 0 2px var(--dcolor);}
+
+/* ===== Filters + directory layout ===== */
+.directory-shell{display:grid;grid-template-columns:260px 1fr;gap:26px;align-items:start;}
+@media (max-width:880px){.directory-shell{grid-template-columns:1fr;}}
+.filters{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;position:sticky;top:92px;
+}
+.filters h3{font-size:14px;color:var(--navy);margin-bottom:14px;}
+.filter-group{margin-bottom:18px;}
+.filter-group label{
+  display:block;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink-soft);margin-bottom:8px;
+}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{
+  border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12.5px;font-weight:500;
+  padding:6px 11px;border-radius:20px;
+}
+.chip[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy);}
+.filter-reset{
+  width:100%;margin-top:4px;background:transparent;border:1px solid var(--line);color:var(--navy);
+  padding:9px;border-radius:8px;font-size:13px;font-weight:600;
+}
+.filter-reset:hover{background:#F0EEE7;}
+.result-count{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);
+}
+.result-count strong{color:var(--navy);}
+
+/* Directory toolbar */
+.dir-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap;}
+.dir-search{
+  display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;flex:1;min-width:220px;max-width:380px;
+}
+.dir-search input{border:none;outline:none;font-size:13.5px;flex:1;background:transparent;}
+.view-toggle{display:flex;gap:2px;background:#EDEAE1;padding:3px;border-radius:8px;}
+.view-toggle button{background:transparent;border:none;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;color:var(--ink-soft);}
+.view-toggle button.active{background:#fff;color:var(--navy);box-shadow:0 1px 2px rgba(0,0,0,.08);}
+
+/* Competency cards */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.comp-card{
+  text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px;position:relative;transition:box-shadow .15s,border-color .15s;
+}
+.comp-card:hover{border-color:#c7c2b3;box-shadow:0 12px 26px -18px rgba(30,42,74,.3);}
+.comp-card .cc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.badge{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:20px;
+  background:color-mix(in srgb, var(--dcolor) 14%, white);color:var(--dcolor);white-space:nowrap;
+}
+.badge.niveau{background:#EEECE3;color:var(--ink-soft);}
+.comp-card h4{font-size:15px;line-height:1.35;color:var(--navy);}
+.comp-card .cc-domain{font-size:12px;color:var(--ink-soft);margin-top:6px;}
+.comp-card .cc-preview{font-size:12.5px;color:var(--ink-soft);margin-top:10px;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.comp-card .cc-arrow{position:absolute;right:16px;bottom:16px;font-size:12px;color:var(--accent-sky);font-weight:600;}
+
+/* List view */
+.comp-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--panel);}
+.comp-list-row{
+  display:grid;grid-template-columns:110px 1fr 160px 24px;gap:14px;align-items:center;
+  padding:14px 18px;border-bottom:1px solid var(--line);text-align:left;width:100%;background:transparent;border-left:none;border-right:none;border-top:none;
+}
+.comp-list-row:last-child{border-bottom:none;}
+.comp-list-row:hover{background:#FAF9F5;}
+.comp-list-row .clr-title{font-size:13.5px;color:var(--ink);font-weight:500;}
+.comp-list-row .clr-sub{font-size:12px;color:var(--ink-soft);}
+
+/* Empty state */
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--ink-soft);
+  border:1px dashed var(--line);border-radius:var(--radius);background:var(--panel);
+}
+.empty-state h4{color:var(--navy);margin-bottom:8px;font-size:16px;}
+
+/* ===== Detail drawer ===== */
+.drawer-overlay{
+  position:fixed;inset:0;background:rgba(20,29,51,.42);backdrop-filter:blur(1px);
+  opacity:0;pointer-events:none;transition:opacity .2s;z-index:100;
+}
+.drawer-overlay.open{opacity:1;pointer-events:auto;}
+.drawer{
+  position:fixed;top:0;right:0;height:100%;width:min(560px,100%);
+  background:#fff;box-shadow:-16px 0 40px rgba(0,0,0,.18);
+  transform:translateX(100%);transition:transform .25s ease;z-index:101;
+  display:flex;flex-direction:column;
+}
+.drawer.open{transform:translateX(0);}
+.drawer-head{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.drawer-crumb{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);margin-bottom:10px;}
+.drawer-crumb button{background:none;border:none;color:var(--accent-sky);font-family:inherit;font-size:inherit;padding:0;text-decoration:underline;}
+.drawer-close{background:#F0EEE7;border:none;width:32px;height:32px;border-radius:8px;font-size:16px;color:var(--ink-soft);flex-shrink:0;}
+.drawer-close:hover{background:#E4E1D6;}
+.drawer-body{padding:24px;overflow-y:auto;flex:1;}
+.drawer-body h2{font-size:22px;color:var(--navy);line-height:1.3;}
+.drawer-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.drawer-section{margin-top:26px;}
+.drawer-section h5{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-sky);margin-bottom:10px;
+}
+.drawer-section ul{margin:0;padding-left:18px;}
+.drawer-section li{font-size:14px;line-height:1.6;margin-bottom:8px;color:var(--ink);}
+.reussite-box{background:#F6F5F1;border:1px solid var(--line);border-radius:8px;padding:16px;}
+.reussite-box ul{padding-left:18px;margin:0;}
+.reussite-box li{font-size:13.5px;color:var(--ink-soft);margin-bottom:7px;}
+.related-chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;background:#EFEDE5;border:1px solid var(--line);border-radius:20px;padding:6px 12px;margin:4px 4px 0 0;}
+
+/* ===== Overview ===== */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:30px;}
+.stat-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
+.stat-card .num{font-family:'Fraunces',serif;font-size:34px;color:var(--navy);font-weight:600;}
+.stat-card .label{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+.bar-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px;}
+.bar-row{display:grid;grid-template-columns:170px 1fr 46px;align-items:center;gap:12px;margin-bottom:14px;}
+.bar-row .bl-label{font-size:13px;font-weight:500;color:var(--navy);}
+.bar-track{height:10px;background:#EEECE3;border-radius:6px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:6px;}
+.bar-row .bl-num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);text-align:right;}
+
+/* ===== Footer ===== */
+footer{background:var(--navy);color:#B9C6E5;padding:44px 24px 30px;margin-top:40px;}
+.footer-inner{max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:13px;}
+footer h5{color:#fff;font-size:13px;margin-bottom:10px;font-family:'Inter',sans-serif;font-weight:600;}
+footer a{color:#B9C6E5;text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+.footer-cols{display:flex;gap:60px;flex-wrap:wrap;}
+.footer-note{max-width:280px;color:#8FA0C7;font-size:12.5px;line-height:1.6;}
+
+/* ===== Competency page (page dédiée + programmation 36 semaines) ===== */
+.comp-page{display:none;}
+.comp-page.open{display:block;}
+body.view-fiche .home-only{display:none;}
+.cp-shell{max-width:980px;margin:0 auto;padding:40px 24px 80px;}
+.cp-back{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--accent-sky);
+  background:none;border:none;padding:0;margin-bottom:18px;
+}
+.cp-back:hover{text-decoration:underline;}
+.cp-head{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:30px;}
+.cp-head h1{font-size:clamp(24px,3.4vw,34px);color:var(--navy);line-height:1.25;margin-top:10px;}
+.cp-head .drawer-tags{margin-top:14px;}
+.cp-block{margin-bottom:34px;}
+.cp-block h5{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-sky);margin-bottom:12px;
+}
+.cp-block ul{margin:0;padding-left:18px;}
+.cp-block li{font-size:14.5px;line-height:1.65;margin-bottom:8px;}
+
+/* Planner */
+.planner-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px;}
+.planner-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+.planner-head h4{font-size:16px;color:var(--navy);}
+.planner-sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:20px;}
+.period-row{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;margin-bottom:6px;}
+.period-label{
+  grid-column:span var(--span);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
+  text-align:center;padding-bottom:4px;border-bottom:2px solid var(--line);
+}
+.week-grid{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;margin-bottom:22px;}
+.week-cell{
+  aspect-ratio:1/1.15;background:#EEECE3;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--ink-soft);position:relative;cursor:pointer;border:1px solid transparent;
+}
+.week-cell:hover{border-color:var(--accent-sky);}
+.week-cell.in-range{color:#fff;}
+.week-cell.range-start,.week-cell.range-end{font-weight:700;}
+@media (max-width:720px){ .week-grid,.period-row{grid-template-columns:repeat(18,minmax(0,1fr));} .week-cell:nth-child(n+19){grid-row:2;} }
+
+.seq-form{
+  display:grid;grid-template-columns:1.4fr repeat(2,110px);gap:10px;align-items:end;margin-bottom:16px;
+  padding-top:18px;border-top:1px dashed var(--line);
+}
+.seq-form .fld{display:flex;flex-direction:column;gap:5px;}
+.seq-form label{font-size:11px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;}
+.seq-form input,.seq-form select,.seq-form textarea{
+  border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;color:var(--ink);
+}
+.seq-form textarea{grid-column:1/-1;resize:vertical;min-height:52px;}
+.seq-form .btn-add{
+  grid-column:1/-1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13.5px;font-weight:600;
+}
+.seq-form .btn-add:hover{background:var(--navy-deep);}
+
+.seq-list{display:flex;flex-direction:column;gap:10px;}
+.seq-row{border:1px solid var(--line);border-radius:8px;padding:14px 16px;background:#FAF9F5;}
+.seq-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.seq-row-top strong{font-size:14px;color:var(--navy);}
+.seq-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;}
+.seq-note{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+.seq-del{background:none;border:none;color:#B5502E;font-size:12px;font-weight:600;flex-shrink:0;}
+.seq-del:hover{text-decoration:underline;}
+.seq-empty{font-size:13px;color:var(--ink-soft);padding:14px 0;}
+.cp-open-full{
+  margin-top:18px;width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13.5px;font-weight:600;
+}
+.cp-open-full:hover{background:var(--navy-deep);}
+
+/* Utility */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
+
+@media (max-width:720px){
+  .header-top{flex-wrap:wrap;}
+  nav.main-nav{order:3;width:100%;justify-content:flex-start;overflow-x:auto;}
+  .comp-list-row{grid-template-columns:1fr;gap:4px;}
+  .comp-list-row .clr-meta{display:flex;gap:8px;}
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Aller au contenu principal</a>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="header-top">
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true">RÉ</span>
+      <span class="brand-text">
+        <span class="top">Portail non institutionnel</span>
+        <span class="bottom">Référentiel des programmes</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="#niveaux">Niveaux</a>
+      <a href="#disciplines">Disciplines</a>
+      <a href="#repertoire">Répertoire</a>
+      <a href="#vue-ensemble">Vue d'ensemble</a>
+    </nav>
+    <div class="header-actions">
+      <div class="level-pill" id="headerLevelPill" role="group" aria-label="Changer de niveau"></div>
+      <button class="btn-ghost-header" id="headerSearchBtn">Rechercher</button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+
+<!-- ===================== HERO ===================== -->
+<section class="hero home-only" id="top">
+  <div class="hero-inner">
+    <p class="eyebrow">Cycle 2 · Français · Source : BOEN, education.gouv.fr</p>
+    <h1>Référentiel des compétences des programmes scolaires</h1>
+    <p class="lead">Un espace de consultation clair et structuré, construit à partir du texte officiel du programme, pour naviguer entre cycles, niveaux, domaines et compétences sans reformulation approximative.</p>
+    <div class="search-wrap">
+      <label for="mainSearch" class="sr-only">Rechercher une compétence, un mot-clé, une discipline ou un niveau</label>
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="mainSearch" placeholder="Rechercher : « chaine d'accords », « lecture à voix haute », CE1…" autocomplete="off">
+        <button id="mainSearchBtn">Rechercher</button>
+      </div>
+    </div>
+    <div class="hero-quicklinks" id="quickDomainLinks"></div>
+  </div>
+</section>
+
+<!-- ===================== NIVEAUX ===================== -->
+<section class="section home-only" id="niveaux">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Cycle des apprentissages fondamentaux</p>
+      <h2>Naviguer par niveau</h2>
+      <p>Trois niveaux composent le cycle 2 : CP, CE1, CE2. Sélectionnez un niveau pour filtrer l'ensemble du répertoire.</p>
+    </div>
+  </div>
+  <div class="level-cards" id="levelCards"></div>
+</section>
+
+<!-- ===================== DISCIPLINES / DOMAINES ===================== -->
+<section class="section home-only" id="disciplines">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Français — cinq domaines</p>
+      <h2>Naviguer par domaine</h2>
+      <p>Le programme de français du cycle 2 s'organise en cinq domaines de compétences, réellement présents dans le document source.</p>
+    </div>
+  </div>
+  <div class="domain-grid" id="domainCards"></div>
+</section>
+
+<!-- ===================== REPERTOIRE ===================== -->
+<section class="section home-only" id="repertoire">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Répertoire structuré</p>
+      <h2>Compétences du programme</h2>
+      <p>Chaque fiche indique la discipline, le cycle, le niveau, le domaine, le sous-domaine et les objectifs d'apprentissage tels que rédigés dans le programme.</p>
+    </div>
+  </div>
+
+  <div class="directory-shell">
+    <aside class="filters" aria-label="Filtres de recherche">
+      <h3>Filtrer le répertoire</h3>
+
+      <div class="filter-group">
+        <label id="lbl-niveau">Niveau</label>
+        <div class="chip-row" id="filterNiveau" role="group" aria-labelledby="lbl-niveau"></div>
+      </div>
+
+      <div class="filter-group">
+        <label id="lbl-domaine">Domaine</label>
+        <div class="chip-row" id="filterDomaine" role="group" aria-labelledby="lbl-domaine"></div>
+      </div>
+
+      <div class="filter-group">
+        <label id="lbl-sous">Sous-domaine</label>
+        <div class="chip-row" id="filterSousDomaine" role="group" aria-labelledby="lbl-sous"></div>
+      </div>
+
+      <button class="filter-reset" id="resetFilters">Réinitialiser les filtres</button>
+      <div class="result-count" id="resultCount"></div>
+    </aside>
+
+    <div>
+      <div class="dir-toolbar">
+        <div class="dir-search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="dirSearch" placeholder="Recherche instantanée…" aria-label="Recherche instantanée dans le répertoire">
+        </div>
+        <div class="view-toggle" role="group" aria-label="Mode d'affichage">
+          <button id="viewGridBtn" class="active" aria-pressed="true">Cartes</button>
+          <button id="viewListBtn" aria-pressed="false">Liste</button>
+        </div>
+      </div>
+      <div id="compContainer" class="comp-grid" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VUE D'ENSEMBLE ===================== -->
+<section class="section home-only" id="vue-ensemble">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Synthèse</p>
+      <h2>Vue d'ensemble du référentiel</h2>
+      <p>Répartition des fiches de compétences par niveau et par domaine, sur l'ensemble du programme de français du cycle 2.</p>
+    </div>
+  </div>
+  <div class="stats-grid" id="statsGrid"></div>
+  <div class="bar-panel">
+    <h4 style="font-size:15px;color:var(--navy);margin-bottom:18px;">Compétences par domaine</h4>
+    <div id="barsByDomain"></div>
+  </div>
+</section>
+
+
+<!-- ===================== PAGE COMPÉTENCE (programmation 36 semaines) ===================== -->
+<section class="comp-page" id="compPage">
+  <div class="cp-shell">
+    <button class="cp-back" id="cpBack">← Retour au répertoire</button>
+    <div class="cp-head">
+      <p class="eyebrow" id="cpEyebrow"></p>
+      <h1 id="cpTitle"></h1>
+      <div class="drawer-tags" id="cpTags"></div>
+    </div>
+
+    <div class="cp-block">
+      <h5>Objectifs d'apprentissage</h5>
+      <ul id="cpObjectifs"></ul>
+    </div>
+
+    <div class="cp-block" id="cpExemplesBlock">
+      <h5>Exemples de réussite</h5>
+      <ul id="cpExemples"></ul>
+    </div>
+
+    <div class="cp-block">
+      <div class="planner-panel">
+        <div class="planner-head">
+          <h4>Programmation annuelle — 36 semaines</h4>
+        </div>
+        <p class="planner-sub">Positionnez les séquences de travail consacrées à cette compétence sur l'année scolaire, répartie en 5 périodes.</p>
+
+        <div class="period-row" id="periodRow"></div>
+        <div class="week-grid" id="weekGrid"></div>
+
+        <form class="seq-form" id="seqForm">
+          <div class="fld" style="grid-column:1/-1;">
+            <label for="seqTitre">Intitulé de la séquence de travail</label>
+            <input type="text" id="seqTitre" placeholder="Ex. : Étude des CGP simples — période 1" required>
+          </div>
+          <div class="fld">
+            <label for="seqDebut">Semaine de début</label>
+            <select id="seqDebut"></select>
+          </div>
+          <div class="fld">
+            <label for="seqFin">Semaine de fin</label>
+            <select id="seqFin"></select>
+          </div>
+          <div class="fld" style="grid-column:1/-1;">
+            <label for="seqNote">Notes / contenu prévu (facultatif)</label>
+            <textarea id="seqNote" placeholder="Supports, modalités, évaluation prévue…"></textarea>
+          </div>
+          <button type="submit" class="btn-add">Ajouter la séquence</button>
+        </form>
+
+        <div id="seqListWrap">
+          <h5 style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-sky);margin-bottom:12px;">Séquences programmées</h5>
+          <div class="seq-list" id="seqList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DRAWER (fiche détaillée) ===================== -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Fiche détaillée de la compétence">
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-crumb" id="drawerCrumb"></div>
+    </div>
+    <button class="drawer-close" id="drawerClose" aria-label="Fermer la fiche">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-note">
+      Portail de consultation non institutionnel. Contenu construit exclusivement à partir de « Annexe 3 – Programme de français du cycle 2 », publié sur education.gouv.fr. Ce site n'est ni édité ni approuvé par le ministère de l'Éducation nationale.
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h5>Navigation</h5>
+        <a href="#niveaux">Niveaux</a><br><br>
+        <a href="#disciplines">Disciplines</a><br><br>
+        <a href="#repertoire">Répertoire</a>
+      </div>
+      <div>
+        <h5>Cycle 2</h5>
+        <a href="#" data-niveau="CP">Cours préparatoire</a><br><br>
+        <a href="#" data-niveau="CE1">Cours élémentaire 1</a><br><br>
+        <a href="#" data-niveau="CE2">Cours élémentaire 2</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+// ---------- Data model loaded from data.js pattern (inlined below) ----------
+// Données extraites exclusivement de : "Annexe 3 – Programme de français du cycle 2" (education.gouv.fr)
+const REFERENTIEL = {
+  cycle: "Cycle 2",
+  cycleLong: "Cycle des apprentissages fondamentaux",
+  discipline: "Français",
+  niveaux: ["CP", "CE1", "CE2"],
+  niveauxLongs: {
+    "CP": "Cours préparatoire",
+    "CE1": "Cours élémentaire première année",
+    "CE2": "Cours élémentaire deuxième année"
+  },
+  chapo: "Tout comme l'ensemble des domaines du cycle 2, l'enseignement du français participe à établir les savoirs fondamentaux des élèves dans le cadre d'un enseignement explicite, structuré et progressif. Cinq activités langagières permettent de les édifier : comprendre un énoncé oral, parler en continu, parler en interaction, écrire et lire.",
+  domaines: [
+    {
+      id: "lecture",
+      nom: "Lecture",
+      couleur: "#B5502E",
+      intro: "L'apprentissage de la lecture est l'objectif central du cycle 2 : il en constitue la priorité fondamentale sur laquelle reposent tous les apprentissages ultérieurs des élèves.",
+      sousDomaines: [
+        {
+          id: "lecture-mots",
+          nom: "Identifier les mots de manière de plus en plus aisée",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "En fin de période 1 : décoder et encoder 12 à 15 correspondances graphophonémiques (CGP) régulières, fréquentes et aisément prononçables ; déchiffrer des syllabes, des mots puis des phrases selon la progression des CGP.",
+                "En milieu d'année : décoder et encoder de 25 à 30 CGP ; prendre conscience des lettres finales muettes ; mémoriser les mots fréquents et réguliers ; déchiffrer entre 15 et 30 mots par minute.",
+                "En fin d'année : décoder 30 mots par minute au minimum sans préparation, 50 après préparation."
+              ],
+              exemples: [
+                "L'élève déchiffre les mots les plus réguliers selon la progression des CGP et automatise la lecture des mots fréquents et transparents (le, la, ami, rire, lune…).",
+                "Il lit des consignes, des phrases et de courts textes déchiffrables avec exactitude en fin d'année."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Automatiser le décodage des CGP apprises au CP.",
+                "En fin d'année : décoder toutes les CGP, y compris les plus complexes ; avoir mémorisé l'ensemble des CGP dans tous les types d'écriture ; identifier directement les mots courants et déchiffrer avec exactitude les mots nouveaux."
+              ],
+              exemples: [
+                "L'élève déchiffre et écrit sous la dictée des syllabes et des pseudo-mots comportant des CGP complexes (doir, stag, choust, valin, cagnou…).",
+                "Il lit des phrases contenant des morphèmes grammaticaux et lexicaux muets de manière fluide sans vocaliser les lettres muettes."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Avoir automatisé toutes les CGP.",
+                "Lire un texte nouveau en s'appuyant sur un décodage rapide et automatiser la lecture des mots.",
+                "Repérer les lettres muettes et décoder les mots inconnus en conservant la vitesse de lecture visée."
+              ],
+              exemples: [
+                "L'élève reconnait directement les mots fréquents et irréguliers.",
+                "Il lit un texte avec fluidité sans vocaliser les lettres muettes et en faisant les liaisons appropriées."
+              ]
+            }
+          ]
+        },
+        {
+          id: "lecture-voix-haute",
+          nom: "Lire à voix haute",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Dès le début de l'année : oraliser les syllabes déchiffrées et encodées, puis les mots.",
+                "En fin d'année : lire après préparation un texte adapté avec une vitesse de 30 mots par minute minimum sans préparation, 50 après préparation ; identifier les marques de ponctuation ; amorcer une lecture expressive."
+              ],
+              exemples: [
+                "En fin d'année, après préparation, l'élève repère les groupes de mots qui doivent être lus ensemble et modifie sa voix pour faire parler un personnage."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "En fin d'année : lire un texte adapté à son niveau avec une vitesse de 70 mots par minute ; lire des textes narratifs, documentaires et prescriptifs en respectant la ponctuation et les groupes de souffle ; lire de manière expressive."
+              ],
+              exemples: [
+                "L'élève lit après préparation un texte simple en réalisant les pauses adéquates et en adoptant le ton et le rythme appropriés au sens du texte."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Lire un texte adapté à son niveau avec une vitesse de 90 mots par minute.",
+                "Lire un texte en respectant l'ensemble des marques de ponctuation et les liaisons.",
+                "Manifester sa compréhension par une lecture expressive qui respecte la structure du texte, de la phrase et le sens."
+              ],
+              exemples: [
+                "L'élève est capable de lire une scène de théâtre en incarnant un personnage et en jouant de l'expressivité de la ponctuation."
+              ]
+            }
+          ]
+        },
+        {
+          id: "lecture-comprehension",
+          nom: "Comprendre un texte",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Dégager le sens global d'un texte entendu ou lu de façon autonome.",
+                "Identifier les mots inconnus et chercher à leur donner un sens ; se repérer dans la chaine anaphorique ; comprendre ce qui est implicite (inférences simples) ; justifier ses réponses par un retour au texte.",
+                "Lire et comprendre en autonomie un texte narratif, informatif ou prescriptif d'une dizaine de lignes."
+              ],
+              exemples: [
+                "L'élève construit une représentation mentale au fur et à mesure de la lecture et identifie la chronologie et les lieux d'un récit.",
+                "Il réalise en autonomie une inférence simple (ex. : « J'ai pris mon parapluie » → le temps est pluvieux)."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Dégager le sens global d'un texte lu de façon autonome à la suite d'une séance dédiée à la compréhension.",
+                "Développer des stratégies pour élucider le sens des mots et expressions inconnus.",
+                "Se repérer dans la chaine anaphorique et s'appuyer sur le sens du texte pour résoudre des ambigüités ; comprendre ce qui est implicite dans des cas simples.",
+                "Lire et comprendre en autonomie un texte narratif, informatif ou prescriptif d'une quinzaine de lignes."
+              ],
+              exemples: [
+                "L'élève restitue les enchainements logiques et chronologiques d'un récit et est capable de le résumer oralement.",
+                "Il prend appui sur la morphologie d'un mot et/ou le contexte pour le comprendre, et prend l'habitude de consulter un dictionnaire adapté."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Lire et dégager le sens d'un texte narratif, poétique, documentaire ou théâtral, en s'appuyant sur les caractéristiques de ces textes.",
+                "Adopter une posture active par rapport au vocabulaire inconnu.",
+                "Différencier le type narratif du type informatif et prescriptif.",
+                "Comprendre ce qui est implicite en s'appuyant sur des indices explicites et ses propres connaissances.",
+                "Lire et comprendre en autonomie un texte d'une vingtaine de lignes."
+              ],
+              exemples: [
+                "L'élève sait utiliser les sous-titres, titres de chapitres et mise en page pour mieux comprendre.",
+                "Il commence à utiliser des stratégies face à une non-compréhension : relecture, poursuite de la lecture, recherche au dictionnaire, recherche documentaire."
+              ]
+            }
+          ]
+        },
+        {
+          id: "lecture-devenir-lecteur",
+          nom: "Devenir lecteur",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Lire 5 à 10 œuvres complètes et variées issues du patrimoine et de la littérature de jeunesse (albums, romans, contes, fables, poèmes, pièces de théâtre, documentaires).",
+                "Repérer et reconnaitre des types de personnages ; aller vers les livres et être capable d'en choisir à titre personnel.",
+                "Relier ses lectures à son expérience personnelle ; fréquenter régulièrement des lieux de lecture."
+              ],
+              exemples: [
+                "L'élève caractérise, compare les personnages et reconnait des types récurrents dans la littérature de jeunesse.",
+                "Il différencie le type narratif du type informatif."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Lire 5 à 10 œuvres complètes et variées issues du patrimoine et de la littérature de jeunesse.",
+                "Se familiariser aux différents genres et types de textes ; faire preuve d'initiative dans ses lectures personnelles.",
+                "Relier ses lectures à son expérience personnelle et établir des liens entre ses lectures (mise en réseau)."
+              ],
+              exemples: [
+                "L'élève commence à écrire à propos de ses lectures : il exprime ses gouts, écrit un bref résumé ou invente une autre fin.",
+                "Il est capable de présenter une lecture à ses camarades à l'oral."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Lire de manière autonome 5 à 10 œuvres complètes et variées issues du patrimoine et de la littérature de jeunesse.",
+                "Relier ses lectures à son expérience personnelle et établir des liens entre ses différentes lectures (mise en réseau).",
+                "Fréquenter des lieux de lecture régulièrement et rencontrer des acteurs du livre."
+              ],
+              exemples: [
+                "L'élève connait les caractéristiques de personnages-types diversifiés et dispose de références construites sur des réseaux de textes.",
+                "Il consigne ses expériences de lecture dans un carnet de lecteur."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "ecriture",
+      nom: "Écriture",
+      couleur: "#2A7F72",
+      intro: "L'enjeu du cycle 2 porte en premier lieu sur l'apprentissage du geste graphique. L'enseignement de l'écriture comporte quatre types d'activités qui se complètent : l'écriture cursive, la copie, la dictée et la production d'écrits.",
+      sousDomaines: [
+        {
+          id: "ecriture-cursive",
+          nom: "Apprendre à écrire en écriture cursive",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Apprendre à écrire en écriture cursive tous les graphèmes étudiés selon la progression en décodage.",
+                "Apprendre à les enchainer, avec fluidité, avec d'autres lettres dans des syllabes, mots, phrases."
+              ],
+              exemples: [
+                "L'élève respecte la forme et la taille de la lettre, le sens de rotation du tracé et l'enchainement des lettres.",
+                "Il enchaine plusieurs lettres sans lever le crayon (sauf devant les lettres rondes : a, c, d, g, o, q, x)."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Dès la période 1 : mémoriser le tracé normé et la transcription de toutes les lettres minuscules scriptes en cursive.",
+                "À partir de la période 2 : reconnaitre les lettres dans les quatre écritures ; apprendre le tracé normé des majuscules cursives par familles de gestes."
+              ],
+              exemples: [
+                "L'élève exerce tous les jours le geste d'écriture cursive minuscule en révisant les graphèmes par famille de gestes.",
+                "En fin d'année, il reconnait et sait tracer toutes les majuscules cursives."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Dès la période 1 : automatiser l'écriture de toutes les lettres minuscules et majuscules en cursive."
+              ],
+              exemples: [
+                "L'élève écrit et transcrit avec fluidité toutes les lettres cursives minuscules et majuscules."
+              ]
+            }
+          ]
+        },
+        {
+          id: "ecriture-dictee",
+          nom: "Encoder puis écrire sous dictée",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Dès le début de l'année : encoder des syllabes simples puis des mots selon la progression des CGP.",
+                "Dès la fin de la 2e période : écrire des mots dictés avec des lettres muettes apprises.",
+                "En fin d'année : écrire sous la dictée des mots et des phrases."
+              ],
+              exemples: [
+                "L'élève oralise ce qu'il écrit et segmente la chaine orale (phrase en mots, mots en syllabes et phonèmes).",
+                "Il mobilise des connaissances orthographiques (lettres muettes, marques d'accords accompagnées par l'adulte) lors des activités d'encodage."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Orthographier correctement les mots fréquents, réguliers puis irréguliers.",
+                "Réaliser des accords en genre et en nombre dans le groupe nominal et dans le groupe verbal (marque de pluriel des verbes = nt)."
+              ],
+              exemples: [
+                "L'élève réalise des dictées en lien avec l'étude des graphèmes, avec ou sans appui du cahier de référence.",
+                "Il se familiarise avec divers types de dictée."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "À la fin de l'année : orthographier correctement les mots fréquents, réguliers et irréguliers et des phrases selon les accords étudiés dans le cadre de dictées."
+              ],
+              exemples: [
+                "L'élève transcrit correctement les phonèmes pouvant s'écrire à l'aide de plusieurs graphèmes (/o/, /é/, /è/, /an/, /s/…) dans différents mots fréquents.",
+                "Il orthographie les chaines d'accord dans la phrase."
+              ]
+            }
+          ]
+        },
+        {
+          id: "ecriture-copie",
+          nom: "Copier et acquérir des stratégies de copie",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Dès le début de l'année : copier des syllabes simples puis des mots avec lettres muettes.",
+                "Dès la fin de la période 1 : copier une phrase en lien avec les 12/15 CGP étudiées ; commencer à verbaliser et utiliser des stratégies de copie.",
+                "En fin d'année : copier trois ou quatre phrases sans erreur et de façon lisible."
+              ],
+              exemples: [
+                "L'élève transforme en cursive un mot puis une phrase à partir de modèles en écriture scripte.",
+                "En fin d'année, il rectifie seul les oublis de mots et les erreurs de ponctuation."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Automatiser le geste d'écriture cursive par la copie de textes en temps limité et acquérir des stratégies de copie.",
+                "À l'issue de la période 1 : copier quatre à cinq phrases courtes.",
+                "À la fin de l'année : recopier sans effort une dizaine de lignes en respectant la ponctuation et la mise en page."
+              ],
+              exemples: [
+                "L'élève sait mobiliser différentes stratégies de copie : lettre à lettre, syllabe par syllabe, mot à mot, groupe de mots par groupe de mots.",
+                "Il relit son écrit et corrige l'orthographe selon les indications du professeur."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "En fin d'année : copier une dizaine de lignes sans erreur en conjuguant vitesse et exactitude et en respectant les mises en page complexes."
+              ],
+              exemples: [
+                "L'élève utilise systématiquement des stratégies de copie pour exercer la vitesse, l'exactitude, l'endurance et la mise en page.",
+                "Il se relit et repère des omissions ou erreurs orthographiques ou de ponctuation."
+              ]
+            }
+          ]
+        },
+        {
+          id: "ecriture-production",
+          nom: "Produire des écrits",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Dès le début de l'année : écrire des graphèmes, des syllabes, des mots puis quelques phrases avec l'aide du professeur.",
+                "Dès la 2e période : produire des écrits courts porteurs de sens, d'une à cinq lignes, en articulation avec l'apprentissage de la lecture.",
+                "En fin d'année : commencer à acquérir une méthodologie de production écrite (planification, mise en mots, relectures, révisions)."
+              ],
+              exemples: [
+                "L'élève compose des phrases à l'aide d'étiquettes mobiles qu'il sait déchiffrer.",
+                "En fin d'année, il respecte les deux marqueurs de la phrase : majuscule et ponctuation finale forte."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Dès les premières semaines : rédiger une phrase simple à partir d'une phrase prototypique, en changeant un puis plusieurs mots.",
+                "Au cours des périodes 1 à 5 : insérer des connecteurs pour rendre cohérent l'enchainement de plusieurs phrases.",
+                "En fin d'année : écrire un texte de six ou sept phrases maximum en assurant la cohérence syntaxique et logique du texte produit."
+              ],
+              exemples: [
+                "L'élève se sert de « brouillons » pour écrire : listes, pistes, cartes mentales.",
+                "Lors de l'étude d'une œuvre, il écrit la suite d'un passage en séquençant les actions : D'abord… Puis… Enfin…"
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Écrire pour transmettre un message, une émotion, une information à un destinataire.",
+                "Rédiger quelques phrases entrainant les automatismes appris en grammaire et orthographe.",
+                "Écrire un texte d'une dizaine de lignes de différents types, en respectant la syntaxe et les règles orthographiques étudiées.",
+                "Relire son texte méthodiquement."
+              ],
+              exemples: [
+                "L'élève écrit des dialogues, des récits, des poèmes en tenant compte des caractéristiques des types et genres de textes.",
+                "Il identifie les groupes nominaux et verbaux dans son texte et corrige éventuellement les erreurs d'accords."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "oral",
+      nom: "Oral",
+      couleur: "#6B4E8E",
+      intro: "L'enjeu du cycle 2 consiste à favoriser et enrichir la prise de parole de l'élève et, par l'écoute et le dialogue, à développer ses compétences psychosociales. La compétence orale se forge grâce à trois activités langagières : comprendre un énoncé oral, parler en interaction et parler en continu.",
+      sousDomaines: [
+        {
+          id: "oral-ecouter",
+          nom: "Écouter pour comprendre",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Comprendre un message entendu de quelques minutes et mémoriser quelques informations importantes."
+              ],
+              exemples: [
+                "L'élève adopte une posture d'écoute pour mémoriser une consigne ou un message important et réalise l'action demandée par un discours injonctif.",
+                "Il répond, après plusieurs écoutes d'un texte narratif, à la question : Que raconte ce texte ?"
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Maintenir une attention active pendant quelques minutes pour repérer, mémoriser, classer ou ordonner les informations importantes entendues à l'oral."
+              ],
+              exemples: [
+                "L'élève réalise l'action demandée par un discours injonctif (consigne, recette, notice de montage, règle du jeu).",
+                "Il récapitule une leçon orale, par exemple en sciences, en ordonnant les informations."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Repérer, mémoriser et relier entre elles plusieurs informations importantes pour construire la cohérence d'un message entendu de plus en plus long et complexe (5 minutes maximum), en évaluant son degré de compréhension."
+              ],
+              exemples: [
+                "L'élève écoute une interview et, après plusieurs écoutes, reformule l'essentiel de ce qu'il a appris du locuteur.",
+                "Il écoute une histoire et est capable d'en inventer la fin."
+              ]
+            }
+          ]
+        },
+        {
+          id: "oral-dire",
+          nom: "Dire pour être compris",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Mener une brève production orale pour rapporter, raconter, décrire ou expliquer, en utilisant quelques organisateurs du discours et en mobilisant le lexique appris.",
+                "S'écouter pour progresser et proposer des reformulations ; oraliser un texte mémorisé ou préparé en tenant compte de son auditoire."
+              ],
+              exemples: [
+                "En groupe restreint, l'élève est capable de prendre la parole en regardant ses camarades et en veillant à se faire comprendre.",
+                "Il restitue un poème en articulant distinctement et d'une voix audible."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Utiliser à l'oral l'ensemble des temps verbaux pour raconter, décrire, expliquer, comparer ou exposer.",
+                "Utiliser les critères définis pour évaluer sa prestation ou celle des autres et progresser dans la production de différents types de discours."
+              ],
+              exemples: [
+                "L'élève réinvestit (pendant 5 minutes maximum) les tournures linguistiques et postures apprises lors des séances dédiées aux différents types de discours.",
+                "Il utilise des termes comme d'abord, ensuite, donc, par conséquent, enfin, pour conclure."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Mener une production orale de plus en plus longue et structurée pour raconter, expliquer, argumenter, justifier.",
+                "Maintenir l'intérêt de son auditoire lors des différentes prestations orales."
+              ],
+              exemples: [
+                "L'élève produit des phrases de plus en plus complexes et mobilise un lexique de plus en plus varié et abstrait.",
+                "Il présente un exposé de quelques minutes construit en classe en prenant appui sur un support et explique un raisonnement en mathématiques ou en sciences."
+              ]
+            }
+          ]
+        },
+        {
+          id: "oral-echanges",
+          nom: "Participer à des échanges",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Participer aux échanges en respectant les règles, en écoutant les autres et en donnant son avis.",
+                "Prendre conscience des écarts de niveau de langue selon les situations de communication."
+              ],
+              exemples: [
+                "L'élève attend la fin d'une prise de parole pour parler et réutilise des expressions comme : Je souhaite prendre la parole pour…",
+                "Il mesure que l'on ne parle pas de la même manière en classe et dans la cour."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Respecter le propos au cours des échanges au sein d'un groupe.",
+                "Adapter le registre de langue utilisé (familier, courant, soutenu) à la situation de communication proposée."
+              ],
+              exemples: [
+                "L'élève exprime et justifie un accord ou un désaccord en utilisant des expressions fournies par le professeur.",
+                "Il participe à des jeux de rôle et adapte son registre de langue de façon appropriée."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Tenir compte de ce qui a déjà été dit lors des interventions au sein d'un groupe.",
+                "Utiliser un registre de langue et adopter des postures adaptées aux situations proposées (jeux de rôles)."
+              ],
+              exemples: [
+                "L'élève est capable de reformuler ce qui a été dit par un camarade et de s'appuyer sur ce propos pour faire progresser l'échange.",
+                "Il utilise des expressions fournies par le professeur : Pour compléter ce qu'a dit… ; Pour reprendre les propos de…"
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "vocabulaire",
+      nom: "Vocabulaire",
+      couleur: "#B5871E",
+      intro: "L'enseignement du vocabulaire reste une priorité au cycle 2 en ce qu'il participe de la lutte contre les inégalités scolaires. Les séquences suivent trois étapes : apporter de nouveaux mots, structurer le lexique, réutiliser le vocabulaire appris.",
+      sousDomaines: [
+        {
+          id: "vocab-enrichir",
+          nom: "Enrichir son vocabulaire dans tous les enseignements",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Enrichir en contexte le vocabulaire appris au cycle 1.",
+                "Être sensible, sans en apprendre les concepts, à la polysémie et à la différence entre sens propre et sens figuré.",
+                "Commencer à mobiliser l'ordre alphabétique pour utiliser un dictionnaire adapté."
+              ],
+              exemples: [
+                "L'élève caractérise un personnage après une lecture expressive réalisée par l'adulte (ex. : sévère, rusé).",
+                "Il commence à comprendre le sens des principaux affixes : dé-(décoller), re-(refaire), in-(invisible), -eur (chanteur), -ette (tablette)."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Enrichir les répertoires constitués au CP en y ajoutant des expressions ou locutions.",
+                "S'appuyer sur la morphologie des mots pour en trouver le sens ; prendre l'habitude de consulter des articles de dictionnaire adapté."
+              ],
+              exemples: [
+                "L'élève caractérise un personnage après une lecture autonome (ex. : jaloux, machiavélique, ambitieux).",
+                "Il enrichit sa connaissance des principaux affixes : para-(parapluie), multi-(multicolore), anti-(antivol)."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Enrichir les répertoires constitués au CP et au CE1 en y ajoutant des expressions ou locutions.",
+                "Comprendre le lien sémantique entre sens propre et sens figuré dans les cas les plus fréquents.",
+                "Consulter avec aisance des articles de dictionnaire adapté."
+              ],
+              exemples: [
+                "L'élève caractérise un personnage après une lecture autonome (ex. : irritable, débonnaire, placide).",
+                "Il perçoit que le verbe souffler a un sens différent dans souffler ses bougies et souffler une réponse."
+              ]
+            }
+          ]
+        },
+        {
+          id: "vocab-relations",
+          nom: "Établir des relations entre les mots",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Constituer des répertoires de mots par thème, par classe grammaticale, par famille de mots, par analogies morphologiques.",
+                "Savoir proposer et justifier une catégorisation du corpus de mots étudié ; savoir trouver des synonymes et des antonymes."
+              ],
+              exemples: [
+                "L'élève rapproche les mots de l'univers de l'école et comprend la notion de champ lexical (trousse, colle, bureau, ardoise…).",
+                "Il repère et opère des dérivations simples : coller/décoller/recoller."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Percevoir de grandes catégories et hiérarchiser les termes génériques, de base et spécifiques.",
+                "Percevoir les niveaux de langue familier, courant et soutenu ; comprendre la différence entre sens propre/sens figuré."
+              ],
+              exemples: [
+                "L'élève perçoit le lien entre les mots aliment > laitage > fromage > gruyère et peut les classer du général vers le particulier.",
+                "Il identifie des contraires construits avec les préfixes in- ou dé- (visible/invisible, ranger/déranger)."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Enrichir les collections constituées au début du cycle avec des mots, expressions et associations fréquentes.",
+                "Percevoir de grandes catégories et hiérarchiser les termes génériques de base et spécifiques.",
+                "Savoir utiliser les niveaux de langue (familier, courant, soutenu) en fonction des situations et des interlocuteurs."
+              ],
+              exemples: [
+                "L'élève perçoit une gradation au sein de relations de proximité ou de synonymie (ex. : la crainte > la peur > l'épouvante).",
+                "Il opère des dérivations en identifiant la partie commune des mots (port/portuaire/aéroport)."
+              ]
+            }
+          ]
+        },
+        {
+          id: "vocab-reemployer",
+          nom: "Réemployer le vocabulaire étudié",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Réemployer et mémoriser le vocabulaire appris en maternelle, ainsi que les expressions et mots appris en fonction de contraintes de production orale ou écrite.",
+                "Percevoir la différence entre deux niveaux de langue et choisir le plus adapté à la situation."
+              ],
+              exemples: [
+                "L'élève convoque, de plus en plus rapidement, lors d'un jeu oral, des mots catégorisés lors de séances spécifiques.",
+                "Il joue au jeu des 7 familles en catégorisant : Dans la famille des fruits, je voudrais la pomme."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Mobiliser les mots rencontrés en contexte en fonction des lectures et des activités conduites pour mieux parler, mieux comprendre et mieux écrire.",
+                "Utiliser les relations établies entre les mots depuis le cycle 1 pour varier et adapter son expression."
+              ],
+              exemples: [
+                "L'élève réinvestit des mots précis dans une situation de production orale ou écrite (ex. : mesurer les cinq segments puis les ranger du plus petit au plus grand).",
+                "Il améliore sa production en évitant les répétitions grâce à l'emploi de synonymes ou de termes génériques."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Employer à bon escient et rigoureusement les mots étudiés, en référence à leur contexte d'emploi et leur éventuelle polysémie.",
+                "Comprendre la différence entre sens propre/sens figuré ; changer de niveau de langue selon les situations.",
+                "Automatiser la restitution des mots d'un corpus étudié (fluence verbale)."
+              ],
+              exemples: [
+                "L'élève mobilise des synonymes, termes génériques ou expressions lors de divers écrits pour éviter les répétitions.",
+                "Il rédige des énoncés utilisant le même mot au sens propre et au sens figuré (ex. : Une forte pluie inonde la cave. / Le soleil inonde la pièce.)."
+              ]
+            }
+          ]
+        },
+        {
+          id: "vocab-orthographe",
+          nom: "Mémoriser l'orthographe lexicale",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Mémoriser l'orthographe des mots réguliers fréquemment rencontrés et du lexique le plus couramment employé, et pouvoir les écrire sous la dictée.",
+                "Identifier et nommer les accents ; connaitre la valeur sonore de certaines lettres (s, c, g) et la composition de certains graphèmes selon la lettre qui suit (an/am, en/em, on/om, in/im)."
+              ],
+              exemples: [
+                "L'élève met en mémoire les mots réguliers et fréquents en épelant, copiant, et en prenant appui sur des analogies graphophonémiques (quarante/cinquante/soixante) ou morphologiques (maisonnette/fillette/tablette).",
+                "Il décode les mots comportant un m devant m/b/p."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Mémoriser l'orthographe des mots réguliers et irréguliers fréquemment rencontrés et du lexique le plus couramment employé.",
+                "Tenir compte des accents ; classer par analogie et mémoriser les mots comportant des graphèmes à prononciation variable (s, c, g)."
+              ],
+              exemples: [
+                "L'élève mémorise et restitue un corpus organisé de mots invariables (tôt/aussitôt/plutôt…) et de vocabulaire spatial (ici/là-bas/loin/près…).",
+                "Il sait orthographier les mots dont la lettre muette finale s'entend dans un mot dérivé à radical régulier (chant/chanter)."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Écrire correctement sous la dictée les mots réguliers et irréguliers fréquemment rencontrés.",
+                "Tenir compte des accents ; s'appuyer sur des critères morphologiques (radical, préfixe, suffixe) et analogiques pour orthographier correctement les mots."
+              ],
+              exemples: [
+                "L'élève copie, y compris en copie différée, des listes de mots par analogie ainsi que les mots irréguliers les plus fréquents.",
+                "Il met en œuvre des raisonnements orthographiques fondés sur la morphologie lexicale (ex. : il s'appuie sur beau pour orthographier beauté)."
+              ]
+            }
+          ]
+        }
+      ]
+    },
+    {
+      id: "grammaire",
+      nom: "Grammaire et orthographe",
+      couleur: "#1E2A4A",
+      intro: "La grammaire est un enseignement au service de l'oral, de la lecture et de l'écriture. Au cycle 2, l'objectif est de faire comprendre aux élèves le système de la langue et les deux éléments constitutifs de la phrase simple : le groupe sujet et le groupe verbal.",
+      sousDomaines: [
+        {
+          id: "gram-phrase",
+          nom: "Se repérer dans la phrase simple",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "S'approprier progressivement la notion de phrase simple et ses trois marqueurs essentiels : majuscule initiale, ponctuation finale forte et sens.",
+                "S'appuyer sur la ponctuation pour reconnaitre les trois types de phrases (déclarative, interrogative, impérative) ; reconnaitre les formes négative et exclamative.",
+                "Constituer des corpus par classe de mots : noms, verbes, déterminants, adjectifs, pronoms personnels."
+              ],
+              exemples: [
+                "L'élève identifie les phrases d'un court texte à partir des majuscules et des différents points.",
+                "Il opère des tris de mots (déterminant/nom/adjectif) entendus, lus ou écrits en fonction de leur genre et de leur nombre."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Identifier la phrase simple, en distinguer les principaux constituants et les nommer : groupe sujet (GS), verbe et compléments.",
+                "Reconnaitre et utiliser les trois types de phrases, en lien avec la ponctuation.",
+                "Différencier et nommer les principales classes de mots : déterminant, nom commun, nom propre, adjectif, verbe, pronom personnel sujet."
+              ],
+              exemples: [
+                "L'élève opère des manipulations de phrase : déplacement, suppression, ajout, substitution (ex. : Elle mange tous les jours. → Tous les jours, elle mange à la cantine.).",
+                "Il catégorise un corpus de mots proposé par classe grammaticale et affine ses critères de reconnaissance."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Identifier la phrase simple et reconnaitre ses principaux constituants : groupe sujet, verbe et compléments.",
+                "Reconnaitre et produire les trois types de phrases ainsi que les formes négative et exclamative.",
+                "Différencier et nommer les principales classes de mots, y compris l'adverbe ; utiliser la ponctuation de fin de phrase et reconnaitre les marques du discours rapporté."
+              ],
+              exemples: [
+                "L'élève substitue à un groupe nominal sujet un pronom personnel sujet et inversement.",
+                "Il découvre la classe grammaticale de l'adverbe et sait orthographier les adverbes les plus fréquents (très, si, bien, assez, aujourd'hui, demain…) et les adverbes en -ment."
+              ]
+            }
+          ]
+        },
+        {
+          id: "gram-orthographe",
+          nom: "Découvrir, comprendre et mettre en œuvre l'orthographe grammaticale",
+          competences: [
+            {
+              niveau: "CP",
+              objectifs: [
+                "Comprendre les notions de masculin/féminin et de singulier/pluriel.",
+                "Se familiariser avec la notion de « chaine d'accords » (déterminant/nom/adjectif).",
+                "S'initier à l'identification de la relation sujet-verbe ; apprendre à conjuguer être et avoir au présent de l'indicatif."
+              ],
+              exemples: [
+                "L'élève observe la marque du féminin (+e) et du pluriel (+s) à partir d'exemples sonores (petit/petite, deux lapins…).",
+                "Il orthographie sous la dictée des groupes nominaux du type : une olive/des olives ; un joli vélo/de jolis vélos."
+              ]
+            },
+            {
+              niveau: "CE1",
+              objectifs: [
+                "Reconnaitre le groupe nominal (déterminant/nom/adjectif) et comprendre le lien entre les éléments dans la chaine d'accords.",
+                "Identifier la relation sujet-verbe et le radical/terminaison d'un verbe du premier groupe conjugué.",
+                "Apprendre à conjuguer au présent, à l'imparfait, au futur puis au passé composé de l'indicatif être, avoir et les verbes du premier groupe."
+              ],
+              exemples: [
+                "L'élève utilise, en dictée, les marques d'accord pour le nom et l'adjectif épithète (pluriel en -s, féminin en -e).",
+                "Il est capable de nommer l'infinitif d'un verbe conjugué à divers temps en s'appuyant sur le repérage d'un radical commun."
+              ]
+            },
+            {
+              niveau: "CE2",
+              objectifs: [
+                "Repérer, comprendre et mettre en œuvre les marques d'accord au sein du groupe nominal.",
+                "Identifier, dans des situations simples, la relation sujet-verbe.",
+                "Apprendre à conjuguer au présent, à l'imparfait, au futur et au passé composé de l'indicatif être, avoir, les verbes du premier groupe et des verbes irréguliers du 3e groupe (faire, aller, dire, venir, pouvoir, voir, vouloir, prendre)."
+              ],
+              exemples: [
+                "L'élève comprend la notion de chaine d'accords dans le groupe nominal (nombre -s, genre -e, pluriels irréguliers -x/-al-aux, féminins lecteur/lectrice).",
+                "Il orthographie correctement les formes verbales étudiées en situation de dictée et d'écriture."
+              ]
+            }
+          ]
+        }
+      ]
+    }
+  ]
+};
+
+</script>
+<script>
+(function(){
+  "use strict";
+
+  // Flatten every competence into individual "fiches" for the directory
+  function buildFiches(){
+    const fiches = [];
+    REFERENTIEL.domaines.forEach(dom=>{
+      dom.sousDomaines.forEach(sd=>{
+        sd.competences.forEach(c=>{
+          fiches.push({
+            id: dom.id + "__" + sd.id + "__" + c.niveau,
+            domaineId: dom.id,
+            domaineNom: dom.nom,
+            domaineCouleur: dom.couleur,
+            sousDomaineId: sd.id,
+            sousDomaineNom: sd.nom,
+            niveau: c.niveau,
+            objectifs: c.objectifs,
+            exemples: c.exemples || []
+          });
+        });
+      });
+    });
+    return fiches;
+  }
+  const FICHES = buildFiches();
+
+  const state = { niveau: null, domaine: null, sousDomaine: null, query: "", view: "grid" };
+
+  // ---------- Header level pill ----------
+  const headerPill = document.getElementById('headerLevelPill');
+  ["Tous", ...REFERENTIEL.niveaux].forEach(n=>{
+    const b = document.createElement('button');
+    b.textContent = n === "Tous" ? "Tous" : n;
+    b.className = (state.niveau===null && n==="Tous") ? "active" : "";
+    b.addEventListener('click', ()=>{ setNiveau(n==="Tous"?null:n); });
+    headerPill.appendChild(b);
+  });
+  function syncHeaderPill(){
+    [...headerPill.children].forEach(btn=>{
+      const isTous = btn.textContent==="Tous";
+      btn.classList.toggle('active', isTous ? state.niveau===null : btn.textContent===state.niveau);
+    });
+  }
+
+  document.getElementById('headerSearchBtn').addEventListener('click', ()=>{
+    document.getElementById('mainSearch').focus();
+    window.scrollTo({top:0,behavior:'smooth'});
+  });
+
+  // ---------- Hero quicklinks ----------
+  const quickWrap = document.getElementById('quickDomainLinks');
+  REFERENTIEL.domaines.forEach(dom=>{
+    const a = document.createElement('a');
+    a.href = "#repertoire";
+    a.className = "quicklink";
+    a.textContent = dom.nom;
+    a.addEventListener('click', ()=> setDomaine(dom.id));
+    quickWrap.appendChild(a);
+  });
+
+  // ---------- Level cards ----------
+  const niveauLabelsLong = REFERENTIEL.niveauxLongs;
+  const levelCardsWrap = document.getElementById('levelCards');
+  REFERENTIEL.niveaux.forEach(n=>{
+    const count = FICHES.filter(f=>f.niveau===n).length;
+    const card = document.createElement('button');
+    card.className = "level-card";
+    card.innerHTML = `
+      <div class="lc-code">${REFERENTIEL.cycle.toUpperCase()} · NIVEAU</div>
+      <h3>${n}</h3>
+      <p>${niveauLabelsLong[n]}</p>
+      <div class="lc-count">${count} fiches de compétences</div>
+    `;
+    card.addEventListener('click', ()=>{ setNiveau(state.niveau===n?null:n); document.getElementById('repertoire').scrollIntoView({behavior:'smooth'}); });
+    levelCardsWrap.appendChild(card);
+  });
+
+  // ---------- Domain cards ----------
+  const domainCardsWrap = document.getElementById('domainCards');
+  REFERENTIEL.domaines.forEach(dom=>{
+    const count = FICHES.filter(f=>f.domaineId===dom.id).length;
+    const card = document.createElement('button');
+    card.className = "domain-card";
+    card.style.setProperty('--dcolor', dom.couleur);
+    card.innerHTML = `
+      <h3>${dom.nom}</h3>
+      <p>${dom.intro}</p>
+      <span class="dc-tag">${count} compétences</span>
+    `;
+    card.addEventListener('click', ()=>{ setDomaine(state.domaine===dom.id?null:dom.id); document.getElementById('repertoire').scrollIntoView({behavior:'smooth'}); });
+    domainCardsWrap.appendChild(card);
+  });
+
+  // ---------- Filters ----------
+  function chip(label, active, onClick){
+    const b = document.createElement('button');
+    b.className = "chip";
+    b.textContent = label;
+    b.setAttribute('aria-pressed', active ? "true":"false");
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function renderNiveauFilter(){
+    const wrap = document.getElementById('filterNiveau');
+    wrap.innerHTML = "";
+    wrap.appendChild(chip("Tous", state.niveau===null, ()=>setNiveau(null)));
+    REFERENTIEL.niveaux.forEach(n=>{
+      wrap.appendChild(chip(n, state.niveau===n, ()=>setNiveau(state.niveau===n?null:n)));
+    });
+  }
+
+  function renderDomaineFilter(){
+    const wrap = document.getElementById('filterDomaine');
+    wrap.innerHTML = "";
+    wrap.appendChild(chip("Tous", state.domaine===null, ()=>setDomaine(null)));
+    REFERENTIEL.domaines.forEach(dom=>{
+      wrap.appendChild(chip(dom.nom, state.domaine===dom.id, ()=>setDomaine(state.domaine===dom.id?null:dom.id)));
+    });
+  }
+
+  function renderSousDomaineFilter(){
+    const wrap = document.getElementById('filterSousDomaine');
+    wrap.innerHTML = "";
+    if(!state.domaine){
+      wrap.innerHTML = '<span style="font-size:12px;color:var(--ink-soft);">Sélectionnez un domaine</span>';
+      return;
+    }
+    const dom = REFERENTIEL.domaines.find(d=>d.id===state.domaine);
+    wrap.appendChild(chip("Tous", state.sousDomaine===null, ()=>setSousDomaine(null)));
+    dom.sousDomaines.forEach(sd=>{
+      wrap.appendChild(chip(sd.nom, state.sousDomaine===sd.id, ()=>setSousDomaine(state.sousDomaine===sd.id?null:sd.id)));
+    });
+  }
+
+  function setNiveau(n){ state.niveau = n; syncAll(); }
+  function setDomaine(d){ state.domaine = d; state.sousDomaine = null; syncAll(); }
+  function setSousDomaine(s){ state.sousDomaine = s; syncAll(); }
+
+  document.getElementById('resetFilters').addEventListener('click', ()=>{
+    state.niveau=null; state.domaine=null; state.sousDomaine=null; state.query="";
+    document.getElementById('dirSearch').value=""; document.getElementById('mainSearch').value="";
+    syncAll();
+  });
+
+  // ---------- Search ----------
+  function runSearch(q){
+    state.query = q.trim().toLowerCase();
+    syncAll();
+    document.getElementById('repertoire').scrollIntoView({behavior:'smooth'});
+  }
+  document.getElementById('mainSearchBtn').addEventListener('click', ()=> runSearch(document.getElementById('mainSearch').value));
+  document.getElementById('mainSearch').addEventListener('keydown', e=>{ if(e.key==="Enter"){ runSearch(e.target.value); }});
+  document.getElementById('dirSearch').addEventListener('input', e=>{ state.query = e.target.value.trim().toLowerCase(); renderDirectory(); updateResultCount(); });
+
+  // ---------- View toggle ----------
+  document.getElementById('viewGridBtn').addEventListener('click', ()=> setView('grid'));
+  document.getElementById('viewListBtn').addEventListener('click', ()=> setView('list'));
+  function setView(v){
+    state.view = v;
+    document.getElementById('viewGridBtn').classList.toggle('active', v==='grid');
+    document.getElementById('viewGridBtn').setAttribute('aria-pressed', v==='grid');
+    document.getElementById('viewListBtn').classList.toggle('active', v==='list');
+    document.getElementById('viewListBtn').setAttribute('aria-pressed', v==='list');
+    renderDirectory();
+  }
+
+  // ---------- Filtering logic ----------
+  function filteredFiches(){
+    return FICHES.filter(f=>{
+      if(state.niveau && f.niveau!==state.niveau) return false;
+      if(state.domaine && f.domaineId!==state.domaine) return false;
+      if(state.sousDomaine && f.sousDomaineId!==state.sousDomaine) return false;
+      if(state.query){
+        const hay = (f.sousDomaineNom+" "+f.domaineNom+" "+f.niveau+" "+f.objectifs.join(" ")+" "+f.exemples.join(" ")).toLowerCase();
+        if(!hay.includes(state.query)) return false;
+      }
+      return true;
+    });
+  }
+
+  function highlight(text){
+    if(!state.query) return text;
+    const idx = text.toLowerCase().indexOf(state.query);
+    if(idx===-1) return text;
+    return text.slice(0,idx) + "<mark>" + text.slice(idx, idx+state.query.length) + "</mark>" + text.slice(idx+state.query.length);
+  }
+
+  // ---------- Directory rendering ----------
+  function renderDirectory(){
+    const container = document.getElementById('compContainer');
+    container.className = state.view==='grid' ? 'comp-grid' : 'comp-list';
+    const list = filteredFiches();
+    container.innerHTML = "";
+
+    if(list.length===0){
+      container.innerHTML = `<div class="empty-state"><h4>Aucune compétence trouvée</h4><p>Essayez de modifier ou réinitialiser vos filtres.</p></div>`;
+      return;
+    }
+
+    if(state.view==='grid'){
+      list.forEach(f=>{
+        const card = document.createElement('button');
+        card.className = "comp-card";
+        card.style.setProperty('--dcolor', f.domaineCouleur);
+        card.innerHTML = `
+          <div class="cc-top">
+            <span class="badge">${f.domaineNom}</span>
+            <span class="badge niveau">${f.niveau}</span>
+          </div>
+          <h4>${highlight(f.sousDomaineNom)}</h4>
+          <div class="cc-domain">${REFERENTIEL.cycle} · ${REFERENTIEL.discipline}</div>
+          <p class="cc-preview">${highlight(f.objectifs[0])}</p>
+          <span class="cc-arrow">Voir la fiche →</span>
+        `;
+        card.addEventListener('click', ()=> openDrawer(f));
+        container.appendChild(card);
+      });
+    } else {
+      list.forEach(f=>{
+        const row = document.createElement('button');
+        row.className = "comp-list-row";
+        row.innerHTML = `
+          <span class="badge niveau" style="justify-self:start;">${f.niveau}</span>
+          <span class="clr-title">${highlight(f.sousDomaineNom)}</span>
+          <span class="clr-sub">${f.domaineNom}</span>
+          <span aria-hidden="true" style="color:var(--accent-sky);">→</span>
+        `;
+        row.addEventListener('click', ()=> openDrawer(f));
+        container.appendChild(row);
+      });
+    }
+  }
+
+  function updateResultCount(){
+    const n = filteredFiches().length;
+    document.getElementById('resultCount').innerHTML = `<strong>${n}</strong> compétence${n>1?'s':''} affichée${n>1?'s':''} sur <strong>${FICHES.length}</strong>`;
+  }
+
+  // ---------- Drawer ----------
+  const overlay = document.getElementById('drawerOverlay');
+  const drawer = document.getElementById('drawer');
+  let lastFocused = null;
+
+  function openDrawer(f){
+    lastFocused = document.activeElement;
+    const dom = REFERENTIEL.domaines.find(d=>d.id===f.domaineId);
+    document.getElementById('drawerCrumb').innerHTML = `
+      <button data-jump="repertoire">Répertoire</button> ›
+      <button data-jump-domaine="${dom.id}">${dom.nom}</button> ›
+      ${f.niveau}
+    `;
+    document.getElementById('drawerBody').innerHTML = `
+      <h2>${f.sousDomaineNom}</h2>
+      <div class="drawer-tags">
+        <span class="badge" style="--dcolor:${f.domaineCouleur}">${f.domaineNom}</span>
+        <span class="badge niveau">${f.niveau} · ${REFERENTIEL.niveauxLongs[f.niveau]}</span>
+        <span class="badge niveau">${REFERENTIEL.cycle}</span>
+      </div>
+
+      <div class="drawer-section">
+        <h5>Objectifs d'apprentissage</h5>
+        <ul>${f.objectifs.map(o=>`<li>${o}</li>`).join('')}</ul>
+      </div>
+
+      ${f.exemples.length? `
+      <div class="drawer-section">
+        <h5>Exemples de réussite</h5>
+        <div class="reussite-box"><ul>${f.exemples.map(e=>`<li>${e}</li>`).join('')}</ul></div>
+      </div>` : ''}
+
+      <div class="drawer-section">
+        <h5>Compétences connexes du même domaine</h5>
+        <div>${dom.sousDomaines.filter(sd=>sd.id!==f.sousDomaineId).map(sd=>`<span class="related-chip" data-jump-sd="${dom.id}|${sd.id}">${sd.nom}</span>`).join('')}</div>
+      </div>
+
+      <button class="cp-open-full" id="drawerOpenFull">Ouvrir la page de programmation (36 semaines) →</button>
+    `;
+    document.getElementById('drawerOpenFull').addEventListener('click', ()=>{
+      closeDrawer();
+      location.hash = '#/competence/' + f.id;
+    });
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    drawer.setAttribute('aria-hidden','false');
+    document.getElementById('drawerClose').focus();
+    document.body.style.overflow = 'hidden';
+
+    drawer.querySelectorAll('[data-jump-sd]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const [domId, sdId] = el.getAttribute('data-jump-sd').split('|');
+        closeDrawer();
+        setDomaine(domId); setSousDomaine(sdId);
+      });
+    });
+    drawer.querySelectorAll('[data-jump-domaine]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        closeDrawer(); setDomaine(el.getAttribute('data-jump-domaine'));
+      });
+    });
+    drawer.querySelectorAll('[data-jump]').forEach(el=>{
+      el.addEventListener('click', ()=>{ closeDrawer(); document.getElementById('repertoire').scrollIntoView({behavior:'smooth'}); });
+    });
+  }
+
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    drawer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    if(lastFocused) lastFocused.focus();
+  }
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e=>{ if(e.key==="Escape" && drawer.classList.contains('open')) closeDrawer(); });
+
+  // ---------- Overview ----------
+  function renderOverview(){
+    const statsWrap = document.getElementById('statsGrid');
+    statsWrap.innerHTML = "";
+    const stats = [
+      {num: FICHES.length, label:"Compétences répertoriées"},
+      {num: REFERENTIEL.domaines.length, label:"Domaines"},
+      {num: REFERENTIEL.domaines.reduce((s,d)=>s+d.sousDomaines.length,0), label:"Sous-domaines"},
+      {num: REFERENTIEL.niveaux.length, label:"Niveaux (cycle 2)"}
+    ];
+    stats.forEach(s=>{
+      const c = document.createElement('div');
+      c.className = "stat-card";
+      c.innerHTML = `<div class="num">${s.num}</div><div class="label">${s.label}</div>`;
+      statsWrap.appendChild(c);
+    });
+
+    const barsWrap = document.getElementById('barsByDomain');
+    barsWrap.innerHTML = "";
+    const max = Math.max(...REFERENTIEL.domaines.map(d=>FICHES.filter(f=>f.domaineId===d.id).length));
+    REFERENTIEL.domaines.forEach(d=>{
+      const count = FICHES.filter(f=>f.domaineId===d.id).length;
+      const row = document.createElement('div');
+      row.className = "bar-row";
+      row.innerHTML = `
+        <span class="bl-label">${d.nom}</span>
+        <span class="bar-track"><span class="bar-fill" style="width:${(count/max*100)}%;background:${d.couleur};"></span></span>
+        <span class="bl-num">${count}</span>
+      `;
+      barsWrap.appendChild(row);
+    });
+  }
+
+  // ---------- Sync ----------
+  function syncAll(){
+    syncHeaderPill();
+    renderNiveauFilter();
+    renderDomaineFilter();
+    renderSousDomaineFilter();
+    // highlight active domain/level cards
+    [...levelCardsWrap.children].forEach((c,i)=> c.classList.toggle('active', REFERENTIEL.niveaux[i]===state.niveau));
+    [...domainCardsWrap.children].forEach((c,i)=> c.classList.toggle('active', REFERENTIEL.domaines[i].id===state.domaine));
+    renderDirectory();
+    updateResultCount();
+  }
+
+  syncAll();
+  renderOverview();
+
+  // ================= PAGE COMPÉTENCE — programmation 36 semaines =================
+  const PERIODES = [
+    {label:"Période 1", span:7},
+    {label:"Période 2", span:7},
+    {label:"Période 3", span:7},
+    {label:"Période 4", span:8},
+    {label:"Période 5", span:7}
+  ];
+
+  function ficheById(id){ return FICHES.find(f=>f.id===id); }
+
+  function seqStorageKey(ficheId){ return "sequences_" + ficheId; }
+  function loadSequences(ficheId){
+    try{
+      const raw = localStorage.getItem(seqStorageKey(ficheId));
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveSequences(ficheId, seqs){
+    try{ localStorage.setItem(seqStorageKey(ficheId), JSON.stringify(seqs)); }catch(e){}
+  }
+
+  let currentFicheId = null;
+
+  function renderCompPage(ficheId){
+    const f = ficheById(ficheId);
+    if(!f){ location.hash = ""; return; }
+    currentFicheId = ficheId;
+    const dom = REFERENTIEL.domaines.find(d=>d.id===f.domaineId);
+
+    document.getElementById('cpEyebrow').textContent = `${REFERENTIEL.cycle} · ${REFERENTIEL.discipline} · ${f.niveau}`;
+    document.getElementById('cpTitle').textContent = f.sousDomaineNom;
+    document.getElementById('cpTags').innerHTML = `
+      <span class="badge" style="--dcolor:${f.domaineCouleur}">${f.domaineNom}</span>
+      <span class="badge niveau">${f.niveau} · ${REFERENTIEL.niveauxLongs[f.niveau]}</span>
+      <span class="badge niveau">${REFERENTIEL.cycle}</span>
+    `;
+    document.getElementById('cpObjectifs').innerHTML = f.objectifs.map(o=>`<li>${o}</li>`).join('');
+    const exBlock = document.getElementById('cpExemplesBlock');
+    if(f.exemples.length){
+      exBlock.style.display = "";
+      document.getElementById('cpExemples').innerHTML = f.exemples.map(e=>`<li>${e}</li>`).join('');
+    } else {
+      exBlock.style.display = "none";
+    }
+
+    renderPeriodRow();
+    renderSeqOptions();
+    renderWeekGrid();
+    renderSeqList();
+
+    document.body.classList.add('view-fiche');
+    document.getElementById('compPage').classList.add('open');
+    window.scrollTo({top:0});
+  }
+
+  function closeCompPage(){
+    document.body.classList.remove('view-fiche');
+    document.getElementById('compPage').classList.remove('open');
+    currentFicheId = null;
+  }
+
+  function renderPeriodRow(){
+    const wrap = document.getElementById('periodRow');
+    wrap.innerHTML = "";
+    PERIODES.forEach(p=>{
+      const el = document.createElement('div');
+      el.className = "period-label";
+      el.style.setProperty('--span', p.span);
+      el.textContent = p.label;
+      wrap.appendChild(el);
+    });
+  }
+
+  function renderSeqOptions(){
+    const debut = document.getElementById('seqDebut');
+    const fin = document.getElementById('seqFin');
+    debut.innerHTML = ""; fin.innerHTML = "";
+    for(let i=1;i<=36;i++){
+      const o1 = document.createElement('option'); o1.value=i; o1.textContent="Semaine "+i; debut.appendChild(o1);
+      const o2 = document.createElement('option'); o2.value=i; o2.textContent="Semaine "+i; fin.appendChild(o2);
+    }
+    fin.value = 4;
+  }
+
+  function renderWeekGrid(){
+    const grid = document.getElementById('weekGrid');
+    grid.innerHTML = "";
+    const seqs = loadSequences(currentFicheId);
+    const f = ficheById(currentFicheId);
+    for(let w=1; w<=36; w++){
+      const cell = document.createElement('div');
+      cell.className = "week-cell";
+      cell.textContent = w;
+      const covering = seqs.filter(s=> w>=s.debut && w<=s.fin);
+      if(covering.length){
+        cell.classList.add('in-range');
+        cell.style.background = f.domaineCouleur;
+        cell.title = covering.map(s=>s.titre).join(" · ");
+      }
+      grid.appendChild(cell);
+    }
+  }
+
+  function renderSeqList(){
+    const wrap = document.getElementById('seqList');
+    const seqs = loadSequences(currentFicheId).slice().sort((a,b)=>a.debut-b.debut);
+    if(seqs.length===0){
+      wrap.innerHTML = `<div class="seq-empty">Aucune séquence programmée pour l'instant. Utilisez le formulaire ci-dessus pour en ajouter une.</div>`;
+      return;
+    }
+    wrap.innerHTML = seqs.map(s=>`
+      <div class="seq-row">
+        <div class="seq-row-top">
+          <div>
+            <strong>${s.titre}</strong>
+            <div class="seq-meta">Semaine ${s.debut} → Semaine ${s.fin} · ${s.fin-s.debut+1} semaine${s.fin-s.debut+1>1?'s':''}</div>
+          </div>
+          <button class="seq-del" data-del="${s.id}">Supprimer</button>
+        </div>
+        ${s.note ? `<div class="seq-note">${s.note}</div>` : ''}
+      </div>
+    `).join('');
+    wrap.querySelectorAll('[data-del]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-del');
+        const remaining = loadSequences(currentFicheId).filter(s=>s.id!==id);
+        saveSequences(currentFicheId, remaining);
+        renderWeekGrid(); renderSeqList();
+      });
+    });
+  }
+
+  document.getElementById('seqForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const titre = document.getElementById('seqTitre').value.trim();
+    let debut = parseInt(document.getElementById('seqDebut').value,10);
+    let fin = parseInt(document.getElementById('seqFin').value,10);
+    const note = document.getElementById('seqNote').value.trim();
+    if(!titre) return;
+    if(fin < debut){ const t=debut; debut=fin; fin=t; }
+    const seqs = loadSequences(currentFicheId);
+    seqs.push({ id: 'seq_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), titre, debut, fin, note });
+    saveSequences(currentFicheId, seqs);
+    document.getElementById('seqTitre').value = "";
+    document.getElementById('seqNote').value = "";
+    renderWeekGrid(); renderSeqList();
+  });
+
+  // Clicking a week cell prefills the start-week select for convenience
+  document.getElementById('weekGrid').addEventListener('click', e=>{
+    const cell = e.target.closest('.week-cell');
+    if(!cell) return;
+    document.getElementById('seqDebut').value = cell.textContent.trim();
+    document.getElementById('seqTitre').focus();
+  });
+
+  document.getElementById('cpBack').addEventListener('click', ()=>{ location.hash = ""; });
+
+  function handleRoute(){
+    const hash = location.hash;
+    const m = hash.match(/^#\/competence\/(.+)$/);
+    if(m){
+      renderCompPage(decodeURIComponent(m[1]));
+    } else {
+      closeCompPage();
+    }
+  }
+  window.addEventListener('hashchange', handleRoute);
+  handleRoute();
+})();
+</script>
+</body>
+</html>
