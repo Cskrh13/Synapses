@@ -1,0 +1,65 @@
+{
+  "id": "sea_son_a_cp_06",
+  "sequence_id": "seq_son_a_cp_01",
+  "numero": "6",
+  "type": "Approfondissement",
+  "titre": "Lire des mots et une phrase avec le son [a]",
+  "classe": "CP",
+  "competence_cible": "Discriminer le phonème [a] et maîtriser progressivement sa correspondance principale avec la lettre a en lecture et en écriture.",
+  "competences_peripheriques": "Langage oral ; attention auditive ; vocabulaire ; geste graphique ; coopération et verbalisation.",
+  "modalites_generales": "Séances de 30 à 35 minutes ; alternance collectif, manipulation, binômes et travail individuel ; différenciation par quantité, support et guidage.",
+  "niveaux": [
+    "CP débutant"
+  ],
+  "objectif_commun": "Réinvestir le décodage du son [a] dans des unités plus longues et donner du sens à la lecture.",
+  "objectifs_individuels": [],
+  "problematique": "Je lis des mots puis une courte phrase contenant a.",
+  "deroule": [
+    {
+      "phase": "Présentation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, étiquettes-mots.",
+      "deroulement": "Échauffement : lecture de syllabes puis de mots connus contenant a.",
+      "analyse_tache": "Préparer la lecture en réactivant le code.",
+      "amenagement": "Donner une liste réduite aux élèves qui en ont besoin.",
+      "posture": "Faire lire en chœur avant l'individuel."
+    },
+    {
+      "phase": "Activité",
+      "temps": "15 min",
+      "modalite_materiel": "Binômes puis individuel, bandelettes de mots et phrases décodables adaptées aux lettres étudiées.",
+      "deroulement": "Lecture de mots puis de phrases très courtes, par exemple « Papa a un lama » seulement si toutes les correspondances nécessaires sont connues. Association phrase/image et vérification du sens.",
+      "analyse_tache": "Articuler décodage et compréhension.",
+      "amenagement": "Adapter strictement le corpus aux graphèmes réellement étudiés.",
+      "posture": "Faire expliciter comment le décodage permet d'accéder au sens."
+    },
+    {
+      "phase": "Restitution",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif.",
+      "deroulement": "Lecture expressive de quelques phrases et validation collective du sens.",
+      "analyse_tache": "Partager et comprendre ce qui est lu.",
+      "amenagement": "Lire la phrase par l'enseignant si le décodage bloque totalement.",
+      "posture": "Ne pas confondre difficulté de décodage et compréhension."
+    },
+    {
+      "phase": "Institutionnalisation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif.",
+      "deroulement": "Institutionnalisation : « Je peux utiliser le son [a] pour lire des mots et comprendre une phrase. Je relis pour vérifier que cela a du sens. »",
+      "analyse_tache": "Ajouter le contrôle du sens à la procédure.",
+      "amenagement": "Utiliser une image-support.",
+      "posture": "Modéliser une relecture."
+    },
+    {
+      "phase": "Métacognition",
+      "temps": "5 min",
+      "modalite_materiel": "Individuel.",
+      "deroulement": "Un mot et une phrase à relire ; l'élève indique ce qui l'a aidé.",
+      "analyse_tache": "Réinvestir en autonomie.",
+      "amenagement": "Offrir une phrase plus courte si besoin.",
+      "posture": "Préparer les observations pour l'évaluation."
+    }
+  ],
+  "vigilance": "Ne pas confondre le nom de la lettre et le son. Adapter tous les mots et phrases au corpus de correspondances réellement étudiées par la classe. Ne pas introduire de graphies complexes du son [a] comme objectif principal à ce stade."
+}

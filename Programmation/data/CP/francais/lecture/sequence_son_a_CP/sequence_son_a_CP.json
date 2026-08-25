@@ -1,0 +1,28 @@
+{
+  "sequences": [
+    {
+      "id": "seq_son_a_cp_01",
+      "titre": "Découvrir et maîtriser le son [a]",
+      "domaine": "Français - Lecture et étude du code",
+      "classe": "CP",
+      "competence_id": "lecture_code",
+      "prerequis_competences": [
+        "Distinguer oralement des sons",
+        "Connaître quelques voyelles ou lettres déjà étudiées"
+      ],
+      "competences": "Discriminer, identifier et associer le phonème [a] à ses graphèmes les plus fréquents ; lire et écrire des syllabes, mots et phrases simples contenant le son [a].",
+      "periode": 1,
+      "semaine_debut": 1,
+      "semaine_fin": 2,
+      "objectif_commun": "Identifier le son [a] dans les mots, connaître ses principales écritures et savoir lire puis écrire des syllabes et mots simples qui le contiennent.",
+      "prerequis": [
+        "Être capable d'écouter un mot et de le répéter",
+        "Comprendre la relation entre l'oral et l'écrit",
+        "Reconnaître son prénom ou quelques lettres familières"
+      ],
+      "objectifs_individuels": [],
+      "references_theoriques": "Progression explicite : diagnostic → exploration → référence → structuration → systématisation → approfondissement → évaluation."
+    }
+  ],
+  "seances": []
+}

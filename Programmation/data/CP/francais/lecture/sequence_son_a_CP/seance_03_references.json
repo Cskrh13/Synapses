@@ -1,0 +1,65 @@
+{
+  "id": "sea_son_a_cp_03",
+  "sequence_id": "seq_son_a_cp_01",
+  "numero": "3",
+  "type": "Références",
+  "titre": "Quelle lettre écrit le son [a] ?",
+  "classe": "CP",
+  "competence_cible": "Discriminer le phonème [a] et maîtriser progressivement sa correspondance principale avec la lettre a en lecture et en écriture.",
+  "competences_peripheriques": "Langage oral ; attention auditive ; vocabulaire ; geste graphique ; coopération et verbalisation.",
+  "modalites_generales": "Séances de 30 à 35 minutes ; alternance collectif, manipulation, binômes et travail individuel ; différenciation par quantité, support et guidage.",
+  "niveaux": [
+    "CP débutant"
+  ],
+  "objectif_commun": "Découvrir la correspondance principale entre le phonème [a] et la lettre a.",
+  "objectifs_individuels": [],
+  "problematique": "Le son [a] s'écrit le plus souvent avec la lettre a.",
+  "deroule": [
+    {
+      "phase": "Présentation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, affiche des mots-images : ami, papa, chat.",
+      "deroulement": "Réactivation de l'écoute : retrouver les mots contenant [a].",
+      "analyse_tache": "Relier la séance précédente à l'étude du code.",
+      "amenagement": "Utiliser des mots très familiers.",
+      "posture": "Faire annoncer l'objectif."
+    },
+    {
+      "phase": "Activité",
+      "temps": "15 min",
+      "modalite_materiel": "Collectif, lettres mobiles et étiquettes-mots.",
+      "deroulement": "Les élèves observent les mots, cherchent ce qui est commun à l'écrit, puis isolent la lettre a. Manipulation de la lettre mobile a et association image/mot.",
+      "analyse_tache": "Faire émerger une correspondance phonème-graphème.",
+      "amenagement": "Mettre en évidence visuellement la lettre ; limiter les distracteurs.",
+      "posture": "Guider par questions sans donner immédiatement la réponse."
+    },
+    {
+      "phase": "Restitution",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif.",
+      "deroulement": "Mise en commun : lecture des mots en pointant la lettre a et écoute du son produit.",
+      "analyse_tache": "Coordonner oral et écrit.",
+      "amenagement": "Pointer et faire répéter collectivement avant les prises de parole individuelles.",
+      "posture": "Faire expliciter « je vois a, je prononce [a] »."
+    },
+    {
+      "phase": "Institutionnalisation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, référent de classe.",
+      "deroulement": "Trace : « La lettre a permet d'écrire le son [a]. » Présentation du tracé de la lettre selon la police utilisée en classe.",
+      "analyse_tache": "Créer un référent stable.",
+      "amenagement": "Ajouter prénom ou mot repère connu.",
+      "posture": "Être explicite sur la différence entre nom de la lettre et son."
+    },
+    {
+      "phase": "Métacognition",
+      "temps": "5 min",
+      "modalite_materiel": "Ardoise ou geste.",
+      "deroulement": "Les élèves montrent/écrivent la lettre a lorsqu'ils entendent un mot contenant [a].",
+      "analyse_tache": "Vérifier l'association son-lettre.",
+      "amenagement": "Autoriser l'étiquette-lettre avant l'écriture.",
+      "posture": "Corriger immédiatement et positivement."
+    }
+  ],
+  "vigilance": "Ne pas confondre le nom de la lettre et le son. Adapter tous les mots et phrases au corpus de correspondances réellement étudiées par la classe. Ne pas introduire de graphies complexes du son [a] comme objectif principal à ce stade."
+}

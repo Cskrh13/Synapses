@@ -1,0 +1,65 @@
+{
+  "id": "sea_son_a_cp_01",
+  "sequence_id": "seq_son_a_cp_01",
+  "numero": "1",
+  "type": "Diagnostique",
+  "titre": "Que savons-nous déjà du son [a] ?",
+  "classe": "CP",
+  "competence_cible": "Discriminer le phonème [a] et maîtriser progressivement sa correspondance principale avec la lettre a en lecture et en écriture.",
+  "competences_peripheriques": "Langage oral ; attention auditive ; vocabulaire ; geste graphique ; coopération et verbalisation.",
+  "modalites_generales": "Séances de 30 à 35 minutes ; alternance collectif, manipulation, binômes et travail individuel ; différenciation par quantité, support et guidage.",
+  "niveaux": [
+    "CP débutant"
+  ],
+  "objectif_commun": "Repérer ce que les élèves savent déjà faire pour entendre, localiser et éventuellement écrire le son [a].",
+  "objectifs_individuels": [],
+  "problematique": "À l'oral, je reconnais si j'entends [a] dans un mot.",
+  "deroule": [
+    {
+      "phase": "Présentation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, images variées : chat, moto, lune, salade, rat, vélo.",
+      "deroulement": "Annonce : « Aujourd'hui, nous allons écouter très attentivement les mots pour voir si nous entendons le son [a]. » Présentation rapide des images et nomination collective.",
+      "analyse_tache": "Comprendre la consigne, stabiliser le lexique et préparer l'écoute.",
+      "amenagement": "Nommer les images si besoin ; reformuler les mots pour les élèves ayant un vocabulaire fragile.",
+      "posture": "Observer sans valider trop vite ; recueillir les procédures."
+    },
+    {
+      "phase": "Activité",
+      "temps": "15 min",
+      "modalite_materiel": "Individuel puis collectif, étiquettes-images, ardoises.",
+      "deroulement": "Chaque élève classe oralement ou sur l'ardoise les images : « j'entends [a] / je n'entends pas [a] ». Quelques mots sont proposés avec [a] en début, milieu et fin.",
+      "analyse_tache": "Discriminer un phonème indépendamment de sa position.",
+      "amenagement": "Réduire le nombre d'images ; proposer une répétition lente ; accepter une réponse orale.",
+      "posture": "Faire expliciter : « J'entends [a] dans… »"
+    },
+    {
+      "phase": "Restitution",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, tableau.",
+      "deroulement": "Mise en commun de quelques réponses et comparaison des procédures : répétition, étirement oral, frappe des syllabes.",
+      "analyse_tache": "Justifier une réponse et écouter les autres.",
+      "amenagement": "Reprendre seulement quelques exemples contrastés.",
+      "posture": "Valoriser les stratégies efficaces."
+    },
+    {
+      "phase": "Institutionnalisation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, affiche provisoire.",
+      "deroulement": "Première trace : « Le son que nous cherchons est [a]. On peut l'entendre dans différents endroits du mot. » Ne pas encore exiger la maîtrise de toutes les graphies.",
+      "analyse_tache": "Construire un premier repère commun.",
+      "amenagement": "Associer systématiquement le geste ou la bouche si utile.",
+      "posture": "Expliciter que l'on cherche d'abord un son, pas une lettre."
+    },
+    {
+      "phase": "Métacognition",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, oral.",
+      "deroulement": "Question : « Comment as-tu fait pour savoir ? » Les élèves verbalisent une stratégie qu'ils pourront réutiliser.",
+      "analyse_tache": "Prendre conscience de sa procédure.",
+      "amenagement": "Proposer des amorces : « J'ai répété… », « J'ai écouté… ».",
+      "posture": "Noter les difficultés pour adapter la suite."
+    }
+  ],
+  "vigilance": "Ne pas confondre le nom de la lettre et le son. Adapter tous les mots et phrases au corpus de correspondances réellement étudiées par la classe. Ne pas introduire de graphies complexes du son [a] comme objectif principal à ce stade."
+}

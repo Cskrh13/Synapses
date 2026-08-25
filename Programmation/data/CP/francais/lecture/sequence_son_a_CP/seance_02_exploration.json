@@ -1,0 +1,65 @@
+{
+  "id": "sea_son_a_cp_02",
+  "sequence_id": "seq_son_a_cp_01",
+  "numero": "2",
+  "type": "Exploration",
+  "titre": "J'entends le son [a]",
+  "classe": "CP",
+  "competence_cible": "Discriminer le phonème [a] et maîtriser progressivement sa correspondance principale avec la lettre a en lecture et en écriture.",
+  "competences_peripheriques": "Langage oral ; attention auditive ; vocabulaire ; geste graphique ; coopération et verbalisation.",
+  "modalites_generales": "Séances de 30 à 35 minutes ; alternance collectif, manipulation, binômes et travail individuel ; différenciation par quantité, support et guidage.",
+  "niveaux": [
+    "CP débutant"
+  ],
+  "objectif_commun": "Identifier et localiser le phonème [a] dans des mots connus.",
+  "objectifs_individuels": [],
+  "problematique": "J'entends [a] et je peux dire où je l'entends.",
+  "deroule": [
+    {
+      "phase": "Présentation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, comptine courte ou série de mots-images.",
+      "deroulement": "Réactivation orale : les élèves lèvent un doigt lorsqu'ils entendent [a].",
+      "analyse_tache": "Mobiliser une discrimination auditive rapide.",
+      "amenagement": "Répéter les mots et ralentir le débit.",
+      "posture": "Donner un rythme dynamique et sécurisant."
+    },
+    {
+      "phase": "Activité",
+      "temps": "15 min",
+      "modalite_materiel": "Collectif puis binômes, images et jetons.",
+      "deroulement": "Nommer les images, répéter, puis placer un jeton dans une boîte par syllabe pour localiser [a] : début, milieu, fin. Exemples : ami, salade, papa, chat.",
+      "analyse_tache": "Segmenter oralement et localiser un phonème.",
+      "amenagement": "Utiliser seulement des mots bisyllabiques pour certains élèves.",
+      "posture": "Faire manipuler avant de demander la verbalisation."
+    },
+    {
+      "phase": "Restitution",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, tableau en trois colonnes.",
+      "deroulement": "Les binômes proposent un mot et expliquent son classement.",
+      "analyse_tache": "Passer de la manipulation à la justification.",
+      "amenagement": "Conserver les images comme support visuel.",
+      "posture": "Faire reformuler par un pair."
+    },
+    {
+      "phase": "Institutionnalisation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, affiche.",
+      "deroulement": "Institutionnalisation : « Pour trouver un son, je prononce le mot lentement et j'écoute chaque partie. Le son [a] peut être au début, au milieu ou à la fin. »",
+      "analyse_tache": "Stabiliser une procédure réutilisable.",
+      "amenagement": "Ajouter un exemple illustré par position.",
+      "posture": "Énoncer clairement la procédure."
+    },
+    {
+      "phase": "Métacognition",
+      "temps": "5 min",
+      "modalite_materiel": "Oral individuel rapide.",
+      "deroulement": "Défi : l'enseignant dit trois mots ; chaque élève indique un mot contenant [a] et explique sa stratégie.",
+      "analyse_tache": "Réinvestir immédiatement.",
+      "amenagement": "Proposer un choix de deux mots si nécessaire.",
+      "posture": "Repérer les élèves encore en difficulté."
+    }
+  ],
+  "vigilance": "Ne pas confondre le nom de la lettre et le son. Adapter tous les mots et phrases au corpus de correspondances réellement étudiées par la classe. Ne pas introduire de graphies complexes du son [a] comme objectif principal à ce stade."
+}

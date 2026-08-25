@@ -1,0 +1,65 @@
+{
+  "id": "sea_son_a_cp_07",
+  "sequence_id": "seq_son_a_cp_01",
+  "numero": "7",
+  "type": "Évaluation",
+  "titre": "Je montre ce que je sais faire avec le son [a]",
+  "classe": "CP",
+  "competence_cible": "Discriminer le phonème [a] et maîtriser progressivement sa correspondance principale avec la lettre a en lecture et en écriture.",
+  "competences_peripheriques": "Langage oral ; attention auditive ; vocabulaire ; geste graphique ; coopération et verbalisation.",
+  "modalites_generales": "Séances de 30 à 35 minutes ; alternance collectif, manipulation, binômes et travail individuel ; différenciation par quantité, support et guidage.",
+  "niveaux": [
+    "CP débutant"
+  ],
+  "objectif_commun": "Évaluer l'identification, l'association son-lettre, la lecture et l'encodage autour du son [a].",
+  "objectifs_individuels": [],
+  "problematique": "Je peux montrer ce que je sais faire avec le son [a].",
+  "deroule": [
+    {
+      "phase": "Présentation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif.",
+      "deroulement": "Présentation rassurante : « Ce n'est pas un piège ; cela va nous aider à savoir ce que vous savez déjà et ce qu'il faut encore apprendre. »",
+      "analyse_tache": "Comprendre la tâche et réduire l'anxiété.",
+      "amenagement": "Reformuler individuellement les consignes, sans aider sur les réponses.",
+      "posture": "Adopter une posture neutre et sécurisante."
+    },
+    {
+      "phase": "Activité",
+      "temps": "15 min",
+      "modalite_materiel": "Individuel, fiche ou ardoise selon le modèle d'évaluation.",
+      "deroulement": "Épreuves courtes : 1) repérer des mots où l'on entend [a] ; 2) entourer ou montrer la lettre a ; 3) lire quelques syllabes/mots décodables ; 4) écrire 2 ou 3 syllabes/mots dictés.",
+      "analyse_tache": "Mesurer plusieurs composantes de la compétence.",
+      "amenagement": "Aménager le support et le temps ; conserver les mêmes attendus essentiels.",
+      "posture": "Ne pas sur-aider ; noter les procédures observées."
+    },
+    {
+      "phase": "Restitution",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, sans correction nominative.",
+      "deroulement": "Retour général sur les réussites et difficultés rencontrées.",
+      "analyse_tache": "Comprendre que l'évaluation sert à apprendre.",
+      "amenagement": "Éviter l'exposition des résultats individuels.",
+      "posture": "Valoriser l'effort et la progression."
+    },
+    {
+      "phase": "Institutionnalisation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif.",
+      "deroulement": "Rappel final : « Le son [a] s'entend dans des mots et s'écrit notamment avec la lettre a ; nous savons maintenant l'utiliser pour lire et écrire. »",
+      "analyse_tache": "Stabiliser les acquis essentiels.",
+      "amenagement": "Utiliser le référent de classe.",
+      "posture": "Conclure explicitement les apprentissages."
+    },
+    {
+      "phase": "Métacognition",
+      "temps": "5 min",
+      "modalite_materiel": "Individuel, oral ou pictogrammes.",
+      "deroulement": "L'élève choisit : « acquis / en cours / à retravailler » pour écouter [a], reconnaître a, lire, écrire.",
+      "analyse_tache": "Développer l'auto-évaluation.",
+      "amenagement": "Autoriser une modalité non verbale.",
+      "posture": "Croiser auto-évaluation et résultats réels."
+    }
+  ],
+  "vigilance": "Ne pas confondre le nom de la lettre et le son. Adapter tous les mots et phrases au corpus de correspondances réellement étudiées par la classe. Ne pas introduire de graphies complexes du son [a] comme objectif principal à ce stade."
+}

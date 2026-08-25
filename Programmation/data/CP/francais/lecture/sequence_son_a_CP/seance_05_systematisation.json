@@ -1,0 +1,65 @@
+{
+  "id": "sea_son_a_cp_05",
+  "sequence_id": "seq_son_a_cp_01",
+  "numero": "5",
+  "type": "Systématisation",
+  "titre": "Je m'entraîne avec le son [a]",
+  "classe": "CP",
+  "competence_cible": "Discriminer le phonème [a] et maîtriser progressivement sa correspondance principale avec la lettre a en lecture et en écriture.",
+  "competences_peripheriques": "Langage oral ; attention auditive ; vocabulaire ; geste graphique ; coopération et verbalisation.",
+  "modalites_generales": "Séances de 30 à 35 minutes ; alternance collectif, manipulation, binômes et travail individuel ; différenciation par quantité, support et guidage.",
+  "niveaux": [
+    "CP débutant"
+  ],
+  "objectif_commun": "Automatiser l'identification et la lecture de syllabes et mots contenant a.",
+  "objectifs_individuels": [],
+  "problematique": "Je reconnais rapidement a et je lis des syllabes et mots simples.",
+  "deroule": [
+    {
+      "phase": "Présentation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, cartes flash.",
+      "deroulement": "Lecture rapide de la lettre a puis de syllabes connues.",
+      "analyse_tache": "Augmenter progressivement la rapidité sans perdre la précision.",
+      "amenagement": "Ralentir pour les élèves fragiles.",
+      "posture": "Privilégier l'exactitude avant la vitesse."
+    },
+    {
+      "phase": "Activité",
+      "temps": "15 min",
+      "modalite_materiel": "Ateliers tournants : cartes, loto du son, étiquettes syllabiques, ardoises.",
+      "deroulement": "Atelier 1 : trier avec/sans [a]. Atelier 2 : associer syllabe et image. Atelier 3 : recomposer et lire des mots simples. Atelier 4 : petite dictée de syllabes.",
+      "analyse_tache": "Répéter dans des modalités variées pour automatiser.",
+      "amenagement": "Prévoir un atelier guidé ; limiter le nombre de cartes.",
+      "posture": "Circuler, observer et relancer par questions."
+    },
+    {
+      "phase": "Restitution",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif.",
+      "deroulement": "Retour sur une difficulté rencontrée dans les ateliers et démonstration d'une procédure efficace.",
+      "analyse_tache": "Transformer l'erreur en apprentissage.",
+      "amenagement": "Choisir une erreur fréquente sans nommer l'élève.",
+      "posture": "Faire reformuler la procédure."
+    },
+    {
+      "phase": "Institutionnalisation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, référent.",
+      "deroulement": "Rappel des outils : écouter, étirer le mot, repérer a, fusionner les sons.",
+      "analyse_tache": "Consolider les repères.",
+      "amenagement": "Utiliser pictogrammes sur le référent.",
+      "posture": "Faire répéter la procédure."
+    },
+    {
+      "phase": "Métacognition",
+      "temps": "5 min",
+      "modalite_materiel": "Oral.",
+      "deroulement": "Chaque élève complète : « Aujourd'hui, je sais mieux… » ou choisit une carte compétence.",
+      "analyse_tache": "Prendre conscience des progrès.",
+      "amenagement": "Autoriser la réponse par pictogramme.",
+      "posture": "Valoriser les progrès observables."
+    }
+  ],
+  "vigilance": "Ne pas confondre le nom de la lettre et le son. Adapter tous les mots et phrases au corpus de correspondances réellement étudiées par la classe. Ne pas introduire de graphies complexes du son [a] comme objectif principal à ce stade."
+}

@@ -1,0 +1,65 @@
+{
+  "id": "sea_son_a_cp_04",
+  "sequence_id": "seq_son_a_cp_01",
+  "numero": "4",
+  "type": "Structuration",
+  "titre": "Lire et écrire avec a",
+  "classe": "CP",
+  "competence_cible": "Discriminer le phonème [a] et maîtriser progressivement sa correspondance principale avec la lettre a en lecture et en écriture.",
+  "competences_peripheriques": "Langage oral ; attention auditive ; vocabulaire ; geste graphique ; coopération et verbalisation.",
+  "modalites_generales": "Séances de 30 à 35 minutes ; alternance collectif, manipulation, binômes et travail individuel ; différenciation par quantité, support et guidage.",
+  "niveaux": [
+    "CP débutant"
+  ],
+  "objectif_commun": "Combiner la lettre a avec des consonnes déjà connues pour lire et encoder des syllabes et mots simples.",
+  "objectifs_individuels": [],
+  "problematique": "Je vois a, je lis [a] ; je peux lire et écrire des syllabes simples.",
+  "deroule": [
+    {
+      "phase": "Présentation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, affichage des lettres connues.",
+      "deroulement": "Rappel : lettre a → son [a]. Révision rapide de quelques consonnes déjà étudiées.",
+      "analyse_tache": "Réactiver les correspondances nécessaires à la combinatoire.",
+      "amenagement": "Adapter les consonnes à la progression réelle de la classe.",
+      "posture": "Vérifier que les prérequis sont disponibles."
+    },
+    {
+      "phase": "Activité",
+      "temps": "15 min",
+      "modalite_materiel": "Collectif puis individuel, lettres mobiles, ardoises.",
+      "deroulement": "Construction et lecture de syllabes : ma, sa, la, ra, pa, ta selon les consonnes connues. Puis dictée de quelques syllabes et mots décodables (maman, papa, lama si les lettres sont connues).",
+      "analyse_tache": "Fusionner les phonèmes et encoder.",
+      "amenagement": "Commencer avec deux phonèmes ; proposer un modèle sonore ; réduire la quantité.",
+      "posture": "Modéliser la fusion : /m/ + /a/ → ma."
+    },
+    {
+      "phase": "Restitution",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif.",
+      "deroulement": "Lecture de quelques productions et comparaison des stratégies d'encodage.",
+      "analyse_tache": "Contrôler la correspondance oral/écrit.",
+      "amenagement": "Choisir des exemples lisibles par tous.",
+      "posture": "Faire verbaliser les étapes."
+    },
+    {
+      "phase": "Institutionnalisation",
+      "temps": "5 min",
+      "modalite_materiel": "Collectif, cahier ou référent.",
+      "deroulement": "Trace : « Pour lire, je regarde les lettres et je rassemble les sons. Pour écrire, j'écoute les sons et je choisis les lettres connues. »",
+      "analyse_tache": "Structurer les deux procédures.",
+      "amenagement": "Conserver un code visuel son/lettre.",
+      "posture": "Distinguer clairement lire et écrire."
+    },
+    {
+      "phase": "Métacognition",
+      "temps": "5 min",
+      "modalite_materiel": "Ardoise.",
+      "deroulement": "Auto-évaluation orale : « Je sais lire ma / je dois encore m'entraîner. » Petit défi de lecture de 3 syllabes.",
+      "analyse_tache": "Identifier son niveau de maîtrise.",
+      "amenagement": "Prévoir une réussite accessible à tous.",
+      "posture": "Encourager sans comparer les élèves."
+    }
+  ],
+  "vigilance": "Ne pas confondre le nom de la lettre et le son. Adapter tous les mots et phrases au corpus de correspondances réellement étudiées par la classe. Ne pas introduire de graphies complexes du son [a] comme objectif principal à ce stade."
+}
