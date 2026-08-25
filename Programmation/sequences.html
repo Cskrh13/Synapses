@@ -315,6 +315,42 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
   header.site-header, footer, .drawer-overlay, .modal-overlay, .toast{display:none !important;}
 }
 
+/* ---- Réseau de compétences ---- */
+.reseau-wrap{position:relative;}
+.reseau-grid{
+  display:grid;grid-auto-flow:column;grid-auto-columns:minmax(230px,1fr);gap:34px;align-items:start;
+  overflow-x:auto;padding-bottom:12px;position:relative;z-index:2;
+}
+.reseau-svg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:1;overflow:visible;}
+.comp-node{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px;position:relative;}
+.comp-node::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:var(--radius) 0 0 var(--radius);background:var(--ccolor,var(--accent-sky));}
+.comp-node h4{font-size:15px;color:var(--navy);padding-left:8px;line-height:1.3;}
+.comp-node .cn-obj{font-size:11.5px;color:var(--ink-soft);margin-top:6px;padding-left:8px;line-height:1.5;}
+.comp-node .cn-seqs{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
+.comp-node .cn-seq-item{
+  text-align:left;background:var(--panel-raised);border:1px solid var(--line);border-radius:8px;
+  padding:9px 11px;font-size:12.5px;color:var(--ink);
+}
+.comp-node .cn-seq-item:hover{border-color:var(--ccolor,var(--accent-sky));}
+.comp-node .cn-seq-item .csi-meta{display:block;margin-top:3px;font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);}
+.comp-node .cn-empty{font-size:12px;color:var(--ink-soft);padding-left:8px;font-style:italic;}
+.comp-node .cn-add{
+  margin-top:10px;margin-left:8px;font-size:12px;font-weight:600;color:var(--accent-sky);background:none;border:none;padding:0;
+}
+.comp-node .cn-add:hover{text-decoration:underline;}
+.prereq-picker{display:flex;flex-direction:column;gap:8px;}
+.prereq-picker label{
+  display:flex;align-items:flex-start;gap:8px;font-size:13px;font-family:'Inter',sans-serif;text-transform:none;
+  letter-spacing:0;color:var(--ink);border:1px solid var(--line);border-radius:8px;padding:9px 11px;background:var(--panel-raised);
+}
+.prereq-picker label span.pp-dom{font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;color:var(--ink-soft);display:block;margin-top:2px;}
+.prereq-chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px;}
+.prereq-chip{
+  display:inline-flex;align-items:center;gap:6px;font-size:12.5px;background:#EFEDE5;border:1px solid var(--line);
+  border-radius:20px;padding:6px 12px;
+}
+.prereq-chip .dot{width:8px;height:8px;border-radius:50%;background:var(--ccolor,var(--accent-sky));flex-shrink:0;}
+
 @media(max-width:640px){
   .field-row,.field-row.three{grid-template-columns:1fr;}
   .niveau-grid{grid-template-columns:repeat(5,1fr);font-size:10px;}
@@ -334,6 +370,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
       </span>
     </a>
     <div class="header-actions">
+      <button class="btn" id="btn-view-reseau">🕸 Réseau de compétences</button>
       <button class="btn" id="btn-export-all">Exporter tout (JSON)</button>
       <button class="btn" id="btn-import-all">Importer un JSON</button>
       <input type="file" id="file-import" accept="application/json">
@@ -386,7 +423,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
     </div>
 
     <div class="cp-block" id="seq-prerequis-block">
-      <h5>Pré-requis</h5>
+      <h5>Prérequis</h5>
       <p class="txt" id="seq-prerequis"></p>
     </div>
 
@@ -416,6 +453,28 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <h5 style="margin:0;">Séances de cette séquence</h5>
       </div>
       <div class="seances-grid" id="seances-grid"></div>
+    </div>
+  </section>
+
+  <!-- ===================== VUE 3 : RÉSEAU DE COMPÉTENCES ===================== -->
+  <section class="view" id="view-reseau">
+    <button class="cp-back" id="reseau-back">← Retour aux séquences</button>
+    <div class="list-head">
+      <div>
+        <p class="eyebrow">Cartographie pédagogique · non linéaire</p>
+        <h1>Réseau de compétences</h1>
+        <p>Chaque compétence peut correspondre à plusieurs séquences (et séances décrochées). Les flèches en pointillés indiquent qu'une compétence est un pré-requis d'une séquence liée à une autre compétence. Cliquez sur une séquence pour l'ouvrir.</p>
+      </div>
+    </div>
+    <div class="reseau-wrap" id="reseau-wrap">
+      <div class="reseau-grid" id="reseau-grid"></div>
+      <svg class="reseau-svg" id="reseau-svg">
+        <defs>
+          <marker id="arrowhead" markerWidth="9" markerHeight="9" refX="7" refY="3.5" orient="auto">
+            <polygon points="0 0, 8 3.5, 0 7" fill="#2E5EAA"/>
+          </marker>
+        </defs>
+      </svg>
     </div>
   </section>
 
@@ -450,14 +509,8 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         </div>
         <div class="field-row">
           <div class="field">
-            <label for="f-seq-domaine">Domaine</label>
-            <select id="f-seq-domaine">
-              <option value="lecture">Lecture</option>
-              <option value="ecriture">Écriture</option>
-              <option value="oral">Oral</option>
-              <option value="vocabulaire">Vocabulaire</option>
-              <option value="grammaire">Grammaire &amp; orthographe</option>
-            </select>
+            <label for="f-seq-competence">Compétence ciblée</label>
+            <select id="f-seq-competence"></select>
           </div>
           <div class="field">
             <label for="f-seq-classe">Classe</label>
@@ -469,9 +522,16 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
           <input type="text" id="f-seq-competences" placeholder="Séparées par des virgules">
         </div>
         <div class="field">
-          <label for="f-seq-prerequis">Pré-requis</label>
-          <input type="text" id="f-seq-prerequis" placeholder="Séparés par des virgules — serviront au graphe de relations">
+          <label for="f-seq-prerequis">Pré-requis (notes libres)</label>
+          <input type="text" id="f-seq-prerequis" placeholder="Séparés par des virgules — informations ponctuelles, non liées au référentiel">
         </div>
+
+        <fieldset>
+          <legend>Onglet Prérequis — compétences antérieures</legend>
+          <p style="font-size:12.5px;color:var(--ink-soft);margin:-4px 0 10px;">Cochez la ou les compétences du référentiel qui doivent être acquises avant cette séquence. Ces liens construisent le réseau de compétences (navigation non linéaire).</p>
+          <div class="prereq-picker" id="seq-prereq-picker"></div>
+        </fieldset>
+
         <div class="field-row three">
           <div class="field">
             <label for="f-seq-periode">Période</label>
@@ -628,6 +688,21 @@ const DOMAINES = {
   vocabulaire: { nom:"Vocabulaire",            couleur:"#B5871E" },
   grammaire:   { nom:"Grammaire & orthographe",couleur:"#1E2A4A" }
 };
+/* Référentiel de compétences — reflète competences.json.
+   Une séquence pointe vers UNE compétence "cible" (competence_id) mais une
+   même compétence peut être la cible de plusieurs séquences/séances.
+   Une séquence peut aussi lister des compétences "antérieures" (pré-requis),
+   ce qui construit un réseau plutôt qu'une progression strictement linéaire. */
+const COMPETENCES = [
+  { id:"lecture", discipline:"Français", cycle:"Cycle 2", domaine:"Lecture", couleur:"#B5502E",
+    objectifs:["Identifier des mots de manière de plus en plus aisée","Comprendre un texte et contrôler sa compréhension"] },
+  { id:"ecriture", discipline:"Français", cycle:"Cycle 2", domaine:"Écriture", couleur:"#2A7F72",
+    objectifs:["Copier de manière experte","Produire des écrits en commençant à s'approprier une démarche"] },
+  { id:"oral", discipline:"Français", cycle:"Cycle 2", domaine:"Oral", couleur:"#6B4E8E",
+    objectifs:["Écouter pour comprendre des messages oraux ou des textes lus","Participer à des échanges dans des situations diversifiées"] }
+];
+function getCompetence(id){ return COMPETENCES.find(c=>c.id===id); }
+
 const PERIODES = [
   {n:1,label:"Période 1",span:7},
   {n:2,label:"Période 2",span:7},
@@ -683,6 +758,7 @@ function seedIfEmpty(){
   const seqId = uid("seq");
   state.sequences.push({
     id: seqId, titre:"Développer la fluence de lecture", domaine:"lecture", classe:"CE1",
+    competence_id:"lecture", prerequis_competences:[],
     competences:"Lire un texte connu à voix haute avec fluidité",
     periode:2, semaine_debut:8, semaine_fin:10,
     objectif_commun:"Lire un texte connu à voix haute avec fluidité, pour mieux le comprendre.",
@@ -841,6 +917,104 @@ function backToList(){
 }
 document.getElementById('cp-back').addEventListener('click', backToList);
 
+/* ============================================================
+   VUE 3 — RÉSEAU DE COMPÉTENCES
+   ============================================================ */
+function openReseau(){
+  document.getElementById('view-list').classList.remove('open');
+  document.getElementById('view-seq').classList.remove('open');
+  document.getElementById('view-reseau').classList.add('open');
+  renderReseau();
+  window.scrollTo({top:0});
+}
+function closeReseau(){
+  document.getElementById('view-reseau').classList.remove('open');
+  document.getElementById('view-list').classList.add('open');
+  renderSeqGrid();
+}
+document.getElementById('btn-view-reseau').addEventListener('click', openReseau);
+document.getElementById('reseau-back').addEventListener('click', closeReseau);
+
+function renderReseau(){
+  const grid = document.getElementById('reseau-grid');
+  const svg = document.getElementById('reseau-svg');
+  grid.innerHTML = "";
+
+  COMPETENCES.forEach(c=>{
+    const node = document.createElement('div');
+    node.className = "comp-node";
+    node.id = "cnode-" + c.id;
+    node.style.setProperty('--ccolor', c.couleur);
+    const seqsForComp = state.sequences.filter(s=>(s.competence_id||s.domaine)===c.id);
+    const seqsHTML = seqsForComp.length ? seqsForComp.map(s=>{
+      const nb = state.seances.filter(x=>x.sequence_id===s.id).length;
+      return `<button class="cn-seq-item" data-open-seq="${s.id}">${escapeHTML(s.titre)}<span class="csi-meta">P${s.periode} · S${s.semaine_debut}–S${s.semaine_fin} · ${nb} séance${nb>1?'s':''}</span></button>`;
+    }).join('') : `<div class="cn-empty">Aucune séquence liée pour l'instant.</div>`;
+    node.innerHTML = `
+      <h4>${escapeHTML(c.domaine)}</h4>
+      <div class="cn-obj">${escapeHTML(c.objectifs[0])}</div>
+      <div class="cn-seqs">${seqsHTML}</div>
+      <button class="cn-add" data-add-for="${c.id}">＋ Ajouter une séquence</button>
+    `;
+    grid.appendChild(node);
+  });
+
+  grid.querySelectorAll('[data-open-seq]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      document.getElementById('view-reseau').classList.remove('open');
+      openSeqDetail(btn.getAttribute('data-open-seq'));
+    });
+  });
+  grid.querySelectorAll('[data-add-for]').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      openSeqForm(null);
+      fillCompetenceSelect(btn.getAttribute('data-add-for'));
+      fillPrereqPicker(btn.getAttribute('data-add-for'), []);
+    });
+  });
+
+  // Dessiner les flèches de pré-requis entre compétences (réseau non linéaire)
+  requestAnimationFrame(()=>{
+    const wrapRect = document.getElementById('reseau-wrap').getBoundingClientRect();
+    svg.setAttribute('width', wrapRect.width);
+    svg.setAttribute('height', wrapRect.height);
+    // retire les anciennes lignes (garde <defs>)
+    [...svg.querySelectorAll('path.reseau-edge')].forEach(p=>p.remove());
+
+    const edges = new Set();
+    state.sequences.forEach(s=>{
+      const targetId = s.competence_id || s.domaine;
+      (s.prerequis_competences||[]).forEach(fromId=>{
+        if(fromId && targetId && fromId!==targetId) edges.add(fromId+"→"+targetId);
+      });
+    });
+
+    edges.forEach(edgeKey=>{
+      const [fromId, toId] = edgeKey.split("→");
+      const fromEl = document.getElementById("cnode-"+fromId);
+      const toEl = document.getElementById("cnode-"+toId);
+      if(!fromEl || !toEl) return;
+      const fr = fromEl.getBoundingClientRect(), tr = toEl.getBoundingClientRect();
+      const x1 = fr.right - wrapRect.left, y1 = fr.top + fr.height/2 - wrapRect.top;
+      const x2 = tr.left - wrapRect.left, y2 = tr.top + tr.height/2 - wrapRect.top;
+      const midX = (x1+x2)/2;
+      const path = document.createElementNS("http://www.w3.org/2000/svg","path");
+      path.setAttribute("class","reseau-edge");
+      path.setAttribute("d", `M ${x1} ${y1} C ${midX} ${y1}, ${midX} ${y2}, ${x2} ${y2}`);
+      path.setAttribute("fill","none");
+      path.setAttribute("stroke","#2E5EAA");
+      path.setAttribute("stroke-width","1.6");
+      path.setAttribute("stroke-dasharray","5,4");
+      path.setAttribute("marker-end","url(#arrowhead)");
+      path.setAttribute("opacity","0.75");
+      svg.appendChild(path);
+    });
+  });
+}
+window.addEventListener('resize', ()=>{
+  if(document.getElementById('view-reseau').classList.contains('open')) renderReseau();
+});
+
 function renderSeqDetail(){
   const seq = state.sequences.find(s=>s.id===state.currentSeqId);
   if(!seq){ backToList(); return; }
@@ -857,9 +1031,18 @@ function renderSeqDetail(){
 
   const prereqBlock = document.getElementById('seq-prerequis-block');
   const prereqs = seq.prerequis || [];
-  if(prereqs.length){
+  const prereqCompIds = seq.prerequis_competences || [];
+  if(prereqs.length || prereqCompIds.length){
     prereqBlock.style.display = "";
-    document.getElementById('seq-prerequis').textContent = prereqs.join(" · ");
+    const chipsHTML = prereqCompIds.map(id=>{
+      const c = getCompetence(id);
+      if(!c) return "";
+      return `<span class="prereq-chip"><span class="dot" style="--ccolor:${c.couleur}"></span>${escapeHTML(c.domaine)}</span>`;
+    }).join('');
+    document.getElementById('seq-prerequis').innerHTML = `
+      ${chipsHTML? `<div class="prereq-chips" style="margin-bottom:${prereqs.length?'10px':'0'};">${chipsHTML}</div>`:""}
+      ${prereqs.length? escapeHTML(prereqs.join(" · ")) : ""}
+    `;
   } else prereqBlock.style.display = "none";
 
   const refsBlock = document.getElementById('seq-refs-block');
@@ -960,12 +1143,37 @@ function addSeqEleveRow(nom,objectif){
 }
 document.getElementById('add-seq-eleve').addEventListener('click', ()=> addSeqEleveRow("",""));
 
+function competenceLabel(c){
+  return `${c.domaine} — ${c.objectifs[0].slice(0,46)}${c.objectifs[0].length>46?'…':''}`;
+}
+function fillCompetenceSelect(selected){
+  const sel = document.getElementById('f-seq-competence');
+  sel.innerHTML = COMPETENCES.map(c=>`<option value="${c.id}">${escapeHTML(competenceLabel(c))}</option>`).join('');
+  sel.value = selected || (COMPETENCES[0] && COMPETENCES[0].id) || "";
+}
+function fillPrereqPicker(currentCompetenceId, checkedIds){
+  const wrap = document.getElementById('seq-prereq-picker');
+  const others = COMPETENCES.filter(c=>c.id!==currentCompetenceId);
+  if(!others.length){ wrap.innerHTML = `<span style="font-size:12.5px;color:var(--ink-soft);">Aucune autre compétence dans le référentiel.</span>`; return; }
+  wrap.innerHTML = others.map(c=>`
+    <label>
+      <input type="checkbox" class="seq-prereq-comp" value="${c.id}" ${checkedIds&&checkedIds.includes(c.id)?'checked':''}>
+      <span>${escapeHTML(c.domaine)}<span class="pp-dom">${escapeHTML(c.objectifs[0])}</span></span>
+    </label>`).join('');
+}
+document.getElementById('f-seq-competence').addEventListener('change', (e)=>{
+  const checked = [...document.querySelectorAll('.seq-prereq-comp:checked')].map(cb=>cb.value);
+  fillPrereqPicker(e.target.value, checked);
+});
+
 function openSeqForm(seqId){
   state.editingSeqId = seqId;
   const seq = seqId ? state.sequences.find(s=>s.id===seqId) : null;
   document.getElementById('modal-seq-title').textContent = seq ? "Modifier la séquence" : "Nouvelle séquence";
   document.getElementById('f-seq-titre').value = seq? seq.titre : "";
-  document.getElementById('f-seq-domaine').value = seq? seq.domaine : "lecture";
+  const compId = seq ? (seq.competence_id || seq.domaine || (COMPETENCES[0]&&COMPETENCES[0].id)) : (COMPETENCES[0]&&COMPETENCES[0].id);
+  fillCompetenceSelect(compId);
+  fillPrereqPicker(compId, seq ? (seq.prerequis_competences||[]) : []);
   document.getElementById('f-seq-classe').value = seq? (seq.classe||"") : "";
   document.getElementById('f-seq-competences').value = seq? (seq.competences||"") : "";
   document.getElementById('f-seq-prerequis').value = seq? (Array.isArray(seq.prerequis)? seq.prerequis.join(", ") : (seq.prerequis||"")) : "";
@@ -995,13 +1203,17 @@ document.getElementById('btn-save-seq').addEventListener('click', ()=>{
   })).filter(e=>e.nom||e.objectif);
 
   const prerequis = document.getElementById('f-seq-prerequis').value.split(",").map(s=>s.trim()).filter(Boolean);
+  const competenceId = document.getElementById('f-seq-competence').value;
+  const prerequisCompetences = [...document.querySelectorAll('.seq-prereq-comp:checked')].map(cb=>cb.value);
 
   const data = {
     titre,
-    domaine: document.getElementById('f-seq-domaine').value,
+    competence_id: competenceId,
+    domaine: competenceId,
     classe: document.getElementById('f-seq-classe').value.trim(),
     competences: document.getElementById('f-seq-competences').value.trim(),
     prerequis,
+    prerequis_competences: prerequisCompetences,
     periode: parseInt(document.getElementById('f-seq-periode').value,10),
     semaine_debut: debut,
     semaine_fin: fin,
