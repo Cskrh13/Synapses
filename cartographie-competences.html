@@ -3,559 +3,69 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1.0">
-<title>Cartographie des compétences — Synapses</title>
+<title>Cartographie 3D des compétences — Synapses</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Vollkorn:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root{
- --fond:#0d1112;--fond2:#151c1e;--panel:#111719;--texte:#d8d1b8;--clair:#ded4b7;
- --argent:#91a6aa;--ligne:rgba(125,139,140,.48);--or:#d9a441;
-}
-*{box-sizing:border-box}
-html,body{width:100%;height:100%;margin:0}
-body{overflow:hidden;background:radial-gradient(ellipse at 50% -10%,#20292b 0%,var(--fond) 62%);color:var(--texte);font-family:"Vollkorn",Georgia,serif}
-header{position:relative;z-index:20;padding:17px 22px 12px;text-align:center;background:linear-gradient(rgba(13,17,18,.98),rgba(13,17,18,.78),transparent);border-bottom:1px solid var(--ligne)}
-header h1{margin:0;font:normal clamp(21px,3vw,30px) "IM Fell English SC",Georgia,serif;letter-spacing:2px;color:var(--clair)}
-header p{margin:5px 0 0;font-size:12px;letter-spacing:.7px;color:var(--argent)}
-.toolbar{position:relative;z-index:20;display:flex;align-items:center;gap:7px;flex-wrap:wrap;padding:9px 12px;background:rgba(21,28,30,.95);border-bottom:1px solid var(--ligne)}
-.chip,button,input{font:inherit}
-.chip,button{border:1px solid var(--ligne);background:rgba(222,212,183,.035);color:var(--texte);padding:6px 9px;cursor:pointer}
-.chip.active{background:rgba(183,151,92,.16);border-color:var(--or)}
-.chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}
-input{width:270px;padding:7px 10px;background:#0f1517;color:var(--texte);border:1px solid var(--ligne);outline:0}
-input:focus{border-color:var(--or)}
-.status{margin-left:auto;color:var(--argent);font-size:11px;white-space:nowrap}
-#map{position:absolute;left:0;right:0;top:103px;bottom:0;overflow:hidden}
-#canvas{position:absolute;left:0;top:0;transform-origin:0 0;cursor:grab}
-#canvas.dragging{cursor:grabbing}
-svg{display:block}
-.link{fill:none;stroke:#718084;stroke-width:1.2;opacity:.48}
-.link.prereq{stroke:var(--or);stroke-width:1.8;opacity:.9}
-.node{cursor:pointer}
-.node rect{stroke:rgba(255,255,255,.14);stroke-width:1}
-.node:hover rect{stroke:var(--clair);stroke-width:1.5}
-.node text{pointer-events:none}
-.node.competence rect{fill:#172022}
-.node.sequence rect{fill:#1d2426}
-.node.seance rect{fill:#151c1e}
-.node.match rect{stroke:var(--or);stroke-width:2}
-.col-title{font:normal 14px "IM Fell English SC",Georgia,serif;fill:var(--clair);letter-spacing:1px}
-.col-sub{font:11px "Vollkorn",Georgia,serif;fill:var(--argent)}
-.domain-title{font:normal 12px "IM Fell English SC",Georgia,serif;fill:#cfc6a9}
-.legend{position:absolute;z-index:15;left:10px;bottom:10px;width:235px;padding:11px 13px;background:rgba(17,23,25,.92);border:1px solid var(--ligne);font-size:11px}
-.legend h3{margin:0 0 7px;font:normal 13px "IM Fell English SC",Georgia,serif;color:var(--clair)}
-.legend-row{display:flex;align-items:center;gap:7px;margin:3px 0}
-.legend .dot{width:9px;height:9px;border-radius:50%;flex:none}
-.legend .line{width:22px;height:0;border-top:2px solid var(--or)}
-.hint{margin-top:7px;color:var(--argent);line-height:1.35}
-.panel{position:absolute;z-index:30;right:0;top:0;bottom:0;width:430px;max-width:94vw;background:rgba(13,17,18,.985);border-left:1px solid var(--ligne);padding:20px;overflow:auto;transform:translateX(100%);transition:transform .22s}
-.panel.open{transform:translateX(0)}
-.close{position:absolute;right:13px;top:10px;border:0;background:none;font-size:18px;color:var(--argent)}
-.tag{display:inline-block;border:1px solid var(--ligne);padding:3px 7px;text-transform:uppercase;font-size:10px;letter-spacing:1px}
-.panel h2{margin:7px 28px 8px 0;font:normal 21px "IM Fell English SC",Georgia,serif;color:var(--clair);line-height:1.25}
-.panel h3{margin:18px 0 8px;font:normal 14px "IM Fell English SC",Georgia,serif;color:var(--clair)}
-.panel p,.panel li{font-size:12.5px;line-height:1.5}
-.stat{display:inline-block;min-width:90px;padding:8px;margin:3px;background:rgba(222,212,183,.045);border:1px solid var(--ligne);text-align:center}
-.stat b{display:block;font-size:17px;color:var(--clair)}
-.stat small{color:var(--argent)}
-.item{padding:8px 9px;margin:5px 0;background:rgba(222,212,183,.035);border:1px solid var(--ligne);cursor:pointer}
-.item:hover{border-color:var(--or)}
-.item small{display:block;color:var(--argent);font-size:10.5px;margin-top:2px}
-.seance{padding:8px 9px;margin:5px 0;border-left:3px solid var(--or);background:rgba(222,212,183,.04)}
-.seance b{font-size:12px;color:var(--clair)}
-.seance small{display:block;color:var(--argent);font-size:10.5px;margin-top:3px}
-.error{color:#e2a087}
-.empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--argent);padding:40px}
-code{font-family:monospace;color:var(--clair)}
-@media(max-width:760px){
- header{text-align:left}
- .toolbar{padding:7px}
- input{width:100%}
- .status{width:100%;margin-left:0}
- #map{top:145px}
- .legend{display:none}
- .panel{width:100%}
-}
+:root{--fond:#080d0e;--fond2:#11191b;--panel:rgba(13,18,19,.97);--texte:#d8d1b8;--clair:#eadfbd;--argent:#8fa0a4;--ligne:rgba(145,166,170,.34);--or:#d9a441}
+*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden}body{background:radial-gradient(circle at 50% 42%,#1b2527 0,#0b1011 55%,#050808 100%);color:var(--texte);font-family:"Vollkorn",Georgia,serif}
+header{position:absolute;z-index:20;left:0;right:0;top:0;padding:15px 22px 12px;background:linear-gradient(rgba(7,11,12,.98),rgba(7,11,12,.78),transparent);border-bottom:1px solid var(--ligne);pointer-events:none}
+header h1{margin:0;font:normal clamp(21px,3vw,31px) "IM Fell English SC",Georgia,serif;letter-spacing:2.5px;color:var(--clair)}header p{margin:4px 0 0;color:var(--argent);font-size:12px;letter-spacing:.7px}
+.toolbar{position:absolute;z-index:21;left:0;right:0;top:72px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;padding:8px 10px;background:rgba(13,19,20,.78);border-bottom:1px solid var(--ligne);backdrop-filter:blur(5px)}
+#filters{display:flex;gap:5px;flex-wrap:wrap}.chip,button,input{font:inherit}.chip,button{border:1px solid var(--ligne);background:rgba(222,212,183,.035);color:var(--texte);padding:5px 8px;cursor:pointer}.chip.active{background:rgba(183,151,92,.16);border-color:var(--or)}.chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:5px}input{width:255px;padding:6px 9px;background:#0b1112;color:var(--texte);border:1px solid var(--ligne);outline:0}input:focus{border-color:var(--or)}.status{margin-left:auto;color:var(--argent);font-size:11px;white-space:nowrap}
+#scene{position:absolute;inset:0;z-index:1;cursor:grab}#scene.dragging{cursor:grabbing}#scene canvas{display:block;width:100%;height:100%}
+.legend{position:absolute;z-index:10;left:10px;bottom:10px;width:250px;padding:11px 13px;background:rgba(12,18,19,.88);border:1px solid var(--ligne);font-size:10.5px;backdrop-filter:blur(5px)}.legend h3{margin:0 0 7px;font:normal 13px "IM Fell English SC",Georgia,serif;color:var(--clair)}.legend-row{display:flex;align-items:center;gap:7px;margin:3px 0}.legend .dot{width:9px;height:9px;border-radius:50%;flex:none}.legend .square{width:10px;height:7px;border:1px solid #9aa;flex:none}.legend .line{width:22px;height:0;border-top:2px solid var(--or);flex:none}.hint{margin-top:8px;color:var(--argent);line-height:1.35}
+.help{position:absolute;z-index:10;right:10px;bottom:10px;padding:9px 11px;background:rgba(12,18,19,.82);border:1px solid var(--ligne);color:var(--argent);font-size:10.5px;text-align:right}
+.panel{position:absolute;z-index:30;right:0;top:0;bottom:0;width:430px;max-width:94vw;background:var(--panel);border-left:1px solid var(--ligne);padding:20px;overflow:auto;transform:translateX(100%);transition:transform .23s ease;box-shadow:-15px 0 40px rgba(0,0,0,.35)}.panel.open{transform:translateX(0)}.close{position:absolute;right:13px;top:10px;border:0;background:none;font-size:18px;color:var(--argent)}.tag{display:inline-block;border:1px solid var(--ligne);padding:3px 7px;text-transform:uppercase;font-size:10px;letter-spacing:1px}.panel h2{margin:7px 28px 8px 0;font:normal 21px "IM Fell English SC",Georgia,serif;color:var(--clair);line-height:1.25}.panel h3{margin:18px 0 8px;font:normal 14px "IM Fell English SC",Georgia,serif;color:var(--clair)}.panel p,.panel li{font-size:12.5px;line-height:1.5}.stat{display:inline-block;min-width:90px;padding:8px;margin:3px;background:rgba(222,212,183,.045);border:1px solid var(--ligne);text-align:center}.stat b{display:block;font-size:17px;color:var(--clair)}.stat small{color:var(--argent)}.item{padding:8px 9px;margin:5px 0;background:rgba(222,212,183,.035);border:1px solid var(--ligne);cursor:pointer}.item:hover{border-color:var(--or)}.item small{display:block;color:var(--argent);font-size:10.5px;margin-top:2px}.seance{padding:8px 9px;margin:5px 0;border-left:3px solid var(--or);background:rgba(222,212,183,.04)}.seance b{font-size:12px;color:var(--clair)}.seance small{display:block;color:var(--argent);font-size:10.5px;margin-top:3px}.error{color:#e2a087}
+.empty{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;text-align:center;color:var(--argent);padding:40px;z-index:4;pointer-events:none}.empty strong{display:block;color:var(--clair);font:normal 22px "IM Fell English SC",Georgia,serif;margin-bottom:8px}
+@media(max-width:760px){header{padding-left:12px}.toolbar{top:82px}.status{width:100%;margin-left:0}.legend,.help{display:none}.panel{width:100%}}
 </style>
 </head>
 <body>
-<header>
- <h1>Cartographie des compétences</h1>
- <p id="subtitle">Chargement des compétences, séquences et séances…</p>
-</header>
-
-<div class="toolbar">
- <div id="filters"></div>
- <input id="search" type="search" placeholder="Rechercher une compétence, séquence ou séance…">
- <button id="reset">Réinitialiser</button>
- <span class="status" id="status">Chargement…</span>
-</div>
-
-<div id="map">
- <div id="canvas"></div>
- <div class="empty" id="empty">Chargement de la cartographie…</div>
-</div>
-
-<div class="legend">
- <h3>Légende</h3>
- <div id="legendRows"></div>
- <div class="legend-row"><span class="line"></span> Prérequis</div>
- <div class="legend-row">→ Compétence → séquence → séance</div>
- <div class="hint">Glisser pour déplacer la carte · molette pour zoomer · cliquer sur un élément pour ouvrir sa fiche.</div>
-</div>
-
-<aside class="panel" id="panel">
- <button class="close" id="close">✕</button>
- <div id="panelContent"></div>
-</aside>
-
+<header><h1>Cartographie des compétences</h1><p id="subtitle">Chargement des compétences, séquences et séances…</p></header>
+<div class="toolbar"><div id="filters"></div><input id="search" type="search" placeholder="Rechercher une compétence, séquence ou séance…"><button id="reset">Réinitialiser</button><span class="status" id="status">Chargement…</span></div>
+<div id="scene"><canvas id="canvas"></canvas></div>
+<div class="empty" id="empty"><div><strong>Cartographe des compétences</strong><div>Lecture des données de Programmation…</div></div></div>
+<div class="legend"><h3>Légende</h3><div id="legendRows"></div><div class="legend-row"><span class="square"></span> Compétence</div><div class="legend-row"><span class="square" style="height:10px"></span> Séquence</div><div class="legend-row"><span class="dot" style="background:#d9a441"></span> Séance</div><div class="legend-row"><span class="line"></span> Prérequis</div><div class="hint">Glisser : rotation 3D · molette : zoom · clic : fiche · double-clic : recentrer</div></div>
+<div class="help">◉ Vue 3D relationnelle<br>Compétences → séquences → séances</div>
+<aside class="panel" id="panel"><button class="close" id="close">✕</button><div id="panelContent"></div></aside>
 <script>
 "use strict";
-
-/*
-  CARTOGRAPHIE DES COMPÉTENCES — SYNAPSES
-  ---------------------------------------
-  Cette version ne dépend d'AUCUNE bibliothèque externe de graphe.
-  Elle lit uniquement les données réellement présentes dans le projet :
-
-    /Programmation/data/index.json
-    /Programmation/data/competences.json
-    puis tous les fichiers déclarés dans index.json.
-
-  Le fichier peut être placé :
-    /cartographie-competences.html
-  ou
-    /Programmation/cartographie-competences.html
-*/
-
-const $=id=>document.getElementById(id);
-const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
-const state={
- index:null, data:null, sequences:[], seances:[],
- nodes:[], links:[], domains:new Set(), search:"",
- scale:1, panX:0, panY:0, dragging:false, dragStart:null
-};
-
-/* Le projet utilise actuellement des identifiants de compétences qui ont
-   évolué. On conserve la compatibilité avec les séquences existantes. */
-const COMPETENCE_ALIASES={
- "lecture_code":"lecture_identifier_mots"
-};
-
-function basePath(){
- const p=location.pathname;
- return /\/Programmation(?:\/|$)/i.test(p) ? "./" : "./Programmation/";
-}
-function urlFrom(path){
- return new URL(path,location.href.replace(/[^/]*$/,"")+basePath()).href;
-}
-async function json(path){
- const url=urlFrom(path);
- const r=await fetch(url,{cache:"no-store"});
- if(!r.ok)throw new Error(`${r.status} — ${url}`);
- return r.json();
-}
-function seqArray(x){
- if(!x)return[];
- if(Array.isArray(x.sequences))return x.sequences;
- if(x.id&&(x.titre||x.nom))return[x];
- return[];
-}
-function seaArray(x){
- if(!x)return[];
- if(Array.isArray(x.seances))return x.seances;
- if(x.id&&(x.titre||x.numero))return[x];
- return[];
-}
-function dedupe(a){
- const m=new Map();
- a.forEach(x=>{if(x?.id)m.set(x.id,x)});
- return [...m.values()];
-}
-function competenceId(seq){
- const raw=seq?.competence_id||seq?.competenceId||"";
- return COMPETENCE_ALIASES[raw]||raw;
-}
-function comp(id){
- return state.data?.competences?.find(c=>c.id===id)||null;
-}
-function domain(id){
- return state.data?.domaines?.find(d=>d.id===id)||{
-   id:id||"autre",nom:id||"Autre",couleur:"#7d8b8c"
- };
-}
-function domainIdFor(c,s){
- return c?.domaine_id||s?.domaine_id||s?.domaine||"autre";
-}
-
-async function load(){
- const root=basePath();
- setStatus("Index…");
- state.index=await json("data/index.json");
-
- const cp=state.index?.meta?.competences||"data/competences.json";
- setStatus("Compétences…");
- state.data=await json(cp);
- if(!Array.isArray(state.data.competences))state.data.competences=[];
- if(!Array.isArray(state.data.domaines))state.data.domaines=[];
- state.domains=new Set(state.data.domaines.map(d=>d.id));
-
- const entries=[];
- for(const niveau of state.index.niveaux||[])
-  for(const discipline of niveau.disciplines||[])
-   for(const domaine of discipline.domaines||[])
-    for(const meta of domaine.sequences||[])
-     entries.push({niveau,discipline,domaine,meta});
-
- const seqs=[], seas=[], errors=[];
- setStatus(`${entries.length} séquence(s)…`);
-
- for(const e of entries){
-  try{
-   const raw=await json(e.meta.fichier_sequence);
-   for(const s0 of seqArray(raw)){
-    const s={
-      ...s0,
-      id:s0.id||e.meta.id,
-      titre:s0.titre||s0.nom||e.meta.titre||e.meta.id,
-      classe:s0.classe||e.niveau.id||"",
-      niveau:s0.niveau||e.niveau.id||"",
-      discipline:s0.discipline||e.discipline.nom||e.discipline.id||"",
-      domaine_index:e.domaine.id,
-      competence_id:s0.competence_id||e.meta.competence_id||"",
-      _source:e.meta.fichier_sequence
-    };
-    seqs.push(s);
-
-    /* Séances déclarées dans l'index : source de vérité pour les fichiers. */
-    for(const sm of e.meta.seances||[]){
-     try{
-      const sr=await json(sm.fichier);
-      const arr=seaArray(sr);
-      if(arr.length){
-       arr.forEach(x=>seas.push({
-        ...x,
-        id:x.id||sm.id,
-        sequence_id:x.sequence_id||s.id,
-        numero:x.numero??sm.numero,
-        type:x.type||sm.type||"",
-        titre:x.titre||sm.titre||"",
-        classe:x.classe||s.classe||"",
-        _source:sm.fichier
-       }));
-      }else{
-       /* Le fichier peut contenir l'objet séance directement. */
-       seas.push({
-        ...sm,
-        sequence_id:s.id,
-        classe:s.classe||"",
-        _source:sm.fichier
-       });
-      }
-     }catch(err){errors.push(`Séance ${sm.fichier}: ${err.message}`)}
-    }
-
-    /* Compatibilité avec des fichiers où les séances sont embarquées. */
-    seaArray(raw).forEach(x=>{
-      if(x?.id&&!seas.some(s=>s.id===x.id))
-       seas.push({...x,sequence_id:x.sequence_id||s.id,classe:x.classe||s.classe||""});
-    });
-   }
-  }catch(err){errors.push(`Séquence ${e.meta.fichier_sequence}: ${err.message}`)}
- }
-
- state.sequences=dedupe(seqs);
- state.seances=dedupe(seas).filter(s=>state.sequences.some(q=>q.id===s.sequence_id));
-
- build();
- renderFilters();
- renderLegend();
- draw();
-
- const c=state.data.competences.length,s=state.sequences.length,a=state.seances.length;
- $("subtitle").textContent=`${c} compétences · ${s} séquence${s>1?"s":""} · ${a} séances · prérequis et liens pédagogiques`;
- $("empty").style.display="none";
- setStatus(`${c} compétences · ${s} séquences · ${a} séances`);
- if(errors.length){
-   console.warn("Fichiers non chargés :",errors);
-   setStatus(`${c} compétences · ${s} séquences · ${a} séances · ${errors.length} avertissement(s)`);
- }
-}
-
+const $=id=>document.getElementById(id);const esc=v=>String(v??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;",'\'':"&#039;"}[c]));
+const state={index:null,data:null,sequences:[],seances:[],nodes:[],links:[],domains:new Set(),search:"",yaw:.25,pitch:-.12,zoom:1,drag:false,lastX:0,lastY:0,hover:null,selected:null,anim:0};
+const ALIASES={"lecture_code":"lecture_identifier_mots"};
+const COLORS={};
+function basePath(){return /\/Programmation(?:\/|$)/i.test(location.pathname)?"./":"./Programmation/"}
+function urlFrom(path){return new URL(path,new URL(basePath(),location.href)).href}
+async function json(path){const u=urlFrom(path),r=await fetch(u,{cache:"no-store"});if(!r.ok)throw new Error(`${r.status} — ${u}`);return r.json()}
+function arr(x,k){if(!x)return[];if(Array.isArray(x[k]))return x[k];if(x.id&&(x.titre||x.nom||x.numero))return[x];return[]}
+function dedupe(a){const m=new Map();a.forEach(x=>x?.id&&m.set(x.id,x));return[...m.values()]}
+function compId(s){const r=s?.competence_id||s?.competenceId||"";return ALIASES[r]||r}
+function comp(id){return state.data?.competences?.find(c=>c.id===id)||null}
+function domain(id){return state.data?.domaines?.find(d=>d.id===id)||{id:id||"autre",nom:id||"Autre",couleur:"#718084"}}
+function did(c,s){return c?.domaine_id||s?.domaine_id||s?.domaine||"autre"}
 function setStatus(x){$("status").textContent=x}
-
-function build(){
- const nodes=[],links=[];
- const ids=new Set(state.data.competences.map(c=>c.id));
-
- /* Compétences */
- state.data.competences.forEach(c=>{
-  nodes.push({
-   id:"c:"+c.id,type:"competence",ref:c.id,label:c.intitule||c.nom||c.id,
-   domaine:c.domaine_id||"autre"
-  });
-  for(const p0 of c.prerequis_competences||[]){
-   const p=typeof p0==="string"?p0:p0.id;
-   const resolved=COMPETENCE_ALIASES[p]||p;
-   if(ids.has(resolved))
-    links.push({source:"c:"+resolved,target:"c:"+c.id,type:"prereq"});
-  }
- });
-
- /* Séquences */
- state.sequences.forEach(s=>{
-  const cid=competenceId(s), c=comp(cid);
-  const did=domainIdFor(c,s);
-  nodes.push({
-   id:"s:"+s.id,type:"sequence",ref:s.id,
-   label:s.titre||s.id,domaine:did,classe:s.classe||s.niveau||""
-  });
-  if(c)links.push({source:"c:"+c.id,target:"s:"+s.id,type:"sequence"});
- });
-
- /* Séances */
- state.seances.forEach(a=>{
-  const s=state.sequences.find(q=>q.id===a.sequence_id);
-  if(!s)return;
-  nodes.push({
-   id:"a:"+a.id,type:"seance",ref:a.id,
-   label:`Séance ${a.numero??""}${a.titre?" — "+a.titre:""}`,
-   domaine:domainIdFor(comp(competenceId(s)),s)
-  });
-  links.push({source:"s:"+s.id,target:"a:"+a.id,type:"seance"});
- });
- state.nodes=nodes;state.links=links;
-}
-
-/* ---------- filtres ---------- */
-function renderFilters(){
- const f=$("filters");f.innerHTML="";
- state.data.domaines.forEach(d=>{
-  const b=document.createElement("button");
-  b.className="chip"+(state.domains.has(d.id)?" active":"");
-  b.innerHTML=`<span class="dot" style="background:${esc(d.couleur||"#888")}"></span>${esc(d.nom||d.id)}`;
-  b.onclick=()=>{state.domains.has(d.id)?state.domains.delete(d.id):state.domains.add(d.id);renderFilters();draw()};
-  f.appendChild(b);
- });
-}
-function renderLegend(){
- $("legendRows").innerHTML=state.data.domaines.map(d=>
-  `<div class="legend-row"><span class="dot" style="background:${esc(d.couleur||"#888")}"></span>${esc(d.nom||d.id)}</div>`
- ).join("");
-}
-$("search").oninput=e=>{state.search=e.target.value.trim().toLowerCase();draw()};
-$("reset").onclick=()=>{
- state.search="";$("search").value="";
- state.domains=new Set(state.data.domaines.map(d=>d.id));
- renderFilters();draw();
-};
-
-/* ---------- visibilité ---------- */
-function textFor(n){
- const c=n.type==="competence"?comp(n.ref):null;
- const s=n.type==="sequence"?state.sequences.find(x=>x.id===n.ref):null;
- const a=n.type==="seance"?state.seances.find(x=>x.id===n.ref):null;
- return [
-  n.label,n.ref,c?.intitule,c?.domaine,c?.mots_cles?.join(" "),
-  s?.titre,s?.objectif_commun,s?.competences,s?.classe,
-  a?.titre,a?.objectif_commun,a?.competence_cible,a?.type
- ].filter(Boolean).join(" ").toLowerCase();
-}
-function matches(n){
- if(!state.domains.has(n.domaine))return false;
- return !state.search||textFor(n).includes(state.search);
-}
-
-/* ---------- carte SVG ---------- */
-function draw(){
- const matched=state.nodes.filter(matches);
- const ids=new Set(matched.map(n=>n.id));
-
- /* Maintient les parents d'une séance ou d'une séquence recherchée. */
- matched.forEach(n=>{
-  if(n.type==="sequence"){
-   const c=state.nodes.find(x=>x.id==="c:"+competenceId(state.sequences.find(s=>s.id===n.ref)));
-   if(c)ids.add(c.id);
-  }
-  if(n.type==="seance"){
-   const a=state.seances.find(x=>x.id===n.ref),s=state.sequences.find(x=>x.id===a?.sequence_id);
-   if(s){
-    ids.add("s:"+s.id);
-    const c=state.nodes.find(x=>x.id==="c:"+competenceId(s));
-    if(c)ids.add(c.id);
-   }
-  }
- });
-
- const nodes=state.nodes.filter(n=>ids.has(n.id));
- const links=state.links.filter(l=>{
-  const a=typeof l.source==="string"?l.source:l.source.id;
-  const b=typeof l.target==="string"?l.target:l.target.id;
-  return ids.has(a)&&ids.has(b);
- });
-
- const W=Math.max(1500,window.innerWidth*1.35), row=86;
- const byDomain=new Map();
- state.data.domaines.forEach(d=>byDomain.set(d.id,nodes.filter(n=>n.domaine===d.id)));
-
- const comps=nodes.filter(n=>n.type==="competence");
- const seqs=nodes.filter(n=>n.type==="sequence");
- const seas=nodes.filter(n=>n.type==="seance");
-
- const maxRows=Math.max(comps.length,seqs.length,seas.length,1);
- const H=Math.max(window.innerHeight-130,maxRows*row+130);
- const positions=new Map();
-
- function place(list,x){
-  list.forEach((n,i)=>{
-   const y=70+i*row;
-   positions.set(n.id,{x,y});
-  });
- }
- place(comps,80);place(seqs,610);place(seas,1120);
-
- let svg=`<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}">`;
- svg+=`<text x="80" y="25" class="col-title">COMPÉTENCES</text><text x="610" y="25" class="col-title">SÉQUENCES</text><text x="1120" y="25" class="col-title">SÉANCES</text>`;
- svg+=`<text x="80" y="43" class="col-sub">${comps.length} élément(s)</text><text x="610" y="43" class="col-sub">${seqs.length} élément(s)</text><text x="1120" y="43" class="col-sub">${seas.length} élément(s)</text>`;
-
- /* liens */
- links.forEach(l=>{
-  const a=positions.get(typeof l.source==="string"?l.source:l.source.id);
-  const b=positions.get(typeof l.target==="string"?l.target:l.target.id);
-  if(!a||!b)return;
-  const cls=l.type==="prereq"?"link prereq":"link";
-  const dx=Math.max(45,Math.abs(b.x-a.x)*.42);
-  svg+=`<path class="${cls}" d="M ${a.x+210} ${a.y+28} C ${a.x+210+dx} ${a.y+28}, ${b.x-dx} ${b.y+28}, ${b.x} ${b.y+28}"/>`;
- });
-
- /* noeuds */
- nodes.forEach(n=>{
-  const p=positions.get(n.id),d=domain(n.domaine);
-  const w=n.type==="competence"?300:n.type==="sequence"?320:320;
-  const h=56;
-  const fill=d.couleur||"#7d8b8c";
-  const label=n.label.length>47?n.label.slice(0,46)+"…":n.label;
-  const sub=n.type==="competence"?`${d.nom||""}`:n.type==="sequence"?`${n.classe||""}`:`${state.seances.find(a=>a.id===n.ref)?.type||""}`;
-  const cls=`node ${n.type}${state.search&&textFor(n).includes(state.search)?" match":""}`;
-  svg+=`<g class="${cls}" data-id="${esc(n.id)}" transform="translate(${p.x},${p.y})">`;
-  svg+=`<rect width="${w}" height="${h}" rx="6" fill="${esc(fill)}" fill-opacity="${n.type==="competence"?".14":".09"}"/>`;
-  svg+=`<rect width="5" height="${h}" rx="3" fill="${esc(fill)}"/>`;
-  svg+=`<text x="16" y="22" fill="#ded4b7" font-size="${n.type==="competence"?13:12.5}" font-weight="${n.type==="competence"?"600":"500"}">${esc(label)}</text>`;
-  svg+=`<text x="16" y="42" fill="#91a6aa" font-size="10.5">${esc(sub)}</text>`;
-  svg+=`</g>`;
- });
- svg+=`</svg>`;
-
- $("canvas").innerHTML=svg;
- $("canvas").style.width=W+"px";$("canvas").style.height=H+"px";
- bindNodes();
- applyTransform();
-}
-
-/* ---------- interaction carte ---------- */
-function bindNodes(){
- document.querySelectorAll(".node").forEach(el=>{
-  el.onclick=e=>{e.stopPropagation();openNode(el.dataset.id)};
- });
-}
-function applyTransform(){
- $("canvas").style.transform=`translate(${state.panX}px,${state.panY}px) scale(${state.scale})`;
-}
-$("map").addEventListener("wheel",e=>{
- e.preventDefault();
- const old=state.scale;
- state.scale=Math.max(.35,Math.min(2.2,state.scale*(e.deltaY<0?1.1:.9)));
- const r=$("map").getBoundingClientRect();
- const mx=e.clientX-r.left,my=e.clientY-r.top;
- state.panX=mx-(mx-state.panX)*(state.scale/old);
- state.panY=my-(my-state.panY)*(state.scale/old);
- applyTransform();
-},{passive:false});
-$("map").addEventListener("pointerdown",e=>{
- if(e.target.closest(".node"))return;
- state.dragging=true;state.dragStart={x:e.clientX-state.panX,y:e.clientY-state.panY};
- $("canvas").classList.add("dragging");
- $("map").setPointerCapture(e.pointerId);
-});
-$("map").addEventListener("pointermove",e=>{
- if(!state.dragging)return;
- state.panX=e.clientX-state.dragStart.x;state.panY=e.clientY-state.dragStart.y;applyTransform();
-});
-$("map").addEventListener("pointerup",()=>{state.dragging=false;$("canvas").classList.remove("dragging")});
-$("map").addEventListener("dblclick",()=>{state.scale=1;state.panX=0;state.panY=0;applyTransform()});
-
-/* ---------- fiches ---------- */
-function openNode(id){
- if(id.startsWith("c:"))openCompetence(id.slice(2));
- else if(id.startsWith("s:"))openSequence(id.slice(2));
- else if(id.startsWith("a:"))openSeance(id.slice(2));
- $("panel").classList.add("open");
-}
-function openCompetence(id){
- const c=comp(id);if(!c)return;
- const d=domain(c.domaine_id);
- const seqs=state.sequences.filter(s=>competenceId(s)===id);
- const seas=state.seances.filter(a=>seqs.some(s=>s.id===a.sequence_id));
- const ps=(c.prerequis_competences||[]).map(x=>comp(COMPETENCE_ALIASES[typeof x==="string"?x:x.id]|| (typeof x==="string"?x:x.id))).filter(Boolean);
- $("panelContent").innerHTML=`
-  <span class="tag" style="border-color:${esc(d.couleur)};color:${esc(d.couleur)}">${esc(d.nom)}</span>
-  <h2>${esc(c.intitule||c.nom||id)}</h2>
-  <div><span class="stat"><b>${seqs.length}</b><small>séquence(s)</small></span><span class="stat"><b>${seas.length}</b><small>séance(s)</small></span><span class="stat"><b>${ps.length}</b><small>prérequis</small></span></div>
-  <h3>Objectifs</h3><ul>${(c.objectifs||[]).map(x=>`<li>${esc(x)}</li>`).join("")||"<li>Aucun objectif renseigné.</li>"}</ul>
-  <h3>Prérequis</h3>${ps.length?ps.map(p=>`<div class="item" data-open-c="${esc(p.id)}">${esc(p.intitule||p.nom||p.id)}</div>`).join(""):"<p>Aucun prérequis déclaré.</p>"}
-  <h3>Séquences liées</h3>${seqs.length?seqs.map(s=>`<div class="item" data-open-s="${esc(s.id)}">${esc(s.titre)}<small>${esc(s.classe||s.niveau||"")} · période ${esc(s.periode??"—")}</small></div>`).join(""):"<p>Aucune séquence liée.</p>"}
-  <h3>Séances liées</h3>${seas.length?seas.map(a=>`<div class="seance"><b>${esc(`Séance ${a.numero??""}${a.titre?" — "+a.titre:""}`)}</b><small>${esc(a.type||"")} · ${esc(a.objectif_commun||"")}</small></div>`).join(""):"<p>Aucune séance liée.</p>"}
-  <h3>Source</h3><p>${esc(c.source?.document||c.source?.fichier||"")}</p>`;
- bindPanel();
-}
-function openSequence(id){
- const s=state.sequences.find(x=>x.id===id);if(!s)return;
- const c=comp(competenceId(s)),d=domain(domainIdFor(c,s));
- const seas=state.seances.filter(a=>a.sequence_id===id);
- $("panelContent").innerHTML=`
-  <span class="tag" style="border-color:${esc(d.couleur)};color:${esc(d.couleur)}">${esc(d.nom)}</span>
-  <h2>${esc(s.titre||id)}</h2>
-  <div><span class="stat"><b>${seas.length}</b><small>séance(s)</small></span><span class="stat"><b>${esc(s.periode??"—")}</b><small>période</small></span></div>
-  <h3>Compétence</h3>${c?`<div class="item" data-open-c="${esc(c.id)}">${esc(c.intitule)}<small>${esc(c.id)}</small></div>`:`<p>Identifiant déclaré : <code>${esc(s.competence_id||"non renseigné")}</code></p>`}
-  <h3>Objectif commun</h3><p>${esc(s.objectif_commun||s.objectif||"Aucun objectif renseigné.")}</p>
-  <h3>Prérequis</h3><p>${esc((s.prerequis||[]).join(" · ")||"Aucun prérequis textuel renseigné.")}</p>
-  <h3>Séances</h3>${seas.length?seas.map(a=>`<div class="seance" data-open-a="${esc(a.id)}"><b>${esc(`Séance ${a.numero??""}${a.titre?" — "+a.titre:""}`)}</b><small>${esc(a.type||"")}</small></div>`).join(""):"<p>Aucune séance chargée.</p>"}
-  <h3>Source</h3><p><code>${esc(s._source||"")}</code></p>`;
- bindPanel();
-}
-function openSeance(id){
- const a=state.seances.find(x=>x.id===id);if(!a)return;
- const s=state.sequences.find(x=>x.id===a.sequence_id);
- $("panelContent").innerHTML=`
-  <span class="tag">${esc(a.type||"Séance")}</span>
-  <h2>${esc(`Séance ${a.numero??""}${a.titre?" — "+a.titre:""}`)}</h2>
-  <h3>Séquence</h3>${s?`<div class="item" data-open-s="${esc(s.id)}">${esc(s.titre)}</div>`:"<p>Non rattachée.</p>"}
-  <h3>Objectif</h3><p>${esc(a.objectif_commun||a.objectif||"Aucun objectif renseigné.")}</p>
-  ${a.competence_cible?`<h3>Compétence cible</h3><p>${esc(a.competence_cible)}</p>`:""}
-  ${a.problematique?`<h3>Problématique</h3><p>${esc(a.problematique)}</p>`:""}
-  ${a.modalites_generales?`<h3>Modalités générales</h3><p>${esc(a.modalites_generales)}</p>`:""}
-  ${a.vigilance?`<h3>Vigilance</h3><p>${esc(a.vigilance)}</p>`:""}
-  <h3>Source</h3><p><code>${esc(a._source||"")}</code></p>`;
- bindPanel();
-}
-function bindPanel(){
- document.querySelectorAll("[data-open-c]").forEach(x=>x.onclick=()=>openCompetence(x.dataset.openC));
- document.querySelectorAll("[data-open-s]").forEach(x=>x.onclick=()=>openSequence(x.dataset.openS));
- document.querySelectorAll("[data-open-a]").forEach(x=>x.onclick=()=>openSeance(x.dataset.openA));
-}
-$("close").onclick=()=>$("panel").classList.remove("open");
-
-window.addEventListener("resize",()=>{if(state.data)draw()});
-
-(async()=>{
- try{await load()}
- catch(e){
-  console.error(e);
-  $("empty").innerHTML=`<div class="error"><b>Impossible de charger la cartographie.</b><br><br>${esc(e.message)}<br><br><span style="color:#91a6aa">Le fichier doit pouvoir accéder à <code>Programmation/data/index.json</code>.</span></div>`;
-  setStatus("Erreur de chargement");
- }
-})();
+async function load(){try{setStatus("Lecture de l’index…");state.index=await json("data/index.json");const cp=state.index?.meta?.competences||"data/competences.json";setStatus("Lecture des compétences…");state.data=await json(cp);state.data.competences=Array.isArray(state.data.competences)?state.data.competences:[];state.data.domaines=Array.isArray(state.data.domaines)?state.data.domaines:[];state.data.domaines.forEach(d=>COLORS[d.id]=d.couleur||"#718084");state.domains=new Set(state.data.domaines.map(d=>d.id));const entries=[];for(const n of state.index.niveaux||[])for(const di of n.disciplines||[])for(const d of di.domaines||[])for(const m of d.sequences||[])entries.push({n,di,d,m});const seqs=[],seas=[];const errors=[];for(const e of entries){try{const raw=await json(e.m.fichier_sequence);for(const s0 of arr(raw,"sequences")){const s={...s0,id:s0.id||e.m.id,titre:s0.titre||s0.nom||e.m.titre||e.m.id,classe:s0.classe||e.n.id||"",niveau:s0.niveau||e.n.id||"",discipline:s0.discipline||e.di.nom||e.di.id||"",domaine_index:e.d.id,competence_id:s0.competence_id||e.m.competence_id||"",_source:e.m.fichier_sequence};seqs.push(s);for(const sm of e.m.seances||[]){try{const sr=await json(sm.fichier),aa=arr(sr,"seances");if(aa.length)aa.forEach(x=>seas.push({...x,id:x.id||sm.id,sequence_id:x.sequence_id||s.id,numero:x.numero??sm.numero,type:x.type||sm.type||"",titre:x.titre||sm.titre||"",classe:x.classe||s.classe||"",_source:sm.fichier}));else seas.push({...sm,sequence_id:s.id,classe:s.classe||"",_source:sm.fichier})}catch(er){errors.push(sm.fichier)}}}}catch(er){errors.push(e.m.fichier_sequence)}}state.sequences=dedupe(seqs);state.seances=dedupe(seas).filter(a=>state.sequences.some(s=>s.id===a.sequence_id));build();renderFilters();renderLegend();resize();$("empty").style.display="none";const c=state.data.competences.length,s=state.sequences.length,a=state.seances.length;$("subtitle").textContent=`${c} compétences · ${s} séquence${s>1?"s":""} · ${a} séances · prérequis et liens pédagogiques`;setStatus(`${c} compétences · ${s} séquences · ${a} séances${errors.length?` · ${errors.length} avertissement(s)`:""}`)}catch(e){console.error(e);$("empty").innerHTML=`<div><strong>Erreur de chargement</strong><div class="error">${esc(e.message)}<br><br>Vérifiez que cartographie-competences.html est à la racine du site et que Programmation/data/index.json existe.</div></div>`;setStatus("Erreur de chargement")}}
+function build(){const nodes=[],links=[],ids=new Set(state.data.competences.map(c=>c.id));state.data.competences.forEach(c=>{nodes.push({id:"c:"+c.id,type:"competence",ref:c.id,label:c.intitule||c.nom||c.id,domaine:c.domaine_id||"autre"});for(const p0 of c.prerequis_competences||[]){const p=typeof p0==="string"?p0:p0.id,r=ALIASES[p]||p;if(ids.has(r))links.push({source:"c:"+r,target:"c:"+c.id,type:"prereq"})}});state.sequences.forEach(s=>{const cid=compId(s),c=comp(cid),d=did(c,s);nodes.push({id:"s:"+s.id,type:"sequence",ref:s.id,label:s.titre||s.id,domaine:d,classe:s.classe||s.niveau||""});if(c)links.push({source:"c:"+c.id,target:"s:"+s.id,type:"sequence"})});state.seances.forEach(a=>{const s=state.sequences.find(q=>q.id===a.sequence_id);if(!s)return;nodes.push({id:"a:"+a.id,type:"seance",ref:a.id,label:`Séance ${a.numero??""}${a.titre?" — "+a.titre:""}`,domaine:did(comp(compId(s)),s)});links.push({source:"s:"+s.id,target:"a:"+a.id,type:"seance"})});state.nodes=nodes;state.links=links;layout3D()}
+function layout3D(){const cs=state.nodes.filter(n=>n.type==="competence"),ss=state.nodes.filter(n=>n.type==="sequence"),aa=state.nodes.filter(n=>n.type==="seance");const golden=Math.PI*(3-Math.sqrt(5));function sphere(list,r,zoff){list.forEach((n,i)=>{const y=1-(i+.5)*2/list.length;const rr=Math.sqrt(Math.max(0,1-y*y));const t=i*golden;n.x=Math.cos(t)*rr*r;n.y=y*r;n.z=Math.sin(t)*rr*r+zoff})}sphere(cs,430,-120);sphere(ss,560,20);sphere(aa,700,150);state.nodes.forEach(n=>{n.vx=0;n.vy=0;n.vz=0})}
+function renderFilters(){$("filters").innerHTML="";state.data.domaines.forEach(d=>{const b=document.createElement("button");b.className="chip"+(state.domains.has(d.id)?" active":"");b.innerHTML=`<span class="dot" style="background:${esc(d.couleur||"#888")}"></span>${esc(d.nom||d.id)}`;b.onclick=()=>{state.domains.has(d.id)?state.domains.delete(d.id):state.domains.add(d.id);renderFilters()};$("filters").appendChild(b)})}
+function renderLegend(){$("legendRows").innerHTML=state.data.domaines.map(d=>`<div class="legend-row"><span class="dot" style="background:${esc(d.couleur||"#888")}"></span>${esc(d.nom||d.id)}</div>`).join("")}
+function matches(n){if(!state.domains.has(n.domaine))return false;if(!state.search)return true;const c=comp(n.ref),s=n.type==="sequence"?state.sequences.find(x=>x.id===n.ref):null,a=n.type==="seance"?state.seances.find(x=>x.id===n.ref):null;return[n.label,n.ref,c?.intitule,c?.nom,s?.titre,s?.objectif_commun,a?.titre,a?.objectif_commun,a?.competence_cible].filter(Boolean).join(" ").toLowerCase().includes(state.search)}
+function visible(n){if(matches(n))return true;if(n.type==="competence"){return state.nodes.some(x=>x.type!=="competence"&&matches(x)&&((x.type==="sequence"&&compId(state.sequences.find(s=>s.id===x.ref))===n.ref)||(x.type==="seance"&&(()=>{const a=state.seances.find(a=>a.id===x.ref),s=state.sequences.find(s=>s.id===a?.sequence_id);return s&&compId(s)===n.ref})())))}if(n.type==="sequence"){const s=state.sequences.find(s=>s.id===n.ref);return state.nodes.some(x=>x.type==="seance"&&matches(x)&&state.seances.find(a=>a.id===x.ref)?.sequence_id===s?.id)}return false}
+function rotate(p,yaw,pitch){let x=p.x,z=p.z;let cy=Math.cos(yaw),sy=Math.sin(yaw);let x1=x*cy-z*sy,z1=x*sy+z*cy;let cp=Math.cos(pitch),sp=Math.sin(pitch);let y=p.y*cp-z1*sp,z2=p.y*sp+z1*cp;return{x:x1,y,z:z2}}
+function project(n,w,h){const p=rotate(n,state.yaw,state.pitch),cam=1250,stateD=cam/(cam-p.z*0.62),sx=w/2+p.x*stateD*state.zoom,sy=h/2+p.y*stateD*state.zoom;return{x:sx,y:sy,z:p.z,scale:stateD*state.zoom}}
+function nodeRadius(n,p){return (n.type==="competence"?9:n.type==="sequence"?6:4.2)*Math.max(.55,p.scale*.78)}
+function labelShort(s,max){s=String(s||"");return s.length>max?s.slice(0,max-1)+"…":s}
+function draw(){const c=$("canvas"),ctx=c.getContext("2d"),w=c.width=c.clientWidth*devicePixelRatio,h=c.height=c.clientHeight*devicePixelRatio;ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);const W=c.clientWidth,H=c.clientHeight;ctx.clearRect(0,0,W,H);const pts=new Map();for(const n of state.nodes){if(!state.domains.has(n.domaine))continue;pts.set(n.id,{n,p:project(n,W,H)})}const visiblePts=[...pts.values()].filter(v=>visible(v.n));const visIds=new Set(visiblePts.map(v=>v.n.id));const projectedLinks=[];for(const l of state.links){const a=pts.get(l.source),b=pts.get(l.target);if(a&&b&&visIds.has(a.n.id)&&visIds.has(b.n.id))projectedLinks.push({l,a,b,z:(a.p.z+b.p.z)/2})}projectedLinks.sort((a,b)=>a.z-b.z);for(const e of projectedLinks){ctx.beginPath();ctx.moveTo(e.a.p.x,e.a.p.y);ctx.lineTo(e.b.p.x,e.b.p.y);ctx.strokeStyle=e.l.type==="prereq"?"rgba(217,164,65,.75)":"rgba(125,145,149,.25)";ctx.lineWidth=e.l.type==="prereq"?1.5:0.8;ctx.stroke();if(e.l.type==="prereq"){const ang=Math.atan2(e.b.p.y-e.a.p.y,e.b.p.x-e.a.p.x),len=6;ctx.beginPath();ctx.moveTo(e.b.p.x,e.b.p.y);ctx.lineTo(e.b.p.x-len*Math.cos(ang-.45),e.b.p.y-len*Math.sin(ang-.45));ctx.lineTo(e.b.p.x-len*Math.cos(ang+.45),e.b.p.y-len*Math.sin(ang+.45));ctx.closePath();ctx.fillStyle="rgba(217,164,65,.8)";ctx.fill()}}
+visiblePts.sort((a,b)=>a.p.z-b.p.z);for(const v of visiblePts){const n=v.n,p=v.p,r=nodeRadius(n,p),col=domain(n.domaine).couleur||"#718084",active=state.hover===n.id||state.selected===n.id;ctx.save();ctx.globalAlpha=Math.max(.38,Math.min(1,.55+p.scale*.3));ctx.shadowBlur=active?18:7;ctx.shadowColor=active?col:"rgba(0,0,0,.5)";ctx.fillStyle=col;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();ctx.shadowBlur=0;ctx.strokeStyle=active?"#eadfbd":"rgba(255,255,255,.35)";ctx.lineWidth=active?2:1;ctx.stroke();if(n.type==="competence"){ctx.fillStyle="rgba(8,13,14,.8)";ctx.beginPath();ctx.arc(p.x,p.y,r*.38,0,Math.PI*2);ctx.fill()}ctx.restore();if(active||n.type==="competence"&&p.scale>1.08){ctx.font=n.type==="competence"?"12px Vollkorn":"10px Vollkorn";ctx.textAlign="center";ctx.fillStyle=active?"#f0e5c2":"rgba(216,209,184,.8)";ctx.fillText(labelShort(n.label,n.type==="competence"?34:25),p.x,p.y+r+13)}}state.anim=requestAnimationFrame(draw)}
+function resize(){const c=$("canvas");c.width=c.clientWidth*devicePixelRatio;c.height=c.clientHeight*devicePixelRatio}
+function hit(x,y){const cands=[];for(const n of state.nodes){if(!state.domains.has(n.domaine)||!visible(n))continue;const p=project(n,$("canvas").clientWidth,$("canvas").clientHeight),r=nodeRadius(n,p);const d=Math.hypot(x-p.x,y-p.y);if(d<r+7)cands.push({n,d,z:p.z})}cands.sort((a,b)=>a.d-b.d||b.z-a.z);return cands[0]?.n||null}
+function openNode(n){if(!n)return;state.selected=n.id;const d=domain(n.domaine);let html=`<span class="tag" style="border-color:${esc(d.couleur)};color:${esc(d.couleur)}">${esc(d.nom)}</span>`;if(n.type==="competence"){const c=comp(n.ref);const seqs=state.sequences.filter(s=>compId(s)===c.id);const prereqs=(c.prerequis_competences||[]).map(p=>typeof p==="string"?p:p.id).map(p=>ALIASES[p]||p).map(p=>comp(p)).filter(Boolean);html+=`<h2>${esc(c.intitule||c.nom||c.id)}</h2><p>${esc(c.objectif||c.description||"")}</p><div><span class="stat"><b>${seqs.length}</b><small>séquence(s)</small></span><span class="stat"><b>${prereqs.length}</b><small>prérequis</small></span></div><h3>Séquences liées</h3>${seqs.length?seqs.map(s=>`<div class="item" data-node="s:${esc(s.id)}">${esc(s.titre)}<small>${esc(s.classe||s.niveau||"")} · ${esc(s.discipline||"")}</small></div>`).join(""):"<p>Aucune séquence chargée pour cette compétence.</p>"}${prereqs.length?`<h3>Prérequis</h3>${prereqs.map(p=>`<div class="item" data-node="c:${esc(p.id)}">${esc(p.intitule||p.nom||p.id)}</div>`).join("")}`:""}`}
+else if(n.type==="sequence"){const s=state.sequences.find(x=>x.id===n.ref),c=comp(compId(s)),seas=state.seances.filter(a=>a.sequence_id===s.id);html+=`<h2>${esc(s.titre||s.id)}</h2><p>${esc(s.objectif||s.objectif_commun||"")}</p><div><span class="stat"><b>${seas.length}</b><small>séance(s)</small></span><span class="stat"><b>${c?"1":"0"}</b><small>compétence</small></span></div>${c?`<h3>Compétence</h3><div class="item" data-node="c:${esc(c.id)}">${esc(c.intitule||c.nom||c.id)}</div>`:""}<h3>Séances</h3>${seas.map(a=>`<div class="seance"><b>Séance ${esc(a.numero??"")} — ${esc(a.titre||"")}</b><small>${esc(a.objectif||a.objectif_commun||a.type||"")}</small></div>`).join("")}`}
+else{const a=state.seances.find(x=>x.id===n.ref),s=state.sequences.find(x=>x.id===a?.sequence_id),c=s?comp(compId(s)):null;html+=`<h2>${esc(a?.titre||n.label)}</h2><p>${esc(a?.objectif||a?.objectif_commun||"")}</p><div class="stat"><b>${esc(a?.numero??"—")}</b><small>séance</small></div>${s?`<h3>Séquence</h3><div class="item" data-node="s:${esc(s.id)}">${esc(s.titre)}</div>`:""}${c?`<h3>Compétence</h3><div class="item" data-node="c:${esc(c.id)}">${esc(c.intitule||c.nom||c.id)}</div>`:""}`}$(`panelContent`).innerHTML=html;$("panel").classList.add("open");$("panelContent").querySelectorAll("[data-node]").forEach(el=>el.onclick=()=>{const x=state.nodes.find(n=>n.id===el.dataset.node);if(x){state.yaw=0;state.pitch=0;state.zoom=1.2;openNode(x)}})}
+$("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null};$("search").oninput=e=>{state.search=e.target.value.trim().toLowerCase()};$("reset").onclick=()=>{state.search="";$("search").value="";state.domains=new Set(state.data.domaines.map(d=>d.id));state.yaw=.25;state.pitch=-.12;state.zoom=1;renderFilters()};
+const scene=$("scene");scene.addEventListener("pointerdown",e=>{state.drag=true;state.lastX=e.clientX;state.lastY=e.clientY;scene.classList.add("dragging");scene.setPointerCapture(e.pointerId)});scene.addEventListener("pointermove",e=>{const r=scene.getBoundingClientRect();state.hover=hit(e.clientX-r.left,e.clientY-r.top)?.id||null;if(state.drag){const dx=e.clientX-state.lastX,dy=e.clientY-state.lastY;state.yaw+=dx*.006;state.pitch=Math.max(-1.2,Math.min(1.2,state.pitch+dy*.005));state.lastX=e.clientX;state.lastY=e.clientY}});scene.addEventListener("pointerup",e=>{state.drag=false;scene.classList.remove("dragging")});scene.addEventListener("pointerleave",()=>state.hover=null);scene.addEventListener("wheel",e=>{e.preventDefault();state.zoom*=e.deltaY>0?.91:1.1;state.zoom=Math.max(.35,Math.min(2.8,state.zoom))},{passive:false});scene.addEventListener("dblclick",()=>{state.yaw=.25;state.pitch=-.12;state.zoom=1});scene.addEventListener("click",e=>{const r=scene.getBoundingClientRect(),n=hit(e.clientX-r.left,e.clientY-r.top);if(n)openNode(n)});window.addEventListener("resize",resize);load();
 </script>
 </body>
 </html>
