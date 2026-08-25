@@ -1,72 +1,640 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="fr">
 <head>
-<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cartographie des compétences — Synapses</title>
 <style>
-:root{--ink:#17232b;--muted:#6d7880;--line:#d9e0e4;--panel:rgba(255,255,255,.91);--gold:#b28a3b;--green:#35a86f;--orange:#e28a2f;--blue:#4c8fca}
-*{box-sizing:border-box}html,body{margin:0;width:100%;height:100%;overflow:hidden;background:#fff;color:var(--ink);font-family:Georgia,"Times New Roman",serif}
-#app{position:fixed;inset:0}canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none}canvas.dragging{cursor:grabbing}
-header{position:absolute;z-index:10;left:24px;top:16px;pointer-events:none}h1{margin:0;font-size:clamp(22px,2.7vw,34px);font-weight:500;letter-spacing:2px}.subtitle{margin-top:5px;color:#59656d;font-size:13px}
-.toolbar{position:absolute;z-index:12;left:24px;right:24px;top:91px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;pointer-events:auto}.group{display:flex;gap:6px;align-items:center;flex-wrap:wrap}.label{font-size:10px;text-transform:uppercase;letter-spacing:1.2px;color:#69757c;font-weight:bold}
-button,input{font:12px Georgia,serif;border:1px solid #d5dde2;background:rgba(255,255,255,.9);color:var(--ink);border-radius:6px;box-shadow:0 2px 8px rgba(30,50,65,.05)}button{padding:7px 10px;cursor:pointer}button.active{background:#f4ead2;border-color:#c9a55a;color:#765817;font-weight:bold}input{width:260px;padding:8px 11px}#status{font-size:11px;color:var(--muted);margin-left:auto}
-.side{position:absolute;z-index:11;width:255px;pointer-events:none}.card{background:var(--panel);border:1px solid rgba(210,218,223,.95);border-radius:9px;box-shadow:0 10px 30px rgba(30,50,65,.09);backdrop-filter:blur(8px);padding:13px 15px;pointer-events:auto}.side h3{font-size:12px;margin:0 0 10px;text-transform:uppercase;letter-spacing:1.2px}.legendrow{display:flex;align-items:center;gap:8px;margin:7px 0;font-size:12px}.dot{width:11px;height:11px;border-radius:50%;display:inline-block;box-shadow:inset 1px 1px 3px #fff,0 1px 4px #999}.line{width:26px;border-top:1.5px solid #88949b;display:inline-block}.dash{border-top-style:dashed;border-top-color:#b28a3b}.smallline{opacity:.55}
-#legend{left:24px;top:175px}#help{left:24px;bottom:70px}.navrow{margin:7px 0;color:#66727a;font-size:11px;line-height:1.35}
-#linksBox{right:24px;bottom:70px;width:185px}.bottom{position:absolute;z-index:12;left:50%;bottom:12px;transform:translateX(-50%);display:flex;gap:8px;align-items:center;padding:7px 10px;background:rgba(255,255,255,.9);border:1px solid #d8e0e4;border-radius:10px;box-shadow:0 8px 24px rgba(30,50,65,.1)}.bottom button{font-size:18px;padding:3px 8px;border:0;box-shadow:none;background:transparent}.bottom input{width:140px;border:0;box-shadow:none}
-#panel{position:absolute;z-index:30;right:24px;top:120px;width:min(350px,calc(100vw - 48px));max-height:calc(100vh - 170px);overflow:auto;transform:translateX(calc(100% + 30px));transition:transform .22s ease}.panelCard{background:rgba(255,255,255,.96);border:1px solid #d4dce1;border-radius:10px;box-shadow:0 18px 50px rgba(25,45,60,.15);padding:17px}.close{float:right;cursor:pointer;color:#8a969e;font-size:18px}.tag{display:inline-block;font:10px Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;padding:5px 7px;border-radius:999px;background:#eef3f6;color:#536672}#panel h2{font-size:20px;line-height:1.2;margin:10px 28px 7px 0;font-weight:600}.meta{font-size:11px;color:#6a757d;margin-bottom:14px}.section{margin:14px 0}.section h4{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#66727a;margin:0 0 7px}.item{border:1px solid #e0e5e8;border-left:3px solid var(--gold);padding:8px 9px;margin:6px 0;border-radius:4px;background:#fbfcfd;font-size:12px;line-height:1.35}.item a{color:#315e88;cursor:pointer}.open{transform:translateX(0)!important}
-#error{display:none;position:absolute;z-index:40;left:50%;top:50%;transform:translate(-50%,-50%);width:min(680px,90vw);padding:20px;background:white;border:1px solid #c9d2d8;border-radius:10px;box-shadow:0 20px 60px rgba(0,0,0,.16)}#error h2{margin:0 0 10px}.errorText{white-space:pre-wrap;font:12px/1.5 Consolas,monospace;color:#7a2e2e}
-@media(max-width:850px){#legend{top:auto;bottom:70px;left:12px}.side{width:220px}.toolbar{left:12px;right:12px;top:78px}header{left:12px}.toolbar input{width:190px}#linksBox{right:12px}.bottom{bottom:7px}}
-@media(max-width:650px){#legend,#linksBox{display:none}#help{left:10px;bottom:58px}.toolbar{top:74px}.toolbar input{width:160px}#panel{right:10px;width:calc(100vw - 20px)}}
+:root{
+  --bg:#f7f7f4;--text:#252b2d;--muted:#687275;--line:#c9ced0;
+  --panel:rgba(255,255,255,.94);--gold:#b18a43;
+  --competence:#4e9b72;--sequence:#c4953d;--seance:#4b9bc2;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--text);font-family:Georgia,"Times New Roman",serif}
+#app{position:fixed;inset:0}
+canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab}
+canvas.dragging{cursor:grabbing}
+header{
+ position:absolute;left:0;right:0;top:0;z-index:10;text-align:center;
+ padding:16px 20px 12px;background:linear-gradient(#fff,rgba(255,255,255,.82),transparent);
+ pointer-events:none
+}
+h1{margin:0;font-size:clamp(20px,3vw,30px);letter-spacing:3px;font-weight:normal;text-transform:uppercase}
+.subtitle{margin-top:5px;color:var(--muted);font-size:12px;letter-spacing:.7px}
+.toolbar{
+ position:absolute;left:10px;right:10px;top:76px;z-index:11;display:flex;gap:7px;
+ align-items:center;flex-wrap:wrap;padding:8px;background:var(--panel);
+ border:1px solid var(--line);box-shadow:0 5px 22px rgba(0,0,0,.07)
+}
+.group{display:flex;gap:5px;align-items:center;flex-wrap:wrap}
+.label{font-size:10px;text-transform:uppercase;letter-spacing:1px;color:var(--muted)}
+button,input{
+ border:1px solid var(--line);background:#fff;color:var(--text);padding:6px 9px;font:12px Georgia,serif
+}
+button{cursor:pointer} button.active{border-color:var(--gold);background:#f5eedf}
+input{width:230px}
+#status{margin-left:auto;color:var(--muted);font-size:11px}
+#legend{
+ position:absolute;left:12px;bottom:12px;z-index:10;padding:11px 13px;background:var(--panel);
+ border:1px solid var(--line);font-size:11px;box-shadow:0 5px 22px rgba(0,0,0,.06)
+}
+.legendrow{display:flex;align-items:center;gap:7px;margin:4px 0}
+.dot{width:10px;height:10px;border-radius:50%;display:inline-block}
+#help{
+ position:absolute;right:12px;bottom:12px;z-index:10;padding:10px 12px;background:var(--panel);
+ border:1px solid var(--line);font-size:11px;color:var(--muted)
+}
+#panel{
+ position:absolute;right:0;top:0;bottom:0;width:min(430px,94vw);z-index:30;padding:22px;
+ background:rgba(255,255,255,.98);border-left:1px solid var(--line);overflow:auto;
+ transform:translateX(105%);transition:.22s ease;box-shadow:-8px 0 30px rgba(0,0,0,.08)
+}
+#panel.open{transform:translateX(0)}
+.close{float:right;cursor:pointer;color:var(--muted);font-size:18px}
+.tag{display:inline-block;border:1px solid var(--gold);padding:3px 7px;color:#876a2e;font-size:10px;text-transform:uppercase;letter-spacing:1px}
+#panel h2{font-size:21px;font-weight:normal;margin:8px 30px 8px 0}
+.meta{color:var(--muted);font-size:11px;margin-bottom:14px}
+.section{margin:16px 0}
+.section h3{font-size:13px;font-weight:normal;border-bottom:1px dashed var(--line);padding-bottom:5px}
+.card{border:1px solid var(--line);border-left:3px solid var(--gold);padding:9px;margin:7px 0;background:#fafaf8}
+.card b{color:#202628}
+a{color:#8a6b2d;cursor:pointer}
+#error{
+ display:none;position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:40;
+ width:min(650px,90vw);padding:22px;background:#fff;border:1px solid #b96f5e;
+ box-shadow:0 20px 70px rgba(0,0,0,.2)
+}
+#error h2{margin:0 0 10px;color:#9c4f40;font-size:18px}
+#error pre{white-space:pre-wrap;font:12px/1.5 Consolas,monospace;color:#444}
+@media(max-width:720px){
+ .toolbar{top:70px}.toolbar input{width:160px}#status{width:100%;margin-left:0}
+ #help{display:none}
+}
 </style>
 </head>
 <body>
-<div id="app"><canvas id="graph" aria-label="Cartographie 3D"></canvas>
-<header><h1>Cartographie des compétences</h1><div class="subtitle" id="subtitle">Chargement…</div></header>
-<div class="toolbar"><div class="group"><span class="label">Niveaux</span><div id="levels"></div></div><div class="group"><span class="label">Domaines</span><div id="domains"></div></div><input id="search" autocomplete="off" placeholder="Rechercher compétence, séquence, séance…"><button id="reset">Réinitialiser</button><span id="status">Chargement…</span></div>
-<div class="side card" id="legend"><h3>Légende</h3><div class="legendrow"><span class="dot" style="background:#35a86f"></span>Compétence</div><div class="legendrow"><span class="dot" style="background:#e28a2f"></span>Séquence</div><div class="legendrow"><span class="dot" style="background:#4c8fca"></span>Séance</div><div class="legendrow"><span class="line dash"></span>Prérequis</div><div class="legendrow"><span class="line"></span>Compétence → séquence</div><div class="legendrow"><span class="line smallline"></span>Séquence → séance</div></div>
-<div class="side card" id="help"><h3>Navigation</h3><div class="navrow">Glisser : tourner la carte 3D</div><div class="navrow">Clic droit + glisser : déplacer la vue</div><div class="navrow">Molette : zoomer</div><div class="navrow">Cliquer : sélectionner un nœud et afficher son nom</div></div>
-<div class="side card" id="linksBox"><h3>Liaisons</h3><div class="navrow"><b id="countSeq">0</b> séquence(s) liée(s)</div><div class="navrow"><b id="countSea">0</b> séance(s) liée(s)</div><div class="navrow"><b id="countPre">0</b> prérequis</div></div>
-<div class="bottom"><button id="home" title="Recentrer">⌂</button><button id="minus">−</button><input id="zoomRange" type="range" min=".35" max="2.8" step=".01" value="1"><button id="plus">+</button></div>
-<aside id="panel"><div class="panelCard"><span class="close" id="close">✕</span><div id="panelContent"></div></div></aside>
-<div id="error"><h2>Impossible de construire la cartographie</h2><div class="errorText" id="errorText"></div></div>
+<div id="app">
+<canvas id="graph"></canvas>
+
+<header>
+  <h1>Cartographie des compétences</h1>
+  <div class="subtitle" id="subtitle">Chargement de l'index pédagogique…</div>
+</header>
+
+<div class="toolbar">
+  <div class="group"><span class="label">Niveaux</span><div id="levels"></div></div>
+  <div class="group"><span class="label">Domaines</span><div id="domains"></div></div>
+  <input id="search" placeholder="Rechercher compétence, séquence, séance…">
+  <button id="reset">Réinitialiser</button>
+  <span id="status">Chargement…</span>
 </div>
+
+<div id="legend">
+  <div class="legendrow"><span class="dot" style="background:#4e9b72"></span>Compétence</div>
+  <div class="legendrow"><span class="dot" style="background:#c4953d"></span>Séquence</div>
+  <div class="legendrow"><span class="dot" style="background:#4b9bc2"></span>Séance</div>
+  <div class="legendrow"><span class="dot" style="border:1px solid #999;background:white"></span>Sphère = niveau scolaire</div>
+</div>
+
+<div id="help">Glisser pour tourner · Molette pour zoomer · Cliquer sur un nœud pour ouvrir sa fiche</div>
+<div id="error"><h2>Impossible de construire la cartographie</h2><pre id="errorText"></pre></div>
+
+<aside id="panel">
+  <span class="close" id="close">✕</span>
+  <div id="panelContent"></div>
+</aside>
+</div>
+
 <script>
 "use strict";
-const ROOT="./Programmation/"; const $=id=>document.getElementById(id);
-const LEVELS_ORDER=["CP","CE1","CE2","CM1","CM2","6e"];
-const SPHERE_R=205, ORBIT_R=610, SEQ_R=255, SEA_R=330;
-const DOMAIN_COLORS={lecture:"#c66b43",ecriture:"#2a8f7f",oral:"#7b61a8",vocabulaire:"#c79b2a",grammaire_orthographe:"#315e88",nombres_calcul_problemes:"#c66b43",nombres_calculs:"#c66b43",grandeurs_mesures:"#2a9ca1",espace_geometrie:"#7b61a8",organisation_donnees:"#c79b2a",enseignement_moral_civique:"#668394"};
-const ALIASES={lecture_code:"lecture_identifier_mots"};
-const state={index:null,competences:[],seqs:[],seas:[],nodes:[],links:[],levels:new Set(),domains:new Set(),search:"",selected:null,hover:null,yaw:.35,pitch:-.12,zoom:1,drag:false,panning:false,lastX:0,lastY:0};
-function esc(v){return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;"}[m]))}
-function levelLabel(v){return ({cp:"CP",ce1:"CE1",ce2:"CE2",cm1:"CM1",cm2:"CM2","6e":"6e"})[String(v??"").toLowerCase()]||String(v??"")}
-function levelCenter(level){let i=LEVELS_ORDER.indexOf(level);if(i<0)return{x:0,y:0,z:0};let a=i/LEVELS_ORDER.length*Math.PI*2;return{x:ORBIT_R*Math.cos(a),y:0,z:ORBIT_R*Math.sin(a)}}
-function getJSON(u){return fetch(u,{cache:"no-cache"}).then(r=>{if(!r.ok)throw Error(`HTTP ${r.status} — ${u}`);return r.json()})}
-function compById(id){return state.competences.find(c=>c.id===id)}
-function resolve(id){if(!id)return null;if(compById(id))return id;return ALIASES[id]&&compById(ALIASES[id])?ALIASES[id]:null}
-function infer(s){let exact=resolve(s.competence_id);if(exact)return exact;let pool=state.competences.filter(c=>String(c.niveau).toLowerCase()===String(s.niveau||s.classe).toLowerCase()&&(!s.domaine_id||c.domaine_id===s.domaine_id));let text=[s.titre,s.competences,s.objectif_commun].join(" ").toLowerCase(),best=null,score=0;for(const c of pool){let words=[c.intitule,...(c.mots_cles||[]),...(c.objectifs||[])].join(" ").toLowerCase().split(/[^a-zàâäéèêëîïôöùûüÿçœæ0-9]+/i).filter(x=>x.length>=4);let sc=[...new Set(words)].reduce((n,w)=>n+(text.includes(w)?1:0),0);if(sc>score){score=sc;best=c.id}}return score>=2?best:null}
-function flatten(index){let seqs=[],seas=[];for(const n of index.niveaux||[])for(const d of n.disciplines||[])for(const dom of d.domaines||[])for(const s of dom.sequences||[]){let x={...s,niveau:n.id,niveau_nom:n.nom,discipline_id:d.id,discipline:d.nom,domaine_id:dom.id,domaine:dom.nom};seqs.push(x);for(const se of s.seances||[])seas.push({...se,niveau:n.id,discipline:d.nom,domaine_id:dom.id,domaine:dom.nom,sequence_id:s.id,sequence_titre:s.titre})}return{seqs,seas}}
-async function enrich(){let done=0;await Promise.all(state.seqs.map(async s=>{if(!s.fichier_sequence)return;try{let raw=await getJSON(ROOT+s.fichier_sequence.replace(/^data\//,"data/"));let obj=Array.isArray(raw?.sequences)?raw.sequences[0]:raw;if(obj)Object.assign(s,obj)}catch(e){}done++;}));}
-function build(){state.nodes=[];state.links=[];let activeLevels=[...state.levels],idx={};activeLevels.forEach((x,i)=>idx[x]=i);
-// Compétences : chaque compétence reste strictement dans la sphère de son niveau.
-for(const c of state.competences){let center=levelCenter(c.niveau),same=state.competences.filter(x=>x.niveau===c.niveau),i=same.indexOf(c);let phi=Math.acos(1-2*(i+.5)/Math.max(1,same.length)),theta=Math.PI*(1+Math.sqrt(5))*i;state.nodes.push({id:"c:"+c.id,type:"competence",ref:c.id,label:c.intitule||c.id,niveau:c.niveau,domaine_id:c.domaine_id,domaine:c.domaine,color:c.couleur||DOMAIN_COLORS[c.domaine_id]||"#35a86f",x:center.x+SPHERE_R*Math.sin(phi)*Math.cos(theta),y:center.y+SPHERE_R*Math.cos(phi),z:center.z+SPHERE_R*Math.sin(phi)*Math.sin(theta)});for(const p of c.prerequis_competences||[]){let pid=resolve(p);if(pid)state.links.push({source:"c:"+pid,target:"c:"+c.id,type:"prerequis"})}}
-// Séquences : le niveau de l'index est souverain. La compétence sert au lien, jamais au changement de sphère.
-for(const s of state.seqs){let compId=resolve(s.competence_id)||infer(s),base=levelCenter(s.niveau),linked=state.nodes.find(n=>n.id==="c:"+compId);let siblings=state.seqs.filter(x=>x.niveau===s.niveau),i=siblings.indexOf(s),a=i/Math.max(1,siblings.length)*Math.PI*2;let anchor=linked&&linked.niveau===s.niveau?linked:base;state.nodes.push({id:"s:"+s.id,type:"sequence",ref:s.id,label:s.titre||s.id,titre:s.titre,niveau:s.niveau,domaine_id:s.domaine_id,domaine:s.domaine,discipline:s.discipline,competenceId:compId,color:"#e28a2f",x:anchor.x+Math.cos(a)*SEQ_R,y:anchor.y+Math.sin(a)*SEQ_R*.58,z:anchor.z+Math.sin(a)*SEQ_R*.42});if(compId)state.links.push({source:"c:"+compId,target:"s:"+s.id,type:"sequence"})}
-// Séances : toujours autour de leur séquence, donc forcément dans la sphère de celle-ci.
-for(const s of state.seas){let seq=state.nodes.find(n=>n.id==="s:"+s.sequence_id),arr=state.seas.filter(x=>x.sequence_id===s.sequence_id),i=arr.indexOf(s),a=i/Math.max(1,arr.length)*Math.PI*2-Math.PI/2,base=seq||levelCenter(s.niveau);state.nodes.push({id:"a:"+s.id,type:"seance",ref:s.id,label:s.titre||s.id,titre:s.titre,numero:s.numero,niveau:s.niveau,domaine_id:s.domaine_id,domaine:s.domaine,discipline:s.discipline,sequenceId:s.sequence_id,color:"#4c8fca",x:base.x+Math.cos(a)*SEA_R,y:base.y+Math.sin(a)*SEA_R*.52,z:base.z+Math.sin(a)*SEA_R*.35});if(s.sequence_id)state.links.push({source:"s:"+s.sequence_id,target:"a:"+s.id,type:"seance"})}
+
+/*
+  SYNAPSES — CARTOGRAPHIE 3D
+  --------------------------
+  CONTRAT D'ARCHITECTURE
+
+  index.json :
+    niveau -> discipline -> domaine -> séquence -> séances
+    = source de vérité pour l'appartenance spatiale.
+
+  competences.json :
+    compétences + niveau + domaine + prérequis
+    = source de vérité pédagogique.
+
+  cartographie-competences.html :
+    = moteur de représentation uniquement.
+
+  AUCUN niveau scolaire n'est codé en dur.
+  Chaque entrée de index.niveaux crée automatiquement UNE SPHÈRE 3D.
+  Une séquence ne peut pas tomber dans l'univers central : elle appartient
+  toujours à la sphère correspondant à son niveau dans index.json.
+*/
+
+const ROOT="./Programmation/";
+const $=id=>document.getElementById(id);
+
+const state={
+ index:null,competences:[],sequences:[],seances:[],
+ levels:new Set(),domains:new Set(),
+ search:"",
+ nodes:[],links:[],selected:null,hover:null,
+ levelSpheres:{},
+ yaw:.28,pitch:-.18,zoom:1,drag:false,lastX:0,lastY:0
+};
+
+const DOMAIN_COLORS={
+ lecture:"#c66b43",ecriture:"#3e9c8c",oral:"#8160a5",vocabulaire:"#c99a27",
+ grammaire_orthographe:"#334c8d",nombres_calcul_problemes:"#c66b43",
+ grandeurs_mesures:"#3e9c8c",espace_geometrie:"#8160a5",
+ organisation_donnees:"#c99a27",enseignement_moral_civique:"#668394"
+};
+
+const COMPETENCE_ALIASES={"lecture_code":"lecture_identifier_mots"};
+
+function esc(v){
+ return String(v??"").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
 }
-function visible(n){if(n.niveau&&!state.levels.has(n.niveau))return false;if(n.domaine_id&&!state.domains.has(n.domaine_id))return false;if(!state.search)return true;return[n.id,n.label,n.type,n.domaine,n.discipline,n.niveau].join(" ").toLowerCase().includes(state.search.toLowerCase())}
-function nodes(){return state.nodes.filter(visible)}function links(){let ids=new Set(nodes().map(n=>n.id));return state.links.filter(l=>ids.has(l.source)&&ids.has(l.target))}
-function rot(n){let cy=Math.cos(state.yaw),sy=Math.sin(state.yaw),cp=Math.cos(state.pitch),sp=Math.sin(state.pitch),x=n.x*cy-n.z*sy,z=n.x*sy+n.z*cy,y=n.y*cp-z*sp,zz=n.y*sp+z*cp;return{x,y,z:zz}}
-function proj(n){let r=rot(n),d=980,sc=d/(d+r.z)*state.zoom;return{x:innerWidth/2+r.x*sc,y:innerHeight/2+65+r.y*sc,z:r.z,scale:sc}}
-function sphere(ctx,level){let r=proj(levelCenter(level)),rad=SPHERE_R*r.scale;ctx.save();let g=ctx.createRadialGradient(r.x-rad*.32,r.y-rad*.4,rad*.05,r.x,r.y,rad*1.02);g.addColorStop(0,"rgba(255,255,255,.96)");g.addColorStop(.48,"rgba(250,252,253,.55)");g.addColorStop(.84,"rgba(220,230,235,.20)");g.addColorStop(1,"rgba(190,205,212,.08)");ctx.fillStyle=g;ctx.shadowColor="rgba(35,55,70,.14)";ctx.shadowBlur=rad*.12;ctx.beginPath();ctx.arc(r.x,r.y,rad,0,Math.PI*2);ctx.fill();ctx.shadowColor="transparent";ctx.strokeStyle="rgba(130,145,155,.35)";ctx.lineWidth=1.2;ctx.stroke();ctx.restore()}
-function draw(){let c=$("graph"),ctx=c.getContext("2d"),dpr=Math.min(devicePixelRatio||1,2);c.width=innerWidth*dpr;c.height=innerHeight*dpr;ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,innerWidth,innerHeight);let bg=ctx.createRadialGradient(innerWidth*.52,innerHeight*.4,20,innerWidth*.52,innerHeight*.5,innerWidth*.85);bg.addColorStop(0,"#ffffff");bg.addColorStop(.7,"#f8fafb");bg.addColorStop(1,"#e9eef1");ctx.fillStyle=bg;ctx.fillRect(0,0,innerWidth,innerHeight);for(const l of [...state.levels].sort((a,b)=>proj(levelCenter(b)).z-proj(levelCenter(a)).z))sphere(ctx,l);let ps=new Map(nodes().map(n=>[n.id,proj(n)]));for(const l of links()){let a=ps.get(l.source),b=ps.get(l.target);if(!a||!b)continue;ctx.save();ctx.strokeStyle=l.type==="prerequis"?"rgba(178,138,59,.65)":l.type==="sequence"?"rgba(60,90,105,.55)":"rgba(76,143,202,.25)";ctx.lineWidth=l.type==="prerequis"?1.3:l.type==="sequence"?1.15:.7;if(l.type==="prerequis")ctx.setLineDash([4,5]);ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore()}for(const n of nodes().sort((a,b)=>ps.get(a.id).z-ps.get(b.id).z)){let p=ps.get(n.id),active=state.selected===n.id||state.hover===n.id,rad=(n.type==="competence"?9:n.type==="sequence"?7:4.2)*p.scale;ctx.save();if(active){ctx.shadowBlur=18;ctx.shadowColor=n.color}let g=ctx.createRadialGradient(p.x-rad*.35,p.y-rad*.45,rad*.1,p.x,p.y,rad);g.addColorStop(0,"#fff");g.addColorStop(.22,n.color);g.addColorStop(1,"#34434b");ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(2,rad),0,Math.PI*2);ctx.fill();ctx.strokeStyle=active?"#fff":n.color;ctx.lineWidth=active?2:1;ctx.stroke();if(active){ctx.shadowBlur=0;ctx.fillStyle="#17232b";ctx.font=(n.type==="competence"?"600 12px":"11px")+" Georgia";ctx.textAlign="center";ctx.fillText(n.label.length>48?n.label.slice(0,47)+"…":n.label,p.x,p.y+rad+16)}ctx.restore()}}
-function hit(x,y){let best=null,dist=1e9;for(const n of nodes()){let p=proj(n),r=Math.max(7,(n.type==="competence"?9:n.type==="sequence"?7:5)*p.scale),d=Math.hypot(x-p.x,y-p.y);if(d<r+7&&d<dist){dist=d;best=n}}return best}
-$("graph").addEventListener("pointerdown",e=>{state.drag=true;state.panning=e.button===2;state.lastX=e.clientX;state.lastY=e.clientY;$("graph").classList.add("dragging")});window.addEventListener("pointerup",e=>{if(!state.drag)return;let dx=Math.abs(e.clientX-state.lastX),dy=Math.abs(e.clientY-state.lastY);state.drag=false;$("graph").classList.remove("dragging");if(dx<4&&dy<4&&!state.panning){let n=hit(e.clientX,e.clientY);if(n)openNode(n)}});window.addEventListener("pointermove",e=>{if(state.drag){if(state.panning){let dx=e.clientX-state.lastX,dy=e.clientY-state.lastY;for(const n of state.nodes){n.x+=dx/state.zoom;n.y+=dy/state.zoom} }else{state.yaw+=(e.clientX-state.lastX)*.007;state.pitch+=(e.clientY-state.lastY)*.005;state.pitch=Math.max(-1.25,Math.min(1.25,state.pitch))}state.lastX=e.clientX;state.lastY=e.clientY}else{let n=hit(e.clientX,e.clientY);state.hover=n?.id||null}});$("graph").addEventListener("contextmenu",e=>e.preventDefault());$("graph").addEventListener("wheel",e=>{e.preventDefault();state.zoom=Math.max(.35,Math.min(2.8,state.zoom*(e.deltaY<0?1.08:.92)));$("zoomRange").value=state.zoom},{passive:false});
-function renderFilters(){let lv=$("levels");lv.innerHTML="";for(const n of state.index.niveaux||[]){let b=document.createElement("button");b.textContent=levelLabel(n.id);b.className=state.levels.has(n.id)?"active":"";b.onclick=()=>{if(state.levels.has(n.id)){if(state.levels.size>1)state.levels.delete(n.id)}else state.levels.add(n.id);renderFilters();update()};lv.appendChild(b)}let ds=$("domains");ds.innerHTML="";let seen=new Set();for(const c of state.competences){if(!c.domaine_id||seen.has(c.domaine_id))continue;seen.add(c.domaine_id);let b=document.createElement("button");b.textContent=c.domaine||c.domaine_id;b.className=state.domains.has(c.domaine_id)?"active":"";b.onclick=()=>{if(state.domains.has(c.domaine_id))state.domains.delete(c.domaine_id);else state.domains.add(c.domaine_id);renderFilters();update()};ds.appendChild(b)}}
-function update(){let ns=nodes();$("subtitle").textContent=`${[...state.levels].map(levelLabel).join(" · ")} · ${ns.filter(n=>n.type==="competence").length} compétences · ${ns.filter(n=>n.type==="sequence").length} séquences · ${ns.filter(n=>n.type==="seance").length} séances`;$("countSeq").textContent=links().filter(l=>l.type==="sequence").length;$("countSea").textContent=links().filter(l=>l.type==="seance").length;$("countPre").textContent=links().filter(l=>l.type==="prerequis").length;$("status").textContent=`${ns.length} nœuds · ${links().length} liens`}
-function openNode(n){state.selected=n.id;let p=$("panelContent");if(n.type==="competence"){let c=compById(n.ref),pre=(c?.prerequis_competences||[]).map(resolve).filter(Boolean),seqs=state.seqs.filter(s=>(resolve(s.competence_id)||infer(s))===n.ref);p.innerHTML=`<span class="tag">${esc(c?.domaine||"Compétence")}</span><h2>${esc(c?.intitule||n.label)}</h2><div class="meta">${esc(levelLabel(c?.niveau||n.niveau))}</div><div class="section"><h4>Objectifs</h4>${(c?.objectifs||[]).map(x=>`<div class="item">${esc(x)}</div>`).join("")||`<div class="item">Aucun objectif.</div>`}</div><div class="section"><h4>Prérequis</h4>${pre.length?pre.map(id=>`<div class="item"><a data-open="c:${id}">${esc(compById(id)?.intitule||id)}</a></div>`).join(""):"<div class='item'>Aucun prérequis.</div>"}</div><div class="section"><h4>Séquences liées</h4>${seqs.length?seqs.map(s=>`<div class="item"><a data-open="s:${esc(s.id)}">${esc(s.titre||s.id)}</a></div>`).join(""):"<div class='item'>Aucune séquence liée.</div>"}</div>`}else if(n.type==="sequence"){let s=state.seqs.find(x=>x.id===n.ref),c=n.competenceId?compById(n.competenceId):null,sessions=state.seas.filter(x=>x.sequence_id===n.ref);p.innerHTML=`<span class="tag">Séquence · ${esc(s?.domaine||"")}</span><h2>${esc(s?.titre||n.label)}</h2><div class="meta">Niveau : ${esc(levelLabel(s?.niveau||n.niveau))}</div><div class="section"><h4>Compétence</h4><div class="item">${c?`<a data-open="c:${esc(c.id)}">${esc(c.intitule)}</a>`:"Non reliée"}</div></div><div class="section"><h4>Séances</h4>${sessions.map(x=>`<div class="item"><b>Séance ${esc(x.numero)}</b> — ${esc(x.titre||x.id)}</div>`).join("")||"<div class='item'>Aucune séance.</div>"}</div>`}else{let s=state.seas.find(x=>x.id===n.ref);p.innerHTML=`<span class="tag">Séance ${esc(s?.numero||"")}</span><h2>${esc(s?.titre||n.label)}</h2><div class="meta">${esc(levelLabel(s?.niveau||n.niveau))} · ${esc(s?.type||"")}</div><div class="section"><h4>Objectif commun</h4><div class="item">${esc(s?.objectif_commun||"Non renseigné")}</div></div>`}$(`panel`).classList.add("open");p.querySelectorAll("[data-open]").forEach(a=>a.onclick=()=>{let x=state.nodes.find(n=>n.id===a.dataset.open);if(x)openNode(x)})}
-$("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null};$("search").oninput=e=>{state.search=e.target.value.trim();update()};$("reset").onclick=()=>{state.search="";$("search").value="";state.levels=new Set((state.index.niveaux||[]).map(n=>n.id));state.domains=new Set(state.competences.map(c=>c.domaine_id).filter(Boolean));build();renderFilters();update()};$("zoomRange").oninput=e=>state.zoom=+e.target.value;$("minus").onclick=()=>{state.zoom=Math.max(.35,state.zoom*.88);$("zoomRange").value=state.zoom};$("plus").onclick=()=>{state.zoom=Math.min(2.8,state.zoom*1.12);$("zoomRange").value=state.zoom};$("home").onclick=()=>{state.yaw=.35;state.pitch=-.12;state.zoom=1;$("zoomRange").value=1};
-async function load(){try{state.index=await getJSON(ROOT+"data/index.json");let raw=await getJSON(ROOT+(state.index.meta?.competences||"data/competences.json"));state.competences=Array.isArray(raw)?raw:(raw.competences||[]);let flat=flatten(state.index);state.seqs=flat.seqs;state.seas=flat.seas;state.levels=new Set((state.index.niveaux||[]).map(n=>n.id));state.domains=new Set(state.competences.map(c=>c.domaine_id).filter(Boolean));await enrich();build();renderFilters();update();$("status").textContent="Cartographie prête"}catch(e){$("error").style.display="block";$("errorText").textContent=e.stack||String(e)}}
-function frame(){draw();requestAnimationFrame(frame)}load();frame();
-</script></body></html>
+function niveauLabel(v){
+ const s=String(v??"").trim();
+ const m={cp:"CP",ce1:"CE1",ce2:"CE2",cm1:"CM1",cm2:"CM2",sixeme:"6e","6e":"6e"};
+ return m[s.toLowerCase()]||s;
+}
+function normalizePath(p){return String(p||"").replace(/^\.?\//,"")}
+function dataUrl(relative){return ROOT+normalizePath(relative)}
+async function getJSON(url){
+ const r=await fetch(url,{cache:"no-cache"});
+ if(!r.ok)throw new Error(`HTTP ${r.status} — ${url}`);
+ return await r.json();
+}
+function setStatus(t){$("status").textContent=t}
+function showError(e){
+ console.error(e);$("error").style.display="block";
+ $("errorText").textContent=(e&&e.stack)||String(e);setStatus("Erreur de chargement");
+}
+
+function competenceById(id){return state.competences.find(c=>c.id===id)}
+function resolveCompetenceId(rawId){
+ if(!rawId)return null;
+ if(competenceById(rawId))return rawId;
+ const alias=COMPETENCE_ALIASES[rawId];
+ if(alias&&competenceById(alias))return alias;
+ return null;
+}
+function inferCompetence(sequence){
+ const exact=resolveCompetenceId(sequence.competence_id);
+ if(exact)return exact;
+
+ const level=String(sequence.niveau||sequence.classe||"").toLowerCase();
+ const pool=state.competences.filter(c=>{
+   const cn=String(c.niveau||"").toLowerCase();
+   if(cn!==level)return false;
+   if(!sequence.domaine)return true;
+   return String(c.domaine||"").toLowerCase().includes(
+     String(sequence.domaine).split("-").pop().trim().toLowerCase()
+   );
+ });
+ const text=[sequence.titre,sequence.competences,sequence.objectif_commun,
+   ...(sequence.prerequis_competences||[])].join(" ").toLowerCase();
+ let best=null,score=0;
+ for(const c of pool){
+   const words=[c.intitule,...(c.mots_cles||[]),...(c.objectifs||[])]
+    .join(" ").toLowerCase().split(/[^a-zàâäéèêëîïôöùûüÿçœæ0-9]+/i)
+    .filter(w=>w.length>=4);
+   let s=0;
+   for(const w of [...new Set(words)])if(text.includes(w))s++;
+   if(s>score){score=s;best=c.id}
+ }
+ return score>=2?best:null;
+}
+
+function flattenIndex(index){
+ const seqs=[],seas=[];
+ for(const niveau of (index.niveaux||[])){
+   for(const discipline of (niveau.disciplines||[])){
+     for(const domaine of (discipline.domaines||[])){
+       for(const s of (domaine.sequences||[])){
+         seqs.push({...s,niveau:niveau.id,niveau_nom:niveau.nom,
+           discipline_id:discipline.id,discipline:discipline.nom,
+           domaine_id:domaine.id,domaine:domaine.nom,
+           _indexPath:s.fichier_sequence||s.fichier||null});
+         for(const se of (s.seances||[])){
+           seas.push({...se,niveau:niveau.id,discipline:discipline.nom,
+             domaine_id:domaine.id,domaine:domaine.nom,
+             sequence_id:s.id,sequence_titre:s.titre,
+             _indexPath:se.fichier||null});
+         }
+       }
+     }
+   }
+ }
+ return {seqs,seas};
+}
+
+async function enrichSequences(seqs){
+ let count=0;
+ await Promise.all(seqs.map(async s=>{
+   if(s._indexPath){
+     try{
+       const raw=await getJSON(dataUrl(s._indexPath));
+       const obj=Array.isArray(raw?.sequences)?raw.sequences[0]:raw;
+       if(obj&&typeof obj==="object")Object.assign(s,obj);
+     }catch(e){console.warn("Séquence non chargée :",s.id,e)}
+   }
+   setStatus(`Lecture des séquences… ${++count}/${seqs.length}`);
+ }));
+}
+async function enrichSessions(seas){
+ await Promise.all(seas.map(async s=>{
+   if(s._indexPath){
+     try{
+       const raw=await getJSON(dataUrl(s._indexPath));
+       if(raw&&typeof raw==="object")Object.assign(s,raw);
+     }catch(e){console.warn("Séance non chargée :",s.id,e)}
+   }
+ }));
+}
+
+async function load(){
+ try{
+   setStatus("Lecture de l'index…");
+   state.index=await getJSON(ROOT+"data/index.json");
+
+   const compPath=state.index?.meta?.competences||"data/competences.json";
+   setStatus("Lecture du référentiel…");
+   const compRaw=await getJSON(dataUrl(compPath));
+   state.competences=Array.isArray(compRaw)?compRaw:(compRaw.competences||[]);
+
+   const flat=flattenIndex(state.index);
+   state.sequences=flat.seqs;state.seances=flat.seas;
+   state.levels=new Set((state.index.niveaux||[]).map(n=>String(n.id)));
+   state.domains=new Set(state.competences.map(c=>c.domaine_id).filter(Boolean));
+
+   await enrichSequences(state.sequences);
+   await enrichSessions(state.seances);
+
+   buildNodes();renderFilters();updateSubtitle();
+   setStatus(`${state.nodes.length} nœuds · ${state.links.length} relations · ${Object.keys(state.levelSpheres).length} sphères`);
+ }catch(e){showError(e)}
+}
+
+function buildNodes(){
+ state.nodes=[];state.links=[];state.levelSpheres={};
+
+ const levels=[...(state.index?.niveaux||[])];
+ const count=Math.max(1,levels.length);
+ const separation=Math.max(390,Math.min(560,1700/count));
+ const sphereRadius=Math.max(250,Math.min(315,separation*.62));
+
+ /*
+   Chaque niveau devient un objet spatial.
+   Aucun "fond" : la sphère est la référence géométrique de tous ses nœuds.
+ */
+ levels.forEach((level,i)=>{
+   const a=(i/count)*Math.PI*2-Math.PI/2;
+   state.levelSpheres[String(level.id)]={
+     id:String(level.id),
+     label:level.nom||niveauLabel(level.id),
+     x:Math.cos(a)*separation,
+     y:0,
+     z:Math.sin(a)*separation,
+     radius:sphereRadius
+   };
+ });
+
+ const sphereFor=(id)=>state.levelSpheres[String(id)]||null;
+ const normalizeLevel=(value)=>{
+   const wanted=String(value||"");
+   if(sphereFor(wanted))return wanted;
+   const found=levels.find(l=>String(l.id).toLowerCase()===wanted.toLowerCase());
+   return found?String(found.id):(levels[0]?String(levels[0].id):"");
+ };
+
+ // Compétences
+ for(const c of state.competences){
+   const niveau=normalizeLevel(c.niveau);
+   state.nodes.push({
+     id:"c:"+c.id,type:"competence",ref:c.id,
+     label:c.intitule||c.nom||c.id,niveau,
+     domaine_id:c.domaine_id,domaine:c.domaine,
+     color:c.couleur||DOMAIN_COLORS[c.domaine_id]||"#4e9b72"
+   });
+ }
+
+ // Séquences : niveau IMPÉRATIVEMENT hérité de index.json.
+ for(const s of state.sequences){
+   const niveau=normalizeLevel(s.niveau||s.classe);
+   const compId=resolveCompetenceId(s.competence_id)||inferCompetence(s);
+   const sid="s:"+s.id;
+   state.nodes.push({
+     id:sid,type:"sequence",ref:s.id,label:s.titre||s.id,titre:s.titre,
+     niveau,classe:s.classe||niveau,domaine_id:s.domaine_id,domaine:s.domaine,
+     discipline:s.discipline,competenceId:compId,color:"#c4953d"
+   });
+   if(compId)state.links.push({source:"c:"+compId,target:sid,type:"sequence"});
+ }
+
+ // Séances : niveau hérité de la séquence.
+ for(const s of state.seances){
+   const parent=state.sequences.find(x=>x.id===s.sequence_id);
+   const niveau=parent?.niveau||normalizeLevel(s.niveau||s.classe);
+   const sid="a:"+s.id;
+   state.nodes.push({
+     id:sid,type:"seance",ref:s.id,label:s.titre||s.id,titre:s.titre,
+     numero:s.numero,niveau,domaine_id:s.domaine_id,domaine:s.domaine,
+     discipline:s.discipline,sequenceId:s.sequence_id,color:"#4b9bc2"
+   });
+   if(s.sequence_id)state.links.push({source:"s:"+s.sequence_id,target:sid,type:"seance"});
+ }
+
+ // Placement déterministe dans chaque sphère.
+ const place=(node,index,total,ratio,phase)=>{
+   const sp=sphereFor(node.niveau);if(!sp)return;
+   const golden=Math.PI*(3-Math.sqrt(5));
+   const t=(index+.5)/Math.max(1,total);
+   const r=Math.sqrt(t)*sp.radius*ratio;
+   const a=index*golden+phase;
+   node.x=sp.x+Math.cos(a)*r;
+   node.y=sp.y+Math.sin(a*1.31)*r*.64;
+   node.z=sp.z+Math.sin(a)*r;
+ };
+
+ for(const level of levels){
+   const id=String(level.id),sp=sphereFor(id);
+   const comps=state.nodes.filter(n=>n.type==="competence"&&n.niveau===id);
+   const seqs=state.nodes.filter(n=>n.type==="sequence"&&n.niveau===id);
+   comps.forEach((n,i)=>place(n,i,comps.length,.54,0));
+   seqs.forEach((n,i)=>place(n,i,seqs.length,.70,1.4));
+
+   // Les séances orbitent autour de leur séquence, avec contrainte sphérique.
+   const seas=state.nodes.filter(n=>n.type==="seance"&&n.niveau===id);
+   seas.forEach(n=>{
+     const parent=state.nodes.find(x=>x.type==="sequence"&&x.ref===n.sequenceId);
+     const arr=seas.filter(x=>x.sequenceId===n.sequenceId);
+     const i=Math.max(0,arr.indexOf(n));
+     const a=i/Math.max(1,arr.length)*Math.PI*2;
+     const orbit=Math.min(62,sp.radius*.18);
+     n.x=(parent?.x??sp.x)+Math.cos(a)*orbit;
+     n.y=(parent?.y??sp.y)+Math.sin(a)*orbit*.72;
+     n.z=(parent?.z??sp.z)+Math.sin(a)*orbit*.65;
+
+     const dx=n.x-sp.x,dy=n.y-sp.y,dz=n.z-sp.z,d=Math.hypot(dx,dy,dz);
+     const max=sp.radius*.88;
+     if(d>max){const k=max/d;n.x=sp.x+dx*k;n.y=sp.y+dy*k;n.z=sp.z+dz*k}
+   });
+ }
+}
+
+/* ---------- PROJECTION 3D ---------- */
+function rotate(n){
+ const cy=Math.cos(state.yaw),sy=Math.sin(state.yaw);
+ const cp=Math.cos(state.pitch),sp=Math.sin(state.pitch);
+ const x=n.x*cy-n.z*sy;
+ const z=n.x*sy+n.z*cy;
+ const y=n.y*cp-z*sp;
+ const zz=n.y*sp+z*cp;
+ return {x,y,z:zz};
+}
+function project(n){
+ const r=rotate(n),d=1500;
+ const scale=(d/(d+r.z))*state.zoom;
+ return {x:innerWidth/2+r.x*scale,y:innerHeight/2+r.y*scale,z:r.z,scale};
+}
+function visibleNodes(){
+ return state.nodes.filter(n=>{
+   if(n.niveau&&!state.levels.has(n.niveau))return false;
+   if(n.domaine_id&&!state.domains.has(n.domaine_id))return false;
+   if(!state.search)return true;
+   const q=state.search.toLowerCase();
+   return [n.id,n.label,n.type,n.domaine,n.discipline,n.niveau,n.titre,n.description]
+     .join(" ").toLowerCase().includes(q);
+ });
+}
+function visibleLinks(){
+ const ids=new Set(visibleNodes().map(n=>n.id));
+ return state.links.filter(l=>ids.has(l.source)&&ids.has(l.target));
+}
+
+/*
+  Dessin des vraies sphères de niveau.
+  Elles sont centrées sur leurs coordonnées 3D et suivent les rotations/zoom.
+  Les méridiens et parallèles donnent une surface sphérique lisible.
+*/
+function drawLevelSpheres(ctx){
+ const spheres=Object.values(state.levelSpheres);
+ for(const sp of spheres){
+   const c=project(sp);
+   const e=project({x:sp.x+sp.radius,y:sp.y,z:sp.z});
+   const r=Math.max(25,Math.abs(e.x-c.x));
+   const depth=c.z;
+
+   ctx.save();
+   ctx.globalAlpha=Math.max(.18,Math.min(.62,.50-depth/2400));
+   ctx.strokeStyle="#8f999b";
+   ctx.lineWidth=1;
+
+   // contour
+   ctx.beginPath();ctx.arc(c.x,c.y,r,0,Math.PI*2);ctx.stroke();
+
+   // latitudes
+   for(let j=-3;j<=3;j++){
+     const lat=j/4;
+     const yy=c.y+lat*r*.92;
+     const rx=r*Math.sqrt(Math.max(.02,1-lat*lat));
+     ctx.beginPath();ctx.ellipse(c.x,yy,rx,Math.max(2,r*.045),0,0,Math.PI*2);ctx.stroke();
+   }
+
+   // méridiens
+   for(let j=0;j<6;j++){
+     const k=(j/6)*Math.PI;
+     const rx=Math.max(2,Math.abs(Math.cos(k))*r);
+     ctx.beginPath();ctx.ellipse(c.x,c.y,rx,r,0,0,Math.PI*2);ctx.stroke();
+   }
+
+   ctx.globalAlpha=.95;
+   ctx.fillStyle="#3e4648";
+   ctx.font="bold 16px Georgia";
+   ctx.textAlign="center";
+   ctx.fillText(niveauLabel(sp.label||sp.id),c.x,c.y-r-12);
+   ctx.restore();
+ }
+}
+
+function draw(){
+ const c=$("graph"),ctx=c.getContext("2d");
+ c.width=innerWidth*devicePixelRatio;c.height=innerHeight*devicePixelRatio;
+ ctx.setTransform(devicePixelRatio,0,0,devicePixelRatio,0,0);
+ ctx.clearRect(0,0,innerWidth,innerHeight);
+ ctx.fillStyle="#f7f7f4";ctx.fillRect(0,0,innerWidth,innerHeight);
+
+ drawLevelSpheres(ctx);
+
+ const ps=new Map();
+ for(const n of visibleNodes())ps.set(n.id,project(n));
+
+ // Relations
+ for(const l of visibleLinks()){
+   const a=ps.get(l.source),b=ps.get(l.target);if(!a||!b)continue;
+   ctx.save();
+   ctx.strokeStyle=l.type==="sequence"?"rgba(196,149,61,.72)":"rgba(75,155,194,.55)";
+   ctx.lineWidth=1;
+   ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();
+   ctx.restore();
+ }
+
+ // Nœuds : noms uniquement sur activation / survol.
+ const sorted=visibleNodes().slice().sort((a,b)=>ps.get(a.id).z-ps.get(b.id).z);
+ for(const n of sorted){
+   const p=ps.get(n.id),selected=state.selected===n.id,hovered=state.hover===n.id;
+   const base=n.type==="competence"?11:n.type==="sequence"?8:4.8;
+   const r=base*p.scale*(selected?1.35:1);
+   ctx.save();
+   if(selected||hovered){ctx.shadowBlur=18;ctx.shadowColor=n.color}
+   const g=ctx.createRadialGradient(p.x-r*.4,p.y-r*.5,r*.1,p.x,p.y,r);
+   g.addColorStop(0,"#fff");g.addColorStop(.25,n.color);g.addColorStop(1,"#263033");
+   ctx.fillStyle=g;ctx.beginPath();ctx.arc(p.x,p.y,Math.max(2,r),0,Math.PI*2);ctx.fill();
+   ctx.strokeStyle=selected?"#222":n.color;ctx.lineWidth=selected?2:1;ctx.stroke();
+
+   if(selected||hovered){
+     ctx.shadowBlur=0;ctx.fillStyle="#252b2d";
+     ctx.font=(n.type==="competence"?"12px":"10px")+" Georgia";
+     ctx.textAlign="center";
+     const label=n.label.length>42?n.label.slice(0,41)+"…":n.label;
+     ctx.fillText(label,p.x,p.y+r+14);
+   }
+   ctx.restore();
+ }
+}
+
+function hit(x,y){
+ let best=null,dist=Infinity;
+ for(const n of visibleNodes()){
+   const p=project(n),r=Math.max(7,(n.type==="competence"?11:n.type==="sequence"?8:5)*p.scale);
+   const d=Math.hypot(x-p.x,y-p.y);
+   if(d<r+7&&d<dist){dist=d;best=n}
+ }
+ return best;
+}
+
+$("graph").addEventListener("pointerdown",e=>{
+ state.drag=true;state.lastX=e.clientX;state.lastY=e.clientY;
+ $("graph").classList.add("dragging");
+});
+window.addEventListener("pointerup",e=>{
+ if(!state.drag)return;
+ const dx=Math.abs(e.clientX-state.lastX),dy=Math.abs(e.clientY-state.lastY);
+ state.drag=false;$("graph").classList.remove("dragging");
+ if(dx<4&&dy<4){const n=hit(e.clientX,e.clientY);if(n)openNode(n)}
+});
+window.addEventListener("pointermove",e=>{
+ if(state.drag){
+   state.yaw+=(e.clientX-state.lastX)*.008;
+   state.pitch+=(e.clientY-state.lastY)*.006;
+   state.pitch=Math.max(-1.25,Math.min(1.25,state.pitch));
+   state.lastX=e.clientX;state.lastY=e.clientY;
+ }else state.hover=hit(e.clientX,e.clientY)?.id||null;
+});
+$("graph").addEventListener("wheel",e=>{
+ e.preventDefault();state.zoom*=e.deltaY<0?1.08:.92;
+ state.zoom=Math.max(.35,Math.min(3.5,state.zoom));
+},{passive:false});
+
+function renderFilters(){
+ $("levels").innerHTML="";
+ for(const l of (state.index?.niveaux||[])){
+   const b=document.createElement("button");b.textContent=niveauLabel(l.id);
+   b.className=state.levels.has(String(l.id))?"active":"";
+   b.onclick=()=>{
+     const id=String(l.id);
+     if(state.levels.has(id)){if(state.levels.size>1)state.levels.delete(id)}
+     else state.levels.add(id);
+     renderFilters();updateSubtitle();
+   };
+   $("levels").appendChild(b);
+ }
+ $("domains").innerHTML="";
+ const seen=new Set();
+ for(const c of state.competences){
+   if(!c.domaine_id||seen.has(c.domaine_id))continue;
+   seen.add(c.domaine_id);
+   const b=document.createElement("button");b.textContent=c.domaine||c.domaine_id;
+   b.className=state.domains.has(c.domaine_id)?"active":"";
+   b.onclick=()=>{
+     if(state.domains.has(c.domaine_id))state.domains.delete(c.domaine_id);
+     else state.domains.add(c.domaine_id);
+     renderFilters();updateSubtitle();
+   };
+   $("domains").appendChild(b);
+ }
+}
+function updateSubtitle(){
+ const n=visibleNodes();
+ $("subtitle").textContent=
+   `${[...state.levels].map(niveauLabel).join(" · ")} · `+
+   `${n.filter(x=>x.type==="competence").length} compétences · `+
+   `${n.filter(x=>x.type==="sequence").length} séquences · `+
+   `${n.filter(x=>x.type==="seance").length} séances`;
+}
+$("search").addEventListener("input",e=>{state.search=e.target.value.trim();updateSubtitle()});
+$("reset").onclick=()=>{
+ state.search="";$("search").value="";
+ state.levels=new Set((state.index?.niveaux||[]).map(n=>String(n.id)));
+ state.domains=new Set(state.competences.map(c=>c.domaine_id).filter(Boolean));
+ renderFilters();updateSubtitle();
+};
+
+function openNode(n){
+ state.selected=n.id;
+ const p=$("panelContent");
+
+ if(n.type==="competence"){
+   const c=competenceById(n.ref);
+   const seqs=state.sequences.filter(s=>
+     (resolveCompetenceId(s.competence_id)||inferCompetence(s))===n.ref);
+   p.innerHTML=`
+    <span class="tag">${esc(c?.domaine||n.domaine||"Compétence")}</span>
+    <h2>${esc(c?.intitule||n.label)}</h2>
+    <div class="meta">Niveau : ${esc(niveauLabel(c?.niveau||n.niveau))}</div>
+    <div class="section"><h3>Objectifs</h3>
+      ${(c?.objectifs||[]).map(x=>`<div class="card">${esc(x)}</div>`).join("")||
+      "<div class=\"card\">Aucun objectif renseigné.</div>"}</div>
+    <div class="section"><h3>Séquences rattachées</h3>
+      ${seqs.map(s=>`<div class="card"><a data-open="s:${esc(s.id)}">${esc(s.titre||s.id)}</a></div>`).join("")||
+      "<div class=\"card\">Aucune séquence reliée.</div>"}</div>`;
+ }else if(n.type==="sequence"){
+   const s=state.sequences.find(x=>x.id===n.ref);
+   const linked=n.competenceId?competenceById(n.competenceId):null;
+   const sessions=state.seances.filter(x=>x.sequence_id===n.ref);
+   p.innerHTML=`
+    <span class="tag">${esc(s?.domaine||n.domaine||"Séquence")}</span>
+    <h2>${esc(s?.titre||n.label)}</h2>
+    <div class="meta">Niveau : ${esc(niveauLabel(s?.niveau||s?.classe||n.niveau))} · Période ${esc(s?.periode??"—")}</div>
+    <div class="section"><h3>Compétence</h3>
+      <div class="card">${linked?`<a data-open="c:${esc(linked.id)}">${esc(linked.intitule)}</a>`:"Aucune compétence reliée"}</div>
+    </div>
+    <div class="section"><h3>Séances</h3>
+      ${sessions.map(x=>`<div class="card"><b>Séance ${esc(x.numero)}</b> — ${esc(x.titre||x.id)}</div>`).join("")||
+      "<div class=\"card\">Aucune séance.</div>"}</div>`;
+ }else{
+   const s=state.seances.find(x=>x.id===n.ref);
+   p.innerHTML=`
+    <span class="tag">Séance ${esc(s?.numero||n.numero||"")}</span>
+    <h2>${esc(s?.titre||n.label)}</h2>
+    <div class="meta">${esc(niveauLabel(s?.classe||s?.niveau||n.niveau))} · ${esc(s?.type||"")}</div>
+    <div class="section"><h3>Compétence ciblée</h3>
+      <div class="card">${esc(s?.competence_cible||"Non renseignée")}</div></div>
+    <div class="section"><h3>Objectif commun</h3>
+      <div class="card">${esc(s?.objectif_commun||"Non renseigné")}</div></div>`;
+ }
+ $("panel").classList.add("open");
+ p.querySelectorAll("[data-open]").forEach(a=>{
+   a.onclick=()=>{const x=state.nodes.find(n=>n.id===a.dataset.open);if(x)openNode(x)}
+ });
+}
+$("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null};
+window.addEventListener("resize",draw);
+
+load().then(()=>draw());
+</script>
+</body>
+</html>
