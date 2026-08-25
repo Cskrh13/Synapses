@@ -3,616 +3,291 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Séquences &amp; séances — Programmation de français</title>
+<title>Séquences &amp; séances — Programmation annuelle</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,700&family=IBM+Plex+Mono:wght@400;500;600&family=Source+Sans+3:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
-  :root{
-    --paper: #EDE9E0;
-    --paper-raised: #F4F1E9;
-    --ink: #1F2A24;
-    --ink-soft: #4B5750;
-    --tableau: #2B4536;
-    --tableau-light: #3E5B48;
-    --craie: #F4F1E8;
-    --stylo: #B23A2F;
-    --stylo-soft: #E8D9CF;
-    --ligne: #C9C2B2;
-    --ligne-forte: #ADA48F;
-    --dom-lecture: #2B4536;
-    --dom-ecriture: #5C6B2E;
-    --dom-oral: #7A4A2B;
-    --radius: 3px;
-    --shadow: 0 1px 0 rgba(31,42,36,0.06), 0 6px 16px -10px rgba(31,42,36,0.25);
-  }
+:root{
+  --navy:#1E2A4A;
+  --navy-deep:#141d33;
+  --bg:#F6F5F1;
+  --panel:#FFFFFF;
+  --line:#DEDBD2;
+  --ink:#20242E;
+  --ink-soft:#5B5F6B;
+  --accent-sky:#2E5EAA;
+  --ring:#2E5EAA;
+  --lecture:#B5502E;
+  --ecriture:#2A7F72;
+  --oral:#6B4E8E;
+  --vocabulaire:#B5871E;
+  --grammaire:#1E2A4A;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  margin:0;
+  letter-spacing:-0.01em;
+}
+a{color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--accent-sky);
+  font-weight:500;
+}
+:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
 
-  *{box-sizing:border-box;}
-  html{-webkit-font-smoothing:antialiased;}
-  body{
-    margin:0;
-    background:
-      repeating-linear-gradient(to bottom, transparent, transparent 31px, rgba(173,164,143,0.35) 32px),
-      var(--paper);
-    color:var(--ink);
-    font-family:'Source Sans 3', sans-serif;
-    font-size:16px;
-    line-height:1.5;
-  }
+/* ===== Skip link ===== */
+.skip-link{
+  position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;z-index:999;border-radius:0 0 8px 0;
+}
+.skip-link:focus{left:0;}
 
-  a{color:inherit;}
+/* ===== Header ===== */
+header.site-header{
+  background:var(--navy);
+  color:#fff;
+  position:sticky;top:0;z-index:50;
+  border-bottom:3px solid var(--accent-sky);
+}
+.header-top{
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1240px;margin:0 auto;padding:14px 24px;
+  gap:20px;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.brand-mark{
+  width:40px;height:40px;border-radius:8px;
+  background:linear-gradient(160deg,var(--accent-sky),#5486d6);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:#fff;
+  flex-shrink:0;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
+.brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;}
+nav.main-nav a{
+  color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;
+  padding:8px 12px;border-radius:6px;transition:background .15s;
+}
+nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
+nav.main-nav a.nav-programmation{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);
+  margin-left:4px;color:#fff;
+}
+nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
 
-  ::selection{background:var(--stylo-soft);}
+@media (max-width:720px){
+  .header-top{flex-wrap:wrap;}
+  nav.main-nav{order:3;width:100%;justify-content:flex-start;overflow-x:auto;}
+}
 
-  @media (prefers-reduced-motion: reduce){
-    *{animation-duration:0.001ms !important; transition-duration:0.001ms !important;}
-  }
+/* ===== Page shell ===== */
+.cp-shell{max-width:980px;margin:0 auto;padding:40px 24px 80px;}
+.cp-back{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--accent-sky);
+  background:none;border:none;padding:0;margin-bottom:18px;text-decoration:none;
+}
+.cp-back:hover{text-decoration:underline;}
+.cp-head{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:30px;}
+.cp-head h1{font-size:clamp(24px,3.4vw,34px);color:var(--navy);line-height:1.25;margin-top:10px;}
+.cp-head .sub{font-size:14px;color:var(--ink-soft);margin-top:12px;max-width:64ch;}
+.drawer-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:14px;}
+.badge{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:20px;
+  background:color-mix(in srgb, var(--dcolor) 14%, white);color:var(--dcolor);white-space:nowrap;
+  border:none;cursor:pointer;
+}
+.badge.niveau{background:#EEECE3;color:var(--ink-soft);}
+.badge[aria-pressed="true"]{outline:2px solid var(--dcolor);}
 
-  /* ---------- Header ---------- */
-  header.top{
-    padding:28px clamp(16px,4vw,56px) 22px;
-    border-bottom:2px solid var(--ink);
-    display:flex;
-    align-items:flex-end;
-    justify-content:space-between;
-    gap:24px;
-    flex-wrap:wrap;
-  }
-  .eyebrow{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    letter-spacing:0.14em;
-    text-transform:uppercase;
-    color:var(--tableau);
-    margin:0 0 6px;
-  }
-  h1{
-    font-family:'Fraunces', serif;
-    font-weight:600;
-    font-size:clamp(28px, 4vw, 42px);
-    margin:0;
-    letter-spacing:-0.01em;
-  }
-  header.top p.sub{
-    margin:8px 0 0;
-    max-width:46ch;
-    color:var(--ink-soft);
-    font-size:14.5px;
-  }
-  .back-link{
-    display:inline-block;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11.5px;
-    color:var(--ink-soft);
-    text-decoration:none;
-    margin-bottom:10px;
-    border-bottom:1px solid transparent;
-  }
-  .back-link:hover{color:var(--ink); border-bottom-color:var(--ink-soft);}
-  .incoming-banner{
-    margin:0 clamp(16px,4vw,56px);
-    padding:10px 14px;
-    background:var(--stylo-soft);
-    border:1px solid var(--stylo);
-    border-radius:var(--radius);
-    font-size:13px;
-    color:var(--ink);
-    display:flex;
-    align-items:center;
-    justify-content:space-between;
-    gap:10px;
-  }
-  .incoming-banner button{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    background:none; border:none; color:var(--ink-soft); cursor:pointer;
-    text-decoration:underline;
-  }
-  .header-actions{
-    display:flex;
-    gap:10px;
-  }
-  .btn{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12.5px;
-    letter-spacing:0.03em;
-    border:1.5px solid var(--ink);
-    background:transparent;
-    color:var(--ink);
-    padding:10px 16px;
-    border-radius:var(--radius);
-    cursor:pointer;
-    text-decoration:none;
-    display:inline-flex;
-    align-items:center;
-    gap:8px;
-    transition:transform .15s ease, background .15s ease;
-  }
-  .btn:hover{transform:translateY(-1px);}
-  .btn.primary{
-    background:var(--stylo);
-    border-color:var(--stylo);
-    color:var(--craie);
-  }
-  .btn.primary:hover{background:#9C3126;}
-  .btn:focus-visible, button:focus-visible, [tabindex]:focus-visible{
-    outline:2.5px solid var(--stylo);
-    outline-offset:2px;
-  }
+.cp-block{margin-bottom:34px;}
+.cp-block h5{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-sky);margin-bottom:12px;
+}
 
-  /* ---------- Filtres compétences ---------- */
-  .competences-bar{
-    padding:18px clamp(16px,4vw,56px);
-    display:flex;
-    gap:10px;
-    flex-wrap:wrap;
-    align-items:center;
-    border-bottom:1px solid var(--ligne);
-  }
-  .competences-bar .label{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.1em;
-    color:var(--ink-soft);
-    margin-right:4px;
-  }
-  .chip{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:12.5px;
-    padding:7px 12px 6px;
-    border-radius:999px;
-    border:1px solid var(--ligne-forte);
-    background:var(--paper-raised);
-    cursor:pointer;
-    display:inline-flex;
-    align-items:center;
-    gap:7px;
-    color:var(--ink);
-    transition:background .15s ease, color .15s ease, border-color .15s ease;
-  }
-  .chip .dot{width:8px;height:8px;border-radius:50%;flex:none;}
-  .chip[aria-pressed="true"]{
-    background:var(--ink);
-    border-color:var(--ink);
-    color:var(--craie);
-  }
-  .chip:hover{border-color:var(--ink);}
+/* ===== Planner panel ===== */
+.planner-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px;}
+.planner-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+.planner-head h4{font-size:16px;color:var(--navy);}
+.planner-sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:20px;}
+.period-row{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;margin-bottom:6px;}
+.period-label{
+  grid-column:span var(--span);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
+  text-align:center;padding-bottom:4px;border-bottom:2px solid var(--line);
+}
+.week-grid{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;margin-bottom:22px;}
+.week-cell{
+  aspect-ratio:1/1.15;background:#EEECE3;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--ink-soft);position:relative;cursor:pointer;border:1px solid transparent;
+}
+.week-cell:hover{border-color:var(--accent-sky);}
+.week-cell.in-range{color:#fff;}
+.week-cell.range-start,.week-cell.range-end{font-weight:700;}
+@media (max-width:720px){ .week-grid,.period-row{grid-template-columns:repeat(18,minmax(0,1fr));} .week-cell:nth-child(n+19){grid-row:2;} }
 
-  /* ---------- Frise ---------- */
-  main{
-    padding:26px clamp(16px,4vw,56px) 80px;
-  }
-  .frise-head{
-    display:flex;
-    align-items:baseline;
-    justify-content:space-between;
-    margin-bottom:14px;
-    flex-wrap:wrap;
-    gap:8px;
-  }
-  .frise-head h2{
-    font-family:'Fraunces', serif;
-    font-size:20px;
-    font-weight:600;
-    margin:0;
-  }
-  .frise-head .hint{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11.5px;
-    color:var(--ink-soft);
-  }
+.seq-form{
+  display:grid;grid-template-columns:1.4fr repeat(2,110px);gap:10px;align-items:end;margin-bottom:16px;
+  padding-top:18px;border-top:1px dashed var(--line);
+}
+.seq-form .fld{display:flex;flex-direction:column;gap:5px;}
+.seq-form label{font-size:11px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;}
+.seq-form input,.seq-form select,.seq-form textarea{
+  border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;color:var(--ink);
+}
+.seq-form textarea{grid-column:1/-1;resize:vertical;min-height:52px;}
+.seq-form .btn-add{
+  grid-column:1/-1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13.5px;font-weight:600;
+}
+.seq-form .btn-add:hover{background:var(--navy-deep);}
 
-  .frise{
-    border:1.5px solid var(--ink);
-    background:var(--paper-raised);
-    border-radius:var(--radius);
-    overflow:hidden;
-    box-shadow:var(--shadow);
-  }
-  .periode-row{
-    display:grid;
-    grid-template-columns:150px 1fr;
-    border-bottom:1px solid var(--ligne);
-  }
-  .periode-row:last-child{border-bottom:none;}
-  .periode-tab{
-    font-family:'IBM Plex Mono', monospace;
-    padding:16px 14px;
-    border-right:1.5px solid var(--ink);
-    background:repeating-linear-gradient(135deg, rgba(43,69,54,0.05) 0 8px, transparent 8px 16px);
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    gap:2px;
-  }
-  .periode-tab .num{
-    font-size:11px;
-    letter-spacing:0.1em;
-    text-transform:uppercase;
-    color:var(--tableau);
-  }
-  .periode-tab .weeks{
-    font-size:11px;
-    color:var(--ink-soft);
-  }
-  .periode-track{
-    position:relative;
-    min-height:74px;
-    padding:10px 0;
-    background-image: repeating-linear-gradient(to right, var(--ligne) 0, var(--ligne) 1px, transparent 1px, transparent calc(100%/36));
-  }
-  .seq-block{
-    position:absolute;
-    top:10px;
-    bottom:10px;
-    border-radius:var(--radius);
-    border:1.5px solid var(--ink);
-    padding:8px 10px;
-    cursor:pointer;
-    display:flex;
-    flex-direction:column;
-    justify-content:center;
-    gap:2px;
-    background:var(--craie);
-    box-shadow:1px 2px 0 rgba(31,42,36,0.18);
-    transition:transform .12s ease, box-shadow .12s ease;
-  }
-  .seq-block:hover, .seq-block:focus-visible{
-    transform:translateY(-2px);
-    box-shadow:2px 4px 0 rgba(31,42,36,0.22);
-  }
-  .seq-block .titre{
-    font-weight:600;
-    font-size:13px;
-    line-height:1.25;
-    color:var(--ink);
-  }
-  .seq-block .semaines{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px;
-    color:var(--ink-soft);
-  }
+.seq-list{display:flex;flex-direction:column;gap:10px;}
+.seq-row{border:1px solid var(--line);border-radius:8px;padding:14px 16px;background:#FAF9F5;}
+.seq-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.seq-row-top strong{font-size:14px;color:var(--navy);}
+.seq-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;}
+.seq-note{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+.seq-del{background:none;border:none;color:#B5502E;font-size:12px;font-weight:600;flex-shrink:0;}
+.seq-del:hover{text-decoration:underline;}
+.seq-empty{font-size:13px;color:var(--ink-soft);padding:14px 0;}
 
-  /* ---------- Overlay + drawer ---------- */
-  .overlay{
-    position:fixed; inset:0;
-    background:rgba(31,42,36,0.35);
-    opacity:0; pointer-events:none;
-    transition:opacity .2s ease;
-    z-index:20;
-  }
-  .overlay.open{opacity:1; pointer-events:auto;}
-
-  .drawer{
-    position:fixed;
-    top:0; right:0; bottom:0;
-    width:min(560px, 100vw);
-    background:var(--paper);
-    border-left:2px solid var(--ink);
-    transform:translateX(100%);
-    transition:transform .25s ease;
-    z-index:21;
-    overflow-y:auto;
-  }
-  .drawer.open{transform:translateX(0);}
-
-  .drawer-head{
-    padding:22px 26px 18px;
-    border-bottom:1.5px solid var(--ink);
-    position:sticky; top:0;
-    background:var(--paper);
-    display:flex;
-    justify-content:space-between;
-    align-items:flex-start;
-    gap:12px;
-  }
-  .drawer-close{
-    background:none;border:none;cursor:pointer;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:13px;
-    color:var(--ink-soft);
-    padding:6px;
-  }
-  .drawer-head .eyebrow{margin-bottom:4px;}
-  .drawer-competence-link{
-    display:inline-block;
-    text-decoration:none;
-    border-bottom:1px dashed var(--tableau);
-  }
-  .drawer-competence-link:hover{color:var(--tableau);}
-  .drawer-head h3{
-    font-family:'Fraunces', serif;
-    font-size:23px;
-    margin:0 0 6px;
-    font-weight:600;
-  }
-  .drawer-head .objectif{
-    font-size:14px;
-    color:var(--ink-soft);
-    font-style:italic;
-  }
-  .drawer-body{padding:20px 26px 40px;}
-
-  .prerequis{
-    font-size:13px;
-    color:var(--ink-soft);
-    margin:0 0 20px;
-    padding:10px 12px;
-    border-left:3px solid var(--ligne-forte);
-    background:var(--paper-raised);
-  }
-  .prerequis strong{color:var(--ink); font-weight:600;}
-
-  .seance{
-    border:1px solid var(--ligne-forte);
-    border-radius:var(--radius);
-    background:var(--paper-raised);
-    margin-bottom:14px;
-    overflow:hidden;
-  }
-  .seance-head{
-    width:100%;
-    display:flex;
-    justify-content:space-between;
-    align-items:center;
-    padding:13px 16px;
-    background:none;
-    border:none;
-    cursor:pointer;
-    text-align:left;
-    font-family:inherit;
-    color:var(--ink);
-  }
-  .seance-head .titre{font-weight:600; font-size:14.5px;}
-  .seance-head .duree{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11.5px;
-    color:var(--ink-soft);
-    flex:none;
-    margin-left:10px;
-  }
-  .seance-body{
-    padding:0 16px 16px;
-    display:none;
-  }
-  .seance.open .seance-body{display:block;}
-  .seance-head .chevron{transition:transform .15s ease; margin-right:10px;}
-  .seance.open .chevron{transform:rotate(90deg);}
-
-  .etape{
-    display:grid;
-    grid-template-columns:96px 1fr;
-    gap:12px;
-    padding:9px 0;
-    border-top:1px solid var(--ligne);
-    align-items:start;
-  }
-  .etape:first-child{border-top:none;}
-  .tampon{
-    font-family:'IBM Plex Mono', monospace;
-    font-size:10.5px;
-    letter-spacing:0.06em;
-    text-transform:uppercase;
-    font-weight:600;
-    padding:4px 7px;
-    border-radius:2px;
-    border:1.5px solid currentColor;
-    text-align:center;
-    transform:rotate(-2deg);
-    white-space:nowrap;
-    width:fit-content;
-  }
-  .tampon.dire{color:var(--tableau);}
-  .tampon.montrer{color:var(--stylo);}
-  .tampon.guider{color:#8A6D1E;}
-  .tampon.autonomie{color:var(--ink-soft); transform:rotate(2deg);}
-  .etape p{margin:2px 0 0; font-size:13.5px; color:var(--ink);}
-
-  .no-seances{
-    font-size:13.5px;
-    color:var(--ink-soft);
-    font-style:italic;
-    padding:14px 0;
-  }
-
-  /* ---------- Modale génération IA ---------- */
-  .modal-overlay{
-    position:fixed; inset:0;
-    background:rgba(31,42,36,0.45);
-    display:none;
-    align-items:center; justify-content:center;
-    z-index:30;
-    padding:20px;
-  }
-  .modal-overlay.open{display:flex;}
-  .modal{
-    background:var(--craie);
-    border:2px solid var(--ink);
-    border-radius:var(--radius);
-    max-width:480px; width:100%;
-    padding:26px 28px 24px;
-    box-shadow:var(--shadow);
-  }
-  .modal h3{
-    font-family:'Fraunces', serif;
-    font-size:21px;
-    margin:0 0 4px;
-  }
-  .modal p.desc{font-size:13.5px; color:var(--ink-soft); margin:0 0 18px;}
-  .field{margin-bottom:14px;}
-  .field label{
-    display:block;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    text-transform:uppercase;
-    letter-spacing:0.08em;
-    color:var(--ink-soft);
-    margin-bottom:5px;
-  }
-  .field input, .field select, .field textarea{
-    width:100%;
-    font-family:'Source Sans 3', sans-serif;
-    font-size:14.5px;
-    padding:9px 10px;
-    border:1.5px solid var(--ligne-forte);
-    border-radius:var(--radius);
-    background:var(--paper-raised);
-    color:var(--ink);
-  }
-  .field textarea{resize:vertical; min-height:64px;}
-  .field input:focus, .field select:focus, .field textarea:focus{
-    outline:none; border-color:var(--tableau);
-  }
-  .modal-actions{
-    display:flex; justify-content:flex-end; gap:10px; margin-top:18px;
-  }
-  .modal-note{
-    font-size:11.5px; color:var(--ink-soft); margin-top:14px;
-    border-top:1px dashed var(--ligne-forte); padding-top:12px;
-  }
-  #gen-result{max-height:60vh; overflow-y:auto; padding-right:2px;}
-  #gen-result .etape{padding:9px 0;}
-  .modal .btn:disabled{opacity:.6; cursor:wait;}
-
-  .api-key-box{
-    background:var(--paper-raised);
-    border:1px solid var(--ligne-forte);
-    border-radius:var(--radius);
-    padding:12px 14px;
-    margin-bottom:18px;
-  }
-  .api-key-row{
-    display:flex; align-items:center; gap:8px; justify-content:space-between;
-  }
-  .api-key-row + .api-key-row{margin-top:8px;}
-  .api-key-box label{
-    display:block; font-family:'IBM Plex Mono', monospace; font-size:11px;
-    text-transform:uppercase; letter-spacing:0.08em; color:var(--ink-soft); margin-bottom:2px;
-  }
-  .api-key-hint{font-size:12px; color:var(--ink-soft); margin:0;}
-  .api-key-hint a{color:var(--tableau);}
-  .api-key-status{
-    font-family:'IBM Plex Mono', monospace; font-size:11px;
-    padding:3px 8px; border-radius:999px; white-space:nowrap; flex:none;
-    background:var(--stylo-soft); color:var(--stylo);
-  }
-  .api-key-status.ok{background:#DCE7DC; color:var(--tableau);}
-  .api-key-box input[type="password"]{
-    flex:1; font-family:'IBM Plex Mono', monospace; font-size:13px;
-    padding:8px 10px; border:1.5px solid var(--ligne-forte); border-radius:var(--radius);
-    background:var(--craie); color:var(--ink);
-  }
-  .api-key-box .btn{padding:8px 12px; font-size:11.5px; flex:none;}
-
-  footer{
-    padding:24px clamp(16px,4vw,56px) 40px;
-    font-family:'IBM Plex Mono', monospace;
-    font-size:11px;
-    color:var(--ink-soft);
-  }
+/* ===== Footer ===== */
+footer{background:var(--navy);color:#B9C6E5;padding:44px 24px 30px;margin-top:40px;}
+.footer-inner{max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:13px;}
+footer h5{color:#fff;font-size:13px;margin-bottom:10px;font-family:'Inter',sans-serif;font-weight:600;}
+footer a{color:#B9C6E5;text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+.footer-cols{display:flex;gap:60px;flex-wrap:wrap;}
+.footer-note{max-width:280px;color:#8FA0C7;font-size:12.5px;line-height:1.6;}
 </style>
 </head>
 <body>
+<a href="#main" class="skip-link">Aller au contenu principal</a>
 
-<header class="top">
-  <div>
-    <a href="../index.html" class="back-link">← Référentiel des compétences</a>
-    <p class="eyebrow">Cycle 2 · Français · Programmation annuelle</p>
-    <h1>Séquences &amp; séances</h1>
-    <p class="sub">Naviguez par compétence, positionnez-vous dans l'année, ouvrez une séquence pour voir ses séances structurées en dire / montrer / guider / autonomie.</p>
-  </div>
-  <div class="header-actions">
-    <button class="btn primary" id="btn-generer">＋ Générer une séance (IA)</button>
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="header-top">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">RÉ</span>
+      <span class="brand-text">
+        <span class="top">Portail non institutionnel</span>
+        <span class="bottom">Référentiel des programmes</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="../index.html#niveaux">Niveaux</a>
+      <a href="../index.html#disciplines">Disciplines</a>
+      <a href="../index.html#repertoire">Répertoire</a>
+      <a href="../index.html#vue-ensemble">Vue d'ensemble</a>
+      <a href="sequences.html" class="nav-programmation">Programmation →</a>
+    </nav>
   </div>
 </header>
-<p class="incoming-banner" id="incoming-banner" hidden></p>
 
-<nav class="competences-bar" id="competences-bar" aria-label="Filtrer par compétence">
-  <span class="label">Compétences</span>
-  <!-- chips injectés en JS -->
-</nav>
+<main id="main" class="cp-shell">
+  <a class="cp-back" href="../index.html">← Retour au répertoire</a>
 
-<main>
-  <div class="frise-head">
-    <h2>Programmation — 36 semaines</h2>
-    <span class="hint">Cliquez une séquence pour l'ouvrir</span>
+  <div class="cp-head">
+    <p class="eyebrow" id="pageEyebrow">Cycle 2 · Français</p>
+    <h1 id="pageTitle">Programmation annuelle</h1>
+    <p class="sub">Choisissez un domaine puis positionnez les séquences de travail sur l'année scolaire, répartie en 5 périodes et 36 semaines.</p>
+    <div class="drawer-tags" id="domaineTags"><!-- badges de domaine injectés en JS --></div>
   </div>
-  <div class="frise" id="frise" role="list" aria-label="Frise chronologique des séquences">
-    <!-- lignes de périodes injectées en JS -->
+
+  <div class="cp-block">
+    <div class="planner-panel">
+      <div class="planner-head">
+        <h4>Programmation annuelle — 36 semaines</h4>
+      </div>
+      <p class="planner-sub">Positionnez les séquences de travail consacrées à ce domaine sur l'année scolaire, répartie en 5 périodes.</p>
+
+      <div class="period-row" id="periodRow"></div>
+      <div class="week-grid" id="weekGrid"></div>
+
+      <form class="seq-form" id="seqForm">
+        <div class="fld" style="grid-column:1/-1;">
+          <label for="seqTitre">Intitulé de la séquence de travail</label>
+          <input type="text" id="seqTitre" placeholder="Ex. : Étude des CGP simples — période 1" required>
+        </div>
+        <div class="fld">
+          <label for="seqDebut">Semaine de début</label>
+          <select id="seqDebut"></select>
+        </div>
+        <div class="fld">
+          <label for="seqFin">Semaine de fin</label>
+          <select id="seqFin"></select>
+        </div>
+        <div class="fld" style="grid-column:1/-1;">
+          <label for="seqNote">Notes / contenu prévu (facultatif)</label>
+          <textarea id="seqNote" placeholder="Supports, modalités, évaluation prévue…"></textarea>
+        </div>
+        <button type="submit" class="btn-add">Ajouter la séquence</button>
+      </form>
+
+      <div id="seqListWrap">
+        <h5 style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-sky);margin-bottom:12px;">Séquences programmées</h5>
+        <div class="seq-list" id="seqList"></div>
+      </div>
+    </div>
   </div>
 </main>
 
-<footer>Synapses — Portail de consultation non institutionnel · Compétences issues du programme officiel de français, cycle 2.</footer>
-
-<!-- Drawer séquence -->
-<div class="overlay" id="overlay"></div>
-<aside class="drawer" id="drawer" aria-hidden="true">
-  <div class="drawer-head">
-    <div>
-      <a class="eyebrow drawer-competence-link" id="drawer-competence" href="../index.html">—</a>
-      <h3 id="drawer-titre">—</h3>
-      <p class="objectif" id="drawer-objectif"></p>
+<footer>
+  <div class="footer-inner">
+    <div class="footer-note">
+      Portail de consultation non institutionnel. Contenu construit exclusivement à partir de « Annexe 3 – Programme de français du cycle 2 », publié sur education.gouv.fr. Ce site n'est ni édité ni approuvé par le ministère de l'Éducation nationale.
     </div>
-    <button class="drawer-close" id="drawer-close" aria-label="Fermer">✕ Fermer</button>
-  </div>
-  <div class="drawer-body">
-    <div class="prerequis" id="drawer-prerequis" style="display:none;">
-      <strong>Prérequis —</strong> <span id="drawer-prerequis-list"></span>
-    </div>
-    <div id="drawer-seances"></div>
-  </div>
-</aside>
-
-<!-- Modale génération IA -->
-<div class="modal-overlay" id="modal-overlay">
-  <div class="modal">
-    <h3>Générer une séance</h3>
-    <p class="desc">Décrivez le sujet, l'IA propose une séance clé en main sur le modèle dire / montrer / guider / autonomie.</p>
-
-    <div class="api-key-box" id="api-key-box">
-      <div class="api-key-row">
-        <div>
-          <label for="gen-api-key">Votre clé API Claude</label>
-          <p class="api-key-hint">Elle reste dans votre navigateur, n'est jamais envoyée à personne d'autre qu'Anthropic. <a href="https://console.anthropic.com/settings/keys" target="_blank" rel="noopener">Créer une clé →</a></p>
-        </div>
-        <span class="api-key-status" id="api-key-status">Non renseignée</span>
+    <div class="footer-cols">
+      <div>
+        <h5>Navigation</h5>
+        <a href="../index.html#niveaux">Niveaux</a><br><br>
+        <a href="../index.html#disciplines">Disciplines</a><br><br>
+        <a href="../index.html#repertoire">Répertoire</a>
       </div>
-      <div class="api-key-row">
-        <input type="password" id="gen-api-key" placeholder="sk-ant-…" autocomplete="off">
-        <button type="button" class="btn" id="btn-save-key">Enregistrer</button>
-        <button type="button" class="btn" id="btn-clear-key" hidden>Oublier</button>
+      <div>
+        <h5>Cycle 2</h5>
+        <a href="../index.html">Cours préparatoire</a><br><br>
+        <a href="../index.html">Cours élémentaire 1</a><br><br>
+        <a href="../index.html">Cours élémentaire 2</a>
       </div>
     </div>
-
-    <form id="form-generer">
-      <div class="field">
-        <label for="gen-sujet">Sujet de la séance</label>
-        <input type="text" id="gen-sujet" placeholder="Ex. Repérer les substituts du nom dans un texte" required>
-      </div>
-      <div class="field">
-        <label for="gen-competence">Compétence visée</label>
-        <select id="gen-competence"></select>
-      </div>
-      <div class="field">
-        <label for="gen-duree">Durée souhaitée (minutes)</label>
-        <input type="number" id="gen-duree" value="45" min="15" max="90" step="5">
-      </div>
-      <div class="field">
-        <label for="gen-contexte">Contexte / contraintes (facultatif)</label>
-        <textarea id="gen-contexte" placeholder="Ex. classe REP+, élève allophone à intégrer, matériel limité à un tableau…"></textarea>
-      </div>
-      <div class="modal-actions">
-        <button type="button" class="btn" id="btn-annuler">Annuler</button>
-        <button type="submit" class="btn primary" id="btn-submit-gen">Générer la séance</button>
-      </div>
-      <p class="modal-note">La proposition générée sera éditable avant d'être enregistrée dans <code>data/seances/</code>, dans le même format que les séances existantes.</p>
-    </form>
-    <div id="gen-result" hidden></div>
   </div>
-</div>
+</footer>
 
 <script>
-const state = { competences: [], sequencesIndex: [], activeCompetences: new Set() };
+/*
+  Page "Séquences & séances" — vue générale de la programmation annuelle.
+  Pour l'instant : positionnement de séquences par domaine (mémorisé localement,
+  dans le navigateur). L'intégration des séances détaillées (dire / montrer /
+  guider / autonomie) n'est pas encore branchée sur cette page.
+*/
+const PERIODES = [
+  {label:"Période 1", span:7},
+  {label:"Période 2", span:7},
+  {label:"Période 3", span:7},
+  {label:"Période 4", span:8},
+  {label:"Période 5", span:7}
+];
+
+let DOMAINES = [];
+let currentDomaineId = null;
 
 async function loadJSON(path){
   const res = await fetch(path);
@@ -620,381 +295,163 @@ async function loadJSON(path){
   return res.json();
 }
 
-function domaineColor(id){
-  const c = state.competences.find(c => c.id === id);
-  return c ? c.couleur : '#888';
+function domaineById(id){ return DOMAINES.find(d => d.id === id); }
+function seqStorageKey(domaineId){ return "sequences_domaine_" + domaineId; }
+function loadSequences(domaineId){
+  try{
+    const raw = localStorage.getItem(seqStorageKey(domaineId));
+    return raw ? JSON.parse(raw) : [];
+  }catch(e){ return []; }
 }
-function domaineNom(id){
-  const c = state.competences.find(c => c.id === id);
-  return c ? c.domaine : '';
+function saveSequences(domaineId, seqs){
+  try{ localStorage.setItem(seqStorageKey(domaineId), JSON.stringify(seqs)); }catch(e){}
 }
 
 async function init(){
+  const panel = document.querySelector('.planner-panel');
   try{
-    state.competences = await loadJSON('competences.json');
-    state.sequencesIndex = await loadJSON('index.json');
+    DOMAINES = await loadJSON('competences.json');
   }catch(e){
-    document.getElementById('frise').innerHTML =
-      `<p style="padding:20px;font-size:13px;">Chargement impossible (${e.message}). Servez cette page via un serveur local plutôt qu'en fichier local.</p>`;
+    panel.innerHTML = `<p style="font-size:13px;color:var(--ink-soft);">Chargement impossible (${e.message}). Servez cette page via un serveur local plutôt qu'en fichier local.</p>`;
     return;
   }
-  state.activeCompetences = new Set(state.competences.map(c => c.id));
-  applyIncomingDomaine();
-  renderChips();
-  renderFrise();
-  populateGenCompetenceSelect();
-}
 
-function applyIncomingDomaine(){
   const params = new URLSearchParams(location.search);
-  const domaine = params.get('domaine');
-  const banner = document.getElementById('incoming-banner');
-  if(!domaine || !state.competences.some(c => c.id === domaine)){
-    banner.hidden = true;
-    return;
-  }
-  state.activeCompetences = new Set([domaine]);
-  const nom = domaineNom(domaine);
-  banner.hidden = false;
-  banner.innerHTML = `Filtré depuis le référentiel : <strong>${nom}</strong> <button id="reset-filtre-domaine">Afficher toutes les compétences</button>`;
-  document.getElementById('reset-filtre-domaine').addEventListener('click', () => {
-    state.activeCompetences = new Set(state.competences.map(c => c.id));
-    banner.hidden = true;
-    renderChips();
-    renderFrise();
+  const fromUrl = params.get('domaine');
+  currentDomaineId = (fromUrl && domaineById(fromUrl)) ? fromUrl : (DOMAINES[0] && DOMAINES[0].id);
+
+  renderDomaineTags();
+  renderPeriodRow();
+  renderSeqOptions();
+  selectDomaine(currentDomaineId);
+}
+
+function renderDomaineTags(){
+  const wrap = document.getElementById('domaineTags');
+  wrap.innerHTML = '';
+  DOMAINES.forEach(d => {
+    const btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'badge';
+    btn.style.setProperty('--dcolor', d.couleur);
+    btn.textContent = d.domaine;
+    btn.setAttribute('aria-pressed', d.id === currentDomaineId);
+    btn.addEventListener('click', () => selectDomaine(d.id));
+    wrap.appendChild(btn);
   });
 }
 
-function renderChips(){
-  const bar = document.getElementById('competences-bar');
-  bar.querySelectorAll('.chip').forEach(el => el.remove());
-  state.competences.forEach(c => {
-    const chip = document.createElement('button');
-    chip.className = 'chip';
-    chip.setAttribute('aria-pressed', state.activeCompetences.has(c.id));
-    chip.innerHTML = `<span class="dot" style="background:${c.couleur}"></span>${c.domaine}`;
-    chip.addEventListener('click', () => {
-      if(state.activeCompetences.has(c.id)) state.activeCompetences.delete(c.id);
-      else state.activeCompetences.add(c.id);
-      chip.setAttribute('aria-pressed', state.activeCompetences.has(c.id));
-      renderFrise();
-    });
-    bar.appendChild(chip);
+function selectDomaine(domaineId){
+  currentDomaineId = domaineId;
+  const d = domaineById(domaineId);
+  document.getElementById('pageEyebrow').textContent = `${d.cycle} · ${d.discipline}`;
+  document.getElementById('pageTitle').textContent = `Programmation annuelle — ${d.domaine}`;
+
+  document.querySelectorAll('#domaineTags .badge').forEach(btn => {
+    btn.setAttribute('aria-pressed', btn.textContent === d.domaine);
+  });
+
+  const url = new URL(location.href);
+  url.searchParams.set('domaine', domaineId);
+  history.replaceState(null, '', url);
+
+  renderWeekGrid();
+  renderSeqList();
+}
+
+function renderPeriodRow(){
+  const wrap = document.getElementById('periodRow');
+  wrap.innerHTML = '';
+  PERIODES.forEach(p => {
+    const el = document.createElement('div');
+    el.className = 'period-label';
+    el.style.setProperty('--span', p.span);
+    el.textContent = p.label;
+    wrap.appendChild(el);
   });
 }
 
-function renderFrise(){
-  const frise = document.getElementById('frise');
-  frise.innerHTML = '';
-  const periodes = [1,2,3,4,5];
-  const periodeSemaines = {1:[1,7],2:[8,13],3:[14,20],4:[21,28],5:[29,36]};
-
-  periodes.forEach(p => {
-    const row = document.createElement('div');
-    row.className = 'periode-row';
-
-    const tab = document.createElement('div');
-    tab.className = 'periode-tab';
-    tab.innerHTML = `<span class="num">Période ${p}</span><span class="weeks">Semaines ${periodeSemaines[p][0]}–${periodeSemaines[p][1]}</span>`;
-    row.appendChild(tab);
-
-    const track = document.createElement('div');
-    track.className = 'periode-track';
-    track.setAttribute('role','list');
-
-    state.sequencesIndex
-      .filter(s => s.periode === p && state.activeCompetences.has(s.competence_id))
-      .forEach(s => {
-        const block = document.createElement('button');
-        block.className = 'seq-block';
-        block.setAttribute('role','listitem');
-        const left = ((s.semaine_debut - 1) / 36) * 100;
-        const width = ((s.semaine_fin - s.semaine_debut + 1) / 36) * 100;
-        block.style.left = left + '%';
-        block.style.width = `calc(${width}% - 6px)`;
-        block.style.borderLeftColor = domaineColor(s.competence_id);
-        block.style.borderLeftWidth = '4px';
-        block.innerHTML = `<span class="titre">${s.titre}</span><span class="semaines">S${s.semaine_debut}–S${s.semaine_fin} · ${domaineNom(s.competence_id)}</span>`;
-        block.addEventListener('click', () => openSequence(s));
-        track.appendChild(block);
-      });
-
-    row.appendChild(track);
-    frise.appendChild(row);
-  });
+function renderSeqOptions(){
+  const debut = document.getElementById('seqDebut');
+  const fin = document.getElementById('seqFin');
+  debut.innerHTML = ''; fin.innerHTML = '';
+  for(let i = 1; i <= 36; i++){
+    const o1 = document.createElement('option'); o1.value = i; o1.textContent = 'Semaine ' + i; debut.appendChild(o1);
+    const o2 = document.createElement('option'); o2.value = i; o2.textContent = 'Semaine ' + i; fin.appendChild(o2);
+  }
+  fin.value = 4;
 }
 
-async function openSequence(seqMeta){
-  const overlay = document.getElementById('overlay');
-  const drawer = document.getElementById('drawer');
-  overlay.classList.add('open');
-  drawer.classList.add('open');
-  drawer.setAttribute('aria-hidden','false');
-
-  const competenceLink = document.getElementById('drawer-competence');
-  competenceLink.textContent = domaineNom(seqMeta.competence_id) + ' — voir dans le référentiel ↗';
-  competenceLink.href = `../index.html?domaine=${encodeURIComponent(seqMeta.competence_id)}`;
-  document.getElementById('drawer-titre').textContent = seqMeta.titre;
-  document.getElementById('drawer-objectif').textContent = '';
-  document.getElementById('drawer-seances').innerHTML = '<p class="no-seances">Chargement…</p>';
-
-  let seq;
-  try{
-    seq = await loadJSON(seqMeta.fichier);
-  }catch(e){
-    document.getElementById('drawer-seances').innerHTML = `<p class="no-seances">Erreur de chargement.</p>`;
-    return;
-  }
-
-  document.getElementById('drawer-objectif').textContent = seq.objectif_explicite || '';
-
-  const prereqBox = document.getElementById('drawer-prerequis');
-  if(seq.prerequis && seq.prerequis.length){
-    prereqBox.style.display = 'block';
-    document.getElementById('drawer-prerequis-list').textContent = seq.prerequis.join(' · ');
-  }else{
-    prereqBox.style.display = 'none';
-  }
-
-  const container = document.getElementById('drawer-seances');
-  container.innerHTML = '';
-
-  if(!seq.seances || !seq.seances.length){
-    container.innerHTML = '<p class="no-seances">Aucune séance créée pour l\'instant. Utilisez « Générer une séance » pour en créer une.</p>';
-    return;
-  }
-
-  for(const seanceId of seq.seances){
-    try{
-      const seance = await loadJSON(`${seanceId}.json`);
-      container.appendChild(renderSeance(seance));
-    }catch(e){
-      // séance manquante, on ignore silencieusement dans ce prototype
+function renderWeekGrid(){
+  const grid = document.getElementById('weekGrid');
+  grid.innerHTML = '';
+  const seqs = loadSequences(currentDomaineId);
+  const d = domaineById(currentDomaineId);
+  for(let w = 1; w <= 36; w++){
+    const cell = document.createElement('div');
+    cell.className = 'week-cell';
+    cell.textContent = w;
+    const covering = seqs.filter(s => w >= s.debut && w <= s.fin);
+    if(covering.length){
+      cell.classList.add('in-range');
+      cell.style.background = d.couleur;
+      cell.title = covering.map(s => s.titre).join(' · ');
     }
+    grid.appendChild(cell);
   }
 }
 
-function renderSeance(seance){
-  const wrap = document.createElement('div');
-  wrap.className = 'seance';
-
-  const head = document.createElement('button');
-  head.className = 'seance-head';
-  head.innerHTML = `<span><span class="chevron">›</span><span class="titre">${seance.titre}</span></span><span class="duree">${seance.duree_min} min</span>`;
-  head.addEventListener('click', () => wrap.classList.toggle('open'));
-  wrap.appendChild(head);
-
-  const body = document.createElement('div');
-  body.className = 'seance-body';
-
-  const labels = {dire:'Dire', montrer:'Montrer', guider:'Guider', autonomie:'Autonomie'};
-  (seance.etapes || []).forEach(etape => {
-    const row = document.createElement('div');
-    row.className = 'etape';
-    row.innerHTML = `<span class="tampon ${etape.type}">${labels[etape.type] || etape.type}</span><p>${etape.contenu}</p>`;
-    body.appendChild(row);
-  });
-
-  if(seance.differenciation){
-    const diff = document.createElement('div');
-    diff.className = 'etape';
-    diff.innerHTML = `<span class="tampon autonomie" style="transform:none;">Différenciation</span><p>${seance.differenciation}</p>`;
-    body.appendChild(diff);
-  }
-
-  wrap.appendChild(body);
-  return wrap;
-}
-
-function closeDrawer(){
-  document.getElementById('overlay').classList.remove('open');
-  document.getElementById('drawer').classList.remove('open');
-  document.getElementById('drawer').setAttribute('aria-hidden','true');
-}
-document.getElementById('drawer-close').addEventListener('click', closeDrawer);
-document.getElementById('overlay').addEventListener('click', closeDrawer);
-document.addEventListener('keydown', e => { if(e.key === 'Escape') closeDrawer(); });
-
-/* ---------- Modale génération IA (chaque enseignant utilise sa propre clé) ---------- */
-const CLAUDE_MODEL = 'claude-sonnet-5';
-const API_KEY_STORAGE = 'synapses_claude_api_key';
-
-const SEANCE_SYSTEM_PROMPT = `Tu es un formateur pédagogique spécialisé dans l'enseignement explicite
-(dire / montrer / guider / autonomie) pour le premier degré en France.
-
-On te donne : un sujet, une compétence visée, une durée, un contexte éventuel.
-
-Tu réponds UNIQUEMENT avec un objet JSON valide, sans texte autour, sans balises markdown,
-suivant exactement ce schéma :
-
-{
-  "titre": "string",
-  "duree_min": number,
-  "objectif_dit_aux_eleves": "string, formulé pour être dit tel quel aux élèves",
-  "etapes": [
-    { "type": "dire", "contenu": "string" },
-    { "type": "montrer", "contenu": "string" },
-    { "type": "guider", "contenu": "string" },
-    { "type": "autonomie", "contenu": "string" }
-  ],
-  "materiel": ["string", "..."],
-  "differenciation": "string"
-}
-
-Chaque étape doit être concrète et actionnable en classe, pas une généralité.`;
-
-function getStoredApiKey(){ return localStorage.getItem(API_KEY_STORAGE) || ''; }
-
-function refreshApiKeyStatus(){
-  const key = getStoredApiKey();
-  const status = document.getElementById('api-key-status');
-  const clearBtn = document.getElementById('btn-clear-key');
-  const input = document.getElementById('gen-api-key');
-  if(key){
-    status.textContent = 'Clé enregistrée';
-    status.classList.add('ok');
-    clearBtn.hidden = false;
-    input.value = '';
-    input.placeholder = 'sk-ant-••••••••••••' + key.slice(-4);
-  }else{
-    status.textContent = 'Non renseignée';
-    status.classList.remove('ok');
-    clearBtn.hidden = true;
-    input.placeholder = 'sk-ant-…';
-  }
-}
-
-document.getElementById('btn-save-key').addEventListener('click', () => {
-  const val = document.getElementById('gen-api-key').value.trim();
-  if(!val) return;
-  localStorage.setItem(API_KEY_STORAGE, val);
-  refreshApiKeyStatus();
-});
-document.getElementById('btn-clear-key').addEventListener('click', () => {
-  localStorage.removeItem(API_KEY_STORAGE);
-  refreshApiKeyStatus();
-});
-
-function populateGenCompetenceSelect(){
-  const sel = document.getElementById('gen-competence');
-  sel.innerHTML = state.competences.map(c => `<option value="${c.id}">${c.domaine}</option>`).join('');
-}
-const modalOverlay = document.getElementById('modal-overlay');
-document.getElementById('btn-generer').addEventListener('click', () => {
-  document.getElementById('form-generer').hidden = false;
-  document.getElementById('gen-result').hidden = true;
-  refreshApiKeyStatus();
-  modalOverlay.classList.add('open');
-});
-document.getElementById('btn-annuler').addEventListener('click', () => modalOverlay.classList.remove('open'));
-modalOverlay.addEventListener('click', e => { if(e.target === modalOverlay) modalOverlay.classList.remove('open'); });
-
-document.getElementById('form-generer').addEventListener('submit', async e => {
-  e.preventDefault();
-
-  const apiKey = getStoredApiKey();
-  if(!apiKey){
-    alert("Renseignez d'abord votre clé API Claude en haut de cette fenêtre (elle reste dans votre navigateur).");
-    document.getElementById('gen-api-key').focus();
+function renderSeqList(){
+  const wrap = document.getElementById('seqList');
+  const seqs = loadSequences(currentDomaineId).slice().sort((a, b) => a.debut - b.debut);
+  if(seqs.length === 0){
+    wrap.innerHTML = `<div class="seq-empty">Aucune séquence programmée pour l'instant. Utilisez le formulaire ci-dessus pour en ajouter une.</div>`;
     return;
   }
-
-  const submitBtn = document.getElementById('btn-submit-gen');
-  const sujet = document.getElementById('gen-sujet').value;
-  const competence = document.getElementById('gen-competence').value;
-  const duree = document.getElementById('gen-duree').value;
-  const contexte = document.getElementById('gen-contexte').value;
-
-  const userPrompt = `Sujet : ${sujet}
-Compétence visée : ${domaineNom(competence) || competence}
-Durée souhaitée : ${duree || 45} minutes
-Contexte / contraintes : ${contexte || 'aucun'}`;
-
-  submitBtn.disabled = true;
-  submitBtn.textContent = 'Génération…';
-
-  try{
-    // Appel direct navigateur → Anthropic, avec la clé de l'enseignant.
-    // Le header ci-dessous est requis par Anthropic pour autoriser un appel
-    // depuis un site web plutôt que depuis un serveur (mode "bring your own key").
-    const res = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'content-type': 'application/json',
-        'x-api-key': apiKey,
-        'anthropic-version': '2023-06-01',
-        'anthropic-dangerous-direct-browser-access': 'true'
-      },
-      body: JSON.stringify({
-        model: CLAUDE_MODEL,
-        max_tokens: 1500,
-        system: SEANCE_SYSTEM_PROMPT,
-        messages: [{ role: 'user', content: userPrompt }]
-      })
-    });
-
-    const data = await res.json();
-    if(!res.ok){
-      throw new Error(data.error?.message || `Erreur API (${res.status})`);
-    }
-
-    const text = (data.content || [])
-      .map(b => b.type === 'text' ? b.text : '')
-      .join('')
-      .trim()
-      .replace(/^```json\s*|\s*```$/g, '');
-
-    let seance;
-    try{ seance = JSON.parse(text); }
-    catch{ throw new Error("La réponse de l'IA n'était pas un JSON exploitable."); }
-
-    showGenResult(seance);
-  }catch(err){
-    alert('La génération a échoué : ' + err.message);
-  }finally{
-    submitBtn.disabled = false;
-    submitBtn.textContent = 'Générer la séance';
-  }
-});
-
-function showGenResult(seance){
-  document.getElementById('form-generer').hidden = true;
-  const box = document.getElementById('gen-result');
-  box.hidden = false;
-
-  const labels = {dire:'Dire', montrer:'Montrer', guider:'Guider', autonomie:'Autonomie'};
-  const etapesHtml = (seance.etapes || []).map(et =>
-    `<div class="etape"><span class="tampon ${et.type}">${labels[et.type] || et.type}</span><p>${et.contenu}</p></div>`
-  ).join('');
-
-  box.innerHTML = `
-    <h3 style="margin-top:0;">${seance.titre || 'Séance générée'}</h3>
-    <p class="objectif" style="margin:0 0 14px;">${seance.objectif_dit_aux_eleves || ''}</p>
-    ${etapesHtml}
-    ${seance.differenciation ? `<div class="etape"><span class="tampon autonomie" style="transform:none;">Différenciation</span><p>${seance.differenciation}</p></div>` : ''}
-    <div class="modal-actions">
-      <button type="button" class="btn" id="gen-recommencer">← Nouvelle proposition</button>
-      <button type="button" class="btn primary" id="gen-telecharger">Télécharger le JSON</button>
+  wrap.innerHTML = seqs.map(s => `
+    <div class="seq-row">
+      <div class="seq-row-top">
+        <div>
+          <strong>${s.titre}</strong>
+          <div class="seq-meta">Semaine ${s.debut} → Semaine ${s.fin} · ${s.fin - s.debut + 1} semaine${s.fin - s.debut + 1 > 1 ? 's' : ''}</div>
+        </div>
+        <button class="seq-del" data-del="${s.id}">Supprimer</button>
+      </div>
+      ${s.note ? `<div class="seq-note">${s.note}</div>` : ''}
     </div>
-  `;
-
-  document.getElementById('gen-recommencer').addEventListener('click', () => {
-    box.hidden = true;
-    document.getElementById('form-generer').hidden = false;
-  });
-
-  document.getElementById('gen-telecharger').addEventListener('click', () => {
-    const id = 'sea-' + (seance.titre || 'generee').toLowerCase()
-      .normalize('NFD').replace(/[\u0300-\u036f]/g, '')
-      .replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '').slice(0, 40);
-    const payload = { id, sequence_id: null, ...seance };
-    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: 'application/json' });
-    const a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = id + '.json';
-    a.click();
+  `).join('');
+  wrap.querySelectorAll('[data-del]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const id = btn.getAttribute('data-del');
+      const remaining = loadSequences(currentDomaineId).filter(s => s.id !== id);
+      saveSequences(currentDomaineId, remaining);
+      renderWeekGrid(); renderSeqList();
+    });
   });
 }
+
+document.getElementById('seqForm').addEventListener('submit', e => {
+  e.preventDefault();
+  const titre = document.getElementById('seqTitre').value.trim();
+  let debut = parseInt(document.getElementById('seqDebut').value, 10);
+  let fin = parseInt(document.getElementById('seqFin').value, 10);
+  const note = document.getElementById('seqNote').value.trim();
+  if(!titre) return;
+  if(fin < debut){ const t = debut; debut = fin; fin = t; }
+  const seqs = loadSequences(currentDomaineId);
+  seqs.push({ id: 'seq_' + Date.now() + '_' + Math.random().toString(36).slice(2, 7), titre, debut, fin, note });
+  saveSequences(currentDomaineId, seqs);
+  document.getElementById('seqTitre').value = '';
+  document.getElementById('seqNote').value = '';
+  renderWeekGrid(); renderSeqList();
+});
+
+document.getElementById('weekGrid').addEventListener('click', e => {
+  const cell = e.target.closest('.week-cell');
+  if(!cell) return;
+  document.getElementById('seqDebut').value = cell.textContent.trim();
+  document.getElementById('seqTitre').focus();
+});
 
 init();
 </script>
