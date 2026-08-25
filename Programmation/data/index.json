@@ -29,7 +29,7 @@
     ],
     "index_pedagogique": {
       "optionnel": true,
-      "fichier": "documents de références pédagogique/index-pedagogique.js",
+      "fichier": "References-Pedagogiques/index-pedagogique.js",
       "regle": "Ce fichier n'est utilisé que s'il existe réellement. Son absence ne doit provoquer aucune erreur et ne doit pas empêcher le fonctionnement de Synapses.",
       "role_futur": "Il pourra contenir le condensé des analyses pédagogiques servant à établir les relations de construction des apprentissages.",
       "important": "Ne pas créer de prerequis_competences dans index.json à partir de simples suppositions ou de l'ordre d'apparition des programmes."
