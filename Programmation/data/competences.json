@@ -1,7 +1,7 @@
 {
   "meta": {
     "titre": "Référentiel de compétences – Cycles 2 et 3 – Français, Mathématiques, Histoire-Géographie et EMC",
-    "version": "3.1-travail",
+    "version": "3.2-travail",
     "description": "Base de travail structurée pour les séquences et séances. Les prérequis sont renseignés à partir des relations pédagogiques explicitement justifiées par les compétences et les références pédagogiques.",
     "sources": [
       "Annexe 3 – Programme de français du cycle 2",
@@ -164,7 +164,8 @@
         "Appuyer la compréhension sur le vocabulaire, la syntaxe et les connaissances construites à l'oral."
       ],
       "prerequis_competences": [
-        "oral_ecouter"
+        "oral_ecouter",
+        "lecture_identifier_mots"
       ],
       "mots_cles": [
         "compréhension",
