@@ -1906,6 +1906,11 @@ async function init(){
   await initialiserDonnees();
   renderFilters();
   renderSeqGrid();
+
+  const sequenceId = new URLSearchParams(location.search).get("sequence");
+  if(sequenceId && state.sequences.some(s => s.id === sequenceId)){
+    openSeqDetail(sequenceId);
+  }
 }
 
 init();
