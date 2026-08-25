@@ -76,6 +76,10 @@ h1{font-size:34px;margin:0 0 8px;line-height:1.08} h2{margin:0} .lead{color:var(
 .material-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
 .material-link.disabled{opacity:.78}
 .field-help{font-size:11px;color:var(--ink-soft);margin-top:5px}
+.detail-actions{display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end}
+.week-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+@media(max-width:700px){.detail-actions{justify-content:flex-start}.week-fields{grid-template-columns:1fr}}
+
 
 .drawer{position:fixed;z-index:50;right:-720px;top:0;width:min(680px,94vw);height:100vh;background:#fff;box-shadow:-18px 0 45px rgba(0,0,0,.18);transition:right .25s;overflow:auto}
 .drawer.open{right:0}.drawer-head{position:sticky;top:0;background:#172033;color:#fff;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;z-index:2}
@@ -129,7 +133,7 @@ footer{padding:18px;text-align:center;color:#6b7280;font-size:12px;border-top:1p
     <button class="back" id="back-list">← Retour aux séquences</button>
     <div class="detail-head">
       <div><p class="eyebrow" id="detail-meta"></p><h1 id="detail-title"></h1><div class="tags" id="detail-tags"></div></div>
-      <div class="detail-actions"><button class="btn" id="print-seq">Imprimer</button><button class="btn primary" id="download-seq">Télécharger le JSON</button></div>
+      <div class="detail-actions"><button class="btn" id="print-seq">Imprimer</button><button class="btn primary" id="edit-seq">Modifier</button><button class="btn" id="download-seq">Télécharger le JSON</button><button class="btn danger" id="delete-seq">Supprimer</button></div>
     </div>
     <div class="detail-grid">
       <article class="panel"><h3>Objectif commun</h3><p id="detail-objectif"></p></article>
@@ -165,18 +169,22 @@ footer{padding:18px;text-align:center;color:#6b7280;font-size:12px;border-top:1p
 
 <div class="modal" id="modal-new">
   <div class="modal-box">
-    <div class="modal-head"><h2>Nouvelle séquence</h2><button class="modal-close" data-close="modal-new">×</button></div>
+    <div class="modal-head"><h2 id="modal-sequence-title">Nouvelle séquence</h2><button class="modal-close" data-close="modal-new">×</button></div>
     <div class="modal-body">
-      <p class="lead" style="font-size:13px;margin-bottom:18px">Cette création reste dans le navigateur jusqu'à son export. Pour l'ajouter définitivement à la base, il faudra ensuite placer le JSON dans l'arborescence et mettre à jour <code>data/index.json</code>.</p>
+      <p class="lead" style="font-size:13px;margin-bottom:18px">Les modifications restent dans le navigateur jusqu'à l'export des données.</p>
       <div class="field"><label>Titre</label><input id="new-title" placeholder="Titre de la séquence"></div>
-      <div class="field"><label>Classe</label><input id="new-class" value="CP"></div>
+      <div class="field"><label>Classe / niveau</label><input id="new-class" value="CP"></div>
       <div class="field"><label>Compétence ciblée</label><select id="new-competence"></select></div>
       <div class="field"><label>Objectif commun</label><textarea id="new-objectif"></textarea></div>
+      <div class="field"><label>Période</label><select id="new-period"><option value="">Non définie</option><option value="1">Période 1</option><option value="2">Période 2</option><option value="3">Période 3</option><option value="4">Période 4</option><option value="5">Période 5</option></select></div>
+      <div class="week-fields">
+        <div class="field"><label>Semaine de début</label><input id="new-week-start" type="number" min="1" max="36"></div>
+        <div class="field"><label>Semaine de fin</label><input id="new-week-end" type="number" min="1" max="36"></div>
+      </div>
     </div>
-    <div class="modal-foot"><button class="btn" data-close="modal-new">Annuler</button><button class="btn primary" id="save-new">Créer dans la session</button></div>
+    <div class="modal-foot"><button class="btn" data-close="modal-new">Annuler</button><button class="btn primary" id="save-new">Enregistrer dans la session</button></div>
   </div>
 </div>
-
 
 <div class="modal" id="modal-seance">
   <div class="modal-box">
@@ -226,7 +234,8 @@ const state = {
   activeDomains: new Set(),
   activePeriod: null,
   sessionSequences: [],
-  editingSeanceId: null
+  editingSeanceId: null,
+  editingSequenceId: null
 };
 
 const $ = id => document.getElementById(id);
@@ -504,7 +513,7 @@ function openSeance(id){
     <div class="drawer-actions">
       <button class="btn primary" id="drawer-edit-sea">Modifier la séance</button>
       <button class="btn danger" id="drawer-delete-sea">Supprimer</button>
-      <a class="btn material-link disabled" id="drawer-material-sea" href="materiel.html?seance=${encodeURIComponent(sea.id)}">📎 Matériel de la séance</a>
+      <a class="btn material-link" id="drawer-material-sea" href="materiel.html?seance=${encodeURIComponent(sea.id)}">📎 Matériel de la séance</a>
     </div>`;
 
   $("drawer-edit-sea").onclick=()=>{closeDrawer(); openSeanceForm(sea.id);};
@@ -638,25 +647,102 @@ $("download-seq").onclick=()=>{
   const seq=[...state.sequences,...state.sessionSequences].find(s=>s.id===state.currentSeqId); if(!seq)return;
   downloadJSON(`${seq.id}.json`,{...seq,seances:state.seances.filter(s=>s.sequence_id===seq.id)});
 };
-$("btn-export").onclick=()=>downloadJSON("programmation-chargee.json",{index:state.index,competences:state.competencesData,sequences:[...state.sequences,...state.sessionSequences],seances:state.seances});
+$("btn-export").onclick=()=>downloadJSON("programmation-chargee.json",{
+  index:state.index,
+  competences:state.competencesData,
+  sequences:[...state.sequences,...state.sessionSequences],
+  seances:state.seances,
+  export_note:"Export contenant les modifications effectuées dans le navigateur."
+});
 $("print-seq").onclick=()=>window.print();
 
 /* =========================================================
-   NOUVELLE SEQUENCE EN SESSION
+   GESTION DES SEQUENCES — CREATION / MODIFICATION / SUPPRESSION
    ========================================================= */
-function fillCompetenceSelect(){
-  $("new-competence").innerHTML=state.competencesData.competences.map(c=>`<option value="${esc(c.id)}">${esc(c.domaine)} — ${esc(c.intitule)}</option>`).join("");
+function fillCompetenceSelect(selectedId=""){
+  $("new-competence").innerHTML=state.competencesData.competences.map(c=>
+    `<option value="${esc(c.id)}"${competenceId(selectedId)===c.id?" selected":""}>${esc(c.domaine)} — ${esc(c.intitule)}</option>`
+  ).join("");
 }
 function openModal(id){$(id).classList.add("open")}
 function closeModal(id){$(id).classList.remove("open")}
-document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>closeModal(b.dataset.close));
-$("btn-new").onclick=()=>{fillCompetenceSelect();openModal("modal-new")};
-$("save-new").onclick=()=>{
-  const title=$("new-title").value.trim(); if(!title){toast("Le titre est obligatoire.");return}
-  const id=uid("seq");
-  const seq={id,titre:title,classe:$("new-class").value.trim()||"CP",competence_id:$("new-competence").value,objectif_commun:$("new-objectif").value.trim(),periode:null,semaine_debut:null,semaine_fin:null,domaine:getCompetence($("new-competence").value)?.domaine_id||"lecture",_session:true};
-  state.sessionSequences.push(seq); closeModal("modal-new"); renderSeqGrid(); toast("Séquence créée dans la session.");
-};
+function getCurrentSequence(){return [...state.sequences,...state.sessionSequences].find(s=>s.id===state.currentSeqId)}
+
+function openSequenceForm(id=null){
+  const seq=id?[...state.sequences,...state.sessionSequences].find(s=>s.id===id):null;
+  state.editingSequenceId=seq?.id||null;
+  fillCompetenceSelect(seq?.competence_id||"");
+  $("modal-sequence-title").textContent=seq?"Modifier la séquence":"Nouvelle séquence";
+  $("new-title").value=seq?.titre||"";
+  $("new-class").value=seq?.classe||seq?.niveau||"CP";
+  $("new-objectif").value=seq?.objectif_commun||"";
+  $("new-period").value=seq?.periode??"";
+  $("new-week-start").value=seq?.semaine_debut??"";
+  $("new-week-end").value=seq?.semaine_fin??"";
+  openModal("modal-new");
+}
+
+function saveSequenceForm(){
+  const title=$("new-title").value.trim();
+  if(!title){toast("Le titre est obligatoire.");return}
+  const startRaw=$("new-week-start").value, endRaw=$("new-week-end").value;
+  const startWeek=startRaw===""?null:Number(startRaw), endWeek=endRaw===""?null:Number(endRaw);
+  if(startWeek!==null&&(startWeek<1||startWeek>36)){toast("La semaine de début doit être comprise entre 1 et 36.");return}
+  if(endWeek!==null&&(endWeek<1||endWeek>36)){toast("La semaine de fin doit être comprise entre 1 et 36.");return}
+  if(startWeek!==null&&endWeek!==null&&endWeek<startWeek){toast("La semaine de fin doit être postérieure à la semaine de début.");return}
+
+  const payload={
+    titre:title,
+    classe:$("new-class").value.trim()||"CP",
+    competence_id:$("new-competence").value,
+    objectif_commun:$("new-objectif").value.trim(),
+    periode:$("new-period").value===""?null:Number($("new-period").value),
+    semaine_debut:startWeek,
+    semaine_fin:endWeek,
+    domaine:getCompetence($("new-competence").value)?.domaine_id||"lecture",
+    _session:true
+  };
+
+  if(state.editingSequenceId){
+    const id=state.editingSequenceId;
+    let i=state.sequences.findIndex(s=>s.id===id);
+    if(i>=0) state.sequences[i]={...state.sequences[i],...payload};
+    else {
+      i=state.sessionSequences.findIndex(s=>s.id===id);
+      if(i>=0) state.sessionSequences[i]={...state.sessionSequences[i],...payload};
+    }
+    state.editingSequenceId=null;
+    closeModal("modal-new"); renderSeqGrid(); openSequence(id);
+    toast("Séquence modifiée dans la session.");
+  }else{
+    const seq={id:uid("seq"),...payload};
+    state.sessionSequences.push(seq);
+    closeModal("modal-new"); renderSeqGrid(); openSequence(seq.id);
+    toast("Nouvelle séquence créée dans la session.");
+  }
+}
+
+function deleteCurrentSequence(){
+  const seq=getCurrentSequence(); if(!seq)return;
+  const count=state.seances.filter(s=>s.sequence_id===seq.id).length;
+  if(!confirm(`Supprimer « ${seq.titre||"Sans titre"} » ?${count?`\\n\\n${count} séance(s) associée(s) seront également supprimées.`:""}`))return;
+  state.sequences=state.sequences.filter(s=>s.id!==seq.id);
+  state.sessionSequences=state.sessionSequences.filter(s=>s.id!==seq.id);
+  state.seances=state.seances.filter(s=>s.sequence_id!==seq.id);
+  state.currentSeqId=null;
+  renderSeqGrid(); showView("view-list");
+  toast("Séquence supprimée de la session.");
+}
+
+document.querySelectorAll("[data-close]").forEach(b=>b.onclick=()=>{
+  closeModal(b.dataset.close);
+  if(b.dataset.close==="modal-seance")state.editingSeanceId=null;
+  if(b.dataset.close==="modal-new")state.editingSequenceId=null;
+});
+$("btn-new").onclick=()=>openSequenceForm();
+$("edit-seq").onclick=()=>openSequenceForm(state.currentSeqId);
+$("delete-seq").onclick=deleteCurrentSequence;
+$("save-new").onclick=saveSequenceForm;
 
 /* =========================================================
    INIT
