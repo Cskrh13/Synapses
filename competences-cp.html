@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cartographe des Compétences — CP Français</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=Vollkorn:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+    --fond: #0d1112; --bleu-noir: #1b2325; --bleu-ardoise: #2d393d;
+    --parchemin-clair: #ded4b7; --texte-clair: #d8d1b8; --argent: #91a6aa;
+    --ligne: rgba(125,139,140,.5); --or: #b7975c;
+}
+* { box-sizing: border-box; }
+html, body { height: 100%; margin: 0; }
+body {
+    background: radial-gradient(ellipse at 50% -10%, #1c2426 0%, var(--fond) 60%);
+    color: var(--texte-clair); font-family: "Vollkorn", Georgia, serif; overflow: hidden;
+}
+header {
+    position: relative; z-index: 5; padding: 18px 24px 14px; text-align: center;
+    background: linear-gradient(rgba(13,17,18,.92), rgba(13,17,18,.7) 70%, transparent);
+    border-bottom: 1px solid var(--ligne);
+}
+header h1 { margin: 0; font-family: "IM Fell English SC", Georgia, serif; font-weight: normal; font-size: clamp(20px, 3vw, 30px); letter-spacing: 3px; color: var(--parchemin-clair); }
+header p { margin: 6px 0 0; color: var(--argent); font-size: 12.5px; letter-spacing: 1px; }
+
+.bar {
+    position: relative; z-index: 5; display: flex; flex-wrap: wrap; gap: 16px; align-items: center; justify-content: center;
+    padding: 10px 20px; background: rgba(27,35,37,.82); border-bottom: 1px solid var(--ligne); font-size: 12.5px;
+}
+.bar .domaine-filtre { display: flex; align-items: center; gap: 5px; cursor: pointer; padding: 4px 9px; border: 1px solid var(--ligne); opacity: .55; }
+.bar .domaine-filtre.actif { opacity: 1; background: rgba(183,151,92,.15); }
+.bar .dot { width: 9px; height: 9px; border-radius: 50%; }
+.bar input#searchInput { padding: 6px 10px; border: 1px solid var(--ligne); background: #12181a; color: var(--texte-clair); font-family: "Vollkorn", Georgia, serif; font-size: 12.5px; width: 190px; }
+
+#graphZone { position: absolute; inset: 0; top: 0; }
+
+.legend {
+    position: absolute; left: 16px; bottom: 16px; z-index: 6; background: rgba(19,25,27,.88);
+    border: 1px solid var(--ligne); padding: 12px 14px; font-size: 11.5px; max-width: 190px;
+}
+.legend h4 { margin: 0 0 7px; font-family: "IM Fell English SC", Georgia, serif; font-weight: normal; font-size: 12.5px; color: var(--parchemin-clair); }
+.legend .row { display: flex; align-items: center; gap: 7px; margin-bottom: 4px; }
+.legend .line { width: 16px; height: 0; border-top: 2px solid #d9a441; flex-shrink: 0; }
+
+.panel {
+    position: absolute; right: 0; top: 0; bottom: 0; z-index: 6; width: 380px; max-width: 92vw;
+    background: rgba(15,20,21,.97); border-left: 1px solid var(--ligne); padding: 20px 22px;
+    overflow-y: auto; transform: translateX(100%); transition: transform .25s ease;
+}
+.panel.visible { transform: translateX(0); }
+.panel .close { position: absolute; top: 12px; right: 16px; cursor: pointer; color: var(--argent); font-size: 16px; }
+.panel .domaine-tag { display: inline-block; font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase; padding: 3px 8px; border: 1px solid var(--ligne); margin-bottom: 8px; }
+.panel h2 { margin: 4px 30px 4px 0; font-family: "IM Fell English SC", Georgia, serif; font-weight: normal; font-size: 20px; color: var(--parchemin-clair); letter-spacing: .5px; line-height: 1.3; }
+.panel .objectif { font-size: 13.5px; color: var(--texte-clair); line-height: 1.55; margin-bottom: 14px; }
+.panel .prereqs { font-size: 12px; color: var(--argent); margin-bottom: 16px; padding-bottom: 14px; border-bottom: 1px dashed var(--ligne); }
+.panel .prereqs b { color: var(--or); }
+.panel .prereqs a { color: var(--or); cursor: pointer; text-decoration: underline; }
+.panel h3 { font-family: "IM Fell English SC", Georgia, serif; font-weight: normal; font-size: 14.5px; color: var(--parchemin-clair); letter-spacing: .5px; margin: 0 0 10px; }
+.seance {
+    padding: 10px 12px; margin-bottom: 8px; background: rgba(222,212,183,.06); border: 1px solid var(--ligne);
+    border-left: 3px solid var(--or);
+}
+.seance .num { font-size: 10.5px; letter-spacing: 1px; text-transform: uppercase; color: var(--or); }
+.seance .titre { font-size: 13.5px; font-weight: 600; color: var(--parchemin-clair); margin: 2px 0 4px; }
+.seance .desc { font-size: 12.5px; color: var(--texte-clair); line-height: 1.5; }
+
+.empty-state {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 8px; text-align: center; color: var(--argent); pointer-events: none; padding: 40px;
+}
+.empty-state .sceau { font-family: "IM Fell English SC", Georgia, serif; font-size: 38px; letter-spacing: 5px; color: #3c4d50; }
+.empty-state p { max-width: 420px; font-size: 13.5px; line-height: 1.6; margin: 0; }
+
+@media(max-width: 720px){ .bar { font-size: 11px; gap: 8px; } .panel { width: 100%; } .legend { display: none; } }
+</style>
+</head>
+<body>
+
+<header>
+    <h1>Cartographe des Compétences</h1>
+    <p>Programme de français — Cours Préparatoire — 17 compétences, prérequis &amp; séquences de 7 séances</p>
+</header>
+
+<div class="bar" id="filtres"></div>
+
+<div id="graphZone">
+    <div class="empty-state" id="emptyState">
+        <div class="sceau">⁂</div>
+        <p>Cliquez sur une compétence pour afficher sa séquence de 7 séances. Les liens dorés relient chaque compétence à ses prérequis directs.</p>
+    </div>
+</div>
+
+<div class="legend" id="legend">
+    <h4>Domaines</h4>
+    <div id="legendRows"></div>
+    <div class="row" style="margin-top:8px;"><span class="line"></span> Prérequis</div>
+</div>
+
+<div class="panel" id="panel">
+    <span class="close" id="panelClose">✕</span>
+    <div id="panelContent"></div>
+</div>
+
+<script src="https://unpkg.com/3d-force-graph@1"></script>
+<script>
+const $ = id => document.getElementById(id);
+
+/* =========================================================
+   DONNÉES — Programme de français, Cours Préparatoire (cycle 2)
+   Source : programme officiel (Éducation nationale), synthèse
+   personnelle — à faire valider par un enseignant avant usage
+   en classe réelle.
+   ========================================================= */
+const DOMAINES = {
+    lecture:    { label: "Lecture",               couleur: "#c97b4a" },
+    ecriture:   { label: "Écriture",               couleur: "#e0c14b" },
+    oral:       { label: "Oral",                   couleur: "#5c9c8f" },
+    vocabulaire:{ label: "Vocabulaire",            couleur: "#6b8fc9" },
+    grammaire:  { label: "Grammaire & orthographe",couleur: "#a56bc9" }
+};
+
+/* Schéma logique appliqué aux 7 séances de chaque compétence */
+const SCHEMA_7 = [
+    "Découverte",
+    "Observation guidée",
+    "Structuration",
+    "Entraînement guidé",
+    "Entraînement autonome",
+    "Réinvestissement",
+    "Évaluation & bilan"
+];
+
+function seances(desc){
+    // desc: tableau de 7 chaînes courtes décrivant le contenu de chaque phase
+    return SCHEMA_7.map((titre, i) => ({ titre, desc: desc[i] }));
+}
+
+const COMPETENCES = [
+    {
+        id: "LEC1", domaine: "lecture", nom: "Identifier les mots (décodage)",
+        objectif: "Décoder puis automatiser la lecture des correspondances graphème-phonème (CGP), pour déchiffrer des syllabes, mots puis phrases avec une fluidité croissante.",
+        prereqs: [],
+        seances: seances([
+            "Repérer les lettres et sons déjà connus à partir d'un mot-clé illustré.",
+            "Isoler le phonème étudié dans des mots entendus, l'associer au graphème correspondant.",
+            "Fixer la correspondance graphème-phonème collectivement ; premières syllabes construites au tableau.",
+            "Lire et écrire des syllabes puis des mots avec la CGP du jour, avec étayage du professeur.",
+            "Déchiffrer en autonomie une liste de mots et de courtes phrases utilisant la CGP.",
+            "Lire un texte court intégrant la CGP dans des mots déjà connus, en lien avec un autre domaine (vocabulaire, écriture).",
+            "Évaluation de fluence (mots/minute) et de précision du décodage ; repérage des élèves à consolider."
+        ])
+    },
+    {
+        id: "LEC2", domaine: "lecture", nom: "Lire à voix haute",
+        objectif: "Oraliser des syllabes, mots puis phrases déchiffrés, en visant 30 mots/minute en fin d'année et une prise en compte progressive de la ponctuation.",
+        prereqs: ["LEC1"],
+        seances: seances([
+            "Écoute d'une lecture modèle du professeur sur un texte court et déchiffrable.",
+            "Repérage collectif des marques de ponctuation et de leur effet sur la voix.",
+            "Verbalisation de la règle : où respirer, où marquer une pause, comment lire un point d'interrogation.",
+            "Lecture à voix haute guidée, phrase par phrase, avec correction immédiate.",
+            "Entraînement individuel chronométré sur un texte préparé la veille.",
+            "Lecture à voix haute devant un petit groupe ou en classe entière (texte préparé).",
+            "Mesure de la vitesse et de la précision de lecture ; bilan individuel."
+        ])
+    },
+    {
+        id: "LEC3", domaine: "lecture", nom: "Comprendre un texte",
+        objectif: "Dégager le sens global d'un texte lu ou entendu, se repérer dans la chaîne anaphorique, réaliser des inférences simples et justifier ses réponses.",
+        prereqs: ["LEC2", "ORA1"],
+        seances: seances([
+            "Écoute d'un texte résistant lu par le professeur ; premières impressions à l'oral.",
+            "Relecture guidée avec repérage des personnages, lieux et évènements.",
+            "Mise en évidence collective d'une chaîne anaphorique (qui reprend qui dans le texte).",
+            "Questions de compréhension guidées, avec retour systématique au texte pour justifier.",
+            "Lecture autonome d'un texte comparable et réponses écrites à des questions.",
+            "Débat interprétatif court sur une inférence simple du texte (ex. un indice implicite).",
+            "Évaluation de compréhension sur un texte nouveau du même type."
+        ])
+    },
+    {
+        id: "LEC4", domaine: "lecture", nom: "Devenir lecteur",
+        objectif: "Fréquenter 5 à 10 œuvres du patrimoine et de la littérature de jeunesse dans l'année, développer le gout de lire et relier les lectures entre elles.",
+        prereqs: ["LEC3"],
+        seances: seances([
+            "Découverte de la couverture et de la 4e de couverture d'une œuvre choisie ; hypothèses.",
+            "Lecture offerte par le professeur d'un premier extrait ; échange oral libre.",
+            "Identification collective du type de personnage principal et de ses caractéristiques.",
+            "Poursuite de la lecture, avec relevé guidé des évènements clés dans un carnet de lecture.",
+            "Lecture autonome d'un extrait suivant, réponses courtes dans le carnet de lecture.",
+            "Mise en réseau : comparaison avec une œuvre précédemment lue en classe.",
+            "Présentation orale courte de l'œuvre à la classe, choix personnel argumenté."
+        ])
+    },
+    {
+        id: "ECR1", domaine: "ecriture", nom: "Écriture cursive",
+        objectif: "Tracer en cursive, avec fluidité, les graphèmes étudiés, isolément puis enchaînés dans des syllabes, mots et phrases.",
+        prereqs: [],
+        seances: seances([
+            "Observation du tracé modèle de la lettre au tableau, verbalisation du sens de rotation.",
+            "Tracé collectif dans les airs, puis sur ardoise, avec guidage verbal du geste.",
+            "Fixation du tracé normé : taille, forme, point de départ, sur lignage adapté.",
+            "Entraînement guidé sur cahier avec correction individuelle immédiate.",
+            "Entraînement autonome : enchaînement de la lettre avec des lettres déjà maîtrisées.",
+            "Écriture d'un mot ou d'une courte phrase intégrant la lettre du jour.",
+            "Bilan du tracé : régularité, tenue de ligne, enchaînement sans lever le crayon."
+        ])
+    },
+    {
+        id: "ECR2", domaine: "ecriture", nom: "Encoder puis écrire sous dictée",
+        objectif: "Encoder des syllabes puis des mots selon la progression des CGP, écrire sous la dictée des mots puis des phrases en fin d'année.",
+        prereqs: ["LEC1"],
+        seances: seances([
+            "Segmentation orale d'un mot en syllabes puis en phonèmes, à l'aide de jetons.",
+            "Association guidée de chaque phonème identifié à son graphème.",
+            "Encodage collectif au tableau d'un mot nouveau utilisant la CGP du jour.",
+            "Dictée de syllabes puis de mots avec la CGP étudiée, correction immédiate.",
+            "Dictée autonome de mots incluant des CGP déjà connues.",
+            "Dictée d'une courte phrase mêlant plusieurs CGP maîtrisées.",
+            "Bilan : relevé des erreurs types (phonèmes, lettres muettes) pour remédiation ciblée."
+        ])
+    },
+    {
+        id: "ECR3", domaine: "ecriture", nom: "Copier et acquérir des stratégies de copie",
+        objectif: "Copier des syllabes, mots puis phrases avec des stratégies efficaces (par groupe de sens plutôt que lettre à lettre), en gagnant en vitesse et en exactitude.",
+        prereqs: ["ECR1"],
+        seances: seances([
+            "Observation d'un modèle à copier ; question posée : combien de fois faut-il regarder le modèle ?",
+            "Comparaison de deux stratégies de copie (lettre à lettre vs groupe de mots).",
+            "Verbalisation collective de la stratégie la plus efficace et pourquoi.",
+            "Copie guidée d'une phrase avec chronométrage des retours au modèle.",
+            "Copie autonome d'un texte court avec relecture systématique.",
+            "Copie d'un texte en lien avec une autre discipline (leçon de sciences, consigne de maths).",
+            "Bilan : nombre de lignes copiées sans erreur, en temps limité."
+        ])
+    },
+    {
+        id: "ECR4", domaine: "ecriture", nom: "Produire des écrits",
+        objectif: "Écrire des mots puis des phrases porteuses de sens, en s'appuyant sur des textes lus, avec une première méthodologie de planification et de relecture.",
+        prereqs: ["ECR2", "ECR3", "GRA1"],
+        seances: seances([
+            "Lecture d'un texte modèle court à structure répétitive ; repérage de la structure.",
+            "Recherche collective d'idées à l'oral pour un nouvel épisode ou une variante.",
+            "Élaboration d'une liste de mots-ressources (brouillon collectif) pour l'écriture.",
+            "Écriture guidée d'une phrase, avec étayage du professeur pour chaque élève.",
+            "Écriture autonome de deux à trois phrases en réutilisant la structure étudiée.",
+            "Relecture croisée entre pairs : repérer une omission ou une incohérence.",
+            "Version finale relue et corrigée ; bilan des progrès depuis le début de la séquence."
+        ])
+    },
+    {
+        id: "ORA1", domaine: "oral", nom: "Écouter pour comprendre",
+        objectif: "Comprendre un message oral de quelques minutes, mémoriser les informations importantes et exécuter une consigne orale complexe.",
+        prereqs: [],
+        seances: seances([
+            "Mise en place du rituel d'écoute (posture, silence, attention) sur une consigne simple.",
+            "Écoute d'une courte consigne à plusieurs étapes ; exécution collective guidée.",
+            "Identification collective de ce qui aide à mémoriser un message entendu.",
+            "Écoute d'un texte narratif court ; restitution guidée du contenu à l'oral.",
+            "Écoute autonome d'un message ou d'une consigne, exécution individuelle.",
+            "Écoute d'un document sonore court en lien avec une autre discipline ; relevé d'informations.",
+            "Bilan : capacité à restituer les informations essentielles d'un message entendu une fois."
+        ])
+    },
+    {
+        id: "ORA2", domaine: "oral", nom: "Dire pour être compris",
+        objectif: "Mener une brève production orale pour raconter, décrire ou expliquer, en utilisant des connecteurs simples et un vocabulaire approprié.",
+        prereqs: ["ORA1", "VOC1"],
+        seances: seances([
+            "Écoute d'un modèle oral du professeur racontant un évènement simple.",
+            "Repérage collectif des connecteurs utilisés (d'abord, ensuite, parce que).",
+            "Élaboration d'une trame commune pour raconter ou décrire.",
+            "Production orale guidée en petit groupe, avec reformulation du professeur.",
+            "Production orale autonome devant un petit groupe de pairs.",
+            "Présentation d'un poème mémorisé ou d'une courte histoire à la classe.",
+            "Bilan collectif : ce qui a aidé à être bien compris par les autres."
+        ])
+    },
+    {
+        id: "ORA3", domaine: "oral", nom: "Participer à des échanges",
+        objectif: "Participer à des échanges en respectant les règles de prise de parole, en écoutant les autres et en donnant un avis argumenté.",
+        prereqs: ["ORA2"],
+        seances: seances([
+            "Rappel des règles d'un échange collectif (lever la main, attendre son tour, écouter).",
+            "Observation d'un échange modèle (vidéo ou jeu de rôle du professeur) ; ce qui fonctionne bien.",
+            "Élaboration collective de formules pour prendre la parole ou marquer son accord/désaccord.",
+            "Échange guidé en petit groupe sur un sujet simple, avec ces formules imposées.",
+            "Échange en autonomie relative, professeur en retrait, observation des règles respectées.",
+            "Débat court en classe entière sur une question simple liée à une lecture.",
+            "Bilan : auto-évaluation de sa participation (a-t-il écouté, attendu son tour, argumenté)."
+        ])
+    },
+    {
+        id: "VOC1", domaine: "vocabulaire", nom: "Enrichir son vocabulaire",
+        objectif: "Enrichir en contexte le vocabulaire, être sensible à la polysémie et commencer à utiliser un dictionnaire adapté.",
+        prereqs: ["ORA1"],
+        seances: seances([
+            "Découverte de mots nouveaux à partir d'un album ou d'un thème (ex. la forêt).",
+            "Explicitation collective du sens des mots à partir du contexte de la lecture.",
+            "Classement des mots découverts par catégorie (noms, verbes, adjectifs).",
+            "Réemploi guidé des mots dans des phrases orales puis écrites courtes.",
+            "Jeu de vocabulaire autonome (loto, memory) réutilisant les mots du corpus.",
+            "Réemploi des mots dans une autre discipline (sciences, mathématiques).",
+            "Bilan : les élèves restituent le maximum de mots du corpus étudié."
+        ])
+    },
+    {
+        id: "VOC2", domaine: "vocabulaire", nom: "Établir des relations entre les mots",
+        objectif: "Constituer des répertoires de mots par thème ou famille, savoir catégoriser, trouver synonymes et antonymes simples.",
+        prereqs: ["VOC1"],
+        seances: seances([
+            "Observation d'un corpus de mots à trier (ex. objets de la classe) ; hypothèses de tri.",
+            "Tri collectif et verbalisation du critère retenu (champ lexical).",
+            "Structuration : notion de mots de sens contraire, de mots de la même famille.",
+            "Exercices guidés de tri et d'appariement de mots.",
+            "Exercice autonome de recherche de contraires ou de mots d'une même famille.",
+            "Réutilisation des relations trouvées dans une production orale ou écrite.",
+            "Bilan : capacité à justifier un classement de mots."
+        ])
+    },
+    {
+        id: "VOC3", domaine: "vocabulaire", nom: "Réemployer le vocabulaire étudié",
+        objectif: "Réemployer et mémoriser le vocabulaire et les expressions appris, en adaptant le niveau de langue à la situation.",
+        prereqs: ["VOC2"],
+        seances: seances([
+            "Rappel oral rapide (jeu) des mots des corpus déjà étudiés dans l'année.",
+            "Observation de deux façons de dire la même chose (niveau familier / courant).",
+            "Verbalisation de la différence de niveau de langue et de son usage approprié.",
+            "Jeu de rôle guidé réemployant le vocabulaire et le niveau de langue adapté.",
+            "Production autonome d'une phrase ou d'un court dialogue réutilisant le corpus.",
+            "Réemploi du vocabulaire dans une dictée à l'adulte ou une production écrite.",
+            "Bilan : fluence verbale — citer rapidement des mots du corpus étudié."
+        ])
+    },
+    {
+        id: "VOC4", domaine: "vocabulaire", nom: "Mémoriser l'orthographe lexicale",
+        objectif: "Mémoriser l'orthographe des mots fréquents et réguliers, identifier les lettres muettes en s'appuyant sur les mots de la même famille.",
+        prereqs: ["LEC1", "VOC1"],
+        seances: seances([
+            "Observation collective d'une liste de mots fréquents à mémoriser.",
+            "Repérage des régularités et des pièges (lettres muettes, doubles lettres).",
+            "Structuration d'une stratégie de mémorisation (épellation, mot de la même famille).",
+            "Entraînement guidé : copie et épellation des mots de la liste.",
+            "Auto-dictée autonome sur la liste de mots.",
+            "Réemploi des mots mémorisés dans une phrase dictée.",
+            "Évaluation de la liste de mots (dictée bilan)."
+        ])
+    },
+    {
+        id: "GRA1", domaine: "grammaire", nom: "Se repérer dans la phrase simple",
+        objectif: "S'approprier la notion de phrase (majuscule, point, sens), reconnaître les types de phrases et les classes de mots de base.",
+        prereqs: ["LEC1"],
+        seances: seances([
+            "Observation d'un texte : repérage collectif des majuscules et des points.",
+            "Manipulation de phrases : remise en ordre, identification du début et de la fin.",
+            "Structuration : les trois marqueurs de la phrase (majuscule, point, sens).",
+            "Tri guidé de mots par classe grammaticale (déterminant, nom, verbe, adjectif).",
+            "Exercice autonome de tri de mots et de construction de phrases simples.",
+            "Production d'une phrase simple correcte dans un contexte donné (dictée à l'adulte).",
+            "Bilan : identification des phrases d'un texte et de leurs marqueurs."
+        ])
+    },
+    {
+        id: "GRA2", domaine: "grammaire", nom: "Orthographe grammaticale",
+        objectif: "Comprendre le masculin/féminin, le singulier/pluriel, la chaîne d'accords, et commencer à conjuguer être et avoir au présent.",
+        prereqs: ["GRA1"],
+        seances: seances([
+            "Observation orale de paires de mots (petit/petite) ; recherche de la différence.",
+            "Manipulation de groupes nominaux au singulier et au pluriel ; observation des marques.",
+            "Structuration collective de la règle d'accord (déterminant/nom/adjectif).",
+            "Exercices guidés de transformation singulier ↔ pluriel, masculin ↔ féminin.",
+            "Exercice autonome d'accord dans des groupes nominaux nouveaux.",
+            "Dictée de groupes nominaux et de courtes phrases avec être et avoir au présent.",
+            "Bilan : dictée de contrôle sur les accords étudiés."
+        ])
+    }
+];
+
+const byId = {}; COMPETENCES.forEach(c => byId[c.id] = c);
+
+/* =========================================================
+   FILTRES PAR DOMAINE
+   ========================================================= */
+let domainesActifs = new Set(Object.keys(DOMAINES));
+
+function construireFiltres(){
+    const zone = $("filtres");
+    zone.innerHTML = Object.entries(DOMAINES).map(([key, d]) => `
+        <span class="domaine-filtre actif" data-domaine="${key}" onclick="toggleDomaine('${key}')">
+            <span class="dot" style="background:${d.couleur}"></span>${d.label}
+        </span>`).join("") + `<input type="text" id="searchInput" placeholder="Filtrer une compétence…">`;
+    $("searchInput").addEventListener("input", e => filtrerRecherche(e.target.value));
+}
+function toggleDomaine(key){
+    if(domainesActifs.has(key)) domainesActifs.delete(key); else domainesActifs.add(key);
+    document.querySelector(`.domaine-filtre[data-domaine="${key}"]`).classList.toggle("actif");
+    reconstruireGraphe();
+}
+function filtrerRecherche(q){
+    q = q.trim().toLowerCase();
+    if(!Graph) return;
+    Graph.nodeColor(n => {
+        const base = DOMAINES[n.domaine].couleur;
+        if(!q) return base;
+        return (n.nom.toLowerCase().includes(q) || n.id.toLowerCase().includes(q)) ? "#ffffff" : "#2a3234";
+    });
+}
+
+function construireLegende(){
+    $("legendRows").innerHTML = Object.values(DOMAINES).map(d =>
+        `<div class="row"><span class="dot" style="background:${d.couleur}"></span>${d.label}</div>`).join("");
+}
+
+/* =========================================================
+   GRAPHE 3D
+   ========================================================= */
+let Graph = null;
+
+function construireDonneesGraphe(){
+    const actives = COMPETENCES.filter(c => domainesActifs.has(c.domaine));
+    const idsActifs = new Set(actives.map(c => c.id));
+    const nodes = actives.map(c => ({ id: c.id, nom: c.nom, domaine: c.domaine }));
+    const links = [];
+    actives.forEach(c => c.prereqs.forEach(p => {
+        if(idsActifs.has(p)) links.push({ source: p, target: c.id });
+    }));
+    return { nodes, links };
+}
+
+function tailleNoeud(n, links){
+    const deg = links.filter(l => l.source === n.id || l.target === n.id || (l.source && l.source.id === n.id) || (l.target && l.target.id === n.id)).length;
+    return 4 + Math.min(deg, 10) * 0.7;
+}
+
+function construireGraphe(){
+    const { nodes, links } = construireDonneesGraphe();
+    nodes.forEach(n => n.val = tailleNoeud(n, links));
+    $("graphZone").innerHTML = "";
+    $("emptyState").style.display = nodes.length ? "none" : "flex";
+    if(!nodes.length){ Graph = null; return; }
+    const zone = document.createElement("div");
+    zone.style.position = "absolute"; zone.style.inset = "0";
+    $("graphZone").appendChild(zone);
+    $("graphZone").appendChild($("emptyState"));
+
+    Graph = ForceGraph3D()(zone)
+        .backgroundColor("rgba(0,0,0,0)")
+        .graphData({ nodes, links })
+        .nodeLabel(n => `${n.nom} (${DOMAINES[n.domaine].label})`)
+        .nodeColor(n => DOMAINES[n.domaine].couleur)
+        .linkColor(() => "#d9a441")
+        .linkOpacity(0.75)
+        .linkWidth(1.2)
+        .linkDirectionalArrowLength(3.5)
+        .linkDirectionalArrowRelPos(1)
+        .linkCurvature(0.12)
+        .onNodeClick(n => { ouvrirFiche(n.id); centrerSur(n); })
+        .onBackgroundClick(fermerFiche);
+
+    Graph.d3Force("charge").strength(-70);
+}
+function reconstruireGraphe(){ construireGraphe(); }
+
+function centrerSur(n){
+    const dist = 80;
+    const ratio = 1 + dist/Math.hypot(n.x||1, n.y||1, n.z||1);
+    Graph.cameraPosition({ x:(n.x||0.1)*ratio, y:(n.y||0.1)*ratio, z:(n.z||0.1)*ratio }, n, 700);
+}
+
+/* =========================================================
+   PANNEAU FICHE COMPÉTENCE
+   ========================================================= */
+function ouvrirFiche(id){
+    const c = byId[id];
+    if(!c) return;
+    const d = DOMAINES[c.domaine];
+    const prereqsHTML = c.prereqs.length
+        ? c.prereqs.map(p => `<a onclick="ouvrirFiche('${p}')">${byId[p].nom}</a>`).join(", ")
+        : "aucun — compétence fondatrice";
+    $("panelContent").innerHTML = `
+        <span class="domaine-tag" style="border-color:${d.couleur};color:${d.couleur}">${d.label}</span>
+        <h2>${c.nom}</h2>
+        <div class="objectif">${c.objectif}</div>
+        <div class="prereqs">Prérequis : <b>${c.prereqs.length}</b> — ${prereqsHTML}</div>
+        <h3>Séquence — 7 séances</h3>
+        ${c.seances.map((s,i) => `
+            <div class="seance">
+                <div class="num">Séance ${i+1} · ${s.titre}</div>
+                <div class="desc">${s.desc}</div>
+            </div>`).join("")}
+    `;
+    $("panel").classList.add("visible");
+}
+function fermerFiche(){ $("panel").classList.remove("visible"); }
+$("panelClose").addEventListener("click", fermerFiche);
+
+/* =========================================================
+   INIT
+   ========================================================= */
+construireFiltres();
+construireLegende();
+construireGraphe();
+</script>
+</body>
+</html>
