@@ -387,7 +387,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
       <div>
         <p class="eyebrow">Cycle 2 · Français · Programmation</p>
         <h1>Séquences &amp; séances</h1>
-        <p>Chaque séquence est une brique de l'année. Ouvrez-la pour composer ses séances (sous-briques) selon vos modèles habituels. Tout est enregistré en JSON, dans ce navigateur.</p>
+        <p>Chaque séquence est une brique de l'année. Ouvrez-la pour composer ses séances (sous-briques) selon vos modèles habituels. Les données du site sont chargées depuis index.json et les fichiers JSON de /data/. Les modifications locales restent enregistrées dans ce navigateur.</p>
       </div>
     </div>
 
@@ -681,6 +681,15 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 /* ============================================================
    DONNÉES — domaines, périodes, stockage local (JSON)
    ============================================================ */
+/* ============================================================
+   CHEMINS DES DONNÉES
+   sequences.html se trouve à la racine de /Programmation/.
+   Tous les chemins déclarés dans index.json sont donc relatifs à
+   cette même racine.
+   ============================================================ */
+const DATA_INDEX = "./index.json";
+const DATA_COMPETENCES = "./data/competences.json";
+
 const DOMAINES = {
   lecture:     { nom:"Lecture",               couleur:"#B5502E" },
   ecriture:    { nom:"Écriture",               couleur:"#2A7F72" },
@@ -688,20 +697,32 @@ const DOMAINES = {
   vocabulaire: { nom:"Vocabulaire",            couleur:"#B5871E" },
   grammaire:   { nom:"Grammaire & orthographe",couleur:"#1E2A4A" }
 };
-/* Référentiel de compétences — reflète competences.json.
-   Une séquence pointe vers UNE compétence "cible" (competence_id) mais une
-   même compétence peut être la cible de plusieurs séquences/séances.
-   Une séquence peut aussi lister des compétences "antérieures" (pré-requis),
-   ce qui construit un réseau plutôt qu'une progression strictement linéaire. */
-const COMPETENCES = [
-  { id:"lecture", discipline:"Français", cycle:"Cycle 2", domaine:"Lecture", couleur:"#B5502E",
-    objectifs:["Identifier des mots de manière de plus en plus aisée","Comprendre un texte et contrôler sa compréhension"] },
-  { id:"ecriture", discipline:"Français", cycle:"Cycle 2", domaine:"Écriture", couleur:"#2A7F72",
-    objectifs:["Copier de manière experte","Produire des écrits en commençant à s'approprier une démarche"] },
-  { id:"oral", discipline:"Français", cycle:"Cycle 2", domaine:"Oral", couleur:"#6B4E8E",
-    objectifs:["Écouter pour comprendre des messages oraux ou des textes lus","Participer à des échanges dans des situations diversifiées"] }
-];
-function getCompetence(id){ return COMPETENCES.find(c=>c.id===id); }
+/* Référentiel chargé depuis data/competences.json.
+   On conserve un tableau mutable afin de pouvoir le remplacer au démarrage. */
+let COMPETENCES = [];
+
+function getCompetence(id){
+  return COMPETENCES.find(c=>c.id===id);
+}
+
+function normaliserCompetence(c){
+  if(!c) return null;
+  return {
+    id: c.id,
+    discipline: c.discipline || "",
+    cycle: c.cycle || "Cycle 2",
+    domaine: c.domaine || c.nom || c.intitule || c.domaine_id || "",
+    domaine_id: c.domaine_id || "",
+    couleur: c.couleur || (DOMAINES[c.domaine_id] && DOMAINES[c.domaine_id].couleur) || "#2E5EAA",
+    intitule: c.intitule || c.nom || "",
+    objectifs: Array.isArray(c.objectifs) && c.objectifs.length
+      ? c.objectifs
+      : [c.intitule || c.nom || ""],
+    prerequis_competences: Array.isArray(c.prerequis_competences)
+      ? c.prerequis_competences
+      : []
+  };
+}
 
 const PERIODES = [
   {n:1,label:"Période 1",span:7},
@@ -752,26 +773,243 @@ const state = {
 
 function uid(prefix){ return prefix + "_" + Date.now().toString(36) + "_" + Math.random().toString(36).slice(2,7); }
 
-/* Données d'exemple au tout premier lancement, pour ne pas ouvrir sur du vide */
-function seedIfEmpty(){
-  if(state.sequences.length || state.seances.length) return;
-  const seqId = uid("seq");
-  state.sequences.push({
-    id: seqId, titre:"Développer la fluence de lecture", domaine:"lecture", classe:"CE1",
-    competence_id:"lecture", prerequis_competences:[],
-    competences:"Lire un texte connu à voix haute avec fluidité",
-    periode:2, semaine_debut:8, semaine_fin:10,
-    objectif_commun:"Lire un texte connu à voix haute avec fluidité, pour mieux le comprendre.",
-    prerequis:["Identification des syllabes complexes","Déchiffrage sans hésitation des mots outils"],
-    objectifs_individuels:[], references_theoriques:""
-  });
-  const seances = genererSeancesParDefaut(seqId, "CE1");
-  seances[1].titre = "Découverte";
-  seances[1].objectif_commun = "Lire un texte plusieurs fois pour le lire de mieux en mieux, sans buter sur les mots.";
-  state.seances.push(...seances);
-  saveSequences(state.sequences); saveSeances(state.seances);
+/* ============================================================
+   CHARGEMENT DES DONNÉES DU SITE
+   ------------------------------------------------------------
+   Arborescence attendue :
+   Programmation/
+   ├── index.json
+   ├── sequences.html
+   └── data/
+       ├── competences.json
+       └── CP/
+           └── francais/
+               └── ...
+   Les chemins contenus dans index.json sont relatifs à /Programmation/.
+   ============================================================ */
+
+function absoluteDataURL(relativePath){
+  return new URL(relativePath, new URL(DATA_INDEX, window.location.href)).href;
 }
-seedIfEmpty();
+
+async function fetchJSON(relativePath){
+  const url = absoluteDataURL(relativePath);
+  const response = await fetch(url, {cache:"no-cache"});
+  if(!response.ok){
+    throw new Error(`HTTP ${response.status} — ${relativePath}`);
+  }
+  return response.json();
+}
+
+function sequenceDepuisJSON(data){
+  if(!data) return [];
+  if(Array.isArray(data.sequences)) return data.sequences;
+  if(data.id && data.titre) return [data];
+  return [];
+}
+
+function seancesDepuisJSON(data){
+  if(!data) return [];
+  if(Array.isArray(data.seances)) return data.seances;
+  return [];
+}
+
+function trouverDomainDepuisIndex(index, sequenceId){
+  const result = {
+    domaine: "",
+    competence_id: "",
+    classe: "",
+    niveau: "",
+    discipline: ""
+  };
+
+  for(const niveau of (index.niveaux || [])){
+    for(const discipline of (niveau.disciplines || [])){
+      for(const domaine of (discipline.domaines || [])){
+        for(const seq of (domaine.sequences || [])){
+          if(seq.id === sequenceId){
+            result.domaine = domaine.id || domaine.nom || "";
+            result.classe = niveau.id || "";
+            result.niveau = niveau.id || "";
+            result.discipline = discipline.nom || discipline.id || "";
+            return result;
+          }
+        }
+      }
+    }
+  }
+  return result;
+}
+
+function normaliserSequence(seq, index){
+  const meta = trouverDomainDepuisIndex(index, seq.id);
+  const domaineJSON = seq.domaine || meta.domaine || "";
+  const competence = getCompetence(seq.competence_id);
+
+  /* Le champ domaine des anciens fichiers peut contenir "Français - Lecture...".
+     Pour les filtres de l'interface, on privilégie le domaine_id de la compétence
+     puis le domaine déclaré dans l'index. */
+  let domaine = competence && (competence.domaine_id || competence.domaine)
+    ? (competence.domaine_id || competence.domaine)
+    : meta.domaine || domaineJSON;
+
+  if(!DOMAINES[domaine]){
+    const domaineTrouve = Object.entries(DOMAINES).find(([id, d]) =>
+      id === domaine ||
+      d.nom === domaine ||
+      domaineJSON.toLowerCase().includes(d.nom.toLowerCase())
+    );
+    if(domaineTrouve) domaine = domaineTrouve[0];
+  }
+
+  return {
+    ...seq,
+    domaine,
+    classe: seq.classe || meta.classe || "",
+    competence_id: seq.competence_id || "",
+    prerequis_competences: Array.isArray(seq.prerequis_competences)
+      ? seq.prerequis_competences
+      : []
+  };
+}
+
+async function chargerDonneesDuSite(){
+  const index = await fetchJSON(DATA_INDEX);
+
+  const competencesData = await fetchJSON(index.meta?.competences || DATA_COMPETENCES);
+  if(Array.isArray(competencesData.competences)){
+    COMPETENCES = competencesData.competences
+      .map(normaliserCompetence)
+      .filter(Boolean);
+  } else if(Array.isArray(competencesData)){
+    COMPETENCES = competencesData.map(normaliserCompetence).filter(Boolean);
+  }
+
+  const sequenceEntries = [];
+  for(const niveau of (index.niveaux || [])){
+    for(const discipline of (niveau.disciplines || [])){
+      for(const domaine of (discipline.domaines || [])){
+        for(const seqMeta of (domaine.sequences || [])){
+          sequenceEntries.push({niveau, discipline, domaine, seqMeta});
+        }
+      }
+    }
+  }
+
+  const sequences = [];
+  const seances = [];
+
+  for(const entry of sequenceEntries){
+    const sequenceData = await fetchJSON(entry.seqMeta.fichier_sequence);
+    const seqList = sequenceDepuisJSON(sequenceData);
+
+    for(const rawSeq of seqList){
+      const seq = normaliserSequence(rawSeq, index);
+      sequences.push(seq);
+
+      /* Les fichiers de séances sont déclarés dans index.json.
+         Ils sont eux aussi relatifs à /Programmation/. */
+      for(const seaMeta of (entry.seqMeta.seances || [])){
+        try{
+          const seaData = await fetchJSON(seaMeta.fichier);
+          const loaded = seancesDepuisJSON(seaData);
+          if(loaded.length){
+            loaded.forEach(sea => seances.push({
+              ...sea,
+              id: sea.id || seaMeta.id,
+              sequence_id: sea.sequence_id || seq.id,
+              numero: sea.numero ?? seaMeta.numero,
+              type: sea.type || seaMeta.type,
+              titre: sea.titre || seaMeta.titre,
+              classe: sea.classe || seq.classe || ""
+            }));
+          }else if(seaData && (seaData.id || seaData.titre)){
+            seances.push({
+              ...seaData,
+              id: seaData.id || seaMeta.id,
+              sequence_id: seaData.sequence_id || seq.id,
+              numero: seaData.numero ?? seaMeta.numero,
+              type: seaData.type || seaMeta.type,
+              titre: seaData.titre || seaMeta.titre,
+              classe: seaData.classe || seq.classe || ""
+            });
+          }
+        }catch(error){
+          console.warn("Séance non chargée :", seaMeta.fichier, error);
+        }
+      }
+
+      /* Si le fichier de séquence contient déjà des séances, on les conserve. */
+      const embedded = seancesDepuisJSON(sequenceData);
+      embedded.forEach(sea => {
+        if(!seances.some(x=>x.id===sea.id)){
+          seances.push({
+            ...sea,
+            sequence_id: sea.sequence_id || seq.id,
+            classe: sea.classe || seq.classe || ""
+          });
+        }
+      });
+    }
+  }
+
+  return { index, sequences, seances };
+}
+
+async function initialiserDonnees(){
+  try{
+    const remote = await chargerDonneesDuSite();
+
+    if(remote.sequences.length){
+      state.sequences = remote.sequences;
+      state.seances = remote.seances;
+
+      /* Le stockage local reste disponible pour les créations/modifications
+         effectuées dans l'interface après le chargement. */
+      saveSequences(state.sequences);
+      saveSeances(state.seances);
+
+      toast(`${remote.sequences.length} séquence${remote.sequences.length > 1 ? "s" : ""} chargée${remote.sequences.length > 1 ? "s" : ""} depuis le site`);
+      return;
+    }
+
+    throw new Error("Aucune séquence déclarée dans index.json");
+  }catch(error){
+    console.warn("Chargement des données du site impossible :", error);
+
+    /* Fallback : si le site est ouvert hors serveur ou si les JSON sont
+       temporairement indisponibles, on conserve les données locales. */
+    if(!state.sequences.length && !state.seances.length){
+      const seqId = uid("seq");
+      state.sequences.push({
+        id: seqId,
+        titre:"Développer la fluence de lecture",
+        domaine:"lecture",
+        classe:"CE1",
+        competence_id:"lecture",
+        prerequis_competences:[],
+        competences:"Lire un texte connu à voix haute avec fluidité",
+        periode:2,
+        semaine_debut:8,
+        semaine_fin:10,
+        objectif_commun:"Lire un texte connu à voix haute avec fluidité, pour mieux le comprendre.",
+        prerequis:["Identification des syllabes complexes","Déchiffrage sans hésitation des mots outils"],
+        objectifs_individuels:[],
+        references_theoriques:""
+      });
+
+      const seances = genererSeancesParDefaut(seqId, "CE1");
+      seances[1].titre = "Découverte";
+      seances[1].objectif_commun = "Lire un texte plusieurs fois pour le lire de mieux en mieux, sans buter sur les mots.";
+      state.seances.push(...seances);
+
+      saveSequences(state.sequences);
+      saveSeances(state.seances);
+    }
+
+    toast("Données locales utilisées — impossible de charger les JSON du site");
+  }
+}
 
 /* ============================================================
    UTILITAIRES UI
@@ -856,7 +1094,8 @@ function renderSeqGrid(){
   const grid = document.getElementById('seq-grid');
   grid.innerHTML = "";
   const list = state.sequences.filter(s=>{
-    if(!state.activeDomains.has(s.domaine)) return false;
+    const domaineId = s.domaine || s.competence_id || "";
+    if(!state.activeDomains.has(domaineId)) return false;
     if(state.activePeriode!==null && s.periode!==state.activePeriode) return false;
     return true;
   });
@@ -945,7 +1184,7 @@ function renderReseau(){
     node.className = "comp-node";
     node.id = "cnode-" + c.id;
     node.style.setProperty('--ccolor', c.couleur);
-    const seqsForComp = state.sequences.filter(s=>(s.competence_id||s.domaine)===c.id);
+    const seqsForComp = state.sequences.filter(s=>(s.competence_id||s.domaine)===c.id || s.domaine===c.domaine_id);
     const seqsHTML = seqsForComp.length ? seqsForComp.map(s=>{
       const nb = state.seances.filter(x=>x.sequence_id===s.id).length;
       return `<button class="cn-seq-item" data-open-seq="${s.id}">${escapeHTML(s.titre)}<span class="csi-meta">P${s.periode} · S${s.semaine_debut}–S${s.semaine_fin} · ${nb} séance${nb>1?'s':''}</span></button>`;
@@ -1144,7 +1383,9 @@ function addSeqEleveRow(nom,objectif){
 document.getElementById('add-seq-eleve').addEventListener('click', ()=> addSeqEleveRow("",""));
 
 function competenceLabel(c){
-  return `${c.domaine} — ${c.objectifs[0].slice(0,46)}${c.objectifs[0].length>46?'…':''}`;
+  const domaine = c.domaine || c.domaine_id || "";
+  const objectif = (c.objectifs && c.objectifs[0]) || c.intitule || "";
+  return `${domaine} — ${objectif.slice(0,46)}${objectif.length>46?'…':''}`;
 }
 function fillCompetenceSelect(selected){
   const sel = document.getElementById('f-seq-competence');
@@ -1612,8 +1853,15 @@ document.getElementById('file-import').addEventListener('change', e=>{
 /* ============================================================
    INIT
    ============================================================ */
-renderFilters();
-renderSeqGrid();
+async function init(){
+  renderFilters();
+  renderSeqGrid();
+  await initialiserDonnees();
+  renderFilters();
+  renderSeqGrid();
+}
+
+init();
 </script>
 </body>
 </html>
