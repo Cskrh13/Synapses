@@ -1,4 +1,40 @@
 {
+  "_MODE_EMPLOI": {
+    "version": "1.0",
+    "role": "Ce fichier organise la structure administrative et chronologique de la programmation pédagogique de Synapses.",
+    "source_primaire": "Les documents PDF et autres documents de référence fournis pour construire ou corriger la programmation.",
+    "hierarchie": "niveau > discipline > domaine > sequence > seances",
+    "regles": [
+      "Ne jamais inventer une séquence ou une séance absente des sources fournies.",
+      "Conserver les identifiants existants lorsque la donnée existe déjà.",
+      "Créer un nouvel identifiant stable uniquement lorsqu'une nouvelle donnée doit être ajoutée.",
+      "Ne pas supprimer une donnée existante sans justification explicite.",
+      "Une séquence doit toujours être placée sous le niveau, la discipline et le domaine auxquels elle appartient dans les sources.",
+      "Une séance doit toujours appartenir à une séquence existante.",
+      "Les chemins de fichiers doivent être relatifs à la racine du dossier Programmation.",
+      "Le champ competence_id sert à relier une séquence à une compétence ; il ne détermine pas son niveau spatial. Le niveau de index.json reste prioritaire.",
+      "Ne pas utiliser ce fichier pour déduire ou inventer des prérequis pédagogiques."
+    ],
+    "procedure_avec_un_pdf": [
+      "Lire le document fourni dans son intégralité avant de modifier les données.",
+      "Identifier le niveau, la discipline et le domaine concernés.",
+      "Comparer les informations du document avec les entrées déjà présentes dans index.json.",
+      "Réutiliser les identifiants existants lorsqu'une donnée correspond déjà.",
+      "Ajouter uniquement les séquences et séances réellement justifiées par le document.",
+      "Vérifier que chaque séquence possède son niveau, sa discipline et son domaine par sa position dans l'arborescence.",
+      "Vérifier que chaque séance possède un sequence_id cohérent et un fichier déclaré si le fichier existe.",
+      "Vérifier les doublons et les chemins.",
+      "Valider le JSON final avant de le retourner.",
+      "Fournir séparément un résumé des ajouts, corrections et ambiguïtés."
+    ],
+    "index_pedagogique": {
+      "optionnel": true,
+      "fichier": "documents de références pédagogique/index-pedagogique.js",
+      "regle": "Ce fichier n'est utilisé que s'il existe réellement. Son absence ne doit provoquer aucune erreur et ne doit pas empêcher le fonctionnement de Synapses.",
+      "role_futur": "Il pourra contenir le condensé des analyses pédagogiques servant à établir les relations de construction des apprentissages.",
+      "important": "Ne pas créer de prerequis_competences dans index.json à partir de simples suppositions ou de l'ordre d'apparition des programmes."
+    }
+  },
   "meta": {
     "titre": "Index central de la programmation pédagogique",
     "version": "1.1",
@@ -27,24 +63,97 @@
                   "dossier": "data/CP/francais/lecture/sequence_son_a_CP/",
                   "fichier_sequence": "data/CP/francais/lecture/sequence_son_a_CP/sequence_son_a_CP.json",
                   "seances": [
-                    {"numero":1,"id":"sea_son_a_cp_01","type":"Diagnostique","titre":"Que savons-nous déjà du son [a] ?","fichier":"data/CP/francais/lecture/sequence_son_a_CP/seance_01_diagnostique.json"},
-                    {"numero":2,"id":"sea_son_a_cp_02","type":"Exploration","titre":"J'entends le son [a]","fichier":"data/CP/francais/lecture/sequence_son_a_CP/seance_02_exploration.json"},
-                    {"numero":3,"id":"sea_son_a_cp_03","type":"Références","titre":"Quelle lettre écrit le son [a] ?","fichier":"data/CP/francais/lecture/sequence_son_a_CP/seance_03_references.json"},
-                    {"numero":4,"id":"sea_son_a_cp_04","type":"Structuration","titre":"Lire et écrire avec a","fichier":"data/CP/francais/lecture/sequence_son_a_CP/seance_04_structuration.json"},
-                    {"numero":5,"id":"sea_son_a_cp_05","type":"Systématisation","titre":"Je m'entraîne avec le son [a]","fichier":"data/CP/francais/lecture/sequence_son_a_CP/seance_05_systematisation.json"},
-                    {"numero":6,"id":"sea_son_a_cp_06","type":"Approfondissement","titre":"Lire des mots et une phrase avec le son [a]","fichier":"data/CP/francais/lecture/sequence_son_a_CP/seance_06_approfondissement.json"},
-                    {"numero":7,"id":"sea_son_a_cp_07","type":"Évaluation","titre":"Je montre ce que je sais faire avec le son [a]","fichier":"data/CP/francais/lecture/sequence_son_a_CP/seance_07_evaluation.json"}
+                    {
+                      "numero": 1,
+                      "id": "sea_son_a_cp_01",
+                      "type": "Diagnostique",
+                      "titre": "Que savons-nous déjà du son [a] ?",
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_01_diagnostique.json"
+                    },
+                    {
+                      "numero": 2,
+                      "id": "sea_son_a_cp_02",
+                      "type": "Exploration",
+                      "titre": "J'entends le son [a]",
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_02_exploration.json"
+                    },
+                    {
+                      "numero": 3,
+                      "id": "sea_son_a_cp_03",
+                      "type": "Références",
+                      "titre": "Quelle lettre écrit le son [a] ?",
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_03_references.json"
+                    },
+                    {
+                      "numero": 4,
+                      "id": "sea_son_a_cp_04",
+                      "type": "Structuration",
+                      "titre": "Lire et écrire avec a",
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_04_structuration.json"
+                    },
+                    {
+                      "numero": 5,
+                      "id": "sea_son_a_cp_05",
+                      "type": "Systématisation",
+                      "titre": "Je m'entraîne avec le son [a]",
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_05_systematisation.json"
+                    },
+                    {
+                      "numero": 6,
+                      "id": "sea_son_a_cp_06",
+                      "type": "Approfondissement",
+                      "titre": "Lire des mots et une phrase avec le son [a]",
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_06_approfondissement.json"
+                    },
+                    {
+                      "numero": 7,
+                      "id": "sea_son_a_cp_07",
+                      "type": "Évaluation",
+                      "titre": "Je montre ce que je sais faire avec le son [a]",
+                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_07_evaluation.json"
+                    }
                   ]
                 }
               ]
             },
-            {"id":"ecriture","nom":"Écriture","chemin":"data/CP/francais/ecriture/","sequences":[]},
-            {"id":"oral","nom":"Oral","chemin":"data/CP/francais/oral/","sequences":[]},
-            {"id":"vocabulaire","nom":"Vocabulaire","chemin":"data/CP/francais/vocabulaire/","sequences":[]},
-            {"id":"grammaire_orthographe","nom":"Grammaire et orthographe","chemin":"data/CP/francais/grammaire_orthographe/","sequences":[]}
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/CP/francais/ecriture/",
+              "sequences": []
+            },
+            {
+              "id": "oral",
+              "nom": "Oral",
+              "chemin": "data/CP/francais/oral/",
+              "sequences": []
+            },
+            {
+              "id": "vocabulaire",
+              "nom": "Vocabulaire",
+              "chemin": "data/CP/francais/vocabulaire/",
+              "sequences": []
+            },
+            {
+              "id": "grammaire_orthographe",
+              "nom": "Grammaire et orthographe",
+              "chemin": "data/CP/francais/grammaire_orthographe/",
+              "sequences": []
+            }
           ]
         },
-        {"id":"mathematiques","nom":"Mathématiques","domaines":[{"id":"nombres_calculs","nom":"Nombres et calculs","chemin":"data/CP/mathematiques/nombres_calculs/","sequences":[]}]}
+        {
+          "id": "mathematiques",
+          "nom": "Mathématiques",
+          "domaines": [
+            {
+              "id": "nombres_calculs",
+              "nom": "Nombres et calculs",
+              "chemin": "data/CP/mathematiques/nombres_calculs/",
+              "sequences": []
+            }
+          ]
+        }
       ]
     }
   ]
