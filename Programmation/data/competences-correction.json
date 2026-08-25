@@ -1,0 +1,15 @@
+{
+  "version": "3.1-cartographie",
+  "fichier_source": "Programmation/data/competences.json",
+  "statut": "AUCUNE_MODIFICATION_DE_DONNEES_NECESSAIRE",
+  "raison": "Le référentiel actuel contient déjà les champs prerequis_competences et les niveaux. La correction doit porter sur la cartographie et l'index, sans supprimer ni réécrire les 4722 lignes du référentiel.",
+  "contrat": {
+    "niveau": "Le niveau de la compétence détermine la sphère dans la cartographie.",
+    "prerequis_competences": "Liste d'IDs de compétences utilisées pour les liens d'antériorité pédagogique.",
+    "id": "Identifiant stable utilisé par competence_id dans index.json."
+  },
+  "alias_compatibilite": {
+    "lecture_code": "lecture_identifier_mots"
+  },
+  "instruction": "Conserver le competences.json existant tel quel. Ne pas remplacer ce fichier par un sous-ensemble : cela supprimerait les compétences CE1-CM2/6e du référentiel."
+}
