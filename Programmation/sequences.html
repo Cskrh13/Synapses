@@ -46,6 +46,24 @@ h1{font-size:34px;margin:0 0 8px;line-height:1.08} h2{margin:0} .lead{color:var(
 .panel h3{font-size:12px;text-transform:uppercase;letter-spacing:.09em;margin:0 0 10px;color:var(--ink-soft)}
 .panel p{margin:0;line-height:1.55}.full{grid-column:1/-1}.objectifs{margin:0;padding-left:20px;line-height:1.55}
 .seances-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:12px}
+.timeline-panel{padding:18px}
+.timeline-title{display:flex;align-items:baseline;justify-content:space-between;gap:12px;margin-bottom:16px}
+.timeline-title h3{margin:0}
+.timeline-note{font-size:12px;color:var(--ink-soft)}
+.timeline-periods{display:grid;grid-template-columns:7fr 7fr 7fr 8fr 7fr;gap:4px;margin-bottom:5px}
+.timeline-period{padding:6px 4px;text-align:center;font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);border-bottom:2px solid var(--line)}
+.timeline-weeks{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px}
+.timeline-week{min-height:30px;display:flex;align-items:center;justify-content:center;border:1px solid var(--line);border-radius:5px;background:#f7f7f5;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:10px;font-weight:600}
+.timeline-week.active{background:var(--timeline-color,#2e5eaa);border-color:var(--timeline-color,#2e5eaa);color:#fff;box-shadow:0 2px 6px rgba(0,0,0,.12)}
+.timeline-week.start{border-top-left-radius:8px;border-bottom-left-radius:8px}
+.timeline-week.end{border-top-right-radius:8px;border-bottom-right-radius:8px}
+.timeline-empty{font-size:13px;color:var(--ink-soft);padding:10px 0 0}
+@media(max-width:700px){
+  .timeline-weeks{gap:2px}
+  .timeline-week{min-height:26px;font-size:8px}
+  .timeline-periods{font-size:9px}
+}
+
 .seance-card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);padding:14px;border-radius:8px}
 .seance-card .num{font-size:11px;font-weight:900;text-transform:uppercase;color:var(--blue);letter-spacing:.08em}.seance-card h4{margin:5px 0 8px;font-size:16px}
 .seance-card p{font-size:12px;color:var(--ink-soft);line-height:1.45}.seance-card button{margin-top:8px}
@@ -108,6 +126,15 @@ footer{padding:18px;text-align:center;color:#6b7280;font-size:12px;border-top:1p
       <article class="panel"><h3>Compétence ciblée</h3><p id="detail-competence"></p><ul class="objectifs" id="detail-comp-objectifs"></ul></article>
       <article class="panel full" id="prereq-panel"><h3>Prérequis</h3><div id="detail-prerequis"></div></article>
       <article class="panel full" id="refs-panel"><h3>Références théoriques</h3><p id="detail-refs"></p></article>
+      <article class="panel full timeline-panel" id="timeline-panel">
+        <div class="timeline-title">
+          <h3>Positionnement — 36 semaines</h3>
+          <span class="timeline-note" id="timeline-note"></span>
+        </div>
+        <div class="timeline-periods" id="timeline-periods"></div>
+        <div class="timeline-weeks" id="timeline-weeks"></div>
+        <div class="timeline-empty hidden" id="timeline-empty">Aucune période de semaines n'est renseignée pour cette séquence.</div>
+      </article>
       <article class="panel full"><h3>Séances de la séquence</h3><div class="seances-grid" id="seances-grid"></div></article>
     </div>
   </section>
@@ -317,6 +344,61 @@ function renderSeqGrid(){
 }
 
 /* =========================================================
+   FRISE ANNUELLE — 36 SEMAINES
+   ========================================================= */
+const PERIODES_36 = [
+  {numero:1, debut:1, fin:7},
+  {numero:2, debut:8, fin:14},
+  {numero:3, debut:15, fin:21},
+  {numero:4, debut:22, fin:29},
+  {numero:5, debut:30, fin:36}
+];
+
+function renderTimeline(seq, domain){
+  const periods = $("timeline-periods");
+  const weeks = $("timeline-weeks");
+  const note = $("timeline-note");
+  const empty = $("timeline-empty");
+
+  const start = Number(seq.semaine_debut);
+  const end = Number(seq.semaine_fin || seq.semaine_debut);
+  const hasRange = Number.isFinite(start) && Number.isFinite(end) && start >= 1 && end >= start && end <= 36;
+
+  periods.innerHTML = PERIODES_36.map(p =>
+    `<div class="timeline-period" style="grid-column:${p.debut} / ${p.fin + 1}">Période ${p.numero}</div>`
+  ).join("");
+
+  if(!hasRange){
+    weeks.innerHTML = Array.from({length:36}, (_,i)=>`<div class="timeline-week">${i+1}</div>`).join("");
+    note.textContent = "Positionnement à définir";
+    empty.classList.remove("hidden");
+    return;
+  }
+
+  const startPeriod = PERIODES_36.find(p=>start>=p.debut && start<=p.fin)?.numero;
+  const endPeriod = PERIODES_36.find(p=>end>=p.debut && end<=p.fin)?.numero;
+
+  note.textContent = start === end
+    ? `Semaine ${start}`
+    : `Semaines ${start}–${end}`;
+
+  empty.classList.add("hidden");
+
+  weeks.innerHTML = Array.from({length:36}, (_,i)=>{
+    const week = i + 1;
+    const active = week >= start && week <= end;
+    const classes = [
+      "timeline-week",
+      active ? "active" : "",
+      week === start ? "start" : "",
+      week === end ? "end" : ""
+    ].filter(Boolean).join(" ");
+
+    return `<div class="${classes}"${active ? ` style="--timeline-color:${esc(domain.couleur)}"` : ""} title="${active ? `Séquence active — semaine ${week}` : `Semaine ${week}`}">${week}</div>`;
+  }).join("");
+}
+
+/* =========================================================
    DETAIL SEQUENCE
    ========================================================= */
 function openSequence(id){
@@ -339,6 +421,8 @@ function openSequence(id){
 
   $("refs-panel").classList.toggle("hidden",!seq.references_theoriques);
   $("detail-refs").textContent=seq.references_theoriques||"";
+
+  renderTimeline(seq, d);
 
   const seas=state.seances.filter(s=>s.sequence_id===seq.id).sort((a,b)=>Number(a.numero)-Number(b.numero));
   $("seances-grid").innerHTML=seas.length?seas.map(s=>`<article class="seance-card">
