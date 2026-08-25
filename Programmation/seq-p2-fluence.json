@@ -1,0 +1,11 @@
+{
+  "id": "seq-p2-fluence",
+  "competence_id": "lecture",
+  "titre": "Développer la fluence de lecture",
+  "periode": 2,
+  "semaine_debut": 8,
+  "semaine_fin": 10,
+  "objectif_explicite": "Lire un texte connu à voix haute avec fluidité, pour mieux le comprendre.",
+  "prerequis": ["Identification des syllabes complexes", "Déchiffrage sans hésitation des mots outils"],
+  "seances": ["sea-fluence-01", "sea-fluence-02", "sea-fluence-03"]
+}

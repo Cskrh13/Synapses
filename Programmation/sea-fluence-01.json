@@ -1,0 +1,27 @@
+{
+  "id": "sea-fluence-01",
+  "sequence_id": "seq-p2-fluence",
+  "titre": "Séance 1 — Découverte",
+  "duree_min": 45,
+  "objectif_dit_aux_eleves": "Aujourd'hui, on apprend à lire un texte plusieurs fois pour le lire de mieux en mieux, sans buter sur les mots.",
+  "etapes": [
+    {
+      "type": "dire",
+      "contenu": "Expliciter l'objectif : lire vite ET bien comprendre. Pourquoi relire un texte déjà lu aide à mieux le comprendre."
+    },
+    {
+      "type": "montrer",
+      "contenu": "L'enseignant lit un court extrait à voix haute deux fois, en verbalisant ce qu'il fait : 'je repère les groupes de mots, je respecte la ponctuation'."
+    },
+    {
+      "type": "guider",
+      "contenu": "Lecture à deux voix (enseignant/élève) sur un texte simple, avec étayage sur les liaisons et la ponctuation."
+    },
+    {
+      "type": "autonomie",
+      "contenu": "Chaque élève s'enregistre en lisant le texte, puis se réécoute et coche les endroits où il a buté."
+    }
+  ],
+  "materiel": ["texte_support.pdf", "grille_autoevaluation.pdf"],
+  "differenciation": "Texte raccourci et surligné par groupes de souffle pour les élèves les plus fragiles."
+}
