@@ -67,6 +67,16 @@ h1{font-size:34px;margin:0 0 8px;line-height:1.08} h2{margin:0} .lead{color:var(
 .seance-card{background:#fff;border:1px solid var(--line);border-left:4px solid var(--blue);padding:14px;border-radius:8px}
 .seance-card .num{font-size:11px;font-weight:900;text-transform:uppercase;color:var(--blue);letter-spacing:.08em}.seance-card h4{margin:5px 0 8px;font-size:16px}
 .seance-card p{font-size:12px;color:var(--ink-soft);line-height:1.45}.seance-card button{margin-top:8px}
+.seance-card .card-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:10px}
+.seance-card .card-actions button{margin-top:0}
+.add-seance-card{min-height:180px;border:2px dashed var(--line);border-radius:8px;background:#fafbfc;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:8px;color:var(--blue);font-weight:800;cursor:pointer}
+.add-seance-card:hover{border-color:var(--blue);background:#f3f7fd}
+.add-seance-card .plus{font-size:28px;line-height:1}
+.drawer-actions{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px;padding-top:16px;border-top:1px solid var(--line)}
+.material-link{display:inline-flex;align-items:center;justify-content:center;text-decoration:none}
+.material-link.disabled{opacity:.78}
+.field-help{font-size:11px;color:var(--ink-soft);margin-top:5px}
+
 .drawer{position:fixed;z-index:50;right:-720px;top:0;width:min(680px,94vw);height:100vh;background:#fff;box-shadow:-18px 0 45px rgba(0,0,0,.18);transition:right .25s;overflow:auto}
 .drawer.open{right:0}.drawer-head{position:sticky;top:0;background:#172033;color:#fff;padding:18px 20px;display:flex;justify-content:space-between;align-items:center;z-index:2}
 .drawer-close{background:none;border:none;color:#fff;font-size:24px}.drawer-body{padding:22px}.overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.38);z-index:40}.overlay.open{display:block}
@@ -167,6 +177,30 @@ footer{padding:18px;text-align:center;color:#6b7280;font-size:12px;border-top:1p
   </div>
 </div>
 
+
+<div class="modal" id="modal-seance">
+  <div class="modal-box">
+    <div class="modal-head"><h2 id="modal-seance-title">Nouvelle séance</h2><button class="modal-close" data-close="modal-seance">×</button></div>
+    <div class="modal-body">
+      <div class="field"><label>Numéro</label><input id="sea-form-numero" type="number" min="1" step="1"></div>
+      <div class="field"><label>Type</label><input id="sea-form-type" placeholder="Ex. Découverte, entraînement, évaluation"></div>
+      <div class="field"><label>Titre</label><input id="sea-form-titre" placeholder="Titre de la séance"></div>
+      <div class="field"><label>Compétence cible</label><input id="sea-form-competence" placeholder="Compétence travaillée"></div>
+      <div class="field"><label>Objectif commun</label><textarea id="sea-form-objectif"></textarea></div>
+      <div class="field"><label>Problématique pour les élèves</label><textarea id="sea-form-problematique"></textarea></div>
+      <div class="field"><label>Compétences périphériques</label><textarea id="sea-form-peripheriques"></textarea></div>
+      <div class="field"><label>Modalités générales</label><textarea id="sea-form-modalites"></textarea></div>
+      <div class="field"><label>Points de vigilance</label><textarea id="sea-form-vigilance"></textarea></div>
+      <div class="field">
+        <label>Déroulé de la séance</label>
+        <textarea id="sea-form-deroule" style="min-height:260px;font-family:'IBM Plex Mono',monospace;font-size:12px"></textarea>
+        <div class="field-help">Format JSON : une liste de phases. Les champs habituels sont : phase, temps, modalite_materiel, deroulement, analyse_tache, amenagement et posture.</div>
+      </div>
+    </div>
+    <div class="modal-foot"><button class="btn" data-close="modal-seance">Annuler</button><button class="btn primary" id="save-seance">Enregistrer dans la session</button></div>
+  </div>
+</div>
+
 <div class="toast" id="toast"></div>
 <footer>Programmation pédagogique · données lues depuis des fichiers JSON externes.</footer>
 
@@ -191,7 +225,8 @@ const state = {
   currentSeqId: null,
   activeDomains: new Set(),
   activePeriod: null,
-  sessionSequences: []
+  sessionSequences: [],
+  editingSeanceId: null
 };
 
 const $ = id => document.getElementById(id);
@@ -425,13 +460,22 @@ function openSequence(id){
   renderTimeline(seq, d);
 
   const seas=state.seances.filter(s=>s.sequence_id===seq.id).sort((a,b)=>Number(a.numero)-Number(b.numero));
-  $("seances-grid").innerHTML=seas.length?seas.map(s=>`<article class="seance-card">
+  const cards=seas.map(s=>`<article class="seance-card">
     <div class="num">Séance ${esc(s.numero||"")} · ${esc(s.type||"")}</div>
     <h4>${esc(s.titre||"Sans titre")}</h4>
     <p>${esc(s.objectif_commun||"")}</p>
-    <button class="btn" data-sea="${esc(s.id)}">Consulter la séance</button>
-  </article>`).join(""):'<div class="empty">Aucune séance chargée pour cette séquence.</div>';
+    <div class="card-actions">
+      <button class="btn" data-sea="${esc(s.id)}">Consulter</button>
+      <button class="btn" data-edit-sea="${esc(s.id)}">Modifier</button>
+      <button class="btn danger" data-delete-sea="${esc(s.id)}">Supprimer</button>
+    </div>
+  </article>`).join("");
+  const addCard=`<button class="add-seance-card" id="add-seance-card"><span class="plus">＋</span><span>Ajouter une séance</span></button>`;
+  $("seances-grid").innerHTML=(cards || '<div class="empty">Aucune séance pour le moment.</div>') + addCard;
   $("seances-grid").querySelectorAll("[data-sea]").forEach(b=>b.onclick=()=>openSeance(b.dataset.sea));
+  $("seances-grid").querySelectorAll("[data-edit-sea]").forEach(b=>b.onclick=()=>openSeanceForm(b.dataset.editSea));
+  $("seances-grid").querySelectorAll("[data-delete-sea]").forEach(b=>b.onclick=()=>deleteSeance(b.dataset.deleteSea));
+  $("add-seance-card").onclick=()=>openSeanceForm(null, seq.id);
   showView("view-detail");
 }
 $("back-list").onclick=()=>showView("view-list");
@@ -448,18 +492,123 @@ function openSeance(id){
     <dt>Aménagements</dt><dd>${esc(p.amenagement||"—")}</dd>
     <dt>Posture enseignante</dt><dd>${esc(p.posture||"—")}</dd>
   </dl></section>`).join("");
+
   $("drawer-body").innerHTML=`
     <div class="panel"><h3>Compétence cible</h3><p>${esc(sea.competence_cible||"—")}</p></div>
     ${sea.competences_peripheriques?`<div class="panel" style="margin-top:12px"><h3>Compétences périphériques</h3><p>${esc(sea.competences_peripheriques)}</p></div>`:""}
     ${sea.modalites_generales?`<div class="panel" style="margin-top:12px"><h3>Modalités générales</h3><p>${esc(sea.modalites_generales)}</p></div>`:""}
     <div class="panel" style="margin-top:12px"><h3>Objectif commun</h3><p>${esc(sea.objectif_commun||"—")}</p></div>
     ${sea.problematique?`<div class="panel" style="margin-top:12px"><h3>Problématique</h3><p>${esc(sea.problematique)}</p></div>`:""}
-    <h2 style="margin:22px 0 8px">Déroulé</h2>${rows}
-    ${sea.vigilance?`<div class="panel" style="margin-top:12px"><h3>Points de vigilance</h3><p>${esc(sea.vigilance)}</p></div>`:""}`;
+    <h2 style="margin:22px 0 8px">Déroulé</h2>${rows || '<p class="lead">Aucune phase renseignée.</p>'}
+    ${sea.vigilance?`<div class="panel" style="margin-top:12px"><h3>Points de vigilance</h3><p>${esc(sea.vigilance)}</p></div>`:""}
+    <div class="drawer-actions">
+      <button class="btn primary" id="drawer-edit-sea">Modifier la séance</button>
+      <button class="btn danger" id="drawer-delete-sea">Supprimer</button>
+      <a class="btn material-link disabled" id="drawer-material-sea" href="materiel.html?seance=${encodeURIComponent(sea.id)}">📎 Matériel de la séance</a>
+    </div>`;
+
+  $("drawer-edit-sea").onclick=()=>{closeDrawer(); openSeanceForm(sea.id);};
+  $("drawer-delete-sea").onclick=()=>deleteSeance(sea.id);
+  $("drawer-material-sea").onclick=()=>toast("Espace matériel prévu : le lien sera activé lorsque la bibliothèque de ressources sera créée.");
+
   $("overlay").classList.add("open");$("drawer").classList.add("open");
 }
-function closeDrawer(){$("overlay").classList.remove("open");$("drawer").classList.remove("open")}
-$("overlay").onclick=closeDrawer;$("close-drawer").onclick=closeDrawer;
+
+function closeDrawer(){
+  $("overlay").classList.remove("open");
+  $("drawer").classList.remove("open");
+}
+$("overlay").onclick=closeDrawer;
+$("close-drawer").onclick=closeDrawer;
+
+function nextSeanceNumber(sequenceId){
+  const nums=state.seances.filter(s=>s.sequence_id===sequenceId)
+    .map(s=>Number(s.numero)).filter(n=>Number.isFinite(n));
+  return nums.length ? Math.max(...nums)+1 : 1;
+}
+
+function defaultDeroule(){
+  return [{
+    phase:"Mise en route",
+    temps:"",
+    modalite_materiel:"",
+    deroulement:"",
+    analyse_tache:"",
+    amenagement:"",
+    posture:""
+  }];
+}
+
+function openSeanceForm(id=null, sequenceId=null){
+  const sea=id ? state.seances.find(s=>s.id===id) : null;
+  const seqId=sea?.sequence_id || sequenceId || state.currentSeqId;
+  if(!seqId){toast("Impossible de déterminer la séquence.");return;}
+
+  state.editingSeanceId=sea?.id || null;
+  $("modal-seance-title").textContent=sea ? "Modifier la séance" : "Ajouter une séance";
+  $("sea-form-numero").value=sea?.numero ?? nextSeanceNumber(seqId);
+  $("sea-form-type").value=sea?.type || "";
+  $("sea-form-titre").value=sea?.titre || "";
+  $("sea-form-competence").value=sea?.competence_cible || "";
+  $("sea-form-objectif").value=sea?.objectif_commun || "";
+  $("sea-form-problematique").value=sea?.problematique || "";
+  $("sea-form-peripheriques").value=sea?.competences_peripheriques || "";
+  $("sea-form-modalites").value=sea?.modalites_generales || "";
+  $("sea-form-vigilance").value=sea?.vigilance || "";
+  $("sea-form-deroule").value=JSON.stringify(sea?.deroule?.length ? sea.deroule : defaultDeroule(), null, 2);
+  $("modal-seance").dataset.sequenceId=seqId;
+  $("modal-seance").classList.add("open");
+}
+
+function closeSeanceForm(){
+  $("modal-seance").classList.remove("open");
+  state.editingSeanceId=null;
+}
+
+function deleteSeance(id){
+  const sea=state.seances.find(s=>s.id===id);
+  if(!sea)return;
+  if(!confirm(`Supprimer définitivement de cette session la séance ${sea.numero || ""} « ${sea.titre || "Sans titre"} » ?`)) return;
+  state.seances=state.seances.filter(s=>s.id!==id);
+  closeDrawer();
+  if(state.currentSeqId) openSequence(state.currentSeqId);
+  toast("Séance supprimée de la session. Pense à exporter les données pour conserver la modification.");
+}
+
+$("save-seance").onclick=()=>{
+  const seqId=$("modal-seance").dataset.sequenceId;
+  let deroule;
+  try{
+    deroule=JSON.parse($("sea-form-deroule").value || "[]");
+    if(!Array.isArray(deroule)) throw new Error();
+  }catch(e){
+    alert("Le déroulé doit être une liste JSON valide. Corrige le contenu avant d'enregistrer.");
+    return;
+  }
+
+  const payload={
+    id: state.editingSeanceId || uid("seance"),
+    sequence_id: seqId,
+    numero: Number($("sea-form-numero").value) || nextSeanceNumber(seqId),
+    type: $("sea-form-type").value.trim(),
+    titre: $("sea-form-titre").value.trim() || "Sans titre",
+    competence_cible: $("sea-form-competence").value.trim(),
+    objectif_commun: $("sea-form-objectif").value.trim(),
+    problematique: $("sea-form-problematique").value.trim(),
+    competences_peripheriques: $("sea-form-peripheriques").value.trim(),
+    modalites_generales: $("sea-form-modalites").value.trim(),
+    vigilance: $("sea-form-vigilance").value.trim(),
+    deroule
+  };
+
+  const existing=state.seances.findIndex(s=>s.id===payload.id);
+  if(existing>=0) state.seances[existing]={...state.seances[existing],...payload};
+  else state.seances.push(payload);
+
+  closeSeanceForm();
+  openSequence(seqId);
+  toast(existing>=0 ? "Séance modifiée dans la session." : "Nouvelle séance ajoutée dans la session.");
+};
 
 /* =========================================================
    RESEAU DES COMPETENCES
@@ -513,6 +662,7 @@ $("save-new").onclick=()=>{
    INIT
    ========================================================= */
 $("btn-reload").onclick=loadDatabase;
+$("modal-seance").onclick=e=>{if(e.target===$("modal-seance")) closeSeanceForm();};
 loadDatabase();
 </script>
 </body>
