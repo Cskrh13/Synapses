@@ -1,6 +1,6 @@
 {
   "_MODE_EMPLOI": {
-    "version": "1.0",
+    "version": "1.1",
     "role": "Ce fichier organise la structure administrative et chronologique de la programmation pédagogique de Synapses.",
     "source_primaire": "Les documents PDF et autres documents de référence fournis pour construire ou corriger la programmation.",
     "hierarchie": "niveau > discipline > domaine > sequence > seances",
@@ -29,20 +29,20 @@
     ],
     "index_pedagogique": {
       "optionnel": true,
-      "fichier": "References-Pedagogiques/index-pedagogique.js",
-      "regle": "Ce fichier n'est utilisé que s'il existe réellement. Son absence ne doit provoquer aucune erreur et ne doit pas empêcher le fonctionnement de Synapses.",
-      "role_futur": "Il pourra contenir le condensé des analyses pédagogiques servant à établir les relations de construction des apprentissages.",
-      "important": "Ne pas créer de prerequis_competences dans index.json à partir de simples suppositions ou de l'ordre d'apparition des programmes."
+      "fichier": "data/index-pedagogie.json",
+      "regle": "Ce fichier sert de référence analytique pour établir les relations pédagogiques. Son absence ne doit empêcher ni la lecture ni la cartographie de index.json.",
+      "role": "Il permet à une IA d'analyser les références pédagogiques et de proposer des relations entre compétences. Les prérequis retenus sont enregistrés dans competences.json.",
+      "important": "Ne pas créer un prerequis_competences à partir du seul ordre d'apparition dans index.json."
     }
   },
-"meta": {
+  "meta": {
     "titre": "Index central de la programmation pédagogique",
-    "version": "1.2",
+    "version": "1.3",
     "description": "Structure administrative et chronologique de la programmation. Le niveau, la discipline, le domaine, les séquences et les séances déterminent la localisation spatiale dans la cartographie.",
     "competences": "data/competences.json",
     "index_pedagogique": "data/index-pedagogie.json",
     "regle_cartographie": "Le niveau déclaré ici est prioritaire pour le placement d'une séquence et de ses séances. competence_id sert uniquement à créer le lien pédagogique avec une compétence.",
-    "regle_prerequis": "Les prérequis pédagogiques sont déterminés dans competences.json à partir des compétences réellement présentes. index-pedagogie.json sert de référence analytique mais n'est pas utilisé directement par la cartographie."
+    "regle_prerequis": "Les prérequis pédagogiques sont définis dans competences.json. index-pedagogie.json sert de référence analytique. index.json conserve uniquement les éventuels prérequis explicitement nécessaires à la contextualisation d'une séquence ou d'une séance."
   },
   "niveaux": [
     {
