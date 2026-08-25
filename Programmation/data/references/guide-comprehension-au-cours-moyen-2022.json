@@ -1,0 +1,134 @@
+{
+  "id": "guide-comprehension-cours-moyen-2022",
+  "type": "guide_officiel",
+  "statut": "analyse_source",
+  "bibliographie": {
+    "auteurs": ["Ministère de l'Éducation nationale, de la Jeunesse et des Sports", "Direction générale de l'enseignement scolaire", "Inspection générale de l'éducation, du sport et de la recherche"],
+    "annee": 2022,
+    "date_document": "Janvier 2022",
+    "titre": "La compréhension au cours moyen",
+    "collection": "Les guides fondamentaux pour enseigner",
+    "isbn": "978-2-11-162851-9",
+    "issn": "2647-4786",
+    "source_fichier": "guide-la-comprehension-au-cours-moyen-91725.pdf"
+  },
+  "destination": {"dossier": "Programmation/data/reference/", "fichier": "guide-comprehension-au-cours-moyen-2022.json"},
+  "mots_cles": {
+    "domaines": ["français", "transversal"],
+    "niveaux": ["CM1", "CM2", "cycle_3"],
+    "thematiques": ["lecture", "compréhension", "compréhension_orale", "compréhension_écrite", "lecture_stratégique", "fluence", "vocabulaire", "syntaxe", "morphologie", "inférences", "autorégulation", "métacognition", "enseignement_explicit", "enseignement_direct", "résolution_guidée", "différenciation", "écriture", "lecture_multidocumentaire", "textes_composites", "textes_documentaires", "littérature", "oral", "mémoire_de_travail", "connaissances_du_monde"],
+    "concepts": ["modèle_de_situation", "cohérence_locale", "cohérence_globale", "identification_des_mots", "décodage", "automatisation", "fluidité", "connaissances_linguistiques", "connaissances_culturelles", "inférences_fondées_sur_le_texte", "inférences_de_connaissances", "autoévaluation", "régulation", "planification", "flexibilité_cognitive", "stratégies_avant_lecture", "stratégies_pendant_lecture", "stratégies_après_lecture", "balayage_visuel", "organisateurs_textuels", "organisateurs_paratextuels", "documents_composites", "mise_en_relation_des_textes", "évaluation_des_sources", "écrits_de_travail", "enseignement_explicit", "pratique_guidée", "activité_modulaire", "activité_intégrative", "activité_à_visée_culturelle", "institutionnalisation", "mémoire_didactique"]
+  },
+  "pertinence": {
+    "CM1": "très_forte", "CM2": "très_forte", "cycle_3": "très_forte", "CE2": "forte", "CP": "indirecte", "CE1": "indirecte",
+    "français": "très_forte", "mathématiques": "transversale", "sciences": "transversale", "histoire": "transversale", "géographie": "transversale", "EMC": "transversale",
+    "prérequis_disciplinaires": "forte_pour_lecture_compréhension", "conception_des_séquences": "très_forte", "conception_des_séances": "très_forte"
+  },
+  "mode_emploi_ia": {
+    "objectif": "Identifier les connaissances, habiletés, stratégies et conditions pédagogiques liées à la compréhension, puis les comparer aux compétences de competences.json.",
+    "règles": [
+      "Ne pas transformer automatiquement toute relation décrite dans le guide en prerequis_competences.",
+      "Distinguer les acquis préalables explicitement présentés comme tels des relations de renforcement mutuel ou de co-développement.",
+      "Respecter l'avertissement du guide selon lequel le découpage des habiletés ne constitue pas un ordre de succession strict.",
+      "Toute proposition de prérequis doit être accompagnée des pages qui la justifient.",
+      "Distinguer les mécanismes de compréhension des modalités pédagogiques permettant de les enseigner.",
+      "Pour une compétence non liée à la lecture ou à la compréhension, n'utiliser ce guide que si une implication transversale est directement pertinente.",
+      "Ne jamais utiliser une relation pédagogique générale comme preuve d'un prérequis disciplinaire.",
+      "Conserver séparément les conclusions provenant d'autres références afin de permettre la comparaison."
+    ]
+  },
+  "resume": {
+    "objet": "Guide consacré à l'enseignement de la compréhension orale et écrite au cours moyen.",
+    "thèse_centrale": "Comprendre consiste à construire progressivement une représentation cohérente et unifiée de la situation décrite, appelée modèle de situation.",
+    "architecture": "Le guide distingue des connaissances et habiletés fondamentales, des habiletés propres au traitement des textes, puis des stratégies nécessaires à la lecture au service des apprentissages.",
+    "orientation": "L'enseignement doit être explicite, régulier, stratégique, actif, progressif et différencié.",
+    "portée": "Le guide concerne principalement le CM1-CM2 et insiste sur la continuité avec le cycle 2 et la préparation à l'entrée au collège."
+  },
+  "principes_pedagogiques": [
+    {"id":"p01","type":"fondement","enonce":"Comprendre un texte consiste à élaborer progressivement une représentation cohérente et unifiée de la situation décrite.","pages":[11,12,25],"niveau_de_confiance":"fort"},
+    {"id":"p02","type":"relation_apprentissage","enonce":"Les connaissances et habiletés fondamentales constituent un socle pour les habiletés propres au traitement des textes.","pages":[13,14],"niveau_de_confiance":"fort"},
+    {"id":"p03","type":"garde_fou","enonce":"Le découpage entre habiletés fondamentales et habiletés de traitement du texte ne constitue pas un ordre de succession strict : les apprentissages se développent dans des interactions et un renforcement mutuel.","pages":[14],"niveau_de_confiance":"fort"},
+    {"id":"p04","type":"préalable_explicitement_documenté","enonce":"L'identification précise et rapide des mots écrits est un préalable à toute activité de compréhension écrite.","pages":[15,44],"niveau_de_confiance":"fort"},
+    {"id":"p05","type":"facilitation","enonce":"Le vocabulaire, la syntaxe et la morphologie facilitent la compréhension.","pages":[16,17],"niveau_de_confiance":"fort"},
+    {"id":"p06","type":"consolidation","enonce":"Les connaissances langagières enseignées doivent être réinvesties fréquemment dans des activités de compréhension et de production et dans des contextes variés.","pages":[17],"niveau_de_confiance":"fort"},
+    {"id":"p07","type":"mécanisme","enonce":"Les inférences fondées sur le texte et les inférences de connaissances jouent un rôle fondamental dans la construction de la cohérence.","pages":[20,21,22],"niveau_de_confiance":"fort"},
+    {"id":"p08","type":"métacognition","enonce":"L'auto-évaluation permet de détecter les difficultés et la régulation permet de les surmonter.","pages":[23,76],"niveau_de_confiance":"fort"},
+    {"id":"p09","type":"enseignement","enonce":"La compréhension orale et écrite doit faire l'objet d'un enseignement spécifique, explicite et régulier.","pages":[32,40,42],"niveau_de_confiance":"fort"},
+    {"id":"p10","type":"lecture","enonce":"La fluidité de lecture en contexte constitue une condition de base à la compréhension des textes continus.","pages":[45,56],"niveau_de_confiance":"fort"},
+    {"id":"p11","type":"stratégies","enonce":"Un lecteur compétent combine automatismes et stratégies et adapte sa lecture à l'objectif et à la nature du texte.","pages":[47,48,59],"niveau_de_confiance":"fort"},
+    {"id":"p12","type":"enseignement_des_stratégies","enonce":"Les stratégies de lecture peuvent être enseignées explicitement par modelage et pratique guidée.","pages":[48,49,70,71],"niveau_de_confiance":"fort"},
+    {"id":"p13","type":"organisation","enonce":"Les stratégies peuvent être distinguées avant, pendant et après la lecture.","pages":[48],"niveau_de_confiance":"fort"},
+    {"id":"p14","type":"lecture_stratégique","enonce":"L'élève doit apprendre à interpréter la tâche, rechercher et localiser les passages pertinents, évaluer et réfléchir, mettre en relation plusieurs textes et produire une réponse.","pages":[69,70],"niveau_de_confiance":"fort"},
+    {"id":"p15","type":"multidocument","enonce":"La mise en relation de textes, images, schémas, tableaux et autres documents doit faire l'objet d'un enseignement explicite et progressif.","pages":[63,64,65,75],"niveau_de_confiance":"fort"},
+    {"id":"p16","type":"métacognition","enonce":"La lecture stratégique comporte une composante métacognitive portant sur la planification, l'auto-évaluation du processus et l'auto-évaluation du résultat.","pages":[76],"niveau_de_confiance":"fort"},
+    {"id":"p17","type":"enseignement","enonce":"L'enseignement de la compréhension doit être explicite, stratégique et actif.","pages":[80,84],"niveau_de_confiance":"fort"},
+    {"id":"p18","type":"architecture_des_séances","enonce":"Trois familles d'activités sont complémentaires : activités modulaires, intégratives et à visée culturelle.","pages":[81,82,83,112],"niveau_de_confiance":"fort"},
+    {"id":"p19","type":"modalité","enonce":"L'instruction directe décompose une habileté ou une difficulté, tandis que la résolution guidée maintient une tâche complexe tout en accompagnant la réflexion des élèves.","pages":[84,85,86,87],"niveau_de_confiance":"fort"},
+    {"id":"p20","type":"séance","enonce":"Une séance de compréhension est organisée en préparation, mise en œuvre et institutionnalisation.","pages":[103,104,111],"niveau_de_confiance":"fort"},
+    {"id":"p21","type":"lecture_écriture","enonce":"L'écriture accompagne la compréhension avant, pendant et après la lecture et peut rendre visibles les procédures utilisées.","pages":[98,99,102],"niveau_de_confiance":"fort"}
+  ],
+  "relations_apprentissage": [
+    {"id":"r01","source":"identification_des_mots","cible":"compréhension_écrite","type":"préalable","force":"forte","pages":[15,44],"peut_alimenter_prerequis_competences":true},
+    {"id":"r02","source":"connaissances_langagières","cible":"compréhension_des_textes","type":"facilitation","force":"forte","pages":[16,17],"peut_alimenter_prerequis_competences":true},
+    {"id":"r03","source":"connaissances_du_monde","cible":"inférences_de_connaissances","type":"condition_facilitatrice","force":"forte","pages":[18,21,22],"peut_alimenter_prerequis_competences":true,"condition":"La disponibilité des connaissances n'est pas suffisante à elle seule."},
+    {"id":"r04","source":"fluence_de_lecture","cible":"compréhension_des_textes_continus","type":"condition_de_base","force":"forte","pages":[45,56],"peut_alimenter_prerequis_competences":true},
+    {"id":"r05","source":"stratégies_de_compréhension","cible":"compréhension_autonome","type":"structurant","force":"forte","pages":[47,48,78],"peut_alimenter_prerequis_competences":true},
+    {"id":"r06","source":"connaissance_des_organisateurs_du_texte","cible":"recherche_et_localisation_d_information","type":"structurant","force":"forte","pages":[18,72,73],"peut_alimenter_prerequis_competences":true},
+    {"id":"r07","source":"analyse_des_consignes","cible":"lecture_stratégique","type":"structurant","force":"forte","pages":[69,70,71],"peut_alimenter_prerequis_competences":true},
+    {"id":"r08","source":"mise_en_relation_des_documents","cible":"compréhension_multidocumentaire","type":"structurant","force":"forte","pages":[63,64,65,75],"peut_alimenter_prerequis_competences":true},
+    {"id":"r09","source":"autoévaluation_et_régulation","cible":"compréhension_autonome","type":"structurant","force":"forte","pages":[23,76],"peut_alimenter_prerequis_competences":true},
+    {"id":"r10","source":"lecture_et_écriture","cible":"compréhension","type":"renforcement_mutuel","force":"forte","pages":[98,99],"peut_alimenter_prerequis_competences":false,"condition":"Ne pas convertir cette relation complémentaire en prérequis unidirectionnel."}
+  ],
+  "garde_fous_pour_prerequis": [
+    {"id":"g01","regle":"Ne pas déduire un ordre strict à partir du découpage entre connaissances fondamentales et habiletés de traitement du texte.","pages":[14]},
+    {"id":"g02","regle":"Une connaissance préalable peut être facilitatrice sans être suffisante.","pages":[22]},
+    {"id":"g03","regle":"Une relation de renforcement mutuel ne doit pas être transformée en prérequis unidirectionnel.","pages":[14,17,98,99]},
+    {"id":"g04","regle":"Les modalités d'enseignement et la structure d'une séance ne constituent pas, en elles-mêmes, des prérequis de compétences.","pages":[80,81,84,103]}
+  ],
+  "architecture_des_apprentissages": {
+    "fondamentaux": ["phonologie","vocabulaire","morphologie","syntaxe","décodage","identification_des_mots","connaissances_culturelles","efficience_cognitive"],
+    "traitement_du_discours_continu": ["cohérence_locale","cohérence_globale","inférences","autoévaluation","régulation","connaissance_des_types_de_textes","lecture_fluide_en_contexte"],
+    "lecture_stratégique": ["interpréter_la_tâche","rechercher_et_localiser","évaluer_et_réfléchir","mettre_en_relation_plusieurs_textes","produire_et_communiquer"]
+  },
+  "architecture_des_séances": {
+    "activités_modulaires": {"fonction":"Enseigner ou entraîner une stratégie ou une habileté ciblée.","exemples":["inférences","anaphores","connecteurs","lexique","idées_principales","résumé","auto_explication"],"pages":[81,82]},
+    "activités_intégratives": {"fonction":"Apprendre à gérer des situations de lecture complexes en mobilisant plusieurs stratégies.","pages":[82,83]},
+    "activités_à_visée_culturelle": {"fonction":"Développer les connaissances et la culture par des lectures longues, mises en réseau et débats.","pages":[83]},
+    "séance_en_trois_temps": ["préparation","mise_en_œuvre","institutionnalisation"],
+    "pages":[103,104,111]
+  },
+  "implications_pour_synapses": [
+    {"id":"i01","type":"prérequis","proposition":"Le guide peut soutenir des prérequis concernant l'identification des mots, la fluence, les connaissances langagières et certaines stratégies de compréhension lorsque les compétences correspondantes existent dans competences.json.","pages":[14,15,16,45,56],"niveau":"fort","validation_requise":true},
+    {"id":"i02","type":"séquence","proposition":"Le guide peut servir à organiser des séquences combinant apprentissage explicite d'une stratégie, entraînement puis mobilisation intégrative.","pages":[81,82,83,112],"niveau":"fort"},
+    {"id":"i03","type":"séance","proposition":"Le guide peut aider à construire des séances en trois temps : préparation, activité de compréhension, institutionnalisation.","pages":[103,104,111],"niveau":"fort"},
+    {"id":"i04","type":"transversal","proposition":"Les compétences de compréhension sont décrites comme mobilisables dans toutes les disciplines, notamment lors de la lecture de problèmes et de documents disciplinaires.","pages":[52,59,75],"niveau":"fort"}
+  ],
+  "limites": [
+    "Le guide porte principalement sur le cours moyen et ne constitue pas à lui seul une progression complète de la lecture du CP au CM2.",
+    "Le guide ne fournit pas de prérequis exhaustifs pour toutes les compétences de français.",
+    "Les relations entre compétences doivent être confrontées à competences.json et aux autres références de la bibliothèque.",
+    "Le document précise explicitement qu'il n'existe pas nécessairement d'ordre de succession strict entre les habiletés de compréhension.",
+    "Les exemples mathématiques servent à illustrer les mécanismes de compréhension et ne constituent pas un guide complet d'enseignement des mathématiques."
+  ],
+  "sources_precises": [
+    {"pages":[8,9],"objet":"Finalités de l'enseignement de la compréhension."},
+    {"pages":[11,12,13,14,15],"objet":"Définition de comprendre, modèle de situation et habiletés fondamentales."},
+    {"pages":[16,17,18,20,21,22,23],"objet":"Connaissances langagières, connaissances du monde, inférences, autorégulation."},
+    {"pages":[27,28,29,30,31,32,33,34,35,38,39,40,41,42],"objet":"Compréhension orale et principes d'enseignement."},
+    {"pages":[44,45,46,47,48,49,50,51,52,53,54,55,56],"objet":"Lecture, fluence, stratégies, automatismes et compréhension multidisciplinaire."},
+    {"pages":[58,59,60,61,62,63,64,65,69,70,71,72,73,74,75,76,77,78],"objet":"Lecture stratégique, tâches, documents multiples et métacognition."},
+    {"pages":[80,81,82,83,84,85,86,87],"objet":"Principes et modalités d'enseignement."},
+    {"pages":[88,89,90,91,92,93,94,95,96,97],"objet":"Préparation des supports, lecture d'œuvres longues et lecture pas-à-pas."},
+    {"pages":[98,99,101,102],"objet":"Écriture au service de la compréhension."},
+    {"pages":[103,104,108,109,110,111,112],"objet":"Structure d'une séance, explicitation, débat et institutionnalisation."},
+    {"pages":[114,115,116],"objet":"Glossaire des concepts."},
+    {"pages":[118,119,120,121,122,123,124,125,126,127,128,129],"objet":"Bibliographie et ressources citées par le guide."}
+  ],
+  "statut_dans_index_pedagogie": {
+    "role":"référence_majeure",
+    "priorité":"haute",
+    "usage_principal":["compréhension","lecture","lecture_stratégique","conception_de_séquences","conception_de_séances","prérequis_de_compétences_liées_à_la_lecture"],
+    "usage_secondaire":["mathématiques","sciences","histoire","géographie","EMC"],
+    "condition_usage_secondaire":"Uniquement lorsque la compétence implique effectivement la compréhension de textes, consignes ou documents."
+  }
+}
