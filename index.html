@@ -438,11 +438,12 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 </header>
 
 <main id="main">
+<div id="dataError" role="alert" style="max-width:900px;margin:16px auto;padding:0 24px;color:#B5502E;"></div>
 
 <!-- ===================== HERO ===================== -->
 <section class="hero home-only" id="top">
   <div class="hero-inner">
-    <p class="eyebrow">Cycle 2 · Français · Source : BOEN, education.gouv.fr</p>
+    <p class="eyebrow">Tous les cycles · Toutes les disciplines · Sources conservées</p>
     <h1>Référentiel des compétences des programmes scolaires</h1>
     <p class="lead">Un espace de consultation clair et structuré, construit à partir du texte officiel du programme, pour naviguer entre cycles, niveaux, domaines et compétences sans reformulation approximative.</p>
     <div class="search-wrap">
@@ -463,7 +464,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
     <div>
       <p class="eyebrow">Cycle des apprentissages fondamentaux</p>
       <h2>Naviguer par niveau</h2>
-      <p>Trois niveaux composent le cycle 2 : CP, CE1, CE2. Sélectionnez un niveau pour filtrer l'ensemble du répertoire.</p>
+      <p>Les niveaux TPS à 6e sont disponibles. Sélectionnez un niveau pour filtrer l’ensemble du répertoire.</p>
     </div>
   </div>
   <div class="level-cards" id="levelCards"></div>
@@ -473,9 +474,9 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <section class="section home-only" id="disciplines">
   <div class="section-head">
     <div>
-      <p class="eyebrow">Français — cinq domaines</p>
+      <p class="eyebrow">Cycles 1 à 3 — domaines du référentiel</p>
       <h2>Naviguer par domaine</h2>
-      <p>Le programme de français du cycle 2 s'organise en cinq domaines de compétences, réellement présents dans le document source.</p>
+      <p>Les domaines sont construits directement à partir des compétences présentes dans competences.json.</p>
     </div>
   </div>
   <div class="domain-grid" id="domainCards"></div>
@@ -536,7 +537,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
     <div>
       <p class="eyebrow">Synthèse</p>
       <h2>Vue d'ensemble du référentiel</h2>
-      <p>Répartition des fiches de compétences par niveau et par domaine, sur l'ensemble du programme de français du cycle 2.</p>
+      <p>Répartition des fiches de compétences par niveau et par domaine, sur l'ensemble des compétences des cycles 1 à 3.</p>
     </div>
   </div>
   <div class="stats-grid" id="statsGrid"></div>
@@ -622,7 +623,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <footer>
   <div class="footer-inner">
     <div class="footer-note">
-      Portail de consultation non institutionnel. Contenu construit exclusivement à partir de « Annexe 3 – Programme de français du cycle 2 », publié sur education.gouv.fr. Ce site n'est ni édité ni approuvé par le ministère de l'Éducation nationale.
+      Portail de consultation non institutionnel. Les compétences sont chargées depuis le référentiel Programmation/data/competences.json, avec leurs sources conservées dans les données. Ce site n'est ni édité ni approuvé par le ministère de l'Éducation nationale.
     </div>
     <div class="footer-cols">
       <div>
@@ -632,783 +633,149 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
         <a href="#repertoire">Répertoire</a>
       </div>
       <div>
-        <h5>Cycle 2</h5>
-        <a href="#" data-niveau="CP">Cours préparatoire</a><br><br>
-        <a href="#" data-niveau="CE1">Cours élémentaire 1</a><br><br>
-        <a href="#" data-niveau="CE2">Cours élémentaire 2</a>
+        <h5>Tous les cycles</h5>
+        <a href="#" data-niveau="TPS">TPS</a> · <a href="#" data-niveau="PS">PS</a> · <a href="#" data-niveau="MS">MS</a> · <a href="#" data-niveau="GS">GS</a><br><br>
+        <a href="#" data-niveau="CP">CP</a> · <a href="#" data-niveau="CE1">CE1</a> · <a href="#" data-niveau="CE2">CE2</a><br><br>
+        <a href="#" data-niveau="CM1">CM1</a> · <a href="#" data-niveau="CM2">CM2</a> · <a href="#" data-niveau="6e">6e</a>
       </div>
     </div>
   </div>
 </footer>
 
 <script>
-// ---------- Data model loaded from data.js pattern (inlined below) ----------
-// Données extraites exclusivement de : "Annexe 3 – Programme de français du cycle 2" (education.gouv.fr)
-const REFERENTIEL = {
-  cycle: "Cycle 2",
-  cycleLong: "Cycle des apprentissages fondamentaux",
-  discipline: "Français",
-  niveaux: ["CP", "CE1", "CE2"],
-  niveauxLongs: {
-    "CP": "Cours préparatoire",
-    "CE1": "Cours élémentaire première année",
-    "CE2": "Cours élémentaire deuxième année"
-  },
-  chapo: "Tout comme l'ensemble des domaines du cycle 2, l'enseignement du français participe à établir les savoirs fondamentaux des élèves dans le cadre d'un enseignement explicite, structuré et progressif. Cinq activités langagières permettent de les édifier : comprendre un énoncé oral, parler en continu, parler en interaction, écrire et lire.",
-  domaines: [
-    {
-      id: "lecture",
-      nom: "Lecture",
-      couleur: "#B5502E",
-      intro: "L'apprentissage de la lecture est l'objectif central du cycle 2 : il en constitue la priorité fondamentale sur laquelle reposent tous les apprentissages ultérieurs des élèves.",
-      sousDomaines: [
-        {
-          id: "lecture-mots",
-          nom: "Identifier les mots de manière de plus en plus aisée",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "En fin de période 1 : décoder et encoder 12 à 15 correspondances graphophonémiques (CGP) régulières, fréquentes et aisément prononçables ; déchiffrer des syllabes, des mots puis des phrases selon la progression des CGP.",
-                "En milieu d'année : décoder et encoder de 25 à 30 CGP ; prendre conscience des lettres finales muettes ; mémoriser les mots fréquents et réguliers ; déchiffrer entre 15 et 30 mots par minute.",
-                "En fin d'année : décoder 30 mots par minute au minimum sans préparation, 50 après préparation."
-              ],
-              exemples: [
-                "L'élève déchiffre les mots les plus réguliers selon la progression des CGP et automatise la lecture des mots fréquents et transparents (le, la, ami, rire, lune…).",
-                "Il lit des consignes, des phrases et de courts textes déchiffrables avec exactitude en fin d'année."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Automatiser le décodage des CGP apprises au CP.",
-                "En fin d'année : décoder toutes les CGP, y compris les plus complexes ; avoir mémorisé l'ensemble des CGP dans tous les types d'écriture ; identifier directement les mots courants et déchiffrer avec exactitude les mots nouveaux."
-              ],
-              exemples: [
-                "L'élève déchiffre et écrit sous la dictée des syllabes et des pseudo-mots comportant des CGP complexes (doir, stag, choust, valin, cagnou…).",
-                "Il lit des phrases contenant des morphèmes grammaticaux et lexicaux muets de manière fluide sans vocaliser les lettres muettes."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Avoir automatisé toutes les CGP.",
-                "Lire un texte nouveau en s'appuyant sur un décodage rapide et automatiser la lecture des mots.",
-                "Repérer les lettres muettes et décoder les mots inconnus en conservant la vitesse de lecture visée."
-              ],
-              exemples: [
-                "L'élève reconnait directement les mots fréquents et irréguliers.",
-                "Il lit un texte avec fluidité sans vocaliser les lettres muettes et en faisant les liaisons appropriées."
-              ]
-            }
-          ]
-        },
-        {
-          id: "lecture-voix-haute",
-          nom: "Lire à voix haute",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Dès le début de l'année : oraliser les syllabes déchiffrées et encodées, puis les mots.",
-                "En fin d'année : lire après préparation un texte adapté avec une vitesse de 30 mots par minute minimum sans préparation, 50 après préparation ; identifier les marques de ponctuation ; amorcer une lecture expressive."
-              ],
-              exemples: [
-                "En fin d'année, après préparation, l'élève repère les groupes de mots qui doivent être lus ensemble et modifie sa voix pour faire parler un personnage."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "En fin d'année : lire un texte adapté à son niveau avec une vitesse de 70 mots par minute ; lire des textes narratifs, documentaires et prescriptifs en respectant la ponctuation et les groupes de souffle ; lire de manière expressive."
-              ],
-              exemples: [
-                "L'élève lit après préparation un texte simple en réalisant les pauses adéquates et en adoptant le ton et le rythme appropriés au sens du texte."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Lire un texte adapté à son niveau avec une vitesse de 90 mots par minute.",
-                "Lire un texte en respectant l'ensemble des marques de ponctuation et les liaisons.",
-                "Manifester sa compréhension par une lecture expressive qui respecte la structure du texte, de la phrase et le sens."
-              ],
-              exemples: [
-                "L'élève est capable de lire une scène de théâtre en incarnant un personnage et en jouant de l'expressivité de la ponctuation."
-              ]
-            }
-          ]
-        },
-        {
-          id: "lecture-comprehension",
-          nom: "Comprendre un texte",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Dégager le sens global d'un texte entendu ou lu de façon autonome.",
-                "Identifier les mots inconnus et chercher à leur donner un sens ; se repérer dans la chaine anaphorique ; comprendre ce qui est implicite (inférences simples) ; justifier ses réponses par un retour au texte.",
-                "Lire et comprendre en autonomie un texte narratif, informatif ou prescriptif d'une dizaine de lignes."
-              ],
-              exemples: [
-                "L'élève construit une représentation mentale au fur et à mesure de la lecture et identifie la chronologie et les lieux d'un récit.",
-                "Il réalise en autonomie une inférence simple (ex. : « J'ai pris mon parapluie » → le temps est pluvieux)."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Dégager le sens global d'un texte lu de façon autonome à la suite d'une séance dédiée à la compréhension.",
-                "Développer des stratégies pour élucider le sens des mots et expressions inconnus.",
-                "Se repérer dans la chaine anaphorique et s'appuyer sur le sens du texte pour résoudre des ambigüités ; comprendre ce qui est implicite dans des cas simples.",
-                "Lire et comprendre en autonomie un texte narratif, informatif ou prescriptif d'une quinzaine de lignes."
-              ],
-              exemples: [
-                "L'élève restitue les enchainements logiques et chronologiques d'un récit et est capable de le résumer oralement.",
-                "Il prend appui sur la morphologie d'un mot et/ou le contexte pour le comprendre, et prend l'habitude de consulter un dictionnaire adapté."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Lire et dégager le sens d'un texte narratif, poétique, documentaire ou théâtral, en s'appuyant sur les caractéristiques de ces textes.",
-                "Adopter une posture active par rapport au vocabulaire inconnu.",
-                "Différencier le type narratif du type informatif et prescriptif.",
-                "Comprendre ce qui est implicite en s'appuyant sur des indices explicites et ses propres connaissances.",
-                "Lire et comprendre en autonomie un texte d'une vingtaine de lignes."
-              ],
-              exemples: [
-                "L'élève sait utiliser les sous-titres, titres de chapitres et mise en page pour mieux comprendre.",
-                "Il commence à utiliser des stratégies face à une non-compréhension : relecture, poursuite de la lecture, recherche au dictionnaire, recherche documentaire."
-              ]
-            }
-          ]
-        },
-        {
-          id: "lecture-devenir-lecteur",
-          nom: "Devenir lecteur",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Lire 5 à 10 œuvres complètes et variées issues du patrimoine et de la littérature de jeunesse (albums, romans, contes, fables, poèmes, pièces de théâtre, documentaires).",
-                "Repérer et reconnaitre des types de personnages ; aller vers les livres et être capable d'en choisir à titre personnel.",
-                "Relier ses lectures à son expérience personnelle ; fréquenter régulièrement des lieux de lecture."
-              ],
-              exemples: [
-                "L'élève caractérise, compare les personnages et reconnait des types récurrents dans la littérature de jeunesse.",
-                "Il différencie le type narratif du type informatif."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Lire 5 à 10 œuvres complètes et variées issues du patrimoine et de la littérature de jeunesse.",
-                "Se familiariser aux différents genres et types de textes ; faire preuve d'initiative dans ses lectures personnelles.",
-                "Relier ses lectures à son expérience personnelle et établir des liens entre ses lectures (mise en réseau)."
-              ],
-              exemples: [
-                "L'élève commence à écrire à propos de ses lectures : il exprime ses gouts, écrit un bref résumé ou invente une autre fin.",
-                "Il est capable de présenter une lecture à ses camarades à l'oral."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Lire de manière autonome 5 à 10 œuvres complètes et variées issues du patrimoine et de la littérature de jeunesse.",
-                "Relier ses lectures à son expérience personnelle et établir des liens entre ses différentes lectures (mise en réseau).",
-                "Fréquenter des lieux de lecture régulièrement et rencontrer des acteurs du livre."
-              ],
-              exemples: [
-                "L'élève connait les caractéristiques de personnages-types diversifiés et dispose de références construites sur des réseaux de textes.",
-                "Il consigne ses expériences de lecture dans un carnet de lecteur."
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: "ecriture",
-      nom: "Écriture",
-      couleur: "#2A7F72",
-      intro: "L'enjeu du cycle 2 porte en premier lieu sur l'apprentissage du geste graphique. L'enseignement de l'écriture comporte quatre types d'activités qui se complètent : l'écriture cursive, la copie, la dictée et la production d'écrits.",
-      sousDomaines: [
-        {
-          id: "ecriture-cursive",
-          nom: "Apprendre à écrire en écriture cursive",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Apprendre à écrire en écriture cursive tous les graphèmes étudiés selon la progression en décodage.",
-                "Apprendre à les enchainer, avec fluidité, avec d'autres lettres dans des syllabes, mots, phrases."
-              ],
-              exemples: [
-                "L'élève respecte la forme et la taille de la lettre, le sens de rotation du tracé et l'enchainement des lettres.",
-                "Il enchaine plusieurs lettres sans lever le crayon (sauf devant les lettres rondes : a, c, d, g, o, q, x)."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Dès la période 1 : mémoriser le tracé normé et la transcription de toutes les lettres minuscules scriptes en cursive.",
-                "À partir de la période 2 : reconnaitre les lettres dans les quatre écritures ; apprendre le tracé normé des majuscules cursives par familles de gestes."
-              ],
-              exemples: [
-                "L'élève exerce tous les jours le geste d'écriture cursive minuscule en révisant les graphèmes par famille de gestes.",
-                "En fin d'année, il reconnait et sait tracer toutes les majuscules cursives."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Dès la période 1 : automatiser l'écriture de toutes les lettres minuscules et majuscules en cursive."
-              ],
-              exemples: [
-                "L'élève écrit et transcrit avec fluidité toutes les lettres cursives minuscules et majuscules."
-              ]
-            }
-          ]
-        },
-        {
-          id: "ecriture-dictee",
-          nom: "Encoder puis écrire sous dictée",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Dès le début de l'année : encoder des syllabes simples puis des mots selon la progression des CGP.",
-                "Dès la fin de la 2e période : écrire des mots dictés avec des lettres muettes apprises.",
-                "En fin d'année : écrire sous la dictée des mots et des phrases."
-              ],
-              exemples: [
-                "L'élève oralise ce qu'il écrit et segmente la chaine orale (phrase en mots, mots en syllabes et phonèmes).",
-                "Il mobilise des connaissances orthographiques (lettres muettes, marques d'accords accompagnées par l'adulte) lors des activités d'encodage."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Orthographier correctement les mots fréquents, réguliers puis irréguliers.",
-                "Réaliser des accords en genre et en nombre dans le groupe nominal et dans le groupe verbal (marque de pluriel des verbes = nt)."
-              ],
-              exemples: [
-                "L'élève réalise des dictées en lien avec l'étude des graphèmes, avec ou sans appui du cahier de référence.",
-                "Il se familiarise avec divers types de dictée."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "À la fin de l'année : orthographier correctement les mots fréquents, réguliers et irréguliers et des phrases selon les accords étudiés dans le cadre de dictées."
-              ],
-              exemples: [
-                "L'élève transcrit correctement les phonèmes pouvant s'écrire à l'aide de plusieurs graphèmes (/o/, /é/, /è/, /an/, /s/…) dans différents mots fréquents.",
-                "Il orthographie les chaines d'accord dans la phrase."
-              ]
-            }
-          ]
-        },
-        {
-          id: "ecriture-copie",
-          nom: "Copier et acquérir des stratégies de copie",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Dès le début de l'année : copier des syllabes simples puis des mots avec lettres muettes.",
-                "Dès la fin de la période 1 : copier une phrase en lien avec les 12/15 CGP étudiées ; commencer à verbaliser et utiliser des stratégies de copie.",
-                "En fin d'année : copier trois ou quatre phrases sans erreur et de façon lisible."
-              ],
-              exemples: [
-                "L'élève transforme en cursive un mot puis une phrase à partir de modèles en écriture scripte.",
-                "En fin d'année, il rectifie seul les oublis de mots et les erreurs de ponctuation."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Automatiser le geste d'écriture cursive par la copie de textes en temps limité et acquérir des stratégies de copie.",
-                "À l'issue de la période 1 : copier quatre à cinq phrases courtes.",
-                "À la fin de l'année : recopier sans effort une dizaine de lignes en respectant la ponctuation et la mise en page."
-              ],
-              exemples: [
-                "L'élève sait mobiliser différentes stratégies de copie : lettre à lettre, syllabe par syllabe, mot à mot, groupe de mots par groupe de mots.",
-                "Il relit son écrit et corrige l'orthographe selon les indications du professeur."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "En fin d'année : copier une dizaine de lignes sans erreur en conjuguant vitesse et exactitude et en respectant les mises en page complexes."
-              ],
-              exemples: [
-                "L'élève utilise systématiquement des stratégies de copie pour exercer la vitesse, l'exactitude, l'endurance et la mise en page.",
-                "Il se relit et repère des omissions ou erreurs orthographiques ou de ponctuation."
-              ]
-            }
-          ]
-        },
-        {
-          id: "ecriture-production",
-          nom: "Produire des écrits",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Dès le début de l'année : écrire des graphèmes, des syllabes, des mots puis quelques phrases avec l'aide du professeur.",
-                "Dès la 2e période : produire des écrits courts porteurs de sens, d'une à cinq lignes, en articulation avec l'apprentissage de la lecture.",
-                "En fin d'année : commencer à acquérir une méthodologie de production écrite (planification, mise en mots, relectures, révisions)."
-              ],
-              exemples: [
-                "L'élève compose des phrases à l'aide d'étiquettes mobiles qu'il sait déchiffrer.",
-                "En fin d'année, il respecte les deux marqueurs de la phrase : majuscule et ponctuation finale forte."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Dès les premières semaines : rédiger une phrase simple à partir d'une phrase prototypique, en changeant un puis plusieurs mots.",
-                "Au cours des périodes 1 à 5 : insérer des connecteurs pour rendre cohérent l'enchainement de plusieurs phrases.",
-                "En fin d'année : écrire un texte de six ou sept phrases maximum en assurant la cohérence syntaxique et logique du texte produit."
-              ],
-              exemples: [
-                "L'élève se sert de « brouillons » pour écrire : listes, pistes, cartes mentales.",
-                "Lors de l'étude d'une œuvre, il écrit la suite d'un passage en séquençant les actions : D'abord… Puis… Enfin…"
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Écrire pour transmettre un message, une émotion, une information à un destinataire.",
-                "Rédiger quelques phrases entrainant les automatismes appris en grammaire et orthographe.",
-                "Écrire un texte d'une dizaine de lignes de différents types, en respectant la syntaxe et les règles orthographiques étudiées.",
-                "Relire son texte méthodiquement."
-              ],
-              exemples: [
-                "L'élève écrit des dialogues, des récits, des poèmes en tenant compte des caractéristiques des types et genres de textes.",
-                "Il identifie les groupes nominaux et verbaux dans son texte et corrige éventuellement les erreurs d'accords."
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: "oral",
-      nom: "Oral",
-      couleur: "#6B4E8E",
-      intro: "L'enjeu du cycle 2 consiste à favoriser et enrichir la prise de parole de l'élève et, par l'écoute et le dialogue, à développer ses compétences psychosociales. La compétence orale se forge grâce à trois activités langagières : comprendre un énoncé oral, parler en interaction et parler en continu.",
-      sousDomaines: [
-        {
-          id: "oral-ecouter",
-          nom: "Écouter pour comprendre",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Comprendre un message entendu de quelques minutes et mémoriser quelques informations importantes."
-              ],
-              exemples: [
-                "L'élève adopte une posture d'écoute pour mémoriser une consigne ou un message important et réalise l'action demandée par un discours injonctif.",
-                "Il répond, après plusieurs écoutes d'un texte narratif, à la question : Que raconte ce texte ?"
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Maintenir une attention active pendant quelques minutes pour repérer, mémoriser, classer ou ordonner les informations importantes entendues à l'oral."
-              ],
-              exemples: [
-                "L'élève réalise l'action demandée par un discours injonctif (consigne, recette, notice de montage, règle du jeu).",
-                "Il récapitule une leçon orale, par exemple en sciences, en ordonnant les informations."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Repérer, mémoriser et relier entre elles plusieurs informations importantes pour construire la cohérence d'un message entendu de plus en plus long et complexe (5 minutes maximum), en évaluant son degré de compréhension."
-              ],
-              exemples: [
-                "L'élève écoute une interview et, après plusieurs écoutes, reformule l'essentiel de ce qu'il a appris du locuteur.",
-                "Il écoute une histoire et est capable d'en inventer la fin."
-              ]
-            }
-          ]
-        },
-        {
-          id: "oral-dire",
-          nom: "Dire pour être compris",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Mener une brève production orale pour rapporter, raconter, décrire ou expliquer, en utilisant quelques organisateurs du discours et en mobilisant le lexique appris.",
-                "S'écouter pour progresser et proposer des reformulations ; oraliser un texte mémorisé ou préparé en tenant compte de son auditoire."
-              ],
-              exemples: [
-                "En groupe restreint, l'élève est capable de prendre la parole en regardant ses camarades et en veillant à se faire comprendre.",
-                "Il restitue un poème en articulant distinctement et d'une voix audible."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Utiliser à l'oral l'ensemble des temps verbaux pour raconter, décrire, expliquer, comparer ou exposer.",
-                "Utiliser les critères définis pour évaluer sa prestation ou celle des autres et progresser dans la production de différents types de discours."
-              ],
-              exemples: [
-                "L'élève réinvestit (pendant 5 minutes maximum) les tournures linguistiques et postures apprises lors des séances dédiées aux différents types de discours.",
-                "Il utilise des termes comme d'abord, ensuite, donc, par conséquent, enfin, pour conclure."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Mener une production orale de plus en plus longue et structurée pour raconter, expliquer, argumenter, justifier.",
-                "Maintenir l'intérêt de son auditoire lors des différentes prestations orales."
-              ],
-              exemples: [
-                "L'élève produit des phrases de plus en plus complexes et mobilise un lexique de plus en plus varié et abstrait.",
-                "Il présente un exposé de quelques minutes construit en classe en prenant appui sur un support et explique un raisonnement en mathématiques ou en sciences."
-              ]
-            }
-          ]
-        },
-        {
-          id: "oral-echanges",
-          nom: "Participer à des échanges",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Participer aux échanges en respectant les règles, en écoutant les autres et en donnant son avis.",
-                "Prendre conscience des écarts de niveau de langue selon les situations de communication."
-              ],
-              exemples: [
-                "L'élève attend la fin d'une prise de parole pour parler et réutilise des expressions comme : Je souhaite prendre la parole pour…",
-                "Il mesure que l'on ne parle pas de la même manière en classe et dans la cour."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Respecter le propos au cours des échanges au sein d'un groupe.",
-                "Adapter le registre de langue utilisé (familier, courant, soutenu) à la situation de communication proposée."
-              ],
-              exemples: [
-                "L'élève exprime et justifie un accord ou un désaccord en utilisant des expressions fournies par le professeur.",
-                "Il participe à des jeux de rôle et adapte son registre de langue de façon appropriée."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Tenir compte de ce qui a déjà été dit lors des interventions au sein d'un groupe.",
-                "Utiliser un registre de langue et adopter des postures adaptées aux situations proposées (jeux de rôles)."
-              ],
-              exemples: [
-                "L'élève est capable de reformuler ce qui a été dit par un camarade et de s'appuyer sur ce propos pour faire progresser l'échange.",
-                "Il utilise des expressions fournies par le professeur : Pour compléter ce qu'a dit… ; Pour reprendre les propos de…"
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: "vocabulaire",
-      nom: "Vocabulaire",
-      couleur: "#B5871E",
-      intro: "L'enseignement du vocabulaire reste une priorité au cycle 2 en ce qu'il participe de la lutte contre les inégalités scolaires. Les séquences suivent trois étapes : apporter de nouveaux mots, structurer le lexique, réutiliser le vocabulaire appris.",
-      sousDomaines: [
-        {
-          id: "vocab-enrichir",
-          nom: "Enrichir son vocabulaire dans tous les enseignements",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Enrichir en contexte le vocabulaire appris au cycle 1.",
-                "Être sensible, sans en apprendre les concepts, à la polysémie et à la différence entre sens propre et sens figuré.",
-                "Commencer à mobiliser l'ordre alphabétique pour utiliser un dictionnaire adapté."
-              ],
-              exemples: [
-                "L'élève caractérise un personnage après une lecture expressive réalisée par l'adulte (ex. : sévère, rusé).",
-                "Il commence à comprendre le sens des principaux affixes : dé-(décoller), re-(refaire), in-(invisible), -eur (chanteur), -ette (tablette)."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Enrichir les répertoires constitués au CP en y ajoutant des expressions ou locutions.",
-                "S'appuyer sur la morphologie des mots pour en trouver le sens ; prendre l'habitude de consulter des articles de dictionnaire adapté."
-              ],
-              exemples: [
-                "L'élève caractérise un personnage après une lecture autonome (ex. : jaloux, machiavélique, ambitieux).",
-                "Il enrichit sa connaissance des principaux affixes : para-(parapluie), multi-(multicolore), anti-(antivol)."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Enrichir les répertoires constitués au CP et au CE1 en y ajoutant des expressions ou locutions.",
-                "Comprendre le lien sémantique entre sens propre et sens figuré dans les cas les plus fréquents.",
-                "Consulter avec aisance des articles de dictionnaire adapté."
-              ],
-              exemples: [
-                "L'élève caractérise un personnage après une lecture autonome (ex. : irritable, débonnaire, placide).",
-                "Il perçoit que le verbe souffler a un sens différent dans souffler ses bougies et souffler une réponse."
-              ]
-            }
-          ]
-        },
-        {
-          id: "vocab-relations",
-          nom: "Établir des relations entre les mots",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Constituer des répertoires de mots par thème, par classe grammaticale, par famille de mots, par analogies morphologiques.",
-                "Savoir proposer et justifier une catégorisation du corpus de mots étudié ; savoir trouver des synonymes et des antonymes."
-              ],
-              exemples: [
-                "L'élève rapproche les mots de l'univers de l'école et comprend la notion de champ lexical (trousse, colle, bureau, ardoise…).",
-                "Il repère et opère des dérivations simples : coller/décoller/recoller."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Percevoir de grandes catégories et hiérarchiser les termes génériques, de base et spécifiques.",
-                "Percevoir les niveaux de langue familier, courant et soutenu ; comprendre la différence entre sens propre/sens figuré."
-              ],
-              exemples: [
-                "L'élève perçoit le lien entre les mots aliment > laitage > fromage > gruyère et peut les classer du général vers le particulier.",
-                "Il identifie des contraires construits avec les préfixes in- ou dé- (visible/invisible, ranger/déranger)."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Enrichir les collections constituées au début du cycle avec des mots, expressions et associations fréquentes.",
-                "Percevoir de grandes catégories et hiérarchiser les termes génériques de base et spécifiques.",
-                "Savoir utiliser les niveaux de langue (familier, courant, soutenu) en fonction des situations et des interlocuteurs."
-              ],
-              exemples: [
-                "L'élève perçoit une gradation au sein de relations de proximité ou de synonymie (ex. : la crainte > la peur > l'épouvante).",
-                "Il opère des dérivations en identifiant la partie commune des mots (port/portuaire/aéroport)."
-              ]
-            }
-          ]
-        },
-        {
-          id: "vocab-reemployer",
-          nom: "Réemployer le vocabulaire étudié",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Réemployer et mémoriser le vocabulaire appris en maternelle, ainsi que les expressions et mots appris en fonction de contraintes de production orale ou écrite.",
-                "Percevoir la différence entre deux niveaux de langue et choisir le plus adapté à la situation."
-              ],
-              exemples: [
-                "L'élève convoque, de plus en plus rapidement, lors d'un jeu oral, des mots catégorisés lors de séances spécifiques.",
-                "Il joue au jeu des 7 familles en catégorisant : Dans la famille des fruits, je voudrais la pomme."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Mobiliser les mots rencontrés en contexte en fonction des lectures et des activités conduites pour mieux parler, mieux comprendre et mieux écrire.",
-                "Utiliser les relations établies entre les mots depuis le cycle 1 pour varier et adapter son expression."
-              ],
-              exemples: [
-                "L'élève réinvestit des mots précis dans une situation de production orale ou écrite (ex. : mesurer les cinq segments puis les ranger du plus petit au plus grand).",
-                "Il améliore sa production en évitant les répétitions grâce à l'emploi de synonymes ou de termes génériques."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Employer à bon escient et rigoureusement les mots étudiés, en référence à leur contexte d'emploi et leur éventuelle polysémie.",
-                "Comprendre la différence entre sens propre/sens figuré ; changer de niveau de langue selon les situations.",
-                "Automatiser la restitution des mots d'un corpus étudié (fluence verbale)."
-              ],
-              exemples: [
-                "L'élève mobilise des synonymes, termes génériques ou expressions lors de divers écrits pour éviter les répétitions.",
-                "Il rédige des énoncés utilisant le même mot au sens propre et au sens figuré (ex. : Une forte pluie inonde la cave. / Le soleil inonde la pièce.)."
-              ]
-            }
-          ]
-        },
-        {
-          id: "vocab-orthographe",
-          nom: "Mémoriser l'orthographe lexicale",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Mémoriser l'orthographe des mots réguliers fréquemment rencontrés et du lexique le plus couramment employé, et pouvoir les écrire sous la dictée.",
-                "Identifier et nommer les accents ; connaitre la valeur sonore de certaines lettres (s, c, g) et la composition de certains graphèmes selon la lettre qui suit (an/am, en/em, on/om, in/im)."
-              ],
-              exemples: [
-                "L'élève met en mémoire les mots réguliers et fréquents en épelant, copiant, et en prenant appui sur des analogies graphophonémiques (quarante/cinquante/soixante) ou morphologiques (maisonnette/fillette/tablette).",
-                "Il décode les mots comportant un m devant m/b/p."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Mémoriser l'orthographe des mots réguliers et irréguliers fréquemment rencontrés et du lexique le plus couramment employé.",
-                "Tenir compte des accents ; classer par analogie et mémoriser les mots comportant des graphèmes à prononciation variable (s, c, g)."
-              ],
-              exemples: [
-                "L'élève mémorise et restitue un corpus organisé de mots invariables (tôt/aussitôt/plutôt…) et de vocabulaire spatial (ici/là-bas/loin/près…).",
-                "Il sait orthographier les mots dont la lettre muette finale s'entend dans un mot dérivé à radical régulier (chant/chanter)."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Écrire correctement sous la dictée les mots réguliers et irréguliers fréquemment rencontrés.",
-                "Tenir compte des accents ; s'appuyer sur des critères morphologiques (radical, préfixe, suffixe) et analogiques pour orthographier correctement les mots."
-              ],
-              exemples: [
-                "L'élève copie, y compris en copie différée, des listes de mots par analogie ainsi que les mots irréguliers les plus fréquents.",
-                "Il met en œuvre des raisonnements orthographiques fondés sur la morphologie lexicale (ex. : il s'appuie sur beau pour orthographier beauté)."
-              ]
-            }
-          ]
-        }
-      ]
-    },
-    {
-      id: "grammaire",
-      nom: "Grammaire et orthographe",
-      couleur: "#1E2A4A",
-      intro: "La grammaire est un enseignement au service de l'oral, de la lecture et de l'écriture. Au cycle 2, l'objectif est de faire comprendre aux élèves le système de la langue et les deux éléments constitutifs de la phrase simple : le groupe sujet et le groupe verbal.",
-      sousDomaines: [
-        {
-          id: "gram-phrase",
-          nom: "Se repérer dans la phrase simple",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "S'approprier progressivement la notion de phrase simple et ses trois marqueurs essentiels : majuscule initiale, ponctuation finale forte et sens.",
-                "S'appuyer sur la ponctuation pour reconnaitre les trois types de phrases (déclarative, interrogative, impérative) ; reconnaitre les formes négative et exclamative.",
-                "Constituer des corpus par classe de mots : noms, verbes, déterminants, adjectifs, pronoms personnels."
-              ],
-              exemples: [
-                "L'élève identifie les phrases d'un court texte à partir des majuscules et des différents points.",
-                "Il opère des tris de mots (déterminant/nom/adjectif) entendus, lus ou écrits en fonction de leur genre et de leur nombre."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Identifier la phrase simple, en distinguer les principaux constituants et les nommer : groupe sujet (GS), verbe et compléments.",
-                "Reconnaitre et utiliser les trois types de phrases, en lien avec la ponctuation.",
-                "Différencier et nommer les principales classes de mots : déterminant, nom commun, nom propre, adjectif, verbe, pronom personnel sujet."
-              ],
-              exemples: [
-                "L'élève opère des manipulations de phrase : déplacement, suppression, ajout, substitution (ex. : Elle mange tous les jours. → Tous les jours, elle mange à la cantine.).",
-                "Il catégorise un corpus de mots proposé par classe grammaticale et affine ses critères de reconnaissance."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Identifier la phrase simple et reconnaitre ses principaux constituants : groupe sujet, verbe et compléments.",
-                "Reconnaitre et produire les trois types de phrases ainsi que les formes négative et exclamative.",
-                "Différencier et nommer les principales classes de mots, y compris l'adverbe ; utiliser la ponctuation de fin de phrase et reconnaitre les marques du discours rapporté."
-              ],
-              exemples: [
-                "L'élève substitue à un groupe nominal sujet un pronom personnel sujet et inversement.",
-                "Il découvre la classe grammaticale de l'adverbe et sait orthographier les adverbes les plus fréquents (très, si, bien, assez, aujourd'hui, demain…) et les adverbes en -ment."
-              ]
-            }
-          ]
-        },
-        {
-          id: "gram-orthographe",
-          nom: "Découvrir, comprendre et mettre en œuvre l'orthographe grammaticale",
-          competences: [
-            {
-              niveau: "CP",
-              objectifs: [
-                "Comprendre les notions de masculin/féminin et de singulier/pluriel.",
-                "Se familiariser avec la notion de « chaine d'accords » (déterminant/nom/adjectif).",
-                "S'initier à l'identification de la relation sujet-verbe ; apprendre à conjuguer être et avoir au présent de l'indicatif."
-              ],
-              exemples: [
-                "L'élève observe la marque du féminin (+e) et du pluriel (+s) à partir d'exemples sonores (petit/petite, deux lapins…).",
-                "Il orthographie sous la dictée des groupes nominaux du type : une olive/des olives ; un joli vélo/de jolis vélos."
-              ]
-            },
-            {
-              niveau: "CE1",
-              objectifs: [
-                "Reconnaitre le groupe nominal (déterminant/nom/adjectif) et comprendre le lien entre les éléments dans la chaine d'accords.",
-                "Identifier la relation sujet-verbe et le radical/terminaison d'un verbe du premier groupe conjugué.",
-                "Apprendre à conjuguer au présent, à l'imparfait, au futur puis au passé composé de l'indicatif être, avoir et les verbes du premier groupe."
-              ],
-              exemples: [
-                "L'élève utilise, en dictée, les marques d'accord pour le nom et l'adjectif épithète (pluriel en -s, féminin en -e).",
-                "Il est capable de nommer l'infinitif d'un verbe conjugué à divers temps en s'appuyant sur le repérage d'un radical commun."
-              ]
-            },
-            {
-              niveau: "CE2",
-              objectifs: [
-                "Repérer, comprendre et mettre en œuvre les marques d'accord au sein du groupe nominal.",
-                "Identifier, dans des situations simples, la relation sujet-verbe.",
-                "Apprendre à conjuguer au présent, à l'imparfait, au futur et au passé composé de l'indicatif être, avoir, les verbes du premier groupe et des verbes irréguliers du 3e groupe (faire, aller, dire, venir, pouvoir, voir, vouloir, prendre)."
-              ],
-              exemples: [
-                "L'élève comprend la notion de chaine d'accords dans le groupe nominal (nombre -s, genre -e, pluriels irréguliers -x/-al-aux, féminins lecteur/lectrice).",
-                "Il orthographie correctement les formes verbales étudiées en situation de dictée et d'écriture."
-              ]
-            }
-          ]
-        }
-      ]
-    }
-  ]
-};
+/* ============================================================
+   RÉFÉRENTIEL DYNAMIQUE
+   Les compétences sont chargées depuis Programmation/data/competences.json.
+   index.json reste la source de la structure de programmation.
+   ============================================================ */
+window.__DATA_READY = (async function(){
+  const [compRes, indexRes] = await Promise.all([
+    fetch("Programmation/data/competences.json", {cache:"no-store"}),
+    fetch("Programmation/data/index.json", {cache:"no-store"})
+  ]);
+  if(!compRes.ok) throw new Error("Impossible de charger Programmation/data/competences.json");
+  if(!indexRes.ok) throw new Error("Impossible de charger Programmation/data/index.json");
 
+  const compData = await compRes.json();
+  const indexData = await indexRes.json();
+
+  const LEVELS = ["TPS","PS","MS","GS","CP","CE1","CE2","CM1","CM2","6e"];
+  const LEVEL_LONG = {
+    TPS:"Toute petite section", PS:"Petite section", MS:"Moyenne section",
+    GS:"Grande section", CP:"Cours préparatoire", CE1:"Cours élémentaire 1",
+    CE2:"Cours élémentaire 2", CM1:"Cours moyen 1", CM2:"Cours moyen 2",
+    "6e":"Sixième"
+  };
+  const CYCLES = ["Cycle 1","Cycle 2","Cycle 3"];
+  const DOMAIN_COLORS = [
+    "#2E5EAA","#B5502E","#2A7F72","#6B4E8E","#B5871E",
+    "#1E2A4A","#7A5C3E","#557A62","#8A4F70","#4D6875"
+  ];
+
+  const domainMap = new Map();
+  (compData.domaines || []).forEach((d,i)=>{
+    domainMap.set(d.id, {
+      id:d.id,
+      nom:d.nom || d.id,
+      discipline:d.discipline || "",
+      couleur:d.couleur || DOMAIN_COLORS[i % DOMAIN_COLORS.length]
+    });
+  });
+  (compData.competences || []).forEach((c,i)=>{
+    if(!domainMap.has(c.domaine_id)){
+      domainMap.set(c.domaine_id,{
+        id:c.domaine_id,
+        nom:c.domaine || c.domaine_id || "Domaine",
+        discipline:c.discipline || "",
+        couleur:c.couleur || DOMAIN_COLORS[i % DOMAIN_COLORS.length]
+      });
+    } else if(c.couleur && !domainMap.get(c.domaine_id).couleur){
+      domainMap.get(c.domaine_id).couleur=c.couleur;
+    }
+  });
+
+  const domaines = [...domainMap.values()].map(d=>{
+    const items=(compData.competences||[]).filter(c=>c.domaine_id===d.id);
+    const themes=[...new Map(items.map(c=>[
+      c.theme || c.question || c.intitule || c.id,
+      c.theme || c.question || c.intitule || c.id
+    ])).entries()];
+    return {
+      ...d,
+      intro:`${d.discipline ? d.discipline+" · " : ""}${items.length} compétence${items.length>1?"s":""} du référentiel.`,
+      sousDomaines:themes.map(([id,nom])=>({id,nom}))
+    };
+  });
+
+  const niveauxPresent = LEVELS.filter(n=>(compData.competences||[]).some(c=>c.niveau===n));
+  const REFERENTIEL = {
+    cycle:"Tous les cycles",
+    cycleLong:"Cycles 1, 2 et 3",
+    discipline:"Toutes les disciplines",
+    niveaux:LEVELS,
+    niveauxLongs:LEVEL_LONG,
+    cycles:CYCLES,
+    domaines,
+    sources:compData.metadata?.fichiers_sources || [],
+    index:indexData,
+    chapo:"Référentiel transversal regroupant les compétences disponibles du cycle 1 au cycle 3."
+  };
+
+  /* Chaque entrée du référentiel devient une fiche indépendante. */
+  const FICHES = (compData.competences||[]).map(c=>{
+    const d=domainMap.get(c.domaine_id) || {
+      id:c.domaine_id || "autre", nom:c.domaine || "Domaine",
+      discipline:c.discipline || "", couleur:c.couleur || "#2E5EAA"
+    };
+    const objectifs=Array.isArray(c.objectifs) && c.objectifs.length
+      ? c.objectifs
+      : [c.intitule || c.nom || "Compétence"];
+    const theme=c.theme || c.question || c.intitule || c.nom || c.id;
+    const source=typeof c.source==="string" ? c.source : [
+      c.source?.document, c.source?.fichier, c.source?.section
+    ].filter(Boolean).join(" · ");
+    return {
+      id:c.id,
+      cycle:c.cycle || "",
+      niveau:c.niveau || "",
+      niveauSource:c.niveau_source || "",
+      niveauTags:(c.niveau==="CM1-CM2" ? ["CM1","CM2"] : [c.niveau]).filter(Boolean),
+      discipline:c.discipline || d.discipline || "",
+      domaineId:d.id,
+      domaineNom:d.nom,
+      domaineCouleur:c.couleur || d.couleur,
+      sousDomaineId:theme,
+      sousDomaineNom:theme,
+      objectifs,
+      exemples:Array.isArray(c.exemples) ? c.exemples : [],
+      prerequis:Array.isArray(c.prerequis_competences) ? c.prerequis_competences : [],
+      motsCles:Array.isArray(c.mots_cles) ? c.mots_cles : [],
+      source:source || "Source non précisée",
+      sourceRaw:c.source || null,
+      intitule:c.intitule || c.nom || theme
+    };
+  });
+
+  window.REFERENTIEL=REFERENTIEL;
+  window.FICHES=FICHES;
+  return {REFERENTIEL,FICHES,indexData,compData,niveauxPresent};
+})();
+
+window.addEventListener("error", e=>{
+  if(e.target && e.target.tagName==="SCRIPT") return;
+  const box=document.getElementById("dataError");
+  if(box) box.textContent="Erreur de chargement du référentiel : "+e.message;
+});
 </script>
 <script>
-(function(){
+(async function(){
   "use strict";
+  await window.__DATA_READY;
+  const REFERENTIEL = window.REFERENTIEL;
+  const FICHES = window.FICHES;
 
-  // Flatten every competence into individual "fiches" for the directory
-  function buildFiches(){
-    const fiches = [];
-    REFERENTIEL.domaines.forEach(dom=>{
-      dom.sousDomaines.forEach(sd=>{
-        sd.competences.forEach(c=>{
-          fiches.push({
-            id: dom.id + "__" + sd.id + "__" + c.niveau,
-            domaineId: dom.id,
-            domaineNom: dom.nom,
-            domaineCouleur: dom.couleur,
-            sousDomaineId: sd.id,
-            sousDomaineNom: sd.nom,
-            niveau: c.niveau,
-            objectifs: c.objectifs,
-            exemples: c.exemples || []
-          });
-        });
-      });
-    });
-    return fiches;
-  }
-  const FICHES = buildFiches();
-
+  // Les fiches sont chargées une à une depuis competences.json.
+  /* buildFiches conservé uniquement comme repère historique. */
   const state = { niveau: null, domaine: null, sousDomaine: null, query: "", view: "grid" };
 
   // ---------- Header level pill ----------
@@ -1447,11 +814,11 @@ const REFERENTIEL = {
   const niveauLabelsLong = REFERENTIEL.niveauxLongs;
   const levelCardsWrap = document.getElementById('levelCards');
   REFERENTIEL.niveaux.forEach(n=>{
-    const count = FICHES.filter(f=>f.niveau===n).length;
+    const count = FICHES.filter(f=>f.niveau===n || (n==="CM1" || n==="CM2") && f.niveau==="CM1-CM2").length;
     const card = document.createElement('button');
     card.className = "level-card";
     card.innerHTML = `
-      <div class="lc-code">${REFERENTIEL.cycle.toUpperCase()} · NIVEAU</div>
+      <div class="lc-code">${(n==="TPS"||n==="PS"||n==="MS"||n==="GS" ? "CYCLE 1" : (n==="CP"||n==="CE1"||n==="CE2" ? "CYCLE 2" : "CYCLE 3"))} · NIVEAU</div>
       <h3>${n}</h3>
       <p>${niveauLabelsLong[n]}</p>
       <div class="lc-count">${count} fiches de compétences</div>
@@ -1553,11 +920,11 @@ const REFERENTIEL = {
   // ---------- Filtering logic ----------
   function filteredFiches(){
     return FICHES.filter(f=>{
-      if(state.niveau && f.niveau!==state.niveau) return false;
+      if(state.niveau && f.niveau!==state.niveau && !((state.niveau==="CM1" || state.niveau==="CM2") && f.niveau==="CM1-CM2")) return false;
       if(state.domaine && f.domaineId!==state.domaine) return false;
       if(state.sousDomaine && f.sousDomaineId!==state.sousDomaine) return false;
       if(state.query){
-        const hay = (f.sousDomaineNom+" "+f.domaineNom+" "+f.niveau+" "+f.objectifs.join(" ")+" "+f.exemples.join(" ")).toLowerCase();
+        const hay = (f.intitule+" "+f.sousDomaineNom+" "+f.domaineNom+" "+f.discipline+" "+f.cycle+" "+f.niveau+" "+f.niveauSource+" "+f.motsCles.join(" ")+" "+f.objectifs.join(" ")+" "+f.exemples.join(" ")+" "+f.source).toLowerCase();
         if(!hay.includes(state.query)) return false;
       }
       return true;
@@ -1594,7 +961,7 @@ const REFERENTIEL = {
             <span class="badge niveau">${f.niveau}</span>
           </div>
           <h4>${highlight(f.sousDomaineNom)}</h4>
-          <div class="cc-domain">${REFERENTIEL.cycle} · ${REFERENTIEL.discipline}</div>
+          <div class="cc-domain">${f.cycle} · ${f.discipline}</div>
           <p class="cc-preview">${highlight(f.objectifs[0])}</p>
           <span class="cc-arrow">Voir la fiche →</span>
         `;
@@ -1636,11 +1003,12 @@ const REFERENTIEL = {
       ${f.niveau}
     `;
     document.getElementById('drawerBody').innerHTML = `
-      <h2>${f.sousDomaineNom}</h2>
+      <h2>${f.intitule}</h2>
       <div class="drawer-tags">
         <span class="badge" style="--dcolor:${f.domaineCouleur}">${f.domaineNom}</span>
-        <span class="badge niveau">${f.niveau} · ${REFERENTIEL.niveauxLongs[f.niveau]}</span>
-        <span class="badge niveau">${REFERENTIEL.cycle}</span>
+        <span class="badge niveau">${f.niveau}${f.niveauSource ? " · "+f.niveauSource : ""}</span>
+        <span class="badge niveau">${f.cycle}</span>
+        <span class="badge niveau">${f.discipline}</span>
       </div>
 
       <div class="drawer-section">
@@ -1653,6 +1021,20 @@ const REFERENTIEL = {
         <h5>Exemples de réussite</h5>
         <div class="reussite-box"><ul>${f.exemples.map(e=>`<li>${e}</li>`).join('')}</ul></div>
       </div>` : ''}
+
+      ${f.prerequis.length ? `
+      <div class="drawer-section">
+        <h5>Prérequis</h5>
+        <div>${f.prerequis.map(id=>{
+          const p=ficheById(id);
+          return p ? `<span class="related-chip">${p.niveau} · ${p.intitule}</span>` : `<span class="related-chip">${id}</span>`;
+        }).join('')}</div>
+      </div>` : ''}
+
+      <div class="drawer-section">
+        <h5>Source</h5>
+        <div class="reussite-box">${f.source}</div>
+      </div>
 
       <div class="drawer-section">
         <h5>Compétences connexes du même domaine</h5>
@@ -1703,7 +1085,7 @@ const REFERENTIEL = {
       {num: FICHES.length, label:"Compétences répertoriées"},
       {num: REFERENTIEL.domaines.length, label:"Domaines"},
       {num: REFERENTIEL.domaines.reduce((s,d)=>s+d.sousDomaines.length,0), label:"Sous-domaines"},
-      {num: REFERENTIEL.niveaux.length, label:"Niveaux (cycle 2)"}
+      {num: REFERENTIEL.niveaux.length, label:"Niveaux"}
     ];
     stats.forEach(s=>{
       const c = document.createElement('div');
@@ -1786,12 +1168,13 @@ const REFERENTIEL = {
     currentFicheId = ficheId;
     const dom = REFERENTIEL.domaines.find(d=>d.id===f.domaineId);
 
-    document.getElementById('cpEyebrow').textContent = `${REFERENTIEL.cycle} · ${REFERENTIEL.discipline} · ${f.niveau}`;
-    document.getElementById('cpTitle').textContent = f.sousDomaineNom;
+    document.getElementById('cpEyebrow').textContent = `${f.cycle} · ${f.discipline} · ${f.niveau}`;
+    document.getElementById('cpTitle').textContent = f.intitule;
     document.getElementById('cpTags').innerHTML = `
       <span class="badge" style="--dcolor:${f.domaineCouleur}">${f.domaineNom}</span>
-      <span class="badge niveau">${f.niveau} · ${REFERENTIEL.niveauxLongs[f.niveau]}</span>
-      <span class="badge niveau">${REFERENTIEL.cycle}</span>
+      <span class="badge niveau">${f.niveau}${f.niveauSource ? " · "+f.niveauSource : ""}</span>
+      <span class="badge niveau">${f.cycle}</span>
+      <span class="badge niveau">${f.discipline}</span>
     `;
     document.getElementById('cpObjectifs').innerHTML = f.objectifs.map(o=>`<li>${o}</li>`).join('');
     const exBlock = document.getElementById('cpExemplesBlock');
