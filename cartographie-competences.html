@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Cartographie des compétences — Synapses</title>
+<title>Cartographie des séquences — Synapses</title>
 <style>
 :root{
   --ink:#152333;--muted:#68737e;--line:#d8dde2;--panel:rgba(255,255,255,.90);
@@ -57,9 +57,13 @@ input{width:280px;padding:8px 10px}
 </head>
 <body>
 <div id="app">
+<a id="backProgramming" href="Programmation/sequences.html"
+style="position:fixed;z-index:20;right:24px;top:18px;padding:8px 12px;background:rgba(255,255,255,.92);
+border:1px solid #d2d8dd;color:#152333;text-decoration:none;font:13px Georgia,serif;
+box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
 <canvas id="graph" aria-label="Cartographie des compétences"></canvas>
 <header>
-  <h1>Cartographie des compétences</h1>
+  <h1>Cartographie des séquences</h1>
   <div class="subtitle" id="subtitle">Chargement des données pédagogiques…</div>
 </header>
 
@@ -483,7 +487,8 @@ function showPanel(node){
       <div class="meta">${esc(c?.discipline)} · ${esc(c?.domaine)}</div>
       <div class="section"><h4>Objectifs</h4>${(c?.objectifs||[]).map(x=>`<div class="item">${esc(x)}</div>`).join("")||"<div class='item'>Aucun objectif renseigné.</div>"}</div>
       <div class="section"><h4>Prérequis explicitement déclarés</h4>${pre.length?pre.map(x=>`<div class="item">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucun prérequis déclaré.</div>"}</div>
-      <div class="section"><h4>Compétences qui en dépendent</h4>${after.length?after.map(x=>`<div class="item">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucune relation déclarée.</div>"}</div>`;
+      <div class="section"><h4>Compétences qui en dépendent</h4>${after.length?after.map(x=>`<div class="item">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucune relation déclarée.</div>"}</div>
+      <a class="panelAction" href="Programmation/sequences.html?competence=${encodeURIComponent(c?.id||"")}">Ouvrir dans la programmation</a>`;
   }else if(node.type==="sequence"){
     const s=seqById(node.ref);
     html=`<span class="tag">Séquence · ${esc(s?.niveau)}</span><h2>${esc(s?.titre)}</h2>
