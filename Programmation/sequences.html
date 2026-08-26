@@ -70,6 +70,14 @@ header.site-header{
 .brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
 .brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
 .header-actions{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.coffre-widget{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 12px;border:1px solid rgba(255,255,255,.3);border-radius:20px;}
+.coffre-widget .badge-coffre{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;white-space:nowrap;}
+.coffre-widget .badge-coffre.ouvert{color:#BFE3DA;}
+.repeater-row.has-picker{grid-template-columns:1.3fr 1fr 1.6fr auto;}
+.repeater-row .eleve-picker{width:100%;font-family:'Inter',sans-serif;font-size:13px;padding:8px 9px;border:1px solid var(--line);border-radius:8px;background:#F4F7FC;color:var(--ink);}
+.eleve-tools{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;align-items:center;}
+.eleve-tools .repeater-add.coffre-action{color:var(--ok);}
+.eleve-tools .repeater-add.coffre-fix{color:#7A5A22;}
 .btn{
   font-family:'Inter',sans-serif;font-size:13px;font-weight:600;
   border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;
@@ -377,6 +385,10 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
       </span>
     </a>
     <div class="header-actions">
+      <div class="coffre-widget">
+        <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
+        <button class="btn small" id="btn-coffre-toggle">Ouvrir le coffre</button>
+      </div>
       <button class="btn" id="btn-view-reseau">🕸 Réseau de compétences</button>
       <a class="btn" href="../cartographie-competences.html" target="_blank" rel="noopener">🗺 Cartographie des compétences</a>
       <button class="btn" id="btn-export-competences">Exporter le référentiel</button>
@@ -387,6 +399,24 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
     </div>
   </div>
 </header>
+
+<div class="modal-overlay" id="modal-coffre">
+  <div class="modal" style="max-width:440px;">
+    <div class="modal-head">
+      <h3>Ouvrir le coffre élèves</h3>
+      <button class="modal-close" data-close="modal-coffre">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:13px;color:var(--ink-soft);margin:0 0 16px;">Le coffre reste en mémoire de cet onglet uniquement — aucune donnée élève n'est écrite sur ce disque.</p>
+      <div class="field"><label>Fichier .synapses</label><input type="file" id="coffre-file" accept=".synapses"></div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="coffre-password" placeholder="Mot de passe du coffre"></div>
+    </div>
+    <div class="modal-foot">
+      <button class="btn on-panel" data-close="modal-coffre">Annuler</button>
+      <button class="btn on-panel primary" id="btn-coffre-open-confirm">Ouvrir</button>
+    </div>
+  </div>
+</div>
 
 <div class="shell">
 
@@ -588,7 +618,11 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <fieldset>
           <legend>Objectifs individuels</legend>
           <div id="seq-eleves-repeater"></div>
-          <button type="button" class="repeater-add" id="add-seq-eleve">+ Ajouter un élève</button>
+          <div class="eleve-tools">
+            <button type="button" class="repeater-add" id="add-seq-eleve">+ Ajouter un élève</button>
+            <button type="button" class="repeater-add coffre-action" id="load-seq-eleves-coffre">↺ Charger les élèves du coffre</button>
+            <button type="button" class="repeater-add coffre-fix" id="fix-seq-eleves-coffre">🔒 Fixer ces objectifs dans le coffre</button>
+          </div>
         </fieldset>
 
         <div class="field">
@@ -673,7 +707,11 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <fieldset>
           <legend>Objectifs individuels</legend>
           <div id="sea-eleves-repeater"></div>
-          <button type="button" class="repeater-add" id="add-sea-eleve">+ Ajouter un élève</button>
+          <div class="eleve-tools">
+            <button type="button" class="repeater-add" id="add-sea-eleve">+ Ajouter un élève</button>
+            <button type="button" class="repeater-add coffre-action" id="load-sea-eleves-coffre">↺ Charger les élèves du coffre</button>
+            <button type="button" class="repeater-add coffre-fix" id="fix-sea-eleves-coffre">🔒 Fixer ces objectifs dans le coffre</button>
+          </div>
         </fieldset>
 
         <fieldset>
@@ -703,8 +741,66 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 <div class="toast" id="toast"></div>
 <div id="print-area"></div>
 
+<script src="../fata-morgana/synapses-crypto.js"></script>
+<script src="../fata-morgana/synapses-coffre.js"></script>
 <script>
 "use strict";
+
+/* ============================================================
+   COFFRE ÉLÈVES — intégration en lecture/écriture (mémoire uniquement)
+   ============================================================ */
+let coffre = null;
+try{ coffre = new SynapsesCoffre.Coffre(); }catch(e){ coffre = null; }
+function coffreDisponible(){ return !!coffre; }
+function coffreOuvert(){ return !!(coffre && coffre.ouvert); }
+function eleveLabel(e){
+  const id = e.identite || {};
+  return (`${id.prenom||""} ${id.nom||""}`).trim() || e.identifiantSynapses;
+}
+function updateCoffreWidget(){
+  const status = document.getElementById('coffre-status');
+  const btn = document.getElementById('btn-coffre-toggle');
+  if(!coffreDisponible()){ status.textContent = "Coffre indisponible"; btn.style.display = "none"; return; }
+  if(coffreOuvert()){
+    status.textContent = "Coffre ouvert · " + coffre.listerEleves().length + " élève(s)";
+    status.classList.add('ouvert');
+    btn.textContent = "Fermer le coffre";
+  } else {
+    status.textContent = "Coffre fermé";
+    status.classList.remove('ouvert');
+    btn.textContent = "Ouvrir le coffre";
+  }
+}
+if(document.getElementById('btn-coffre-toggle')){
+  document.getElementById('btn-coffre-toggle').addEventListener('click', ()=>{
+    if(coffreOuvert()){
+      if(confirm("Fermer le coffre et purger les données élèves de la mémoire de cet onglet ?")){
+        coffre.purger();
+        updateCoffreWidget();
+        toast("Coffre fermé, données purgées");
+      }
+    } else {
+      openModal('modal-coffre');
+    }
+  });
+  document.getElementById('btn-coffre-open-confirm').addEventListener('click', async ()=>{
+    const file = document.getElementById('coffre-file').files[0];
+    const pwd = document.getElementById('coffre-password').value;
+    if(!file){ toast("Sélectionnez un fichier .synapses"); return; }
+    if(!pwd){ toast("Saisissez le mot de passe du coffre"); return; }
+    try{
+      await coffre.ouvrir(file, pwd);
+      closeModal('modal-coffre');
+      document.getElementById('coffre-password').value = "";
+      updateCoffreWidget();
+      toast("Coffre ouvert : " + coffre.listerEleves().length + " élève(s)");
+    }catch(err){
+      toast(err.message);
+    }
+  });
+  window.addEventListener('beforeunload', ()=>{ if(coffre) coffre.purger(); });
+}
+
 
 /* ============================================================
    DONNÉES — domaines, périodes, stockage local (JSON)
@@ -1191,24 +1287,75 @@ document.getElementById('btn-print-seq').addEventListener('click', ()=> printSeq
 /* ============================================================
    FORMULAIRE SÉQUENCE (repeater objectifs individuels)
    ============================================================ */
-function seqEleveRowHTML(nom="", objectif=""){
-  return `<div class="repeater-row">
-    <input type="text" class="seq-eleve-nom" placeholder="Nom" value="${escapeAttr(nom)}">
+function seqEleveRowHTML(identifiant="", nom="", objectif=""){
+  const withPicker = coffreOuvert();
+  const pickerHTML = withPicker ? `
+    <select class="eleve-picker">
+      <option value="">— Saisie libre —</option>
+      ${coffre.listerEleves().map(e=>`<option value="${escapeAttr(e.identifiantSynapses)}" ${e.identifiantSynapses===identifiant?'selected':''}>${escapeHTML(eleveLabel(e))} (${escapeHTML(e.identifiantSynapses)})</option>`).join('')}
+    </select>` : '';
+  return `<div class="repeater-row eleve-row ${withPicker?'has-picker':''}">
+    ${pickerHTML}
+    <input type="text" class="seq-eleve-nom" placeholder="Nom" value="${escapeAttr(nom)}" data-identifiant="${escapeAttr(identifiant)}">
     <input type="text" class="seq-eleve-objectif" placeholder="Objectif individuel" value="${escapeAttr(objectif)}">
     <button type="button" class="repeater-del">✕</button>
   </div>`;
 }
 function escapeAttr(s){ return (s==null?"":String(s)).replace(/"/g,'&quot;'); }
 
-function addSeqEleveRow(nom,objectif){
+function attachEleveRowEvents(row){
+  row.querySelector('.repeater-del').addEventListener('click', ()=> row.remove());
+  const picker = row.querySelector('.eleve-picker');
+  if(picker){
+    picker.addEventListener('change', ()=>{
+      const nomInput = row.querySelector('.seq-eleve-nom');
+      if(picker.value){
+        const e = coffre.listerEleves().find(x=>x.identifiantSynapses===picker.value);
+        nomInput.value = e ? eleveLabel(e) : picker.value;
+        nomInput.dataset.identifiant = picker.value;
+      } else {
+        nomInput.dataset.identifiant = "";
+      }
+    });
+  }
+}
+
+function chargerElevesCoffreDans(addRowFn, wrapId){
+  if(!coffreOuvert()){ toast("Ouvrez le coffre pour charger ses élèves"); return; }
+  const existants = [...document.querySelectorAll('#'+wrapId+' .seq-eleve-nom')].map(i=>i.dataset.identifiant).filter(Boolean);
+  let n = 0;
+  coffre.listerEleves().forEach(e=>{
+    if(!existants.includes(e.identifiantSynapses)){ addRowFn(e.identifiantSynapses, eleveLabel(e), ""); n++; }
+  });
+  toast(n? n+" élève(s) chargé(s) depuis le coffre" : "Tous les élèves du coffre sont déjà listés");
+}
+
+function fixerObjectifsDansCoffre(wrapId, contexteLabel){
+  if(!coffreOuvert()){ toast("Ouvrez le coffre pour y fixer des objectifs"); return; }
+  let n = 0;
+  document.querySelectorAll('#'+wrapId+' .eleve-row').forEach(row=>{
+    const nomInput = row.querySelector('.seq-eleve-nom');
+    const identifiant = nomInput.dataset.identifiant;
+    const objectif = row.querySelector('.seq-eleve-objectif').value.trim();
+    if(identifiant && objectif){
+      coffre.ajouterObjectif(identifiant, { libelle: objectif, contexte: contexteLabel, statut:'actif' });
+      n++;
+    }
+  });
+  toast(n? n+" objectif(s) fixé(s) dans le coffre — pensez à réexporter le .synapses" : "Aucune ligne reliée à un élève du coffre avec un objectif rempli");
+}
+
+function addSeqEleveRow(identifiant, nom, objectif){
   const wrap = document.getElementById('seq-eleves-repeater');
   const div = document.createElement('div');
-  div.innerHTML = seqEleveRowHTML(nom,objectif);
+  div.innerHTML = seqEleveRowHTML(identifiant, nom, objectif);
   const row = div.firstElementChild;
-  row.querySelector('.repeater-del').addEventListener('click', ()=> row.remove());
+  attachEleveRowEvents(row);
   wrap.appendChild(row);
 }
-document.getElementById('add-seq-eleve').addEventListener('click', ()=> addSeqEleveRow("",""));
+document.getElementById('add-seq-eleve').addEventListener('click', ()=> addSeqEleveRow("","",""));
+document.getElementById('load-seq-eleves-coffre').addEventListener('click', ()=> chargerElevesCoffreDans(addSeqEleveRow,'seq-eleves-repeater'));
+document.getElementById('fix-seq-eleves-coffre').addEventListener('click', ()=> fixerObjectifsDansCoffre('seq-eleves-repeater', "Séquence : " + document.getElementById('f-seq-titre').value.trim()));
 
 function competenceLabel(c){
   return `${c.domaine} — ${c.objectifs[0].slice(0,46)}${c.objectifs[0].length>46?'…':''}`;
@@ -1256,8 +1403,8 @@ function openSeqForm(seqId){
   document.getElementById('f-seq-refs').value = seq? (seq.references_theoriques||"") : "";
 
   document.getElementById('seq-eleves-repeater').innerHTML = "";
-  const eleves = seq && seq.objectifs_individuels && seq.objectifs_individuels.length ? seq.objectifs_individuels : [{nom:"",objectif:""}];
-  eleves.forEach(e=> addSeqEleveRow(e.nom,e.objectif));
+  const eleves = seq && seq.objectifs_individuels && seq.objectifs_individuels.length ? seq.objectifs_individuels : [{identifiant:"",nom:"",objectif:""}];
+  eleves.forEach(e=> addSeqEleveRow(e.identifiant||"", e.nom, e.objectif));
 
   updateSeqCheminPreview();
   openModal('modal-seq');
@@ -1271,6 +1418,7 @@ document.getElementById('btn-save-seq').addEventListener('click', ()=>{
   if(fin<debut){ const t=debut; debut=fin; fin=t; }
 
   const eleves = [...document.querySelectorAll('#seq-eleves-repeater .repeater-row')].map(row=>({
+    identifiant: row.querySelector('.seq-eleve-nom').dataset.identifiant || "",
     nom: row.querySelector('.seq-eleve-nom').value.trim(),
     objectif: row.querySelector('.seq-eleve-objectif').value.trim()
   })).filter(e=>e.nom||e.objectif);
@@ -1332,15 +1480,17 @@ document.getElementById('btn-save-seq').addEventListener('click', ()=>{
 /* ============================================================
    FORMULAIRE SÉANCE (repeaters : objectifs individuels + phases)
    ============================================================ */
-function addSeaEleveRow(nom,objectif){
+function addSeaEleveRow(identifiant, nom, objectif){
   const wrap = document.getElementById('sea-eleves-repeater');
   const div = document.createElement('div');
-  div.innerHTML = seqEleveRowHTML(nom,objectif);
+  div.innerHTML = seqEleveRowHTML(identifiant, nom, objectif);
   const row = div.firstElementChild;
-  row.querySelector('.repeater-del').addEventListener('click', ()=> row.remove());
+  attachEleveRowEvents(row);
   wrap.appendChild(row);
 }
-document.getElementById('add-sea-eleve').addEventListener('click', ()=> addSeaEleveRow("",""));
+document.getElementById('add-sea-eleve').addEventListener('click', ()=> addSeaEleveRow("","",""));
+document.getElementById('load-sea-eleves-coffre').addEventListener('click', ()=> chargerElevesCoffreDans(addSeaEleveRow,'sea-eleves-repeater'));
+document.getElementById('fix-sea-eleves-coffre').addEventListener('click', ()=> fixerObjectifsDansCoffre('sea-eleves-repeater', "Séance " + document.getElementById('f-sea-numero').value.trim()));
 
 function phaseCardHTML(p={}){
   return `<div class="phase-card">
@@ -1395,8 +1545,8 @@ function openSeaForm(seaId, sequenceId){
   });
 
   document.getElementById('sea-eleves-repeater').innerHTML = "";
-  const eleves = sea && sea.objectifs_individuels && sea.objectifs_individuels.length ? sea.objectifs_individuels : [{nom:"",objectif:""}];
-  eleves.forEach(e=> addSeaEleveRow(e.nom,e.objectif));
+  const eleves = sea && sea.objectifs_individuels && sea.objectifs_individuels.length ? sea.objectifs_individuels : [{identifiant:"",nom:"",objectif:""}];
+  eleves.forEach(e=> addSeaEleveRow(e.identifiant||"", e.nom, e.objectif));
 
   document.getElementById('sea-phases-repeater').innerHTML = "";
   const phases = sea && sea.deroule && sea.deroule.length ? sea.deroule : PHASES_DEFAUT.map(p=>({phase:p}));
@@ -1409,6 +1559,7 @@ document.getElementById('btn-save-sea').addEventListener('click', ()=>{
   const sequenceId = document.getElementById('form-sea').dataset.sequenceId;
   const niveaux = [...document.querySelectorAll('.f-sea-niveau:checked')].map(cb=>cb.value);
   const eleves = [...document.querySelectorAll('#sea-eleves-repeater .repeater-row')].map(row=>({
+    identifiant: row.querySelector('.seq-eleve-nom').dataset.identifiant || "",
     nom: row.querySelector('.seq-eleve-nom').value.trim(),
     objectif: row.querySelector('.seq-eleve-objectif').value.trim()
   })).filter(e=>e.nom||e.objectif);
@@ -1707,6 +1858,7 @@ document.getElementById('file-import').addEventListener('change', e=>{
    ============================================================ */
 renderFilters();
 renderSeqGrid();
+updateCoffreWidget();
 </script>
 </body>
 </html>
