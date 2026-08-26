@@ -182,15 +182,26 @@ async function firstJSON(paths){
   }
   throw last || new Error("Aucun chemin de données valide.");
 }
+function resolveDataPath(path){
+  // Les chemins de index.json sont exprimés depuis Programmation/data/.
+  // Certains commencent néanmoins par "data/" (ex. data/competences.json).
+  // On retire donc ce préfixe avant de les résoudre depuis le dossier de l'index.
+  const raw=String(path??"").trim();
+  const clean=raw.replace(/^\.\/?/,"").replace(/^data\//i,"");
+  return new URL(clean, new URL(state.indexPath, location.href)).href;
+}
 function joinFromIndex(path){
-  return new URL(path, new URL(state.indexPath, location.href)).href;
+  return resolveDataPath(path);
 }
 function indexCandidates(){
-  const here = location.pathname;
-  const inProgrammation = /\/Programmation\/?[^/]*$/i.test(here);
-  return inProgrammation
-    ? ["data/index.json","../Programmation/data/index.json","Programmation/data/index.json"]
-    : ["Programmation/data/index.json","data/index.json","../Programmation/data/index.json"];
+  // cartographie-competences.html est à la racine du dépôt Synapses.
+  // Le premier chemin est donc le chemin canonique demandé.
+  return [
+    "Programmation/data/index.json",
+    "./Programmation/data/index.json",
+    "../Programmation/data/index.json",
+    "data/index.json"
+  ].filter((v,i,a)=>a.indexOf(v)===i);
 }
 function normalizeSequence(raw, fallback){
   if(Array.isArray(raw?.sequences)) raw = raw.sequences[0];
@@ -233,8 +244,8 @@ async function loadData(){
     $("status").textContent="Chargement de competences.json…";
 
     const compCandidates = [
-      joinFromIndex(declaredCompPath),
-      joinFromIndex("competences.json"),
+      resolveDataPath(declaredCompPath),
+      resolveDataPath("competences.json"),
       new URL("Programmation/data/competences.json", location.href).href,
       new URL("data/competences.json", location.href).href
     ].filter((v,i,a)=>a.indexOf(v)===i);
@@ -457,7 +468,6 @@ function drawSphere(ctx,s,label){
   ctx.restore();
 }
 function drawNode(ctx,p,n){
-  const pulse=0.5+0.5*Math.sin(performance.now()/180);
   const r=Math.max(5,TYPE[n.type].radius*p.scale*.78);
   ctx.save();
   const related=state.relationNodes.has(n.id);
