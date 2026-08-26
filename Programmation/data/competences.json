@@ -1,10 +1,75 @@
 {
+  "_MODE_EMPLOI": {
+    "version": "1.0",
+    "role": "Ce fichier organise le référentiel des compétences et leurs relations d’antériorité pédagogique, de la maternelle au CP et, lorsque le référentiel complet est présent, vers les autres niveaux.",
+    "source_primaire": "Les programmes officiels, annexes, bulletins officiels, PDF et autres documents de référence fournis pour construire, corriger ou enrichir le référentiel.",
+    "structure": "competences[] ; chaque compétence possède un identifiant stable, un niveau, un domaine, un thème et éventuellement une liste prerequis_competences.",
+    "hierarchie_logique": "cycle > niveau > domaine > thème > compétence",
+    "champ_principal": "prerequis_competences relie une compétence aux compétences antérieures nécessaires ou structurantes pour son apprentissage.",
+    "regles": [
+      "Ne jamais inventer une compétence, un objectif d’apprentissage ou un attendu absent des sources fournies.",
+      "Conserver les identifiants existants lorsqu’une compétence existe déjà.",
+      "Créer un nouvel identifiant stable uniquement lorsqu’une nouvelle compétence explicitement justifiée par une source doit être ajoutée.",
+      "Ne pas supprimer une compétence existante sans justification explicite.",
+      "Ne pas modifier silencieusement le sens pédagogique d’une compétence existante.",
+      "Conserver le niveau, le domaine et le thème indiqués ou clairement déductibles de la structure du document source.",
+      "Respecter la progression officielle lorsqu’elle est explicitement indiquée dans la source, notamment les repères d’âge avant 4 ans, à partir de 4 ans et à partir de 5 ans pour le Cycle 1.",
+      "Un prérequis doit être représenté par l’identifiant exact d’une compétence existante dans le même fichier ou dans le référentiel explicitement associé.",
+      "Ne jamais créer un identifiant de prérequis qui ne correspond à aucune compétence vérifiable.",
+      "Les prérequis doivent représenter une relation pédagogique plausible et documentée ; ils ne doivent pas être déduits uniquement d’une proximité de mots ou de domaines.",
+      "Privilégier les prérequis immédiats et structurants afin d’éviter un graphe artificiellement saturé.",
+      "Une compétence peut avoir plusieurs prérequis et une même compétence peut être prérequis de plusieurs compétences.",
+      "Le niveau chronologique n’est pas à lui seul une preuve de prérequis : toute relation d’antériorité doit être justifiée par la progression du programme, la nature de la compétence ou une source pédagogique explicite.",
+      "Lorsqu’un lien entre la Grande Section et le CP est ajouté, conserver la continuité pédagogique sans remplacer ni déplacer les compétences propres à chaque niveau.",
+      "Ne pas utiliser ce fichier pour inventer des séquences, des séances, des activités ou des modalités d’évaluation."
+    ],
+    "procedure_avec_un_pdf": [
+      "Lire le document fourni dans son intégralité avant de modifier les données.",
+      "Identifier le cycle, le niveau ou le repère d’âge, le domaine et le thème concernés.",
+      "Repérer la nature exacte des informations : objectif d’apprentissage, compétence, attendu, procédure, repère de progression ou exemple pédagogique.",
+      "Comparer les informations du document avec les compétences déjà présentes dans competences.json.",
+      "Réutiliser les identifiants existants lorsqu’une compétence correspond déjà à une entrée du référentiel.",
+      "Ajouter uniquement les compétences réellement justifiées par le document.",
+      "Ne pas transformer automatiquement tous les exemples, procédures ou activités du document en compétences sans justification explicite.",
+      "Créer ou compléter les prérequis uniquement lorsque la progression du document, les formulations officielles ou une relation pédagogique clairement établie le justifient.",
+      "Vérifier que chaque prerequis_competences pointe vers un identifiant existant.",
+      "Vérifier la cohérence chronologique des liens, notamment TPS/PS → MS → GS → CP lorsque cette continuité est documentée.",
+      "Vérifier les doublons de formulation, les identifiants dupliqués et les incohérences de niveau, domaine ou thème.",
+      "Valider le JSON final avant de le retourner.",
+      "Fournir séparément un résumé des ajouts, corrections, liens créés et éventuelles ambiguïtés."
+    ],
+    "procedure_pour_les_prerequis": [
+      "Commencer par rechercher dans les sources une progression explicite.",
+      "Identifier les compétences immédiatement antérieures nécessaires à l’acquisition de la compétence cible.",
+      "Éviter de relier automatiquement toutes les compétences d’un niveau précédent.",
+      "Ajouter les prérequis les plus directs et structurants.",
+      "Ajouter un lien transversal uniquement lorsqu’il apporte une continuité pédagogique réelle.",
+      "Pour les ponts maternelle → CP, relier les acquis de GS qui constituent effectivement des fondations de la compétence de CP.",
+      "Contrôler le sens du lien : prerequis_competences contient toujours les compétences antérieures, jamais les compétences ultérieures."
+    ],
+    "validation": [
+      "Le fichier doit être un JSON valide.",
+      "Chaque id doit être unique.",
+      "Chaque prerequis_competences doit être une liste.",
+      "Chaque identifiant présent dans prerequis_competences doit exister dans le référentiel concerné.",
+      "Aucun cycle ou niveau ne doit être modifié sans justification par une source.",
+      "Les sources utilisées doivent rester traçables."
+    ]
+  },
   "metadata": {
     "titre": "Référentiel enrichi des compétences de Cycle 1",
     "version": "2026-08-26",
     "source_principale": "programme-cycle-1-consolide-127565.pdf",
     "organisation": "Compétences détaillées par domaine, thématique et progression TPS/PS → MS → GS",
-    "liens": "prerequis_competences contient les antériorités immédiates et quelques ponts transversaux structurants"
+    "liens": "prerequis_competences contient les antériorités immédiates et quelques ponts transversaux structurants",
+    "validation": {
+      "competences": 425,
+      "identifiants_uniques": true,
+      "prerequis_internes_manquants": [],
+      "statut": "valide"
+    },
+    "mode_emploi": "Présent dans la clé racine _MODE_EMPLOI.",
+    "enrichissement": "Le fichier intègre la progression détaillée issue du programme de Cycle 1 consolidé et formalise les règles de mise à jour, de traçabilité des sources et de création des liens d’antériorité."
   },
   "competences": [
     {
