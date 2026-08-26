@@ -1,6 +1,6 @@
 {
   "_MODE_EMPLOI": {
-    "version": "1.1",
+    "version": "1.2",
     "role": "Ce fichier fusionne le référentiel détaillé des compétences de Cycle 1 avec le référentiel existant du CP au Cycle 3, sans doublonner les compétences.",
     "source_primaire": "Les programmes officiels, annexes, bulletins officiels, PDF et autres documents de référence fournis pour construire, corriger ou enrichir le référentiel.",
     "structure": "competences[] ; chaque compétence possède un identifiant stable, un niveau, un domaine, un thème et éventuellement une liste prerequis_competences.",
@@ -62,11 +62,20 @@
       "Conserver les champs spécifiques utiles à la granularité du Cycle 1.",
       "Ne supprimer une relation de prérequis que si sa cible est absente et ne peut pas être résolue vers une compétence existante.",
       "Après fusion, vérifier l’unicité des identifiants et la validité de toutes les références de prérequis."
+    ],
+    "compatibilite_cartographie": "Strictement compatible avec cartographie-competences-pulse.html : racine competences + domaines, niveaux TPS/PS/MS/GS/CP/CE1/CE2/CM1/CM2/6e, et champs intitule, discipline, domaine_id, prerequis_competences.",
+    "regles_cartographie": [
+      "Chaque compétence doit posséder un id unique.",
+      "Le niveau doit être l’un des niveaux reconnus par la cartographie : TPS, PS, MS, GS, CP, CE1, CE2, CM1, CM2 ou 6e.",
+      "Chaque compétence doit posséder intitule, discipline, domaine_id et prerequis_competences.",
+      "La racine du fichier doit contenir les tableaux competences et domaines.",
+      "Chaque identifiant de prerequis_competences doit pointer vers une compétence existante.",
+      "Les prérequis vont de la compétence antérieure vers la compétence cible dans la visualisation."
     ]
   },
   "metadata": {
-    "titre": "Référentiel fusionné des compétences – Cycle 1 à Cycle 3",
-    "version": "2026-08-26",
+    "titre": "Référentiel des compétences – compatible Cartographie Synapses",
+    "version": "2026-08-26-compatible-cartographie",
     "fichiers_sources": [
       "competences_cycle1_enrichi_avec_mode_emploi(1).json",
       "competences (1).json"
@@ -76,15 +85,160 @@
       "doublons_evites": "Détection par identifiant puis par clé pédagogique normalisée",
       "references_prerequis_non_resolues_supprimees": {},
       "statut": "valide"
+    },
+    "compatibilite": {
+      "niveaux_reconnus": [
+        "TPS",
+        "PS",
+        "MS",
+        "GS",
+        "CP",
+        "CE1",
+        "CE2",
+        "CM1",
+        "CM2",
+        "6e"
+      ],
+      "nombre_competences": 717,
+      "nombre_domaines": 25,
+      "ids_uniques": true,
+      "prerequis_valides": true
     }
   },
+  "domaines": [
+    {
+      "id": "arts_visuels",
+      "nom": "Arts visuels",
+      "discipline": "Arts visuels"
+    },
+    {
+      "id": "culture_de_l'ecrit",
+      "nom": "Culture de l’écrit",
+      "discipline": "Culture de l’écrit"
+    },
+    {
+      "id": "eps",
+      "nom": "EPS",
+      "discipline": "EPS"
+    },
+    {
+      "id": "evar",
+      "nom": "EVAR",
+      "discipline": "EVAR"
+    },
+    {
+      "id": "enseignement_moral_civique",
+      "nom": "Enseignement moral et civique",
+      "discipline": "Enseignement moral et civique"
+    },
+    {
+      "id": "espace",
+      "nom": "Espace",
+      "discipline": "Espace"
+    },
+    {
+      "id": "grammaire_orthographe",
+      "nom": "Grammaire et orthographe",
+      "discipline": "Français"
+    },
+    {
+      "id": "lecture",
+      "nom": "Lecture",
+      "discipline": "Français"
+    },
+    {
+      "id": "oral",
+      "nom": "Oral",
+      "discipline": "Français"
+    },
+    {
+      "id": "vocabulaire",
+      "nom": "Vocabulaire",
+      "discipline": "Français"
+    },
+    {
+      "id": "geographie",
+      "nom": "Géographie",
+      "discipline": "Géographie"
+    },
+    {
+      "id": "histoire",
+      "nom": "Histoire",
+      "discipline": "Histoire"
+    },
+    {
+      "id": "langage_oral",
+      "nom": "Langage oral",
+      "discipline": "Langage oral"
+    },
+    {
+      "id": "espace_geometrie",
+      "nom": "Espace et géométrie",
+      "discipline": "Mathématiques"
+    },
+    {
+      "id": "grandeurs_mesures",
+      "nom": "Grandeurs et mesures",
+      "discipline": "Mathématiques"
+    },
+    {
+      "id": "mathematiques",
+      "nom": "Mathématiques",
+      "discipline": "Mathématiques"
+    },
+    {
+      "id": "nombres_calcul_problemes",
+      "nom": "Nombres, calcul et résolution de problèmes",
+      "discipline": "Mathématiques"
+    },
+    {
+      "id": "organisation_donnees",
+      "nom": "Organisation et gestion de données",
+      "discipline": "Mathématiques"
+    },
+    {
+      "id": "matiere_et_objets",
+      "nom": "Matière et objets",
+      "discipline": "Matière et objets"
+    },
+    {
+      "id": "oral_vers_ecrit",
+      "nom": "Oral vers écrit",
+      "discipline": "Oral vers écrit"
+    },
+    {
+      "id": "spectacle_vivant",
+      "nom": "Spectacle vivant",
+      "discipline": "Spectacle vivant"
+    },
+    {
+      "id": "temps",
+      "nom": "Temps",
+      "discipline": "Temps"
+    },
+    {
+      "id": "univers_sonores",
+      "nom": "Univers sonores",
+      "discipline": "Univers sonores"
+    },
+    {
+      "id": "vivant",
+      "nom": "Vivant",
+      "discipline": "Vivant"
+    },
+    {
+      "id": "ecriture",
+      "nom": "Écriture",
+      "discipline": "Écriture"
+    }
+  ],
   "competences": [
     {
-      "id": "c1_langage_oral_enrichir_son_vocabulaire_tps_ps_01",
+      "id": "c1_langage_oral_enrichir_son_vocabulaire_tps_ps_01_tps",
       "nom": "Comprendre, mémoriser et réemployer les mots des corpus enseignés",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Enrichir son vocabulaire",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -99,15 +253,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_enrichir_son_vocabulaire_tps_ps_02",
+      "id": "c1_langage_oral_enrichir_son_vocabulaire_tps_ps_01",
+      "nom": "Comprendre, mémoriser et réemployer les mots des corpus enseignés",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Enrichir son vocabulaire",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_enrichir_son_vocabulaire_tps_ps_01_tps"
+      ],
+      "intitule": "Comprendre, mémoriser et réemployer les mots des corpus enseignés",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Comprendre, mémoriser et réemployer les mots des corpus enseignés"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_enrichir_son_vocabulaire_tps_ps_02_tps",
       "nom": "Organiser les mots en catégories et en réseaux",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Enrichir son vocabulaire",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Organiser les mots en catégories et en réseaux",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Organiser les mots en catégories et en réseaux"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_enrichir_son_vocabulaire_tps_ps_02",
+      "nom": "Organiser les mots en catégories et en réseaux",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Enrichir son vocabulaire",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_enrichir_son_vocabulaire_tps_ps_02_tps"
+      ],
       "intitule": "Organiser les mots en catégories et en réseaux",
       "discipline": "Langage oral",
       "domaine_id": "langage_oral",
@@ -299,11 +495,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_01",
+      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_01_tps",
       "nom": "Diversifier les pronoms employés",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Développer sa syntaxe",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -318,11 +514,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_02",
+      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_01",
+      "nom": "Diversifier les pronoms employés",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Développer sa syntaxe",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_developper_sa_syntaxe_tps_ps_01_tps"
+      ],
+      "intitule": "Diversifier les pronoms employés",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Diversifier les pronoms employés"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_02_tps",
       "nom": "Construire à l’oral un système de temps de plus en plus efficace",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Développer sa syntaxe",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -337,15 +554,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_03",
+      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_02",
+      "nom": "Construire à l’oral un système de temps de plus en plus efficace",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Développer sa syntaxe",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_developper_sa_syntaxe_tps_ps_02_tps"
+      ],
+      "intitule": "Construire à l’oral un système de temps de plus en plus efficace",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Construire à l’oral un système de temps de plus en plus efficace"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_03_tps",
       "nom": "Formuler des énoncés de plus en plus complexes",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Développer sa syntaxe",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Formuler des énoncés de plus en plus complexes",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Formuler des énoncés de plus en plus complexes"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_developper_sa_syntaxe_tps_ps_03",
+      "nom": "Formuler des énoncés de plus en plus complexes",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Développer sa syntaxe",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_developper_sa_syntaxe_tps_ps_03_tps"
+      ],
       "intitule": "Formuler des énoncés de plus en plus complexes",
       "discipline": "Langage oral",
       "domaine_id": "langage_oral",
@@ -494,11 +753,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_articuler_distinctement_tps_ps_01",
+      "id": "c1_langage_oral_articuler_distinctement_tps_ps_01_tps",
       "nom": "Articuler distinctement des couples de consonnes proches",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Articuler distinctement",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -513,15 +772,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_articuler_distinctement_tps_ps_02",
+      "id": "c1_langage_oral_articuler_distinctement_tps_ps_01",
+      "nom": "Articuler distinctement des couples de consonnes proches",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Articuler distinctement",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_articuler_distinctement_tps_ps_01_tps"
+      ],
+      "intitule": "Articuler distinctement des couples de consonnes proches",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Articuler distinctement des couples de consonnes proches"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_articuler_distinctement_tps_ps_02_tps",
       "nom": "Commencer à percevoir les distinctions entre des mots proches phonologiquement",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Articuler distinctement",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Commencer à percevoir les distinctions entre des mots proches phonologiquement",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Commencer à percevoir les distinctions entre des mots proches phonologiquement"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_articuler_distinctement_tps_ps_02",
+      "nom": "Commencer à percevoir les distinctions entre des mots proches phonologiquement",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Articuler distinctement",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_articuler_distinctement_tps_ps_02_tps"
+      ],
       "intitule": "Commencer à percevoir les distinctions entre des mots proches phonologiquement",
       "discipline": "Langage oral",
       "domaine_id": "langage_oral",
@@ -620,11 +921,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_01",
+      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_01_tps",
       "nom": "Entrer en communication verbale avec un adulte ou un autre élève",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Produire des discours variés",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -639,11 +940,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_02",
+      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_01",
+      "nom": "Entrer en communication verbale avec un adulte ou un autre élève",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Produire des discours variés",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_produire_des_discours_varies_tps_ps_01_tps"
+      ],
+      "intitule": "Entrer en communication verbale avec un adulte ou un autre élève",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Entrer en communication verbale avec un adulte ou un autre élève"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_02_tps",
       "nom": "Dire ce qu’on fait, ce qu’on a fait et progressivement ce qu’on va faire",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Produire des discours variés",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -658,15 +980,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_03",
+      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_02",
+      "nom": "Dire ce qu’on fait, ce qu’on a fait et progressivement ce qu’on va faire",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Produire des discours variés",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_produire_des_discours_varies_tps_ps_02_tps"
+      ],
+      "intitule": "Dire ce qu’on fait, ce qu’on a fait et progressivement ce qu’on va faire",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Dire ce qu’on fait, ce qu’on a fait et progressivement ce qu’on va faire"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_03_tps",
       "nom": "Prendre part à l’oralisation d’un court texte mémorisé",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Langage oral",
       "theme": "Produire des discours variés",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Prendre part à l’oralisation d’un court texte mémorisé",
+      "discipline": "Langage oral",
+      "domaine_id": "langage_oral",
+      "objectifs": [
+        "Prendre part à l’oralisation d’un court texte mémorisé"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_langage_oral_produire_des_discours_varies_tps_ps_03",
+      "nom": "Prendre part à l’oralisation d’un court texte mémorisé",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Langage oral",
+      "theme": "Produire des discours variés",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_langage_oral_produire_des_discours_varies_tps_ps_03_tps"
+      ],
       "intitule": "Prendre part à l’oralisation d’un court texte mémorisé",
       "discipline": "Langage oral",
       "domaine_id": "langage_oral",
@@ -838,11 +1202,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_oral_vers_ecrit_habiletes_phonologiques_tps_ps_01",
+      "id": "c1_oral_vers_ecrit_habiletes_phonologiques_tps_ps_01_tps",
       "nom": "Identifier, discriminer et reproduire des sons",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Oral vers écrit",
       "theme": "Habiletés phonologiques",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -857,15 +1221,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_oral_vers_ecrit_habiletes_phonologiques_tps_ps_02",
+      "id": "c1_oral_vers_ecrit_habiletes_phonologiques_tps_ps_01",
+      "nom": "Identifier, discriminer et reproduire des sons",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Oral vers écrit",
+      "theme": "Habiletés phonologiques",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_oral_vers_ecrit_habiletes_phonologiques_tps_ps_01_tps"
+      ],
+      "intitule": "Identifier, discriminer et reproduire des sons",
+      "discipline": "Oral vers écrit",
+      "domaine_id": "oral_vers_ecrit",
+      "objectifs": [
+        "Identifier, discriminer et reproduire des sons"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_oral_vers_ecrit_habiletes_phonologiques_tps_ps_02_tps",
       "nom": "Scander les syllabes d’un mot",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Oral vers écrit",
       "theme": "Habiletés phonologiques",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Scander les syllabes d’un mot",
+      "discipline": "Oral vers écrit",
+      "domaine_id": "oral_vers_ecrit",
+      "objectifs": [
+        "Scander les syllabes d’un mot"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_oral_vers_ecrit_habiletes_phonologiques_tps_ps_02",
+      "nom": "Scander les syllabes d’un mot",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Oral vers écrit",
+      "theme": "Habiletés phonologiques",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_oral_vers_ecrit_habiletes_phonologiques_tps_ps_02_tps"
+      ],
       "intitule": "Scander les syllabes d’un mot",
       "discipline": "Oral vers écrit",
       "domaine_id": "oral_vers_ecrit",
@@ -1016,15 +1422,36 @@
       "statut": "actif"
     },
     {
-      "id": "c1_oral_vers_ecrit_connaitre_le_nom_des_lettres_tps_ps_01",
+      "id": "c1_oral_vers_ecrit_connaitre_le_nom_des_lettres_tps_ps_01_tps",
       "nom": "Reconnaitre et nommer certaines lettres de son prénom écrit en capitales",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Oral vers écrit",
       "theme": "Connaitre le nom des lettres",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Reconnaitre et nommer certaines lettres de son prénom écrit en capitales",
+      "discipline": "Oral vers écrit",
+      "domaine_id": "oral_vers_ecrit",
+      "objectifs": [
+        "Reconnaitre et nommer certaines lettres de son prénom écrit en capitales"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_oral_vers_ecrit_connaitre_le_nom_des_lettres_tps_ps_01",
+      "nom": "Reconnaitre et nommer certaines lettres de son prénom écrit en capitales",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Oral vers écrit",
+      "theme": "Connaitre le nom des lettres",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_oral_vers_ecrit_connaitre_le_nom_des_lettres_tps_ps_01_tps"
+      ],
       "intitule": "Reconnaitre et nommer certaines lettres de son prénom écrit en capitales",
       "discipline": "Oral vers écrit",
       "domaine_id": "oral_vers_ecrit",
@@ -1255,11 +1682,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_01",
+      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_01_tps",
       "nom": "Écouter des chants, comptines et histoires dans différentes langues",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Oral vers écrit",
       "theme": "Diversité linguistique",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -1274,11 +1701,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_02",
+      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_01",
+      "nom": "Écouter des chants, comptines et histoires dans différentes langues",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Oral vers écrit",
+      "theme": "Diversité linguistique",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_01_tps"
+      ],
+      "intitule": "Écouter des chants, comptines et histoires dans différentes langues",
+      "discipline": "Oral vers écrit",
+      "domaine_id": "oral_vers_ecrit",
+      "objectifs": [
+        "Écouter des chants, comptines et histoires dans différentes langues"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_02_tps",
       "nom": "Manifester son intérêt pour d’autres langues",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Oral vers écrit",
       "theme": "Diversité linguistique",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -1293,15 +1741,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_03",
+      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_02",
+      "nom": "Manifester son intérêt pour d’autres langues",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Oral vers écrit",
+      "theme": "Diversité linguistique",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_02_tps"
+      ],
+      "intitule": "Manifester son intérêt pour d’autres langues",
+      "discipline": "Oral vers écrit",
+      "domaine_id": "oral_vers_ecrit",
+      "objectifs": [
+        "Manifester son intérêt pour d’autres langues"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_03_tps",
       "nom": "Prendre plaisir à répéter des sons, mots et phrases simples dans une autre langue",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Oral vers écrit",
       "theme": "Diversité linguistique",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Prendre plaisir à répéter des sons, mots et phrases simples dans une autre langue",
+      "discipline": "Oral vers écrit",
+      "domaine_id": "oral_vers_ecrit",
+      "objectifs": [
+        "Prendre plaisir à répéter des sons, mots et phrases simples dans une autre langue"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_03",
+      "nom": "Prendre plaisir à répéter des sons, mots et phrases simples dans une autre langue",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Oral vers écrit",
+      "theme": "Diversité linguistique",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_oral_vers_ecrit_diversite_linguistique_tps_ps_03_tps"
+      ],
       "intitule": "Prendre plaisir à répéter des sons, mots et phrases simples dans une autre langue",
       "discipline": "Oral vers écrit",
       "domaine_id": "oral_vers_ecrit",
@@ -1404,11 +1894,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_culture_de_l_ecrit_decouvrir_les_supports_de_l_ecrit_tps_ps_01",
+      "id": "c1_culture_de_l_ecrit_decouvrir_les_supports_de_l_ecrit_tps_ps_01_tps",
       "nom": "Repérer les outils fonctionnels utilisés quotidiennement en classe",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Culture de l’écrit",
       "theme": "Découvrir les supports de l’écrit",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -1423,15 +1913,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_culture_de_l_ecrit_decouvrir_les_supports_de_l_ecrit_tps_ps_02",
+      "id": "c1_culture_de_l_ecrit_decouvrir_les_supports_de_l_ecrit_tps_ps_01",
+      "nom": "Repérer les outils fonctionnels utilisés quotidiennement en classe",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Culture de l’écrit",
+      "theme": "Découvrir les supports de l’écrit",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_culture_de_l_ecrit_decouvrir_les_supports_de_l_ecrit_tps_ps_01_tps"
+      ],
+      "intitule": "Repérer les outils fonctionnels utilisés quotidiennement en classe",
+      "discipline": "Culture de l’écrit",
+      "domaine_id": "culture_de_l'ecrit",
+      "objectifs": [
+        "Repérer les outils fonctionnels utilisés quotidiennement en classe"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_culture_de_l_ecrit_decouvrir_les_supports_de_l_ecrit_tps_ps_02_tps",
       "nom": "Reconnaitre quelques écrits utilisés et produits en classe",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Culture de l’écrit",
       "theme": "Découvrir les supports de l’écrit",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Reconnaitre quelques écrits utilisés et produits en classe",
+      "discipline": "Culture de l’écrit",
+      "domaine_id": "culture_de_l'ecrit",
+      "objectifs": [
+        "Reconnaitre quelques écrits utilisés et produits en classe"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_culture_de_l_ecrit_decouvrir_les_supports_de_l_ecrit_tps_ps_02",
+      "nom": "Reconnaitre quelques écrits utilisés et produits en classe",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Culture de l’écrit",
+      "theme": "Découvrir les supports de l’écrit",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_culture_de_l_ecrit_decouvrir_les_supports_de_l_ecrit_tps_ps_02_tps"
+      ],
       "intitule": "Reconnaitre quelques écrits utilisés et produits en classe",
       "discipline": "Culture de l’écrit",
       "domaine_id": "culture_de_l'ecrit",
@@ -1577,11 +2109,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_culture_de_l_ecrit_comprendre_des_textes_lus_tps_ps_01",
+      "id": "c1_culture_de_l_ecrit_comprendre_des_textes_lus_tps_ps_01_tps",
       "nom": "Reconnaitre et nommer un personnage",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Culture de l’écrit",
       "theme": "Comprendre des textes lus",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -1596,15 +2128,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_culture_de_l_ecrit_comprendre_des_textes_lus_tps_ps_02",
+      "id": "c1_culture_de_l_ecrit_comprendre_des_textes_lus_tps_ps_01",
+      "nom": "Reconnaitre et nommer un personnage",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Culture de l’écrit",
+      "theme": "Comprendre des textes lus",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_culture_de_l_ecrit_comprendre_des_textes_lus_tps_ps_01_tps"
+      ],
+      "intitule": "Reconnaitre et nommer un personnage",
+      "discipline": "Culture de l’écrit",
+      "domaine_id": "culture_de_l'ecrit",
+      "objectifs": [
+        "Reconnaitre et nommer un personnage"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_culture_de_l_ecrit_comprendre_des_textes_lus_tps_ps_02_tps",
       "nom": "Comprendre des histoires dont les actions sont liées à des expériences connues",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Culture de l’écrit",
       "theme": "Comprendre des textes lus",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Comprendre des histoires dont les actions sont liées à des expériences connues",
+      "discipline": "Culture de l’écrit",
+      "domaine_id": "culture_de_l'ecrit",
+      "objectifs": [
+        "Comprendre des histoires dont les actions sont liées à des expériences connues"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_culture_de_l_ecrit_comprendre_des_textes_lus_tps_ps_02",
+      "nom": "Comprendre des histoires dont les actions sont liées à des expériences connues",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Culture de l’écrit",
+      "theme": "Comprendre des textes lus",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_culture_de_l_ecrit_comprendre_des_textes_lus_tps_ps_02_tps"
+      ],
       "intitule": "Comprendre des histoires dont les actions sont liées à des expériences connues",
       "discipline": "Culture de l’écrit",
       "domaine_id": "culture_de_l'ecrit",
@@ -1826,11 +2400,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_01",
+      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_01_tps",
       "nom": "Participer aux activités de motricité générale, fine et de graphisme",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Écriture",
       "theme": "Apprendre le geste d’écriture",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -1845,11 +2419,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_02",
+      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_01",
+      "nom": "Participer aux activités de motricité générale, fine et de graphisme",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Écriture",
+      "theme": "Apprendre le geste d’écriture",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_01_tps"
+      ],
+      "intitule": "Participer aux activités de motricité générale, fine et de graphisme",
+      "discipline": "Écriture",
+      "domaine_id": "ecriture",
+      "objectifs": [
+        "Participer aux activités de motricité générale, fine et de graphisme"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_02_tps",
       "nom": "Guider son geste par le regard",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Écriture",
       "theme": "Apprendre le geste d’écriture",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -1864,15 +2459,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_03",
+      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_02",
+      "nom": "Guider son geste par le regard",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Écriture",
+      "theme": "Apprendre le geste d’écriture",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_02_tps"
+      ],
+      "intitule": "Guider son geste par le regard",
+      "discipline": "Écriture",
+      "domaine_id": "ecriture",
+      "objectifs": [
+        "Guider son geste par le regard"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_03_tps",
       "nom": "Prendre des repères spatiaux sur le support utilisé pour tracer",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Écriture",
       "theme": "Apprendre le geste d’écriture",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Prendre des repères spatiaux sur le support utilisé pour tracer",
+      "discipline": "Écriture",
+      "domaine_id": "ecriture",
+      "objectifs": [
+        "Prendre des repères spatiaux sur le support utilisé pour tracer"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_03",
+      "nom": "Prendre des repères spatiaux sur le support utilisé pour tracer",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Écriture",
+      "theme": "Apprendre le geste d’écriture",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_ecriture_apprendre_le_geste_d_ecriture_tps_ps_03_tps"
+      ],
       "intitule": "Prendre des repères spatiaux sur le support utilisé pour tracer",
       "discipline": "Écriture",
       "domaine_id": "ecriture",
@@ -2113,11 +2750,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_01",
+      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_01_tps",
       "nom": "Percevoir que l’écrit encode l’oral",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Écriture",
       "theme": "Produire de premiers écrits",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -2132,11 +2769,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_02",
+      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_01",
+      "nom": "Percevoir que l’écrit encode l’oral",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Écriture",
+      "theme": "Produire de premiers écrits",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_ecriture_produire_de_premiers_ecrits_tps_ps_01_tps"
+      ],
+      "intitule": "Percevoir que l’écrit encode l’oral",
+      "discipline": "Écriture",
+      "domaine_id": "ecriture",
+      "objectifs": [
+        "Percevoir que l’écrit encode l’oral"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_02_tps",
       "nom": "Utiliser un support écrit connu",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Écriture",
       "theme": "Produire de premiers écrits",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -2151,15 +2809,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_03",
+      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_02",
+      "nom": "Utiliser un support écrit connu",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Écriture",
+      "theme": "Produire de premiers écrits",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_ecriture_produire_de_premiers_ecrits_tps_ps_02_tps"
+      ],
+      "intitule": "Utiliser un support écrit connu",
+      "discipline": "Écriture",
+      "domaine_id": "ecriture",
+      "objectifs": [
+        "Utiliser un support écrit connu"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_03_tps",
       "nom": "Tracer volontairement des signes abstraits distincts du dessin",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Écriture",
       "theme": "Produire de premiers écrits",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Tracer volontairement des signes abstraits distincts du dessin",
+      "discipline": "Écriture",
+      "domaine_id": "ecriture",
+      "objectifs": [
+        "Tracer volontairement des signes abstraits distincts du dessin"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_ecriture_produire_de_premiers_ecrits_tps_ps_03",
+      "nom": "Tracer volontairement des signes abstraits distincts du dessin",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Écriture",
+      "theme": "Produire de premiers écrits",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_ecriture_produire_de_premiers_ecrits_tps_ps_03_tps"
+      ],
       "intitule": "Tracer volontairement des signes abstraits distincts du dessin",
       "discipline": "Écriture",
       "domaine_id": "ecriture",
@@ -2430,11 +3130,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_se_deplacer_tps_ps_01",
+      "id": "c1_eps_se_deplacer_tps_ps_01_tps",
       "nom": "Manipuler et lancer des objets avec des intentions motrices différentes",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Se déplacer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -2449,11 +3149,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_se_deplacer_tps_ps_02",
+      "id": "c1_eps_se_deplacer_tps_ps_01",
+      "nom": "Manipuler et lancer des objets avec des intentions motrices différentes",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Se déplacer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_se_deplacer_tps_ps_01_tps"
+      ],
+      "intitule": "Manipuler et lancer des objets avec des intentions motrices différentes",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Manipuler et lancer des objets avec des intentions motrices différentes"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_se_deplacer_tps_ps_02_tps",
       "nom": "Courir de manière variée et coordonnée",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Se déplacer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -2468,11 +3189,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_se_deplacer_tps_ps_03",
+      "id": "c1_eps_se_deplacer_tps_ps_02",
+      "nom": "Courir de manière variée et coordonnée",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Se déplacer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_se_deplacer_tps_ps_02_tps"
+      ],
+      "intitule": "Courir de manière variée et coordonnée",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Courir de manière variée et coordonnée"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_se_deplacer_tps_ps_03_tps",
       "nom": "Sauter sans élan un obstacle",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Se déplacer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -2487,15 +3229,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_se_deplacer_tps_ps_04",
+      "id": "c1_eps_se_deplacer_tps_ps_03",
+      "nom": "Sauter sans élan un obstacle",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Se déplacer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_se_deplacer_tps_ps_03_tps"
+      ],
+      "intitule": "Sauter sans élan un obstacle",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Sauter sans élan un obstacle"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_se_deplacer_tps_ps_04_tps",
       "nom": "Se situer dans un espace proche et connu",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Se déplacer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Se situer dans un espace proche et connu",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Se situer dans un espace proche et connu"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_se_deplacer_tps_ps_04",
+      "nom": "Se situer dans un espace proche et connu",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Se déplacer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_se_deplacer_tps_ps_04_tps"
+      ],
       "intitule": "Se situer dans un espace proche et connu",
       "discipline": "EPS",
       "domaine_id": "eps",
@@ -2713,11 +3497,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_construire_des_equilibres_tps_ps_01",
+      "id": "c1_eps_construire_des_equilibres_tps_ps_01_tps",
       "nom": "Développer de nouveaux équilibres par des modes de déplacement variés",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Construire des équilibres",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -2732,15 +3516,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_construire_des_equilibres_tps_ps_02",
+      "id": "c1_eps_construire_des_equilibres_tps_ps_01",
+      "nom": "Développer de nouveaux équilibres par des modes de déplacement variés",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Construire des équilibres",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_construire_des_equilibres_tps_ps_01_tps"
+      ],
+      "intitule": "Développer de nouveaux équilibres par des modes de déplacement variés",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Développer de nouveaux équilibres par des modes de déplacement variés"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_construire_des_equilibres_tps_ps_02_tps",
       "nom": "Développer de nouveaux équilibres dans des environnements inhabituels et sécurisés",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Construire des équilibres",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Développer de nouveaux équilibres dans des environnements inhabituels et sécurisés",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Développer de nouveaux équilibres dans des environnements inhabituels et sécurisés"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_construire_des_equilibres_tps_ps_02",
+      "nom": "Développer de nouveaux équilibres dans des environnements inhabituels et sécurisés",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Construire des équilibres",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_construire_des_equilibres_tps_ps_02_tps"
+      ],
       "intitule": "Développer de nouveaux équilibres dans des environnements inhabituels et sécurisés",
       "discipline": "EPS",
       "domaine_id": "eps",
@@ -2861,11 +3687,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_01",
+      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_01_tps",
       "nom": "Découvrir et explorer le mouvement comme vecteur d’expression",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "S’exprimer avec son corps",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -2880,11 +3706,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_02",
+      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_01",
+      "nom": "Découvrir et explorer le mouvement comme vecteur d’expression",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "S’exprimer avec son corps",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_s_exprimer_avec_son_corps_tps_ps_01_tps"
+      ],
+      "intitule": "Découvrir et explorer le mouvement comme vecteur d’expression",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Découvrir et explorer le mouvement comme vecteur d’expression"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_02_tps",
       "nom": "Oser s’exprimer avec son corps seul et avec les autres",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "S’exprimer avec son corps",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -2899,15 +3746,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_03",
+      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_02",
+      "nom": "Oser s’exprimer avec son corps seul et avec les autres",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "S’exprimer avec son corps",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_s_exprimer_avec_son_corps_tps_ps_02_tps"
+      ],
+      "intitule": "Oser s’exprimer avec son corps seul et avec les autres",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Oser s’exprimer avec son corps seul et avec les autres"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_03_tps",
       "nom": "Observer pour produire et reproduire des mouvements avec une intention d’expression",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "S’exprimer avec son corps",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Observer pour produire et reproduire des mouvements avec une intention d’expression",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Observer pour produire et reproduire des mouvements avec une intention d’expression"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_s_exprimer_avec_son_corps_tps_ps_03",
+      "nom": "Observer pour produire et reproduire des mouvements avec une intention d’expression",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "S’exprimer avec son corps",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_s_exprimer_avec_son_corps_tps_ps_03_tps"
+      ],
       "intitule": "Observer pour produire et reproduire des mouvements avec une intention d’expression",
       "discipline": "EPS",
       "domaine_id": "eps",
@@ -3079,11 +3968,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_01",
+      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_01_tps",
       "nom": "Comprendre et s’approprier un rôle dans les formes de jeu simples",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Coopérer et s’opposer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3098,11 +3987,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_02",
+      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_01",
+      "nom": "Comprendre et s’approprier un rôle dans les formes de jeu simples",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Coopérer et s’opposer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_cooperer_et_s_opposer_tps_ps_01_tps"
+      ],
+      "intitule": "Comprendre et s’approprier un rôle dans les formes de jeu simples",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Comprendre et s’approprier un rôle dans les formes de jeu simples"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_02_tps",
       "nom": "Explorer différents jeux moteurs",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Coopérer et s’opposer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3117,15 +4027,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_03",
+      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_02",
+      "nom": "Explorer différents jeux moteurs",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Coopérer et s’opposer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_cooperer_et_s_opposer_tps_ps_02_tps"
+      ],
+      "intitule": "Explorer différents jeux moteurs",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Explorer différents jeux moteurs"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_03_tps",
       "nom": "Éprouver le plaisir de jouer dans le respect des autres et des règles",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EPS",
       "theme": "Coopérer et s’opposer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Éprouver le plaisir de jouer dans le respect des autres et des règles",
+      "discipline": "EPS",
+      "domaine_id": "eps",
+      "objectifs": [
+        "Éprouver le plaisir de jouer dans le respect des autres et des règles"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_eps_cooperer_et_s_opposer_tps_ps_03",
+      "nom": "Éprouver le plaisir de jouer dans le respect des autres et des règles",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EPS",
+      "theme": "Coopérer et s’opposer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_eps_cooperer_et_s_opposer_tps_ps_03_tps"
+      ],
       "intitule": "Éprouver le plaisir de jouer dans le respect des autres et des règles",
       "discipline": "EPS",
       "domaine_id": "eps",
@@ -3280,11 +4232,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_dessiner_tps_ps_01",
+      "id": "c1_arts_visuels_dessiner_tps_ps_01_tps",
       "nom": "S’exercer au dessin pour développer son habileté motrice",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Dessiner",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3299,15 +4251,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_dessiner_tps_ps_02",
+      "id": "c1_arts_visuels_dessiner_tps_ps_01",
+      "nom": "S’exercer au dessin pour développer son habileté motrice",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Dessiner",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_dessiner_tps_ps_01_tps"
+      ],
+      "intitule": "S’exercer au dessin pour développer son habileté motrice",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "S’exercer au dessin pour développer son habileté motrice"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_dessiner_tps_ps_02_tps",
       "nom": "S’exercer progressivement au dessin avec une intention de représentation",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Dessiner",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "S’exercer progressivement au dessin avec une intention de représentation",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "S’exercer progressivement au dessin avec une intention de représentation"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_dessiner_tps_ps_02",
+      "nom": "S’exercer progressivement au dessin avec une intention de représentation",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Dessiner",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_dessiner_tps_ps_02_tps"
+      ],
       "intitule": "S’exercer progressivement au dessin avec une intention de représentation",
       "discipline": "Arts visuels",
       "domaine_id": "arts_visuels",
@@ -3450,11 +4444,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_01",
+      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_01_tps",
       "nom": "Explorer des gestes et les associer à des tracés précis",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Graphisme artistique",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3469,11 +4463,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_02",
+      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_01",
+      "nom": "Explorer des gestes et les associer à des tracés précis",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Graphisme artistique",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_graphisme_artistique_tps_ps_01_tps"
+      ],
+      "intitule": "Explorer des gestes et les associer à des tracés précis",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Explorer des gestes et les associer à des tracés précis"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_02_tps",
       "nom": "Repérer des motifs graphiques de l’environnement",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Graphisme artistique",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3488,15 +4503,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_03",
+      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_02",
+      "nom": "Repérer des motifs graphiques de l’environnement",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Graphisme artistique",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_graphisme_artistique_tps_ps_02_tps"
+      ],
+      "intitule": "Repérer des motifs graphiques de l’environnement",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Repérer des motifs graphiques de l’environnement"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_03_tps",
       "nom": "Découvrir des expressions graphiques dans des œuvres d’art",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Graphisme artistique",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Découvrir des expressions graphiques dans des œuvres d’art",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Découvrir des expressions graphiques dans des œuvres d’art"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_graphisme_artistique_tps_ps_03",
+      "nom": "Découvrir des expressions graphiques dans des œuvres d’art",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Graphisme artistique",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_graphisme_artistique_tps_ps_03_tps"
+      ],
       "intitule": "Découvrir des expressions graphiques dans des œuvres d’art",
       "discipline": "Arts visuels",
       "domaine_id": "arts_visuels",
@@ -3645,11 +4702,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_01",
+      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_01_tps",
       "nom": "Explorer l’usage des outils et observer leurs effets",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Compositions planes et en volume",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3664,11 +4721,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_02",
+      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_01",
+      "nom": "Explorer l’usage des outils et observer leurs effets",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Compositions planes et en volume",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_01_tps"
+      ],
+      "intitule": "Explorer l’usage des outils et observer leurs effets",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Explorer l’usage des outils et observer leurs effets"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_02_tps",
       "nom": "Utiliser différents médiums et observer leurs effets",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Compositions planes et en volume",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3683,11 +4761,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_03",
+      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_02",
+      "nom": "Utiliser différents médiums et observer leurs effets",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Compositions planes et en volume",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_02_tps"
+      ],
+      "intitule": "Utiliser différents médiums et observer leurs effets",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Utiliser différents médiums et observer leurs effets"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_03_tps",
       "nom": "Expérimenter la résistance de matériaux",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Compositions planes et en volume",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3702,15 +4801,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_04",
+      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_03",
+      "nom": "Expérimenter la résistance de matériaux",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Compositions planes et en volume",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_03_tps"
+      ],
+      "intitule": "Expérimenter la résistance de matériaux",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Expérimenter la résistance de matériaux"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_04_tps",
       "nom": "Réaliser une production plastique en volume",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Compositions planes et en volume",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Réaliser une production plastique en volume",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Réaliser une production plastique en volume"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_04",
+      "nom": "Réaliser une production plastique en volume",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Compositions planes et en volume",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_compositions_planes_et_en_volume_tps_ps_04_tps"
+      ],
       "intitule": "Réaliser une production plastique en volume",
       "discipline": "Arts visuels",
       "domaine_id": "arts_visuels",
@@ -3836,11 +4977,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_observer_et_transformer_des_images_tps_ps_01",
+      "id": "c1_arts_visuels_observer_et_transformer_des_images_tps_ps_01_tps",
       "nom": "Apprendre à regarder avec attention et identifier des éléments visuels",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Observer et transformer des images",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -3855,15 +4996,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_arts_visuels_observer_et_transformer_des_images_tps_ps_02",
+      "id": "c1_arts_visuels_observer_et_transformer_des_images_tps_ps_01",
+      "nom": "Apprendre à regarder avec attention et identifier des éléments visuels",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Observer et transformer des images",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_observer_et_transformer_des_images_tps_ps_01_tps"
+      ],
+      "intitule": "Apprendre à regarder avec attention et identifier des éléments visuels",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Apprendre à regarder avec attention et identifier des éléments visuels"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_observer_et_transformer_des_images_tps_ps_02_tps",
       "nom": "Découvrir quelques éléments constitutifs d’une illustration",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Arts visuels",
       "theme": "Observer et transformer des images",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Découvrir quelques éléments constitutifs d’une illustration",
+      "discipline": "Arts visuels",
+      "domaine_id": "arts_visuels",
+      "objectifs": [
+        "Découvrir quelques éléments constitutifs d’une illustration"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_arts_visuels_observer_et_transformer_des_images_tps_ps_02",
+      "nom": "Découvrir quelques éléments constitutifs d’une illustration",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Arts visuels",
+      "theme": "Observer et transformer des images",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_arts_visuels_observer_et_transformer_des_images_tps_ps_02_tps"
+      ],
       "intitule": "Découvrir quelques éléments constitutifs d’une illustration",
       "discipline": "Arts visuels",
       "domaine_id": "arts_visuels",
@@ -3986,11 +5169,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_01",
+      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_01_tps",
       "nom": "Dépasser les usages courants de la voix",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Univers sonores",
       "theme": "Voix, comptines et chansons",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4005,11 +5188,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_02",
+      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_01",
+      "nom": "Dépasser les usages courants de la voix",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Univers sonores",
+      "theme": "Voix, comptines et chansons",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_01_tps"
+      ],
+      "intitule": "Dépasser les usages courants de la voix",
+      "discipline": "Univers sonores",
+      "domaine_id": "univers_sonores",
+      "objectifs": [
+        "Dépasser les usages courants de la voix"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_02_tps",
       "nom": "Chanter en se faisant comprendre",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Univers sonores",
       "theme": "Voix, comptines et chansons",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4024,15 +5228,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_03",
+      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_02",
+      "nom": "Chanter en se faisant comprendre",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Univers sonores",
+      "theme": "Voix, comptines et chansons",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_02_tps"
+      ],
+      "intitule": "Chanter en se faisant comprendre",
+      "discipline": "Univers sonores",
+      "domaine_id": "univers_sonores",
+      "objectifs": [
+        "Chanter en se faisant comprendre"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_03_tps",
       "nom": "Dire ou chanter au moins cinq comptines",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Univers sonores",
       "theme": "Voix, comptines et chansons",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Dire ou chanter au moins cinq comptines",
+      "discipline": "Univers sonores",
+      "domaine_id": "univers_sonores",
+      "objectifs": [
+        "Dire ou chanter au moins cinq comptines"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_03",
+      "nom": "Dire ou chanter au moins cinq comptines",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Univers sonores",
+      "theme": "Voix, comptines et chansons",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_univers_sonores_voix_comptines_et_chansons_tps_ps_03_tps"
+      ],
       "intitule": "Dire ou chanter au moins cinq comptines",
       "discipline": "Univers sonores",
       "domaine_id": "univers_sonores",
@@ -4181,11 +5427,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_univers_sonores_instruments_et_corps_tps_ps_01",
+      "id": "c1_univers_sonores_instruments_et_corps_tps_ps_01_tps",
       "nom": "Explorer les possibilités sonores du corps, d’objets et d’instruments",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Univers sonores",
       "theme": "Instruments et corps",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4200,15 +5446,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_univers_sonores_instruments_et_corps_tps_ps_02",
+      "id": "c1_univers_sonores_instruments_et_corps_tps_ps_01",
+      "nom": "Explorer les possibilités sonores du corps, d’objets et d’instruments",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Univers sonores",
+      "theme": "Instruments et corps",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_univers_sonores_instruments_et_corps_tps_ps_01_tps"
+      ],
+      "intitule": "Explorer les possibilités sonores du corps, d’objets et d’instruments",
+      "discipline": "Univers sonores",
+      "domaine_id": "univers_sonores",
+      "objectifs": [
+        "Explorer les possibilités sonores du corps, d’objets et d’instruments"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_univers_sonores_instruments_et_corps_tps_ps_02_tps",
       "nom": "Découvrir leurs possibilités expressives",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Univers sonores",
       "theme": "Instruments et corps",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Découvrir leurs possibilités expressives",
+      "discipline": "Univers sonores",
+      "domaine_id": "univers_sonores",
+      "objectifs": [
+        "Découvrir leurs possibilités expressives"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_univers_sonores_instruments_et_corps_tps_ps_02",
+      "nom": "Découvrir leurs possibilités expressives",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Univers sonores",
+      "theme": "Instruments et corps",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_univers_sonores_instruments_et_corps_tps_ps_02_tps"
+      ],
       "intitule": "Découvrir leurs possibilités expressives",
       "discipline": "Univers sonores",
       "domaine_id": "univers_sonores",
@@ -4354,11 +5642,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_univers_sonores_affiner_son_ecoute_tps_ps_01",
+      "id": "c1_univers_sonores_affiner_son_ecoute_tps_ps_01_tps",
       "nom": "Traduire la musique entendue en mouvements",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Univers sonores",
       "theme": "Affiner son écoute",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4373,15 +5661,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_univers_sonores_affiner_son_ecoute_tps_ps_02",
+      "id": "c1_univers_sonores_affiner_son_ecoute_tps_ps_01",
+      "nom": "Traduire la musique entendue en mouvements",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Univers sonores",
+      "theme": "Affiner son écoute",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_univers_sonores_affiner_son_ecoute_tps_ps_01_tps"
+      ],
+      "intitule": "Traduire la musique entendue en mouvements",
+      "discipline": "Univers sonores",
+      "domaine_id": "univers_sonores",
+      "objectifs": [
+        "Traduire la musique entendue en mouvements"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_univers_sonores_affiner_son_ecoute_tps_ps_02_tps",
       "nom": "Développer une posture d’écoute",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Univers sonores",
       "theme": "Affiner son écoute",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Développer une posture d’écoute",
+      "discipline": "Univers sonores",
+      "domaine_id": "univers_sonores",
+      "objectifs": [
+        "Développer une posture d’écoute"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_univers_sonores_affiner_son_ecoute_tps_ps_02",
+      "nom": "Développer une posture d’écoute",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Univers sonores",
+      "theme": "Affiner son écoute",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_univers_sonores_affiner_son_ecoute_tps_ps_02_tps"
+      ],
       "intitule": "Développer une posture d’écoute",
       "discipline": "Univers sonores",
       "domaine_id": "univers_sonores",
@@ -4527,11 +5857,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_spectacle_vivant_pratiquer_tps_ps_01",
+      "id": "c1_spectacle_vivant_pratiquer_tps_ps_01_tps",
       "nom": "Découvrir différentes façons d’exprimer ses émotions par le corps",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Spectacle vivant",
       "theme": "Pratiquer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4546,11 +5876,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_spectacle_vivant_pratiquer_tps_ps_02",
+      "id": "c1_spectacle_vivant_pratiquer_tps_ps_01",
+      "nom": "Découvrir différentes façons d’exprimer ses émotions par le corps",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Spectacle vivant",
+      "theme": "Pratiquer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_spectacle_vivant_pratiquer_tps_ps_01_tps"
+      ],
+      "intitule": "Découvrir différentes façons d’exprimer ses émotions par le corps",
+      "discipline": "Spectacle vivant",
+      "domaine_id": "spectacle_vivant",
+      "objectifs": [
+        "Découvrir différentes façons d’exprimer ses émotions par le corps"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_spectacle_vivant_pratiquer_tps_ps_02_tps",
       "nom": "Découvrir des rôles simples",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Spectacle vivant",
       "theme": "Pratiquer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4565,15 +5916,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_spectacle_vivant_pratiquer_tps_ps_03",
+      "id": "c1_spectacle_vivant_pratiquer_tps_ps_02",
+      "nom": "Découvrir des rôles simples",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Spectacle vivant",
+      "theme": "Pratiquer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_spectacle_vivant_pratiquer_tps_ps_02_tps"
+      ],
+      "intitule": "Découvrir des rôles simples",
+      "discipline": "Spectacle vivant",
+      "domaine_id": "spectacle_vivant",
+      "objectifs": [
+        "Découvrir des rôles simples"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_spectacle_vivant_pratiquer_tps_ps_03_tps",
       "nom": "Découvrir le jeu dans une mise en scène collective",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Spectacle vivant",
       "theme": "Pratiquer",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Découvrir le jeu dans une mise en scène collective",
+      "discipline": "Spectacle vivant",
+      "domaine_id": "spectacle_vivant",
+      "objectifs": [
+        "Découvrir le jeu dans une mise en scène collective"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_spectacle_vivant_pratiquer_tps_ps_03",
+      "nom": "Découvrir le jeu dans une mise en scène collective",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Spectacle vivant",
+      "theme": "Pratiquer",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_spectacle_vivant_pratiquer_tps_ps_03_tps"
+      ],
       "intitule": "Découvrir le jeu dans une mise en scène collective",
       "discipline": "Spectacle vivant",
       "domaine_id": "spectacle_vivant",
@@ -4722,11 +6115,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_spectacle_vivant_devenir_spectateur_tps_ps_01",
+      "id": "c1_spectacle_vivant_devenir_spectateur_tps_ps_01_tps",
       "nom": "Découvrir des œuvres adaptées",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Spectacle vivant",
       "theme": "Devenir spectateur",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4741,15 +6134,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_spectacle_vivant_devenir_spectateur_tps_ps_02",
+      "id": "c1_spectacle_vivant_devenir_spectateur_tps_ps_01",
+      "nom": "Découvrir des œuvres adaptées",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Spectacle vivant",
+      "theme": "Devenir spectateur",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_spectacle_vivant_devenir_spectateur_tps_ps_01_tps"
+      ],
+      "intitule": "Découvrir des œuvres adaptées",
+      "discipline": "Spectacle vivant",
+      "domaine_id": "spectacle_vivant",
+      "objectifs": [
+        "Découvrir des œuvres adaptées"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_spectacle_vivant_devenir_spectateur_tps_ps_02_tps",
       "nom": "Découvrir l’espace scénique",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Spectacle vivant",
       "theme": "Devenir spectateur",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Découvrir l’espace scénique",
+      "discipline": "Spectacle vivant",
+      "domaine_id": "spectacle_vivant",
+      "objectifs": [
+        "Découvrir l’espace scénique"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_spectacle_vivant_devenir_spectateur_tps_ps_02",
+      "nom": "Découvrir l’espace scénique",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Spectacle vivant",
+      "theme": "Devenir spectateur",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_spectacle_vivant_devenir_spectateur_tps_ps_02_tps"
+      ],
       "intitule": "Découvrir l’espace scénique",
       "discipline": "Spectacle vivant",
       "domaine_id": "spectacle_vivant",
@@ -4848,11 +6283,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_01",
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_01_tps",
       "nom": "Comprendre l’invariance d’une quantité malgré la nature ou l’organisation des objets",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Nombre : quantité et cardinalité",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4867,11 +6302,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_02",
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_01",
+      "nom": "Comprendre l’invariance d’une quantité malgré la nature ou l’organisation des objets",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Nombre : quantité et cardinalité",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_01_tps"
+      ],
+      "intitule": "Comprendre l’invariance d’une quantité malgré la nature ou l’organisation des objets",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Comprendre l’invariance d’une quantité malgré la nature ou l’organisation des objets"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_02_tps",
       "nom": "Comprendre qu’ajouter un objet conduit au nombre suivant",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Nombre : quantité et cardinalité",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4886,11 +6342,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_03",
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_02",
+      "nom": "Comprendre qu’ajouter un objet conduit au nombre suivant",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Nombre : quantité et cardinalité",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_02_tps"
+      ],
+      "intitule": "Comprendre qu’ajouter un objet conduit au nombre suivant",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Comprendre qu’ajouter un objet conduit au nombre suivant"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_03_tps",
       "nom": "Dénombrer une collection jusqu’à trois ou quatre",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Nombre : quantité et cardinalité",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4905,11 +6382,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_04",
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_03",
+      "nom": "Dénombrer une collection jusqu’à trois ou quatre",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Nombre : quantité et cardinalité",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_03_tps"
+      ],
+      "intitule": "Dénombrer une collection jusqu’à trois ou quatre",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Dénombrer une collection jusqu’à trois ou quatre"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_04_tps",
       "nom": "Constituer une collection de cardinal donné jusqu’à trois ou quatre",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Nombre : quantité et cardinalité",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4924,11 +6422,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_05",
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_04",
+      "nom": "Constituer une collection de cardinal donné jusqu’à trois ou quatre",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Nombre : quantité et cardinalité",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_04_tps"
+      ],
+      "intitule": "Constituer une collection de cardinal donné jusqu’à trois ou quatre",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Constituer une collection de cardinal donné jusqu’à trois ou quatre"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_05_tps",
       "nom": "Comparer des quantités",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Nombre : quantité et cardinalité",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4943,11 +6462,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_06",
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_05",
+      "nom": "Comparer des quantités",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Nombre : quantité et cardinalité",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_05_tps"
+      ],
+      "intitule": "Comparer des quantités",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Comparer des quantités"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_06_tps",
       "nom": "Composer et décomposer les petits nombres",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Nombre : quantité et cardinalité",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4962,11 +6502,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_07",
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_06",
+      "nom": "Composer et décomposer les petits nombres",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Nombre : quantité et cardinalité",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_06_tps"
+      ],
+      "intitule": "Composer et décomposer les petits nombres",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Composer et décomposer les petits nombres"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_07_tps",
       "nom": "Associer quantité, nom du nombre et écriture chiffrée",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Nombre : quantité et cardinalité",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -4981,15 +6542,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_08",
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_07",
+      "nom": "Associer quantité, nom du nombre et écriture chiffrée",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Nombre : quantité et cardinalité",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_07_tps"
+      ],
+      "intitule": "Associer quantité, nom du nombre et écriture chiffrée",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Associer quantité, nom du nombre et écriture chiffrée"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_08_tps",
       "nom": "Connaitre la comptine numérique jusqu’à six",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Nombre : quantité et cardinalité",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Connaitre la comptine numérique jusqu’à six",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Connaitre la comptine numérique jusqu’à six"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_08",
+      "nom": "Connaitre la comptine numérique jusqu’à six",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Nombre : quantité et cardinalité",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_tps_ps_08_tps"
+      ],
       "intitule": "Connaitre la comptine numérique jusqu’à six",
       "discipline": "Mathématiques",
       "domaine_id": "mathematiques",
@@ -5618,15 +7221,36 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_resoudre_des_problemes_tps_ps_01",
+      "id": "c1_mathematiques_resoudre_des_problemes_tps_ps_01_tps",
       "nom": "Rechercher le tout ou une partie dans un problème de parties-tout",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Résoudre des problèmes",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Rechercher le tout ou une partie dans un problème de parties-tout",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Rechercher le tout ou une partie dans un problème de parties-tout"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_resoudre_des_problemes_tps_ps_01",
+      "nom": "Rechercher le tout ou une partie dans un problème de parties-tout",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Résoudre des problèmes",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_resoudre_des_problemes_tps_ps_01_tps"
+      ],
       "intitule": "Rechercher le tout ou une partie dans un problème de parties-tout",
       "discipline": "Mathématiques",
       "domaine_id": "mathematiques",
@@ -5877,11 +7501,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_01",
+      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_01_tps",
       "nom": "Reconnaitre, trier et classer des objets selon leur forme",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Solides et formes planes",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -5896,11 +7520,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_02",
+      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_01",
+      "nom": "Reconnaitre, trier et classer des objets selon leur forme",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Solides et formes planes",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_solides_et_formes_planes_tps_ps_01_tps"
+      ],
+      "intitule": "Reconnaitre, trier et classer des objets selon leur forme",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Reconnaitre, trier et classer des objets selon leur forme"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_02_tps",
       "nom": "Percevoir l’invariance de la forme",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Solides et formes planes",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -5915,15 +7560,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_03",
+      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_02",
+      "nom": "Percevoir l’invariance de la forme",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Solides et formes planes",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_solides_et_formes_planes_tps_ps_02_tps"
+      ],
+      "intitule": "Percevoir l’invariance de la forme",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Percevoir l’invariance de la forme"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_03_tps",
       "nom": "Reproduire des assemblages de solides ou de formes planes",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Solides et formes planes",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Reproduire des assemblages de solides ou de formes planes",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Reproduire des assemblages de solides ou de formes planes"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_solides_et_formes_planes_tps_ps_03",
+      "nom": "Reproduire des assemblages de solides ou de formes planes",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Solides et formes planes",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_solides_et_formes_planes_tps_ps_03_tps"
+      ],
       "intitule": "Reproduire des assemblages de solides ou de formes planes",
       "discipline": "Mathématiques",
       "domaine_id": "mathematiques",
@@ -6118,11 +7805,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_grandeurs_longueur_et_masse_tps_ps_01",
+      "id": "c1_mathematiques_grandeurs_longueur_et_masse_tps_ps_01_tps",
       "nom": "Reconnaitre un objet de même longueur qu’un objet donné",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Grandeurs : longueur et masse",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -6137,15 +7824,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_grandeurs_longueur_et_masse_tps_ps_02",
+      "id": "c1_mathematiques_grandeurs_longueur_et_masse_tps_ps_01",
+      "nom": "Reconnaitre un objet de même longueur qu’un objet donné",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Grandeurs : longueur et masse",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_grandeurs_longueur_et_masse_tps_ps_01_tps"
+      ],
+      "intitule": "Reconnaitre un objet de même longueur qu’un objet donné",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Reconnaitre un objet de même longueur qu’un objet donné"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_grandeurs_longueur_et_masse_tps_ps_02_tps",
       "nom": "Comparer des objets selon leur longueur",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Grandeurs : longueur et masse",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Comparer des objets selon leur longueur",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Comparer des objets selon leur longueur"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_grandeurs_longueur_et_masse_tps_ps_02",
+      "nom": "Comparer des objets selon leur longueur",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Grandeurs : longueur et masse",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_grandeurs_longueur_et_masse_tps_ps_02_tps"
+      ],
       "intitule": "Comparer des objets selon leur longueur",
       "discipline": "Mathématiques",
       "domaine_id": "mathematiques",
@@ -6337,11 +8066,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_motifs_organises_tps_ps_01",
+      "id": "c1_mathematiques_motifs_organises_tps_ps_01_tps",
       "nom": "Mémoriser un motif répétitif très simple",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Motifs organisés",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -6356,11 +8085,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_motifs_organises_tps_ps_02",
+      "id": "c1_mathematiques_motifs_organises_tps_ps_01",
+      "nom": "Mémoriser un motif répétitif très simple",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Motifs organisés",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_motifs_organises_tps_ps_01_tps"
+      ],
+      "intitule": "Mémoriser un motif répétitif très simple",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Mémoriser un motif répétitif très simple"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_motifs_organises_tps_ps_02_tps",
       "nom": "Reproduire un motif répétitif à l’identique",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Motifs organisés",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -6375,15 +8125,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_mathematiques_motifs_organises_tps_ps_03",
+      "id": "c1_mathematiques_motifs_organises_tps_ps_02",
+      "nom": "Reproduire un motif répétitif à l’identique",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Motifs organisés",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_motifs_organises_tps_ps_02_tps"
+      ],
+      "intitule": "Reproduire un motif répétitif à l’identique",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Reproduire un motif répétitif à l’identique"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_motifs_organises_tps_ps_03_tps",
       "nom": "Compléter un motif",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Mathématiques",
       "theme": "Motifs organisés",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Compléter un motif",
+      "discipline": "Mathématiques",
+      "domaine_id": "mathematiques",
+      "objectifs": [
+        "Compléter un motif"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_mathematiques_motifs_organises_tps_ps_03",
+      "nom": "Compléter un motif",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Mathématiques",
+      "theme": "Motifs organisés",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_mathematiques_motifs_organises_tps_ps_03_tps"
+      ],
       "intitule": "Compléter un motif",
       "discipline": "Mathématiques",
       "domaine_id": "mathematiques",
@@ -6564,11 +8356,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_reperes_temporels_tps_ps_01",
+      "id": "c1_temps_reperes_temporels_tps_ps_01_tps",
       "nom": "Acquérir les premiers repères temporels",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Repères temporels",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -6583,11 +8375,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_reperes_temporels_tps_ps_02",
+      "id": "c1_temps_reperes_temporels_tps_ps_01",
+      "nom": "Acquérir les premiers repères temporels",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Repères temporels",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_reperes_temporels_tps_ps_01_tps"
+      ],
+      "intitule": "Acquérir les premiers repères temporels",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Acquérir les premiers repères temporels"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_reperes_temporels_tps_ps_02_tps",
       "nom": "Identifier les principaux moments d’une journée",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Repères temporels",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -6602,11 +8415,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_reperes_temporels_tps_ps_03",
+      "id": "c1_temps_reperes_temporels_tps_ps_02",
+      "nom": "Identifier les principaux moments d’une journée",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Repères temporels",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_reperes_temporels_tps_ps_02_tps"
+      ],
+      "intitule": "Identifier les principaux moments d’une journée",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Identifier les principaux moments d’une journée"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_reperes_temporels_tps_ps_03_tps",
       "nom": "Connaitre quelques marqueurs temporels",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Repères temporels",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -6621,15 +8455,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_reperes_temporels_tps_ps_04",
+      "id": "c1_temps_reperes_temporels_tps_ps_03",
+      "nom": "Connaitre quelques marqueurs temporels",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Repères temporels",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_reperes_temporels_tps_ps_03_tps"
+      ],
+      "intitule": "Connaitre quelques marqueurs temporels",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Connaitre quelques marqueurs temporels"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_reperes_temporels_tps_ps_04_tps",
       "nom": "Aborder la notion de saison",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Repères temporels",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Aborder la notion de saison",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Aborder la notion de saison"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_reperes_temporels_tps_ps_04",
+      "nom": "Aborder la notion de saison",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Repères temporels",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_reperes_temporels_tps_ps_04_tps"
+      ],
       "intitule": "Aborder la notion de saison",
       "discipline": "Temps",
       "domaine_id": "temps",
@@ -6893,11 +8769,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_chronologie_tps_ps_01",
+      "id": "c1_temps_chronologie_tps_ps_01_tps",
       "nom": "Situer des moments de la journée les uns par rapport aux autres",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Chronologie",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -6912,11 +8788,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_chronologie_tps_ps_02",
+      "id": "c1_temps_chronologie_tps_ps_01",
+      "nom": "Situer des moments de la journée les uns par rapport aux autres",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Chronologie",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_chronologie_tps_ps_01_tps"
+      ],
+      "intitule": "Situer des moments de la journée les uns par rapport aux autres",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Situer des moments de la journée les uns par rapport aux autres"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_chronologie_tps_ps_02_tps",
       "nom": "Comprendre et restituer le déroulement d’évènements quotidiens dans une histoire simple",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Chronologie",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -6931,15 +8828,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_chronologie_tps_ps_03",
+      "id": "c1_temps_chronologie_tps_ps_02",
+      "nom": "Comprendre et restituer le déroulement d’évènements quotidiens dans une histoire simple",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Chronologie",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_chronologie_tps_ps_02_tps"
+      ],
+      "intitule": "Comprendre et restituer le déroulement d’évènements quotidiens dans une histoire simple",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Comprendre et restituer le déroulement d’évènements quotidiens dans une histoire simple"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_chronologie_tps_ps_03_tps",
       "nom": "Se projeter dans une action et commencer à planifier",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Chronologie",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Se projeter dans une action et commencer à planifier",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Se projeter dans une action et commencer à planifier"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_chronologie_tps_ps_03",
+      "nom": "Se projeter dans une action et commencer à planifier",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Chronologie",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_chronologie_tps_ps_03_tps"
+      ],
       "intitule": "Se projeter dans une action et commencer à planifier",
       "discipline": "Temps",
       "domaine_id": "temps",
@@ -7096,11 +9035,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_duree_tps_ps_01",
+      "id": "c1_temps_duree_tps_ps_01_tps",
       "nom": "Attendre avant d’obtenir ce que l’on souhaite",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Durée",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -7115,11 +9054,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_duree_tps_ps_02",
+      "id": "c1_temps_duree_tps_ps_01",
+      "nom": "Attendre avant d’obtenir ce que l’on souhaite",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Durée",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_duree_tps_ps_01_tps"
+      ],
+      "intitule": "Attendre avant d’obtenir ce que l’on souhaite",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Attendre avant d’obtenir ce que l’on souhaite"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_duree_tps_ps_02_tps",
       "nom": "Repérer le début et la fin d’une activité",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Durée",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -7134,15 +9094,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_temps_duree_tps_ps_03",
+      "id": "c1_temps_duree_tps_ps_02",
+      "nom": "Repérer le début et la fin d’une activité",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Durée",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_duree_tps_ps_02_tps"
+      ],
+      "intitule": "Repérer le début et la fin d’une activité",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Repérer le début et la fin d’une activité"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_duree_tps_ps_03_tps",
       "nom": "Connaitre quelques mots relatifs à la durée",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Temps",
       "theme": "Durée",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Connaitre quelques mots relatifs à la durée",
+      "discipline": "Temps",
+      "domaine_id": "temps",
+      "objectifs": [
+        "Connaitre quelques mots relatifs à la durée"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_temps_duree_tps_ps_03",
+      "nom": "Connaitre quelques mots relatifs à la durée",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Temps",
+      "theme": "Durée",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_temps_duree_tps_ps_03_tps"
+      ],
       "intitule": "Connaitre quelques mots relatifs à la durée",
       "discipline": "Temps",
       "domaine_id": "temps",
@@ -7291,11 +9293,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_01",
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_01_tps",
       "nom": "Réaliser des constructions simples",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Faire l’expérience de l’espace",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -7310,11 +9312,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_02",
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_01",
+      "nom": "Réaliser des constructions simples",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Faire l’expérience de l’espace",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_faire_l_experience_de_l_espace_tps_ps_01_tps"
+      ],
+      "intitule": "Réaliser des constructions simples",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Réaliser des constructions simples"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_02_tps",
       "nom": "Orienter un objet ou une forme",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Faire l’expérience de l’espace",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -7329,11 +9352,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_03",
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_02",
+      "nom": "Orienter un objet ou une forme",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Faire l’expérience de l’espace",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_faire_l_experience_de_l_espace_tps_ps_02_tps"
+      ],
+      "intitule": "Orienter un objet ou une forme",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Orienter un objet ou une forme"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_03_tps",
       "nom": "Manipuler des objets volumineux",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Faire l’expérience de l’espace",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -7348,11 +9392,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_04",
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_03",
+      "nom": "Manipuler des objets volumineux",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Faire l’expérience de l’espace",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_faire_l_experience_de_l_espace_tps_ps_03_tps"
+      ],
+      "intitule": "Manipuler des objets volumineux",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Manipuler des objets volumineux"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_04_tps",
       "nom": "Orienter un livre ou un support écrit",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Faire l’expérience de l’espace",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -7367,11 +9432,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_05",
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_04",
+      "nom": "Orienter un livre ou un support écrit",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Faire l’expérience de l’espace",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_faire_l_experience_de_l_espace_tps_ps_04_tps"
+      ],
+      "intitule": "Orienter un livre ou un support écrit",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Orienter un livre ou un support écrit"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_05_tps",
       "nom": "Réaliser un trajet simple dans l’école",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Faire l’expérience de l’espace",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -7386,15 +9472,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_06",
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_05",
+      "nom": "Réaliser un trajet simple dans l’école",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Faire l’expérience de l’espace",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_faire_l_experience_de_l_espace_tps_ps_05_tps"
+      ],
+      "intitule": "Réaliser un trajet simple dans l’école",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Réaliser un trajet simple dans l’école"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_06_tps",
       "nom": "Acquérir les premiers marqueurs spatiaux",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Faire l’expérience de l’espace",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Acquérir les premiers marqueurs spatiaux",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Acquérir les premiers marqueurs spatiaux"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_faire_l_experience_de_l_espace_tps_ps_06",
+      "nom": "Acquérir les premiers marqueurs spatiaux",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Faire l’expérience de l’espace",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_faire_l_experience_de_l_espace_tps_ps_06_tps"
+      ],
       "intitule": "Acquérir les premiers marqueurs spatiaux",
       "discipline": "Espace",
       "domaine_id": "espace",
@@ -7658,11 +9786,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_representer_l_espace_tps_ps_01",
+      "id": "c1_espace_representer_l_espace_tps_ps_01_tps",
       "nom": "Reproduire un parcours simple",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Représenter l’espace",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -7677,15 +9805,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_representer_l_espace_tps_ps_02",
+      "id": "c1_espace_representer_l_espace_tps_ps_01",
+      "nom": "Reproduire un parcours simple",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Représenter l’espace",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_representer_l_espace_tps_ps_01_tps"
+      ],
+      "intitule": "Reproduire un parcours simple",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Reproduire un parcours simple"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_representer_l_espace_tps_ps_02_tps",
       "nom": "Restituer un déplacement à l’aide de représentations",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Représenter l’espace",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Restituer un déplacement à l’aide de représentations",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Restituer un déplacement à l’aide de représentations"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_representer_l_espace_tps_ps_02",
+      "nom": "Restituer un déplacement à l’aide de représentations",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Représenter l’espace",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_representer_l_espace_tps_ps_02_tps"
+      ],
       "intitule": "Restituer un déplacement à l’aide de représentations",
       "discipline": "Espace",
       "domaine_id": "espace",
@@ -7940,15 +10110,36 @@
       "statut": "actif"
     },
     {
-      "id": "c1_espace_decouvrir_l_environnement_proche_tps_ps_01",
+      "id": "c1_espace_decouvrir_l_environnement_proche_tps_ps_01_tps",
       "nom": "Explorer les différents lieux de l’école et leurs éléments caractéristiques",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Espace",
       "theme": "Découvrir l’environnement proche",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Explorer les différents lieux de l’école et leurs éléments caractéristiques",
+      "discipline": "Espace",
+      "domaine_id": "espace",
+      "objectifs": [
+        "Explorer les différents lieux de l’école et leurs éléments caractéristiques"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_espace_decouvrir_l_environnement_proche_tps_ps_01",
+      "nom": "Explorer les différents lieux de l’école et leurs éléments caractéristiques",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Espace",
+      "theme": "Découvrir l’environnement proche",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_espace_decouvrir_l_environnement_proche_tps_ps_01_tps"
+      ],
       "intitule": "Explorer les différents lieux de l’école et leurs éléments caractéristiques",
       "discipline": "Espace",
       "domaine_id": "espace",
@@ -8067,11 +10258,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_01",
+      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_01_tps",
       "nom": "Repérer et nommer les caractéristiques morphologiques générales des plantes et animaux",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Vivant",
       "theme": "Animaux et végétaux",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8086,11 +10277,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_02",
+      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_01",
+      "nom": "Repérer et nommer les caractéristiques morphologiques générales des plantes et animaux",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Vivant",
+      "theme": "Animaux et végétaux",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_vivant_animaux_et_vegetaux_tps_ps_01_tps"
+      ],
+      "intitule": "Repérer et nommer les caractéristiques morphologiques générales des plantes et animaux",
+      "discipline": "Vivant",
+      "domaine_id": "vivant",
+      "objectifs": [
+        "Repérer et nommer les caractéristiques morphologiques générales des plantes et animaux"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_02_tps",
       "nom": "Reconnaitre le mâle, la femelle, le jeune et l’adulte pour plusieurs espèces",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Vivant",
       "theme": "Animaux et végétaux",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8105,15 +10317,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_03",
+      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_02",
+      "nom": "Reconnaitre le mâle, la femelle, le jeune et l’adulte pour plusieurs espèces",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Vivant",
+      "theme": "Animaux et végétaux",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_vivant_animaux_et_vegetaux_tps_ps_02_tps"
+      ],
+      "intitule": "Reconnaitre le mâle, la femelle, le jeune et l’adulte pour plusieurs espèces",
+      "discipline": "Vivant",
+      "domaine_id": "vivant",
+      "objectifs": [
+        "Reconnaitre le mâle, la femelle, le jeune et l’adulte pour plusieurs espèces"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_03_tps",
       "nom": "Prodiguer les soins nécessaires aux élevages et cultures",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Vivant",
       "theme": "Animaux et végétaux",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Prodiguer les soins nécessaires aux élevages et cultures",
+      "discipline": "Vivant",
+      "domaine_id": "vivant",
+      "objectifs": [
+        "Prodiguer les soins nécessaires aux élevages et cultures"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_vivant_animaux_et_vegetaux_tps_ps_03",
+      "nom": "Prodiguer les soins nécessaires aux élevages et cultures",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Vivant",
+      "theme": "Animaux et végétaux",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_vivant_animaux_et_vegetaux_tps_ps_03_tps"
+      ],
       "intitule": "Prodiguer les soins nécessaires aux élevages et cultures",
       "discipline": "Vivant",
       "domaine_id": "vivant",
@@ -8308,11 +10562,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_vivant_corps_humain_et_sante_tps_ps_01",
+      "id": "c1_vivant_corps_humain_et_sante_tps_ps_01_tps",
       "nom": "Nommer et représenter quelques parties du corps",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Vivant",
       "theme": "Corps humain et santé",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8327,11 +10581,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_vivant_corps_humain_et_sante_tps_ps_02",
+      "id": "c1_vivant_corps_humain_et_sante_tps_ps_01",
+      "nom": "Nommer et représenter quelques parties du corps",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Vivant",
+      "theme": "Corps humain et santé",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_vivant_corps_humain_et_sante_tps_ps_01_tps"
+      ],
+      "intitule": "Nommer et représenter quelques parties du corps",
+      "discipline": "Vivant",
+      "domaine_id": "vivant",
+      "objectifs": [
+        "Nommer et représenter quelques parties du corps"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_vivant_corps_humain_et_sante_tps_ps_02_tps",
       "nom": "Découvrir les sens",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Vivant",
       "theme": "Corps humain et santé",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8346,15 +10621,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_vivant_corps_humain_et_sante_tps_ps_03",
+      "id": "c1_vivant_corps_humain_et_sante_tps_ps_02",
+      "nom": "Découvrir les sens",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Vivant",
+      "theme": "Corps humain et santé",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_vivant_corps_humain_et_sante_tps_ps_02_tps"
+      ],
+      "intitule": "Découvrir les sens",
+      "discipline": "Vivant",
+      "domaine_id": "vivant",
+      "objectifs": [
+        "Découvrir les sens"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_vivant_corps_humain_et_sante_tps_ps_03_tps",
       "nom": "Respecter quelques règles d’hygiène avec l’aide de l’adulte",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Vivant",
       "theme": "Corps humain et santé",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Respecter quelques règles d’hygiène avec l’aide de l’adulte",
+      "discipline": "Vivant",
+      "domaine_id": "vivant",
+      "objectifs": [
+        "Respecter quelques règles d’hygiène avec l’aide de l’adulte"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_vivant_corps_humain_et_sante_tps_ps_03",
+      "nom": "Respecter quelques règles d’hygiène avec l’aide de l’adulte",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Vivant",
+      "theme": "Corps humain et santé",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_vivant_corps_humain_et_sante_tps_ps_03_tps"
+      ],
       "intitule": "Respecter quelques règles d’hygiène avec l’aide de l’adulte",
       "discipline": "Vivant",
       "domaine_id": "vivant",
@@ -8532,11 +10849,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_01",
+      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_01_tps",
       "nom": "Reconnaitre et comparer des matériaux usuels par les sens",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Matière et objets",
       "theme": "Objets et matériaux",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8551,11 +10868,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_02",
+      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_01",
+      "nom": "Reconnaitre et comparer des matériaux usuels par les sens",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Matière et objets",
+      "theme": "Objets et matériaux",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_matiere_et_objets_objets_et_materiaux_tps_ps_01_tps"
+      ],
+      "intitule": "Reconnaitre et comparer des matériaux usuels par les sens",
+      "discipline": "Matière et objets",
+      "domaine_id": "matiere_et_objets",
+      "objectifs": [
+        "Reconnaitre et comparer des matériaux usuels par les sens"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_02_tps",
       "nom": "Repérer des transformations de matériaux",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Matière et objets",
       "theme": "Objets et matériaux",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8570,11 +10908,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_03",
+      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_02",
+      "nom": "Repérer des transformations de matériaux",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Matière et objets",
+      "theme": "Objets et matériaux",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_matiere_et_objets_objets_et_materiaux_tps_ps_02_tps"
+      ],
+      "intitule": "Repérer des transformations de matériaux",
+      "discipline": "Matière et objets",
+      "domaine_id": "matiere_et_objets",
+      "objectifs": [
+        "Repérer des transformations de matériaux"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_03_tps",
       "nom": "Utiliser des objets en connaissant leur nom et leur fonction",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Matière et objets",
       "theme": "Objets et matériaux",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8589,15 +10948,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_04",
+      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_03",
+      "nom": "Utiliser des objets en connaissant leur nom et leur fonction",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Matière et objets",
+      "theme": "Objets et matériaux",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_matiere_et_objets_objets_et_materiaux_tps_ps_03_tps"
+      ],
+      "intitule": "Utiliser des objets en connaissant leur nom et leur fonction",
+      "discipline": "Matière et objets",
+      "domaine_id": "matiere_et_objets",
+      "objectifs": [
+        "Utiliser des objets en connaissant leur nom et leur fonction"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_04_tps",
       "nom": "Réaliser une construction ou fabriquer un objet",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Matière et objets",
       "theme": "Objets et matériaux",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Réaliser une construction ou fabriquer un objet",
+      "discipline": "Matière et objets",
+      "domaine_id": "matiere_et_objets",
+      "objectifs": [
+        "Réaliser une construction ou fabriquer un objet"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_matiere_et_objets_objets_et_materiaux_tps_ps_04",
+      "nom": "Réaliser une construction ou fabriquer un objet",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Matière et objets",
+      "theme": "Objets et matériaux",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_matiere_et_objets_objets_et_materiaux_tps_ps_04_tps"
+      ],
       "intitule": "Réaliser une construction ou fabriquer un objet",
       "discipline": "Matière et objets",
       "domaine_id": "matiere_et_objets",
@@ -8838,11 +11239,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_01",
+      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_01_tps",
       "nom": "Explorer les caractéristiques de solides et liquides",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Matière et objets",
       "theme": "États de la matière et mélanges",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8857,11 +11258,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_02",
+      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_01",
+      "nom": "Explorer les caractéristiques de solides et liquides",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Matière et objets",
+      "theme": "États de la matière et mélanges",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_01_tps"
+      ],
+      "intitule": "Explorer les caractéristiques de solides et liquides",
+      "discipline": "Matière et objets",
+      "domaine_id": "matiere_et_objets",
+      "objectifs": [
+        "Explorer les caractéristiques de solides et liquides"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_02_tps",
       "nom": "Constater les effets d’un déplacement d’air",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Matière et objets",
       "theme": "États de la matière et mélanges",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8876,11 +11298,32 @@
       "statut": "actif"
     },
     {
-      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_03",
+      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_02",
+      "nom": "Constater les effets d’un déplacement d’air",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Matière et objets",
+      "theme": "États de la matière et mélanges",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_02_tps"
+      ],
+      "intitule": "Constater les effets d’un déplacement d’air",
+      "discipline": "Matière et objets",
+      "domaine_id": "matiere_et_objets",
+      "objectifs": [
+        "Constater les effets d’un déplacement d’air"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_03_tps",
       "nom": "Réaliser et observer des mélanges",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Matière et objets",
       "theme": "États de la matière et mélanges",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -8895,15 +11338,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_04",
+      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_03",
+      "nom": "Réaliser et observer des mélanges",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Matière et objets",
+      "theme": "États de la matière et mélanges",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_03_tps"
+      ],
+      "intitule": "Réaliser et observer des mélanges",
+      "discipline": "Matière et objets",
+      "domaine_id": "matiere_et_objets",
+      "objectifs": [
+        "Réaliser et observer des mélanges"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_04_tps",
       "nom": "Découvrir la fusion et la solidification de l’eau",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "Matière et objets",
       "theme": "États de la matière et mélanges",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Découvrir la fusion et la solidification de l’eau",
+      "discipline": "Matière et objets",
+      "domaine_id": "matiere_et_objets",
+      "objectifs": [
+        "Découvrir la fusion et la solidification de l’eau"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_04",
+      "nom": "Découvrir la fusion et la solidification de l’eau",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "Matière et objets",
+      "theme": "États de la matière et mélanges",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_matiere_et_objets_etats_de_la_matiere_et_melanges_tps_ps_04_tps"
+      ],
       "intitule": "Découvrir la fusion et la solidification de l’eau",
       "discipline": "Matière et objets",
       "domaine_id": "matiere_et_objets",
@@ -9098,11 +11583,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_tps_ps_01",
+      "id": "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_tps_ps_01_tps",
       "nom": "Connaitre son corps et exprimer ses sensations et émotions",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EVAR",
       "theme": "Se connaître, vivre et grandir avec son corps",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -9117,15 +11602,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_tps_ps_02",
+      "id": "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_tps_ps_01",
+      "nom": "Connaitre son corps et exprimer ses sensations et émotions",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EVAR",
+      "theme": "Se connaître, vivre et grandir avec son corps",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_tps_ps_01_tps"
+      ],
+      "intitule": "Connaitre son corps et exprimer ses sensations et émotions",
+      "discipline": "EVAR",
+      "domaine_id": "evar",
+      "objectifs": [
+        "Connaitre son corps et exprimer ses sensations et émotions"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_tps_ps_02_tps",
       "nom": "Comprendre l’intimité et le respect du corps",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EVAR",
       "theme": "Se connaître, vivre et grandir avec son corps",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Comprendre l’intimité et le respect du corps",
+      "discipline": "EVAR",
+      "domaine_id": "evar",
+      "objectifs": [
+        "Comprendre l’intimité et le respect du corps"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_tps_ps_02",
+      "nom": "Comprendre l’intimité et le respect du corps",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EVAR",
+      "theme": "Se connaître, vivre et grandir avec son corps",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_tps_ps_02_tps"
+      ],
       "intitule": "Comprendre l’intimité et le respect du corps",
       "discipline": "EVAR",
       "domaine_id": "evar",
@@ -9224,11 +11751,11 @@
       "statut": "actif"
     },
     {
-      "id": "c1_evar_rencontrer_les_autres_et_construire_des_relations_tps_ps_01",
+      "id": "c1_evar_rencontrer_les_autres_et_construire_des_relations_tps_ps_01_tps",
       "nom": "Exprimer son accord ou son refus",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EVAR",
       "theme": "Rencontrer les autres et construire des relations",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
@@ -9243,15 +11770,57 @@
       "statut": "actif"
     },
     {
-      "id": "c1_evar_rencontrer_les_autres_et_construire_des_relations_tps_ps_02",
+      "id": "c1_evar_rencontrer_les_autres_et_construire_des_relations_tps_ps_01",
+      "nom": "Exprimer son accord ou son refus",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EVAR",
+      "theme": "Rencontrer les autres et construire des relations",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_evar_rencontrer_les_autres_et_construire_des_relations_tps_ps_01_tps"
+      ],
+      "intitule": "Exprimer son accord ou son refus",
+      "discipline": "EVAR",
+      "domaine_id": "evar",
+      "objectifs": [
+        "Exprimer son accord ou son refus"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_evar_rencontrer_les_autres_et_construire_des_relations_tps_ps_02_tps",
       "nom": "Respecter les autres dans les interactions",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EVAR",
       "theme": "Rencontrer les autres et construire des relations",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Respecter les autres dans les interactions",
+      "discipline": "EVAR",
+      "domaine_id": "evar",
+      "objectifs": [
+        "Respecter les autres dans les interactions"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_evar_rencontrer_les_autres_et_construire_des_relations_tps_ps_02",
+      "nom": "Respecter les autres dans les interactions",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EVAR",
+      "theme": "Rencontrer les autres et construire des relations",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_evar_rencontrer_les_autres_et_construire_des_relations_tps_ps_02_tps"
+      ],
       "intitule": "Respecter les autres dans les interactions",
       "discipline": "EVAR",
       "domaine_id": "evar",
@@ -9350,15 +11919,36 @@
       "statut": "actif"
     },
     {
-      "id": "c1_evar_trouver_sa_place_dans_la_societe_tps_ps_01",
+      "id": "c1_evar_trouver_sa_place_dans_la_societe_tps_ps_01_tps",
       "nom": "Comprendre l’égalité et la liberté d’être soi-même",
       "cycle": "Cycle 1",
-      "niveau": "TPS_PS",
-      "repere_age": "Avant 4 ans",
+      "niveau": "TPS",
+      "repere_age": "Avant 3 ans / Toute petite section",
       "domaine": "EVAR",
       "theme": "Trouver sa place dans la société",
       "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
       "prerequis_competences": [],
+      "intitule": "Comprendre l’égalité et la liberté d’être soi-même",
+      "discipline": "EVAR",
+      "domaine_id": "evar",
+      "objectifs": [
+        "Comprendre l’égalité et la liberté d’être soi-même"
+      ],
+      "mots_cles": [],
+      "statut": "actif"
+    },
+    {
+      "id": "c1_evar_trouver_sa_place_dans_la_societe_tps_ps_01",
+      "nom": "Comprendre l’égalité et la liberté d’être soi-même",
+      "cycle": "Cycle 1",
+      "niveau": "PS",
+      "repere_age": "À partir de 3 ans / Petite section",
+      "domaine": "EVAR",
+      "theme": "Trouver sa place dans la société",
+      "source": "Programme d’enseignement de l’école maternelle consolidé (BO n°41 du 31 octobre 2024 et BO n°19 du 7 mai 2026)",
+      "prerequis_competences": [
+        "c1_evar_trouver_sa_place_dans_la_societe_tps_ps_01_tps"
+      ],
       "intitule": "Comprendre l’égalité et la liberté d’être soi-même",
       "discipline": "EVAR",
       "domaine_id": "evar",
@@ -10975,7 +13565,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Écrire à la main de manière fluide et efficace"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_ecrire_main_6e",
@@ -11222,7 +13813,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Écouter pour comprendre"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_oral_ecouter_6e",
@@ -11285,7 +13877,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Dire pour être compris dans toutes les disciplines"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_oral_dire_6e",
@@ -11349,7 +13942,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Participer à des échanges verbaux"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_oral_echanges_6e",
@@ -12018,7 +14612,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Culture littéraire et artistique"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_culture_se_confronter_au_merveilleux_l_trange_cm1",
@@ -12043,7 +14638,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Culture littéraire et artistique"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_culture_imaginer_et_vivre_d_autres_vies_cm1",
@@ -12068,7 +14664,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Culture littéraire et artistique"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_culture_comprendre_et_interroger_la_morale_cm1",
@@ -12093,7 +14690,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Culture littéraire et artistique"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_culture_savourer_le_go_t_des_mots_imaginer_et_cr_er_en_po_sie_cm1",
@@ -12118,7 +14716,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Culture littéraire et artistique"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_culture_se_d_couvrir_s_affirmer_dans_le_rapport_aux_autres_cm1",
@@ -12143,7 +14742,8 @@
         "niveau_source": "CM1 / CM2",
         "section": "Culture littéraire et artistique"
       },
-      "statut": "actif"
+      "statut": "actif",
+      "niveau_source": "CM1-CM2"
     },
     {
       "id": "fr_culture_cr_er_recr_er_le_monde_r_cits_des_origines_6e",
