@@ -37,14 +37,739 @@
   },
   "meta": {
     "titre": "Index central de la programmation pédagogique",
-    "version": "1.3",
-    "description": "Structure administrative et chronologique de la programmation. Le niveau, la discipline, le domaine, les séquences et les séances déterminent la localisation spatiale dans la cartographie.",
+    "version": "1.4",
+    "description": "Structure administrative et chronologique de la programmation. Le niveau, la discipline et le domaine déterminent la localisation spatiale. Le référentiel complet des compétences est chargé depuis data/competences.json.",
     "competences": "data/competences.json",
     "index_pedagogique": "data/index-pedagogie.json",
     "regle_cartographie": "Le niveau déclaré ici est prioritaire pour le placement d'une séquence et de ses séances. competence_id sert uniquement à créer le lien pédagogique avec une compétence.",
-    "regle_prerequis": "Les prérequis pédagogiques sont définis dans competences.json. index-pedagogie.json sert de référence analytique. index.json conserve uniquement les éventuels prérequis explicitement nécessaires à la contextualisation d'une séquence ou d'une séance."
+    "regle_prerequis": "Les prérequis pédagogiques sont définis dans competences.json. index-pedagogie.json sert de référence analytique. index.json conserve uniquement les éventuels prérequis explicitement nécessaires à la contextualisation d'une séquence ou d'une séance.",
+    "niveaux_reconnus": [
+      "TPS",
+      "PS",
+      "MS",
+      "GS",
+      "CP",
+      "CE1",
+      "CE2",
+      "CM1",
+      "CM2",
+      "6e"
+    ],
+    "cycles_reconnus": {
+      "TPS": "Cycle 1",
+      "PS": "Cycle 1",
+      "MS": "Cycle 1",
+      "GS": "Cycle 1",
+      "CP": "Cycle 2",
+      "CE1": "Cycle 2",
+      "CE2": "Cycle 2",
+      "CM1": "Cycle 3",
+      "CM2": "Cycle 3",
+      "6e": "Cycle 3"
+    },
+    "regle_affichage_competences": "La page index.html charge toutes les entrées de data/competences.json. Les niveaux CM1 et CM2 incluent également les compétences dont la source indique CM1-CM2."
   },
   "niveaux": [
+    {
+      "id": "TPS",
+      "nom": "TPS",
+      "cycle": "Cycle 1",
+      "disciplines": [
+        {
+          "id": "langage_oral",
+          "nom": "Langage oral",
+          "domaines": [
+            {
+              "id": "langage_oral",
+              "nom": "Langage oral",
+              "chemin": "data/TPS/langage_oral/langage_oral/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "oral_vers_crit",
+          "nom": "Oral vers écrit",
+          "domaines": [
+            {
+              "id": "oral_vers_ecrit",
+              "nom": "Oral vers écrit",
+              "chemin": "data/TPS/oral_vers_crit/oral_vers_ecrit/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "culture_de_l_crit",
+          "nom": "Culture de l’écrit",
+          "domaines": [
+            {
+              "id": "culture_de_l'ecrit",
+              "nom": "Culture de l’écrit",
+              "chemin": "data/TPS/culture_de_l_crit/culture_de_l'ecrit/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "criture",
+          "nom": "Écriture",
+          "domaines": [
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/TPS/criture/ecriture/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "eps",
+          "nom": "EPS",
+          "domaines": [
+            {
+              "id": "eps",
+              "nom": "EPS",
+              "chemin": "data/TPS/eps/eps/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "arts_visuels",
+          "nom": "Arts visuels",
+          "domaines": [
+            {
+              "id": "arts_visuels",
+              "nom": "Arts visuels",
+              "chemin": "data/TPS/arts_visuels/arts_visuels/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "univers_sonores",
+          "nom": "Univers sonores",
+          "domaines": [
+            {
+              "id": "univers_sonores",
+              "nom": "Univers sonores",
+              "chemin": "data/TPS/univers_sonores/univers_sonores/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "spectacle_vivant",
+          "nom": "Spectacle vivant",
+          "domaines": [
+            {
+              "id": "spectacle_vivant",
+              "nom": "Spectacle vivant",
+              "chemin": "data/TPS/spectacle_vivant/spectacle_vivant/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "math_matiques",
+          "nom": "Mathématiques",
+          "domaines": [
+            {
+              "id": "mathematiques",
+              "nom": "Mathématiques",
+              "chemin": "data/TPS/math_matiques/mathematiques/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "temps",
+          "nom": "Temps",
+          "domaines": [
+            {
+              "id": "temps",
+              "nom": "Temps",
+              "chemin": "data/TPS/temps/temps/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "espace",
+          "nom": "Espace",
+          "domaines": [
+            {
+              "id": "espace",
+              "nom": "Espace",
+              "chemin": "data/TPS/espace/espace/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "vivant",
+          "nom": "Vivant",
+          "domaines": [
+            {
+              "id": "vivant",
+              "nom": "Vivant",
+              "chemin": "data/TPS/vivant/vivant/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "mati_re_et_objets",
+          "nom": "Matière et objets",
+          "domaines": [
+            {
+              "id": "matiere_et_objets",
+              "nom": "Matière et objets",
+              "chemin": "data/TPS/mati_re_et_objets/matiere_et_objets/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "evar",
+          "nom": "EVAR",
+          "domaines": [
+            {
+              "id": "evar",
+              "nom": "EVAR",
+              "chemin": "data/TPS/evar/evar/",
+              "sequences": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "PS",
+      "nom": "PS",
+      "cycle": "Cycle 1",
+      "disciplines": [
+        {
+          "id": "langage_oral",
+          "nom": "Langage oral",
+          "domaines": [
+            {
+              "id": "langage_oral",
+              "nom": "Langage oral",
+              "chemin": "data/PS/langage_oral/langage_oral/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "oral_vers_crit",
+          "nom": "Oral vers écrit",
+          "domaines": [
+            {
+              "id": "oral_vers_ecrit",
+              "nom": "Oral vers écrit",
+              "chemin": "data/PS/oral_vers_crit/oral_vers_ecrit/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "culture_de_l_crit",
+          "nom": "Culture de l’écrit",
+          "domaines": [
+            {
+              "id": "culture_de_l'ecrit",
+              "nom": "Culture de l’écrit",
+              "chemin": "data/PS/culture_de_l_crit/culture_de_l'ecrit/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "criture",
+          "nom": "Écriture",
+          "domaines": [
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/PS/criture/ecriture/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "eps",
+          "nom": "EPS",
+          "domaines": [
+            {
+              "id": "eps",
+              "nom": "EPS",
+              "chemin": "data/PS/eps/eps/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "arts_visuels",
+          "nom": "Arts visuels",
+          "domaines": [
+            {
+              "id": "arts_visuels",
+              "nom": "Arts visuels",
+              "chemin": "data/PS/arts_visuels/arts_visuels/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "univers_sonores",
+          "nom": "Univers sonores",
+          "domaines": [
+            {
+              "id": "univers_sonores",
+              "nom": "Univers sonores",
+              "chemin": "data/PS/univers_sonores/univers_sonores/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "spectacle_vivant",
+          "nom": "Spectacle vivant",
+          "domaines": [
+            {
+              "id": "spectacle_vivant",
+              "nom": "Spectacle vivant",
+              "chemin": "data/PS/spectacle_vivant/spectacle_vivant/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "math_matiques",
+          "nom": "Mathématiques",
+          "domaines": [
+            {
+              "id": "mathematiques",
+              "nom": "Mathématiques",
+              "chemin": "data/PS/math_matiques/mathematiques/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "temps",
+          "nom": "Temps",
+          "domaines": [
+            {
+              "id": "temps",
+              "nom": "Temps",
+              "chemin": "data/PS/temps/temps/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "espace",
+          "nom": "Espace",
+          "domaines": [
+            {
+              "id": "espace",
+              "nom": "Espace",
+              "chemin": "data/PS/espace/espace/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "vivant",
+          "nom": "Vivant",
+          "domaines": [
+            {
+              "id": "vivant",
+              "nom": "Vivant",
+              "chemin": "data/PS/vivant/vivant/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "mati_re_et_objets",
+          "nom": "Matière et objets",
+          "domaines": [
+            {
+              "id": "matiere_et_objets",
+              "nom": "Matière et objets",
+              "chemin": "data/PS/mati_re_et_objets/matiere_et_objets/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "evar",
+          "nom": "EVAR",
+          "domaines": [
+            {
+              "id": "evar",
+              "nom": "EVAR",
+              "chemin": "data/PS/evar/evar/",
+              "sequences": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "MS",
+      "nom": "MS",
+      "cycle": "Cycle 1",
+      "disciplines": [
+        {
+          "id": "langage_oral",
+          "nom": "Langage oral",
+          "domaines": [
+            {
+              "id": "langage_oral",
+              "nom": "Langage oral",
+              "chemin": "data/MS/langage_oral/langage_oral/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "oral_vers_crit",
+          "nom": "Oral vers écrit",
+          "domaines": [
+            {
+              "id": "oral_vers_ecrit",
+              "nom": "Oral vers écrit",
+              "chemin": "data/MS/oral_vers_crit/oral_vers_ecrit/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "culture_de_l_crit",
+          "nom": "Culture de l’écrit",
+          "domaines": [
+            {
+              "id": "culture_de_l'ecrit",
+              "nom": "Culture de l’écrit",
+              "chemin": "data/MS/culture_de_l_crit/culture_de_l'ecrit/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "criture",
+          "nom": "Écriture",
+          "domaines": [
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/MS/criture/ecriture/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "eps",
+          "nom": "EPS",
+          "domaines": [
+            {
+              "id": "eps",
+              "nom": "EPS",
+              "chemin": "data/MS/eps/eps/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "arts_visuels",
+          "nom": "Arts visuels",
+          "domaines": [
+            {
+              "id": "arts_visuels",
+              "nom": "Arts visuels",
+              "chemin": "data/MS/arts_visuels/arts_visuels/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "univers_sonores",
+          "nom": "Univers sonores",
+          "domaines": [
+            {
+              "id": "univers_sonores",
+              "nom": "Univers sonores",
+              "chemin": "data/MS/univers_sonores/univers_sonores/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "spectacle_vivant",
+          "nom": "Spectacle vivant",
+          "domaines": [
+            {
+              "id": "spectacle_vivant",
+              "nom": "Spectacle vivant",
+              "chemin": "data/MS/spectacle_vivant/spectacle_vivant/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "math_matiques",
+          "nom": "Mathématiques",
+          "domaines": [
+            {
+              "id": "mathematiques",
+              "nom": "Mathématiques",
+              "chemin": "data/MS/math_matiques/mathematiques/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "temps",
+          "nom": "Temps",
+          "domaines": [
+            {
+              "id": "temps",
+              "nom": "Temps",
+              "chemin": "data/MS/temps/temps/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "espace",
+          "nom": "Espace",
+          "domaines": [
+            {
+              "id": "espace",
+              "nom": "Espace",
+              "chemin": "data/MS/espace/espace/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "vivant",
+          "nom": "Vivant",
+          "domaines": [
+            {
+              "id": "vivant",
+              "nom": "Vivant",
+              "chemin": "data/MS/vivant/vivant/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "mati_re_et_objets",
+          "nom": "Matière et objets",
+          "domaines": [
+            {
+              "id": "matiere_et_objets",
+              "nom": "Matière et objets",
+              "chemin": "data/MS/mati_re_et_objets/matiere_et_objets/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "evar",
+          "nom": "EVAR",
+          "domaines": [
+            {
+              "id": "evar",
+              "nom": "EVAR",
+              "chemin": "data/MS/evar/evar/",
+              "sequences": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "GS",
+      "nom": "GS",
+      "cycle": "Cycle 1",
+      "disciplines": [
+        {
+          "id": "langage_oral",
+          "nom": "Langage oral",
+          "domaines": [
+            {
+              "id": "langage_oral",
+              "nom": "Langage oral",
+              "chemin": "data/GS/langage_oral/langage_oral/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "oral_vers_crit",
+          "nom": "Oral vers écrit",
+          "domaines": [
+            {
+              "id": "oral_vers_ecrit",
+              "nom": "Oral vers écrit",
+              "chemin": "data/GS/oral_vers_crit/oral_vers_ecrit/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "culture_de_l_crit",
+          "nom": "Culture de l’écrit",
+          "domaines": [
+            {
+              "id": "culture_de_l'ecrit",
+              "nom": "Culture de l’écrit",
+              "chemin": "data/GS/culture_de_l_crit/culture_de_l'ecrit/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "criture",
+          "nom": "Écriture",
+          "domaines": [
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/GS/criture/ecriture/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "eps",
+          "nom": "EPS",
+          "domaines": [
+            {
+              "id": "eps",
+              "nom": "EPS",
+              "chemin": "data/GS/eps/eps/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "arts_visuels",
+          "nom": "Arts visuels",
+          "domaines": [
+            {
+              "id": "arts_visuels",
+              "nom": "Arts visuels",
+              "chemin": "data/GS/arts_visuels/arts_visuels/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "univers_sonores",
+          "nom": "Univers sonores",
+          "domaines": [
+            {
+              "id": "univers_sonores",
+              "nom": "Univers sonores",
+              "chemin": "data/GS/univers_sonores/univers_sonores/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "spectacle_vivant",
+          "nom": "Spectacle vivant",
+          "domaines": [
+            {
+              "id": "spectacle_vivant",
+              "nom": "Spectacle vivant",
+              "chemin": "data/GS/spectacle_vivant/spectacle_vivant/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "math_matiques",
+          "nom": "Mathématiques",
+          "domaines": [
+            {
+              "id": "mathematiques",
+              "nom": "Mathématiques",
+              "chemin": "data/GS/math_matiques/mathematiques/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "temps",
+          "nom": "Temps",
+          "domaines": [
+            {
+              "id": "temps",
+              "nom": "Temps",
+              "chemin": "data/GS/temps/temps/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "espace",
+          "nom": "Espace",
+          "domaines": [
+            {
+              "id": "espace",
+              "nom": "Espace",
+              "chemin": "data/GS/espace/espace/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "vivant",
+          "nom": "Vivant",
+          "domaines": [
+            {
+              "id": "vivant",
+              "nom": "Vivant",
+              "chemin": "data/GS/vivant/vivant/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "mati_re_et_objets",
+          "nom": "Matière et objets",
+          "domaines": [
+            {
+              "id": "matiere_et_objets",
+              "nom": "Matière et objets",
+              "chemin": "data/GS/mati_re_et_objets/matiere_et_objets/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "evar",
+          "nom": "EVAR",
+          "domaines": [
+            {
+              "id": "evar",
+              "nom": "EVAR",
+              "chemin": "data/GS/evar/evar/",
+              "sequences": []
+            }
+          ]
+        }
+      ]
+    },
     {
       "id": "CP",
       "nom": "CP",
@@ -160,6 +885,420 @@
               "id": "nombres_calculs",
               "nom": "Nombres et calculs",
               "chemin": "data/CP/mathematiques/nombres_calculs/",
+              "sequences": []
+            },
+            {
+              "id": "nombres_calcul_problemes",
+              "nom": "Nombres, calcul et résolution de problèmes",
+              "chemin": "data/CP/math_matiques/nombres_calcul_problemes/",
+              "sequences": []
+            },
+            {
+              "id": "grandeurs_mesures",
+              "nom": "Grandeurs et mesures",
+              "chemin": "data/CP/math_matiques/grandeurs_mesures/",
+              "sequences": []
+            },
+            {
+              "id": "espace_geometrie",
+              "nom": "Espace et géométrie",
+              "chemin": "data/CP/math_matiques/espace_geometrie/",
+              "sequences": []
+            },
+            {
+              "id": "organisation_donnees",
+              "nom": "Organisation et gestion de données",
+              "chemin": "data/CP/math_matiques/organisation_donnees/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "enseignement_moral_et_civique",
+          "nom": "Enseignement moral et civique",
+          "domaines": [
+            {
+              "id": "enseignement_moral_civique",
+              "nom": "Enseignement moral et civique",
+              "chemin": "data/CP/enseignement_moral_et_civique/enseignement_moral_civique/",
+              "sequences": []
+            }
+          ]
+        }
+      ],
+      "cycle": "Cycle 2"
+    },
+    {
+      "id": "CE1",
+      "nom": "CE1",
+      "cycle": "Cycle 2",
+      "disciplines": [
+        {
+          "id": "fran_ais",
+          "nom": "Français",
+          "domaines": [
+            {
+              "id": "lecture",
+              "nom": "Lecture",
+              "chemin": "data/CE1/fran_ais/lecture/",
+              "sequences": []
+            },
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/CE1/fran_ais/ecriture/",
+              "sequences": []
+            },
+            {
+              "id": "oral",
+              "nom": "Oral",
+              "chemin": "data/CE1/fran_ais/oral/",
+              "sequences": []
+            },
+            {
+              "id": "vocabulaire",
+              "nom": "Vocabulaire",
+              "chemin": "data/CE1/fran_ais/vocabulaire/",
+              "sequences": []
+            },
+            {
+              "id": "grammaire_orthographe",
+              "nom": "Grammaire et orthographe",
+              "chemin": "data/CE1/fran_ais/grammaire_orthographe/",
+              "sequences": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CE2",
+      "nom": "CE2",
+      "cycle": "Cycle 2",
+      "disciplines": [
+        {
+          "id": "fran_ais",
+          "nom": "Français",
+          "domaines": [
+            {
+              "id": "lecture",
+              "nom": "Lecture",
+              "chemin": "data/CE2/fran_ais/lecture/",
+              "sequences": []
+            },
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/CE2/fran_ais/ecriture/",
+              "sequences": []
+            },
+            {
+              "id": "oral",
+              "nom": "Oral",
+              "chemin": "data/CE2/fran_ais/oral/",
+              "sequences": []
+            },
+            {
+              "id": "vocabulaire",
+              "nom": "Vocabulaire",
+              "chemin": "data/CE2/fran_ais/vocabulaire/",
+              "sequences": []
+            },
+            {
+              "id": "grammaire_orthographe",
+              "nom": "Grammaire et orthographe",
+              "chemin": "data/CE2/fran_ais/grammaire_orthographe/",
+              "sequences": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CM1",
+      "nom": "CM1",
+      "cycle": "Cycle 3",
+      "disciplines": [
+        {
+          "id": "fran_ais",
+          "nom": "Français",
+          "domaines": [
+            {
+              "id": "lecture",
+              "nom": "Lecture",
+              "chemin": "data/CM1/fran_ais/lecture/",
+              "sequences": []
+            },
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/CM1/fran_ais/ecriture/",
+              "sequences": []
+            },
+            {
+              "id": "oral",
+              "nom": "Oral",
+              "chemin": "data/CM1/fran_ais/oral/",
+              "sequences": []
+            },
+            {
+              "id": "vocabulaire",
+              "nom": "Vocabulaire",
+              "chemin": "data/CM1/fran_ais/vocabulaire/",
+              "sequences": []
+            },
+            {
+              "id": "grammaire_orthographe",
+              "nom": "Grammaire et orthographe grammaticale",
+              "chemin": "data/CM1/fran_ais/grammaire_orthographe/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "math_matiques",
+          "nom": "Mathématiques",
+          "domaines": [
+            {
+              "id": "nombres_calcul_problemes",
+              "nom": "Nombres, calcul et résolution de problèmes",
+              "chemin": "data/CM1/math_matiques/nombres_calcul_problemes/",
+              "sequences": []
+            },
+            {
+              "id": "grandeurs_mesures",
+              "nom": "Grandeurs et mesures",
+              "chemin": "data/CM1/math_matiques/grandeurs_mesures/",
+              "sequences": []
+            },
+            {
+              "id": "espace_geometrie",
+              "nom": "Espace et géométrie",
+              "chemin": "data/CM1/math_matiques/espace_geometrie/",
+              "sequences": []
+            },
+            {
+              "id": "organisation_donnees",
+              "nom": "Organisation et gestion de données",
+              "chemin": "data/CM1/math_matiques/organisation_donnees/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "histoire",
+          "nom": "Histoire",
+          "domaines": [
+            {
+              "id": "histoire",
+              "nom": "Histoire",
+              "chemin": "data/CM1/histoire/histoire/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "g_ographie",
+          "nom": "Géographie",
+          "domaines": [
+            {
+              "id": "geographie",
+              "nom": "Géographie",
+              "chemin": "data/CM1/g_ographie/geographie/",
+              "sequences": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "CM2",
+      "nom": "CM2",
+      "cycle": "Cycle 3",
+      "disciplines": [
+        {
+          "id": "fran_ais",
+          "nom": "Français",
+          "domaines": [
+            {
+              "id": "lecture",
+              "nom": "Lecture",
+              "chemin": "data/CM2/fran_ais/lecture/",
+              "sequences": []
+            },
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/CM2/fran_ais/ecriture/",
+              "sequences": []
+            },
+            {
+              "id": "oral",
+              "nom": "Oral",
+              "chemin": "data/CM2/fran_ais/oral/",
+              "sequences": []
+            },
+            {
+              "id": "vocabulaire",
+              "nom": "Vocabulaire",
+              "chemin": "data/CM2/fran_ais/vocabulaire/",
+              "sequences": []
+            },
+            {
+              "id": "grammaire_orthographe",
+              "nom": "Grammaire et orthographe grammaticale",
+              "chemin": "data/CM2/fran_ais/grammaire_orthographe/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "math_matiques",
+          "nom": "Mathématiques",
+          "domaines": [
+            {
+              "id": "nombres_calcul_problemes",
+              "nom": "Nombres, calcul et résolution de problèmes",
+              "chemin": "data/CM2/math_matiques/nombres_calcul_problemes/",
+              "sequences": []
+            },
+            {
+              "id": "grandeurs_mesures",
+              "nom": "Grandeurs et mesures",
+              "chemin": "data/CM2/math_matiques/grandeurs_mesures/",
+              "sequences": []
+            },
+            {
+              "id": "espace_geometrie",
+              "nom": "Espace et géométrie",
+              "chemin": "data/CM2/math_matiques/espace_geometrie/",
+              "sequences": []
+            },
+            {
+              "id": "organisation_donnees",
+              "nom": "Organisation et gestion de données",
+              "chemin": "data/CM2/math_matiques/organisation_donnees/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "histoire",
+          "nom": "Histoire",
+          "domaines": [
+            {
+              "id": "histoire",
+              "nom": "Histoire",
+              "chemin": "data/CM2/histoire/histoire/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "g_ographie",
+          "nom": "Géographie",
+          "domaines": [
+            {
+              "id": "geographie",
+              "nom": "Géographie",
+              "chemin": "data/CM2/g_ographie/geographie/",
+              "sequences": []
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "6e",
+      "nom": "6e",
+      "cycle": "Cycle 3",
+      "disciplines": [
+        {
+          "id": "fran_ais",
+          "nom": "Français",
+          "domaines": [
+            {
+              "id": "lecture",
+              "nom": "Lecture",
+              "chemin": "data/6e/fran_ais/lecture/",
+              "sequences": []
+            },
+            {
+              "id": "ecriture",
+              "nom": "Écriture",
+              "chemin": "data/6e/fran_ais/ecriture/",
+              "sequences": []
+            },
+            {
+              "id": "oral",
+              "nom": "Oral",
+              "chemin": "data/6e/fran_ais/oral/",
+              "sequences": []
+            },
+            {
+              "id": "vocabulaire",
+              "nom": "Vocabulaire",
+              "chemin": "data/6e/fran_ais/vocabulaire/",
+              "sequences": []
+            },
+            {
+              "id": "grammaire_orthographe",
+              "nom": "Grammaire et orthographe grammaticale",
+              "chemin": "data/6e/fran_ais/grammaire_orthographe/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "math_matiques",
+          "nom": "Mathématiques",
+          "domaines": [
+            {
+              "id": "nombres_calcul_problemes",
+              "nom": "Nombres, calcul et résolution de problèmes",
+              "chemin": "data/6e/math_matiques/nombres_calcul_problemes/",
+              "sequences": []
+            },
+            {
+              "id": "grandeurs_mesures",
+              "nom": "Grandeurs et mesures",
+              "chemin": "data/6e/math_matiques/grandeurs_mesures/",
+              "sequences": []
+            },
+            {
+              "id": "espace_geometrie",
+              "nom": "Espace et géométrie",
+              "chemin": "data/6e/math_matiques/espace_geometrie/",
+              "sequences": []
+            },
+            {
+              "id": "organisation_donnees",
+              "nom": "Organisation et gestion de données",
+              "chemin": "data/6e/math_matiques/organisation_donnees/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "histoire",
+          "nom": "Histoire",
+          "domaines": [
+            {
+              "id": "histoire",
+              "nom": "Histoire",
+              "chemin": "data/6e/histoire/histoire/",
+              "sequences": []
+            }
+          ]
+        },
+        {
+          "id": "g_ographie",
+          "nom": "Géographie",
+          "domaines": [
+            {
+              "id": "geographie",
+              "nom": "Géographie",
+              "chemin": "data/6e/g_ographie/geographie/",
               "sequences": []
             }
           ]
