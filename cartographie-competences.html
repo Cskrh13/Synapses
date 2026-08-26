@@ -90,13 +90,13 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
   <div class="navrow">Clic gauche maintenu : tourner les sphères</div>
   <div class="navrow">Clic droit maintenu : déplacer horizontalement et verticalement</div>
   <div class="navrow">Molette : zoomer / dézoomer</div>
-  <div class="navrow">Clic : ouvrir une fiche</div>
+  <div class="navrow">Clic : ouvrir une fiche</div><div class="navrow"><strong>Spirale :</strong> TPS → PS → MS → GS → CP → CE1 → CE2 → CM1 → CM2 → 6e</div>
 </div>
 
 <div class="bottom">
   <button id="home" title="Recentrer">⌂</button>
   <button id="minus" title="Zoom arrière">−</button>
-  <input id="zoomRange" type="range" min="0.42" max="2.4" step="0.01" value="1" aria-label="Zoom">
+  <input id="zoomRange" type="range" min="0.42" max="2.4" step="0.01" value="0.62" aria-label="Zoom">
   <button id="plus" title="Zoom avant">+</button>
   <button id="fullscreen" title="Plein écran">⛶</button>
 </div>
@@ -114,11 +114,25 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
    - Aucun lien de prérequis n'est inventé.
    - Aucun rattachement compétence → séquence n'est deviné :
      il faut un competence_id exact dans la séquence.
-   - Les niveaux CP, CE1, CE2, CM1, CM2 et 6e sont des sphères
+   - Les niveaux TPS, PS, MS, GS, CP, CE1, CE2, CM1, CM2 et 6e sont disposés en spirale ascendante sous forme de sphères
      en volume qui contiennent leurs nœuds.
    ========================================================= */
 
-const LEVEL_ORDER = ["CP","CE1","CE2","CM1","CM2","6e"];
+const LEVEL_ORDER = ["TPS","PS","MS","GS","CP","CE1","CE2","CM1","CM2","6e"];
+
+function normalizeLevel(value){
+  const raw=String(value??"").trim().toLowerCase()
+    .replace(/[éèêë]/g,"e").replace(/\s+/g,"");
+  const map={
+    "tps":"TPS","toutepetitesection":"TPS","toutpetitesection":"TPS",
+    "ps":"PS","petitesection":"PS",
+    "ms":"MS","moyennesection":"MS",
+    "gs":"GS","grandesection":"GS",
+    "cp":"CP","ce1":"CE1","ce2":"CE2","cm1":"CM1","cm2":"CM2",
+    "6e":"6e","6eme":"6e","6ème":"6e","sixieme":"6e"
+  };
+  return map[raw] || String(value??"").trim();
+}
 const TYPE = {
   competence:{color:"#2f8f68",radius:15},
   sequence:{color:"#d79224",radius:17},
@@ -138,7 +152,7 @@ const state = {
   yaw:0.28, pitch:-0.12, zoom:1,
   panX:0, panY:0,
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
-  sphereR:185, sphereSpacing:470,
+  sphereR:170, sphereSpacing:470, spiralRadius:620, spiralRise:150, spiralTurns:1.35,
   projected:[]
 };
 
@@ -184,7 +198,7 @@ function flattenIndex(index){
         for(const seq of domaine?.sequences||[]){
           out.push({
             ...seq,
-            niveau:niveau.id, niveau_nom:niveau.nom||niveau.id,
+            niveau:normalizeLevel(niveau.id), niveau_nom:niveau.nom||niveau.id,
             discipline_id:discipline.id, discipline:discipline.nom||discipline.id,
             domaine_id:domaine.id, domaine:domaine.nom||domaine.id
           });
@@ -276,13 +290,20 @@ function fibonacciPoint(i,n,r){
   return {x:Math.cos(a)*rr*r,y:y*r,z:Math.sin(a)*rr*r};
 }
 function sphereCenter(level){
-  const i=LEVEL_ORDER.indexOf(level);
+  const i=LEVEL_ORDER.indexOf(normalizeLevel(level));
   const count=LEVEL_ORDER.length;
-  const cols=3, row=Math.floor(i/cols), col=i%cols;
+  const safe=i<0?0:i;
+
+  // Spirale ascendante : TPS → 6e.
+  // Le rayon augmente légèrement et chaque niveau gagne de la hauteur.
+  const t=count<=1?0:safe/(count-1);
+  const angle=(-Math.PI/2) + t*Math.PI*2*state.spiralTurns;
+  const radius=state.spiralRadius*(0.72+0.28*t);
+
   return {
-    x:(col-(cols-1)/2)*state.sphereSpacing,
-    y:(row-.5)*state.sphereSpacing*.82,
-    z:(i%2===0?70:-70)
+    x:Math.cos(angle)*radius,
+    y:(0.5-t)*state.spiralRise*count,
+    z:Math.sin(angle)*radius
   };
 }
 function buildGraph(){
@@ -290,13 +311,13 @@ function buildGraph(){
   const comps=state.compData.competences;
 
   for(const level of LEVEL_ORDER){
-    const group=comps.filter(c=>c.niveau===level);
+    const group=comps.filter(c=>normalizeLevel(c.niveau)===level);
     const center=sphereCenter(level);
     group.forEach((c,i)=>{
       const p=fibonacciPoint(i,group.length,state.sphereR*.76);
       state.nodes.push({
         id:"c:"+c.id,type:"competence",ref:c.id,label:c.intitule,
-        niveau:level,domaine_id:c.domaine_id,discipline:c.discipline,
+        niveau:normalizeLevel(c.niveau),domaine_id:c.domaine_id,discipline:c.discipline,
         x:center.x+p.x,y:center.y+p.y,z:center.z+p.z
       });
     });
@@ -306,7 +327,7 @@ function buildGraph(){
   // Sinon elles restent dans la sphère de leur niveau, sans faux lien.
   const seqGroups=new Map();
   for(const s of state.sequences){
-    const level=s.niveau;
+    const level=normalizeLevel(s.niveau);
     if(!seqGroups.has(level)) seqGroups.set(level,[]);
     seqGroups.get(level).push(s);
   }
@@ -324,7 +345,7 @@ function buildGraph(){
       }
       state.nodes.push({
         id:"s:"+s.id,type:"sequence",ref:s.id,label:s.titre||s.id,
-        niveau:level,domaine_id:s.domaine_id,discipline:s.discipline,
+        niveau:normalizeLevel(level),domaine_id:s.domaine_id,discipline:s.discipline,
         x:pos.x,y:pos.y,z:pos.z,competence_id:linked
       });
       if(linked) state.links.push({source:"c:"+linked,target:"s:"+s.id,type:"sequence"});
@@ -341,7 +362,7 @@ function buildGraph(){
       const id=se.id;
       state.nodes.push({
         id:"x:"+id,type:"seance",ref:id,label:se.titre||id,
-        niveau:s.niveau,domaine_id:s.domaine_id,discipline:s.discipline,
+        niveau:normalizeLevel(s.niveau),domaine_id:s.domaine_id,discipline:s.discipline,
         x:seqNode.x+Math.cos(a)*rr,y:seqNode.y+Math.sin(a)*rr,z:seqNode.z+20+(i%3)*7,
         sequence_id:s.id
       });
@@ -363,10 +384,10 @@ function buildGraph(){
 /* ---------- Filtres ---------- */
 function visible(n){
   if(n.type==="competence"){
-    if(!state.levels.has(n.niveau)) return false;
+    if(!state.levels.has(normalizeLevel(n.niveau))) return false;
     if(state.domains.size && !state.domains.has(n.domaine_id)) return false;
   } else {
-    if(!state.levels.has(n.niveau)) return false;
+    if(!state.levels.has(normalizeLevel(n.niveau))) return false;
     if(state.domains.size && n.domaine_id && !state.domains.has(n.domaine_id)) return false;
   }
   const q=norm(state.search);
@@ -404,7 +425,9 @@ function projectPoint(p){
 }
 function sphereProjection(level){
   const p=projectPoint(sphereCenter(level));
-  return {...p,r:state.sphereR*p.scale};
+  const i=LEVEL_ORDER.indexOf(level);
+  const factor=i<4 ? 0.82 : 1;
+  return {...p,r:state.sphereR*factor*p.scale};
 }
 function drawSphere(ctx,s,label){
   const {x,y,r}=s;
@@ -444,7 +467,10 @@ function draw(){
   bg.addColorStop(0,"#fff");bg.addColorStop(.7,"#f5f7f8");bg.addColorStop(1,"#e7ebee");
   ctx.fillStyle=bg;ctx.fillRect(0,0,innerWidth,innerHeight);
 
-  const spheres=LEVEL_ORDER.filter(l=>state.levels.has(l)).map(l=>({level:l,...sphereProjection(l)})).sort((a,b)=>b.z-a.z);
+  const spheres=LEVEL_ORDER
+    .filter(l=>state.levels.has(l))
+    .map(l=>({level:l,...sphereProjection(l)}))
+    .sort((a,b)=>b.z-a.z);
   for(const s of spheres) drawSphere(ctx,s,s.level);
 
   const projected=new Map();
@@ -526,7 +552,7 @@ function showPanel(node){
 
 /* ---------- Navigation ---------- */
 function resetView(){
-  state.yaw=0.28;state.pitch=-0.12;state.zoom=1;state.panX=0;state.panY=0;
+  state.yaw=0.42;state.pitch=-0.24;state.zoom=.62;state.panX=0;state.panY=0;
   $("zoomRange").value=1;draw();
 }
 $("search").addEventListener("input",e=>{state.search=e.target.value;update();});
