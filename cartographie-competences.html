@@ -1,3284 +1,564 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="fr">
 <head>
-<meta charset="UTF-8">
+<meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cartographie des compétences — Synapses</title>
-
 <style>
 :root{
-  --bg:#f7f7f4;
-  --paper:#ffffff;
-  --ink:#202525;
-  --muted:#707878;
-  --line:rgba(40,50,50,.18);
-  --gold:#9b7a3c;
-  --competence:#4b9b72;
-  --sequence:#c28b35;
-  --seance:#4c91bd;
-  --prerequis:#9b7a3c;
+  --ink:#152333;--muted:#68737e;--line:#d8dde2;--panel:rgba(255,255,255,.90);
+  --gold:#b88924;--green:#2f8f68;--orange:#d79224;--blue:#4d91b7;
 }
-
 *{box-sizing:border-box}
-
-html,body{
-  margin:0;
-  width:100%;
-  height:100%;
-  overflow:hidden;
-  background:var(--bg);
-  color:var(--ink);
-  font-family:Georgia,"Times New Roman",serif;
-}
-
-#app{
-  position:fixed;
-  inset:0;
-}
-
-#graph{
-  position:absolute;
-  inset:0;
-  width:100%;
-  height:100%;
-  cursor:grab;
-}
-
-#graph.dragging{
-  cursor:grabbing;
-}
-
-header{
-  position:absolute;
-  top:0;
-  left:0;
-  right:0;
-  z-index:10;
-  text-align:center;
-  padding:18px 20px 14px;
-  background:linear-gradient(
-    rgba(247,247,244,.98),
-    rgba(247,247,244,.88),
-    rgba(247,247,244,0)
-  );
-  pointer-events:none;
-}
-
-h1{
-  margin:0;
-  font-size:clamp(20px,3vw,30px);
-  font-weight:normal;
-  letter-spacing:3px;
-  text-transform:uppercase;
-}
-
-.subtitle{
-  margin-top:6px;
-  color:var(--muted);
-  font-size:12px;
-  letter-spacing:.5px;
-}
-
-.toolbar{
-  position:absolute;
-  left:12px;
-  right:12px;
-  top:82px;
-  z-index:20;
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:6px;
-  padding:8px;
-  background:rgba(255,255,255,.94);
-  border:1px solid var(--line);
-  box-shadow:0 5px 20px rgba(0,0,0,.05);
-}
-
-.group{
-  display:flex;
-  align-items:center;
-  flex-wrap:wrap;
-  gap:4px;
-}
-
-.label{
-  margin-right:4px;
-  color:var(--muted);
-  font-size:10px;
-  text-transform:uppercase;
-  letter-spacing:1px;
-}
-
-button,input{
-  border:1px solid var(--line);
-  background:white;
-  color:var(--ink);
-  padding:6px 9px;
-  font:12px Georgia,serif;
-}
-
-button{
-  cursor:pointer;
-}
-
-button:hover{
-  border-color:var(--gold);
-}
-
-button.active{
-  background:rgba(155,122,60,.12);
-  border-color:var(--gold);
-}
-
-input{
-  width:230px;
-}
-
-#status{
-  margin-left:auto;
-  color:var(--muted);
-  font-size:11px;
-}
-
-.side{
-  position:absolute;
-  z-index:15;
-  background:rgba(255,255,255,.93);
-  border:1px solid var(--line);
-  box-shadow:0 5px 20px rgba(0,0,0,.05);
-}
-
-#legend{
-  right:12px;
-  bottom:12px;
-  padding:12px 14px;
-  font-size:11px;
-}
-
-.legend-title{
-  margin-bottom:8px;
-  font-size:12px;
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
-
-.legendrow{
-  display:flex;
-  align-items:center;
-  gap:7px;
-  margin:5px 0;
-}
-
-.dot{
-  width:10px;
-  height:10px;
-  border-radius:50%;
-  display:inline-block;
-}
-
-.line{
-  width:22px;
-  height:0;
-  border-top:1px solid var(--sequence);
-  display:inline-block;
-}
-
-.line.dashed{
-  border-top:1px dashed var(--prerequis);
-}
-
-.line.small{
-  border-top-color:var(--seance);
-}
-
-#help{
-  left:12px;
-  bottom:12px;
-  padding:10px 12px;
-  color:var(--muted);
-  font-size:11px;
-}
-
-#panel{
-  position:absolute;
-  right:0;
-  top:0;
-  bottom:0;
-  z-index:40;
-  width:min(440px,94vw);
-  padding:22px;
-  overflow:auto;
-  background:rgba(255,255,255,.98);
-  border-left:1px solid var(--line);
-  box-shadow:-15px 0 40px rgba(0,0,0,.08);
-  transform:translateX(105%);
-  transition:.22s ease;
-}
-
-#panel.open{
-  transform:translateX(0);
-}
-
-.close{
-  float:right;
-  cursor:pointer;
-  color:var(--muted);
-  font-size:18px;
-}
-
-.tag{
-  display:inline-block;
-  padding:3px 7px;
-  border:1px solid var(--gold);
-  color:var(--gold);
-  font-size:10px;
-  letter-spacing:1px;
-  text-transform:uppercase;
-}
-
-#panel h2{
-  margin:8px 30px 8px 0;
-  font-size:21px;
-  font-weight:normal;
-}
-
-.meta{
-  color:var(--muted);
-  font-size:11px;
-}
-
-.section{
-  margin:18px 0;
-}
-
-.section h3{
-  margin:0 0 7px;
-  padding-bottom:5px;
-  border-bottom:1px dashed var(--line);
-  font-size:13px;
-  font-weight:normal;
-}
-
-.card{
-  margin:7px 0;
-  padding:9px;
-  border:1px solid var(--line);
-  border-left:3px solid var(--gold);
-  background:#fafaf8;
-}
-
-.card b{
-  color:var(--ink);
-}
-
-a{
-  color:#80652f;
-  cursor:pointer;
-}
-
-#error{
-  display:none;
-  position:absolute;
-  z-index:100;
-  left:50%;
-  top:50%;
-  transform:translate(-50%,-50%);
-  width:min(700px,90vw);
-  padding:22px;
-  background:white;
-  border:1px solid #a56d5e;
-  box-shadow:0 20px 70px rgba(0,0,0,.18);
-}
-
-#error h2{
-  margin:0 0 10px;
-  font-size:18px;
-  font-weight:normal;
-}
-
-#error pre{
-  white-space:pre-wrap;
-  font:12px/1.5 Consolas,monospace;
-}
-
-.bottom{
-  position:absolute;
-  left:50%;
-  bottom:12px;
-  transform:translateX(-50%);
-  z-index:15;
-  display:flex;
-  align-items:center;
-  gap:4px;
-  padding:5px;
-  background:white;
-  border:1px solid var(--line);
-}
-
-.bottom input{
-  width:130px;
-}
-
-@media(max-width:720px){
-  .toolbar{
-    top:76px;
-  }
-
-  #status{
-    width:100%;
-    margin-left:0;
-  }
-
-  #legend{
-    display:none;
-  }
-
-  #help{
-    bottom:58px;
-    font-size:10px;
-  }
-
-  input{
-    width:170px;
-  }
-}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;color:var(--ink);font-family:Georgia,"Times New Roman",serif}
+body{background:radial-gradient(circle at 50% 35%,#fff 0,#f7f8f9 56%,#e9edf0 100%)}
+#app{position:fixed;inset:0}
+canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none}
+canvas.dragging{cursor:grabbing}
+header{position:absolute;z-index:10;left:24px;top:14px;pointer-events:none}
+h1{margin:0;font-size:clamp(24px,2.7vw,38px);font-weight:500;letter-spacing:3px;font-variant:small-caps}
+.subtitle{margin-top:5px;color:#53606a;font-size:13px}
+.toolbar{position:absolute;z-index:12;left:24px;right:24px;top:82px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:8px;background:rgba(255,255,255,.72);border:1px solid rgba(210,217,223,.9);box-shadow:0 8px 24px rgba(24,40,55,.06);backdrop-filter:blur(7px)}
+.group{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
+.label{font-size:10px;text-transform:uppercase;letter-spacing:1.1px;color:#68737e;font-weight:bold;margin-right:3px}
+button,input{font:13px Georgia,"Times New Roman",serif;border:1px solid #d2d8dd;background:rgba(255,255,255,.94);color:var(--ink);border-radius:2px}
+button{padding:7px 10px;cursor:pointer}button:hover{border-color:#a9b5bf}
+button.active{background:#f3ead2;border-color:#d4b56a;color:#755411;font-weight:bold}
+input{width:280px;padding:8px 10px}
+#reset{background:#fff}
+#status{font-size:11px;color:#68737e;margin-left:auto}
+.side{position:absolute;z-index:11;pointer-events:none}
+.card{background:var(--panel);border:1px solid rgba(205,212,218,.88);box-shadow:0 10px 30px rgba(28,45,61,.08);backdrop-filter:blur(7px);padding:13px 15px;pointer-events:auto}
+#legend{right:24px;bottom:24px;width:190px}
+#help{left:24px;bottom:24px;width:330px}
+.card h3{font-size:12px;margin:0 0 10px;text-transform:uppercase;letter-spacing:1.3px}
+.legendrow{display:flex;align-items:center;gap:9px;margin:7px 0;font-size:12px}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block}
+.lineSample{width:24px;height:0;border-top:1px solid #65717a;display:inline-block}
+.dashSample{width:24px;height:0;border-top:2px dashed #a97d22;display:inline-block}
+.navrow{margin:6px 0;font-size:11px;color:#58636d}
+.bottom{position:absolute;z-index:12;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid #d8dde2;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(24,40,55,.09);backdrop-filter:blur(8px)}
+.bottom button{font-size:18px;line-height:1;padding:3px 8px;border:0;background:transparent}
+#zoomRange{width:130px}
+#panel{position:absolute;z-index:30;right:24px;top:145px;width:min(390px,calc(100vw - 48px));max-height:calc(100vh - 185px);overflow:auto;transform:translateX(calc(100% + 40px));transition:transform .2s ease;pointer-events:auto}
+#panel.open{transform:translateX(0)}
+.panelCard{background:rgba(255,255,255,.96);border:1px solid #d4dbe0;box-shadow:0 18px 50px rgba(26,44,60,.14);padding:18px}
+.close{float:right;font:22px Arial,sans-serif;color:#89939c;cursor:pointer}
+.tag{display:inline-block;font:10px Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;padding:4px 7px;border-radius:999px;background:#edf3f7;color:#506271}
+#panel h2{font-size:20px;line-height:1.2;margin:10px 28px 7px 0}
+.meta{font-size:12px;color:#6b7580;margin-bottom:12px}
+.section{margin:14px 0}.section h4{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#5d6871;margin:0 0 6px}
+.item{border:1px solid #e0e4e7;border-left:3px solid var(--gold);padding:7px 8px;margin:5px 0;background:#fbfcfd;font-size:12px;line-height:1.35}
+.panelAction{display:inline-block;margin-top:8px;padding:8px 10px;border:1px solid #9cb0c0;color:#234f76;text-decoration:none;font-size:12px}
+#error{display:none;position:absolute;z-index:40;left:50%;top:50%;transform:translate(-50%,-50%);width:min(700px,90vw);padding:20px;background:white;border:1px solid #c9d0d6;box-shadow:0 20px 60px rgba(0,0,0,.15)}
+#error h2{margin:0 0 10px}.errorText{white-space:pre-wrap;font:12px/1.5 Consolas,monospace;color:#7a2e2e}
+@media(max-width:900px){header{left:12px}.toolbar{left:12px;right:12px;top:74px}.toolbar input{width:210px}#help{display:none}#legend{right:12px;bottom:70px}.bottom{bottom:7px}#panel{right:10px;top:135px}}
 </style>
 </head>
-
 <body>
-
 <div id="app">
-
-<canvas id="graph"></canvas>
-
+<canvas id="graph" aria-label="Cartographie des compétences"></canvas>
 <header>
   <h1>Cartographie des compétences</h1>
-  <div class="subtitle" id="subtitle">
-    Chargement de la programmation…
-  </div>
+  <div class="subtitle" id="subtitle">Chargement des données pédagogiques…</div>
 </header>
 
 <div class="toolbar">
-
-  <div class="group">
-    <span class="label">Niveaux</span>
-    <div id="levels"></div>
-  </div>
-
-  <div class="group">
-    <span class="label">Domaines</span>
-    <div id="domains"></div>
-  </div>
-
-  <input
-    id="search"
-    autocomplete="off"
-    placeholder="Rechercher compétence, séquence, séance…"
-  >
-
+  <div class="group"><span class="label">Niveaux</span><span id="levels"></span></div>
+  <div class="group"><span class="label">Domaines</span><span id="domains"></span></div>
+  <input id="search" autocomplete="off" placeholder="Rechercher compétence, séquence, séance…">
   <button id="reset">Réinitialiser</button>
-
   <span id="status">Chargement…</span>
-
 </div>
 
-<div id="legend" class="side">
-
-  <div class="legend-title">Légende</div>
-
-  <div class="legendrow">
-    <span class="dot" style="background:var(--competence)"></span>
-    Compétence
-  </div>
-
-  <div class="legendrow">
-    <span class="dot" style="background:var(--sequence)"></span>
-    Séquence
-  </div>
-
-  <div class="legendrow">
-    <span class="dot" style="background:var(--seance)"></span>
-    Séance
-  </div>
-
-  <div class="legendrow">
-    <span class="line dashed"></span>
-    Prérequis
-  </div>
-
-  <div class="legendrow">
-    <span class="line"></span>
-    Compétence → séquence
-  </div>
-
-  <div class="legendrow">
-    <span class="line small"></span>
-    Séquence → séance
-  </div>
-
+<div class="side card" id="legend">
+  <h3>Légende</h3>
+  <div class="legendrow"><span class="dot" style="background:#2f8f68"></span>Compétence</div>
+  <div class="legendrow"><span class="dot" style="background:#d79224"></span>Séquence</div>
+  <div class="legendrow"><span class="dot" style="background:#4d91b7"></span>Séance</div>
+  <div class="legendrow"><span class="dashSample"></span>Prérequis déclaré</div>
+  <div class="legendrow"><span class="lineSample"></span>Compétence → séquence</div>
+  <div class="legendrow"><span class="lineSample" style="opacity:.55"></span>Séquence → séance</div>
 </div>
 
-<div id="help" class="side">
-  Clic gauche : tourner · Clic droit maintenu : naviguer · Molette : zoomer · Cliquer : ouvrir une fiche
+<div class="side card" id="help">
+  <h3>Navigation</h3>
+  <div class="navrow">Clic gauche maintenu : tourner les sphères</div>
+  <div class="navrow">Clic droit maintenu : déplacer horizontalement et verticalement</div>
+  <div class="navrow">Molette : zoomer / dézoomer</div>
+  <div class="navrow">Clic : ouvrir une fiche</div>
 </div>
 
 <div class="bottom">
-  <button id="home">⌂</button>
-  <button id="minus">−</button>
-  <input id="zoomRange" type="range" min=".3" max="3" step=".01" value="1">
-  <button id="plus">+</button>
+  <button id="home" title="Recentrer">⌂</button>
+  <button id="minus" title="Zoom arrière">−</button>
+  <input id="zoomRange" type="range" min="0.42" max="2.4" step="0.01" value="1" aria-label="Zoom">
+  <button id="plus" title="Zoom avant">+</button>
+  <button id="fullscreen" title="Plein écran">⛶</button>
 </div>
 
-<aside id="panel">
-  <span class="close" id="close">✕</span>
-  <div id="panelContent"></div>
-</aside>
-
-<div id="error">
-  <h2>Impossible de construire la cartographie</h2>
-  <pre id="errorText"></pre>
-</div>
-
+<aside id="panel"><div class="panelCard"><span class="close" id="close">×</span><div id="panelContent"></div></div></aside>
+<div id="error"><h2>Impossible de charger la cartographie</h2><div class="errorText" id="errorText"></div></div>
 </div>
 
 <script>
 "use strict";
 
-/*
-============================================================
-SYNAPSES — CARTOGRAPHIE 3D
-============================================================
+/* =========================================================
+   CARTOGRAPHIE SYNAPSES
+   - Les données sont lues depuis index.json et competences.json.
+   - Aucun lien de prérequis n'est inventé.
+   - Aucun rattachement compétence → séquence n'est deviné :
+     il faut un competence_id exact dans la séquence.
+   - Les niveaux CP, CE1, CE2, CM1, CM2 et 6e sont des sphères
+     en volume qui contiennent leurs nœuds.
+   ========================================================= */
 
-ARCHITECTURE
-
-index.json
-    niveau
-      discipline
-        domaine
-          séquence
-            séance
-
-=> SOURCE DE VÉRITÉ POUR LA LOCALISATION.
-
-competences.json
-    compétence
-      niveau
-      domaine
-      prerequis_competences
-
-=> SOURCE DE VÉRITÉ POUR LES RELATIONS PÉDAGOGIQUES.
-
-IMPORTANT
-
-La cartographie NE LIT PAS :
-
-    index-pedagogie.json
-    references/
-    documents de référence pédagogique
-
-Ces fichiers servent à l'analyse et à la production
-des données, pas à la représentation.
-
-AUCUN niveau scolaire n'est codé en dur.
-
-Chaque entrée de :
-
-    index.json → niveaux[]
-
-produit automatiquement une sphère 3D.
-
-============================================================
-*/
-
-const ROOT = "./Programmation/";
+const LEVEL_ORDER = ["CP","CE1","CE2","CM1","CM2","6e"];
+const TYPE = {
+  competence:{color:"#2f8f68",radius:15},
+  sequence:{color:"#d79224",radius:17},
+  seance:{color:"#4d91b7",radius:12}
+};
 
 const $ = id => document.getElementById(id);
+const esc = v => String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
+const norm = v => String(v ?? "").trim().toLowerCase();
+const levelRank = n => { const i=LEVEL_ORDER.indexOf(n); return i<0?999:i; };
 
 const state = {
-
-  index:null,
-
-  competences:[],
-  sequences:[],
-  seances:[],
-
-  /*
-    Les sphères sont indépendantes des filtres.
-    Elles représentent toujours les niveaux scolaires.
-  */
-  spheres:{},
-
-  nodes:[],
-  links:[],
-
-  selected:null,
-  hover:null,
-
-  activeLevels:new Set(),
-  activeDomains:new Set(),
-
-  search:"",
-
-  yaw:.25,
-  pitch:-.15,
-  zoom:1,
-
-  panX:0,
-  panY:0,
-
-  drag:false,
-  panning:false,
-  dragButton:0,
-  lastX:0,
-  lastY:0
-
+  index:null, compData:{competences:[],domaines:[]},
+  sequences:[], seances:[], nodes:[], links:[],
+  levels:new Set(LEVEL_ORDER), domains:new Set(),
+  search:"", selected:null, hover:null,
+  yaw:0.28, pitch:-0.12, zoom:1,
+  panX:0, panY:0,
+  dragging:false, panning:false, moved:false, lastX:0, lastY:0,
+  sphereR:185, sphereSpacing:470,
+  projected:[]
 };
 
-
-/* =========================================================
-   OUTILS
-========================================================= */
-
-function esc(v){
-
-  return String(v ?? "")
-    .replace(/[&<>"']/g,m=>({
-
-      "&":"&amp;",
-      "<":"&lt;",
-      ">":"&gt;",
-      '"':"&quot;",
-      "'":"&#39;"
-
-    }[m]));
-
+/* ---------- Chargement robuste des chemins ---------- */
+async function getJSON(path){
+  const r = await fetch(path,{cache:"no-store"});
+  if(!r.ok) throw new Error(`${path} → HTTP ${r.status}`);
+  return r.json();
 }
-
-
-function niveauLabel(v){
-
-  return String(v ?? "").trim();
-
-}
-
-
-function normalizePath(p){
-
-  return String(p || "")
-    .replace(/^\.?\//,"");
-
-}
-
-
-function dataUrl(relative){
-
-  return ROOT + normalizePath(relative);
-
-}
-
-
-async function getJSON(url){
-
-  const r = await fetch(url,{cache:"no-cache"});
-
-  if(!r.ok){
-
-    throw new Error(
-      `HTTP ${r.status} — ${url}`
-    );
-
+async function firstJSON(paths){
+  let last;
+  for(const p of paths){
+    try { return {data:await getJSON(p), path:p}; }
+    catch(e){ last=e; }
   }
-
-  return await r.json();
-
+  throw last || new Error("Aucun chemin de données valide.");
 }
-
-
-function setStatus(t){
-
-  $("status").textContent = t;
-
+function joinFromIndex(path){
+  return new URL(path, new URL(state.indexPath, location.href)).href;
 }
-
-
-function showError(e){
-
-  console.error(e);
-
-  $("error").style.display="block";
-
-  $("errorText").textContent =
-    e?.stack || String(e);
-
-  setStatus("Erreur de chargement");
-
+function indexCandidates(){
+  const here = location.pathname;
+  const inProgrammation = /\/Programmation\/?[^/]*$/i.test(here);
+  return inProgrammation
+    ? ["data/index.json","../Programmation/data/index.json","Programmation/data/index.json"]
+    : ["Programmation/data/index.json","data/index.json","../Programmation/data/index.json"];
 }
-
-
-/* =========================================================
-   COMPÉTENCES
-========================================================= */
-
-function competenceById(id){
-
-  return state.competences.find(
-    c => String(c.id) === String(id)
-  );
-
+function normalizeSequence(raw, fallback){
+  if(Array.isArray(raw?.sequences)) raw = raw.sequences[0];
+  if(Array.isArray(raw)) raw = raw[0];
+  return raw && typeof raw==="object" ? {...fallback,...raw} : fallback;
 }
-
-
-function resolveCompetenceId(id){
-
-  if(!id) return null;
-
-  return competenceById(id)
-    ? id
-    : null;
-
+function extractExactCompetenceId(seq){
+  // Uniquement un identifiant explicitement déclaré et présent dans le référentiel.
+  const id = seq?.competence_id;
+  return state.compData.competences.some(c=>c.id===id) ? id : null;
 }
-
-
-/* =========================================================
-   INDEX
-========================================================= */
-
 function flattenIndex(index){
-
-  const seqs=[];
-  const seas=[];
-
-  for(const niveau of index.niveaux || []){
-
-    for(const discipline of niveau.disciplines || []){
-
-      for(const domaine of discipline.domaines || []){
-
-        for(const sequence of domaine.sequences || []){
-
-          const s={
-
-            ...sequence,
-
-            niveau:String(niveau.id),
-            niveau_nom:niveau.nom || niveau.id,
-
-            discipline_id:discipline.id,
-            discipline:discipline.nom,
-
-            domaine_id:domaine.id,
-            domaine:domaine.nom,
-
-            _indexPath:
-              sequence.fichier_sequence ||
-              sequence.fichier ||
-              null
-
-          };
-
-          seqs.push(s);
-
-          for(const seance of sequence.seances || []){
-
-            seas.push({
-
-              ...seance,
-
-              niveau:String(niveau.id),
-
-              discipline_id:discipline.id,
-              discipline:discipline.nom,
-
-              domaine_id:domaine.id,
-              domaine:domaine.nom,
-
-              sequence_id:sequence.id,
-              sequence_titre:sequence.titre,
-
-              _indexPath:
-                seance.fichier ||
-                null
-
-            });
-
-          }
-
+  const out=[];
+  for(const niveau of index?.niveaux||[]){
+    for(const discipline of niveau?.disciplines||[]){
+      for(const domaine of discipline?.domaines||[]){
+        for(const seq of domaine?.sequences||[]){
+          out.push({
+            ...seq,
+            niveau:niveau.id, niveau_nom:niveau.nom||niveau.id,
+            discipline_id:discipline.id, discipline:discipline.nom||discipline.id,
+            domaine_id:domaine.id, domaine:domaine.nom||domaine.id
+          });
         }
-
       }
-
     }
-
   }
-
-  return {seqs,seas};
-
+  return out;
 }
-
-
-/* =========================================================
-   CHARGEMENT DES FICHIERS INDIVIDUELS
-========================================================= */
-
-async function enrichSequences(seqs){
-
-  let count=0;
-
-  await Promise.all(
-
-    seqs.map(async s=>{
-
-      if(s._indexPath){
-
-        try{
-
-          const raw=
-            await getJSON(
-              dataUrl(s._indexPath)
-            );
-
-          const obj=
-            Array.isArray(raw?.sequences)
-              ? raw.sequences[0]
-              : raw;
-
-          if(
-            obj &&
-            typeof obj==="object"
-          ){
-
-            /*
-              IMPORTANT :
-              Le niveau provenant de index.json
-              reste prioritaire.
-            */
-
-            const niveau=s.niveau;
-
-            Object.assign(s,obj);
-
-            s.niveau=niveau;
-
-          }
-
-        }catch(e){
-
-          console.warn(
-            "Séquence non chargée",
-            s.id,
-            e
-          );
-
-        }
-
-      }
-
-      count++;
-
-      setStatus(
-        `Lecture des séquences… ${count}/${seqs.length}`
-      );
-
-    })
-
-  );
-
-}
-
-
-async function enrichSessions(seas){
-
-  await Promise.all(
-
-    seas.map(async s=>{
-
-      if(!s._indexPath)return;
-
-      try{
-
-        const raw=
-          await getJSON(
-            dataUrl(s._indexPath)
-          );
-
-        if(
-          raw &&
-          typeof raw==="object"
-        ){
-
-          const niveau=s.niveau;
-          const sequenceId=s.sequence_id;
-
-          Object.assign(s,raw);
-
-          /*
-            index.json reste maître
-            de la localisation.
-          */
-
-          s.niveau=niveau;
-          s.sequence_id=sequenceId;
-
-        }
-
-      }catch(e){
-
-        console.warn(
-          "Séance non chargée",
-          s.id,
-          e
-        );
-
-      }
-
-    })
-
-  );
-
-}
-
-
-/* =========================================================
-   CHARGEMENT GLOBAL
-========================================================= */
-
-async function load(){
-
+async function loadData(){
   try{
+    $("status").textContent="Chargement de index.json…";
+    const idx = await firstJSON(indexCandidates());
+    state.index=idx.data;
+    state.indexPath=idx.path;
 
-    setStatus("Lecture de index.json…");
+    const compPath = state.index?.meta?.competences || "data/competences.json";
+    $("status").textContent="Chargement de competences.json…";
+    const compURL = joinFromIndex(compPath);
+    state.compData = await getJSON(compURL);
+    state.compData.competences ||= [];
+    state.compData.domaines ||= [];
 
-    state.index=
-      await getJSON(
-        ROOT+"data/index.json"
-      );
+    state.domains = new Set(state.compData.domaines.map(d=>d.id).filter(Boolean));
 
+    const indexed = flattenIndex(state.index);
+    $("status").textContent=`Lecture de ${indexed.length} séquence(s)…`;
 
-    const compPath=
-      state.index?.meta?.competences ||
-      "data/competences.json";
+    const loaded = await Promise.all(indexed.map(async base=>{
+      let seq={...base};
+      if(base.fichier_sequence){
+        try { seq = normalizeSequence(await getJSON(joinFromIndex(base.fichier_sequence)), base); }
+        catch(e){ console.warn("Séquence non chargée :",base.fichier_sequence,e); }
+      }
+      return seq;
+    }));
+    state.sequences=loaded;
 
+    state.seances=[];
+    for(const seq of state.sequences){
+      for(const seance of seq.seances||[]){
+        state.seances.push({
+          ...seance,
+          niveau:seq.niveau,
+          discipline:seq.discipline,
+          domaine_id:seq.domaine_id,
+          domaine:seq.domaine,
+          sequence_id:seq.id
+        });
+      }
+    }
 
-    setStatus(
-      "Lecture de competences.json…"
-    );
-
-    const raw=
-      await getJSON(
-        dataUrl(compPath)
-      );
-
-
-    state.competences=
-      Array.isArray(raw)
-        ? raw
-        : (
-          raw.competences ||
-          []
-        );
-
-
-    const flat=
-      flattenIndex(state.index);
-
-
-    state.sequences=flat.seqs;
-    state.seances=flat.seas;
-
-
-    await enrichSequences(
-      state.sequences
-    );
-
-    await enrichSessions(
-      state.seances
-    );
-
-
-    /*
-      Les sphères sont construites directement
-      depuis index.json.
-    */
-
-    buildSpheres();
-
-    buildNodes();
-
+    buildGraph();
     renderFilters();
-
-    updateSubtitle();
-
-    setStatus(
-      `${state.spheresCount || Object.keys(state.spheres).length} sphères · `+
-      `${state.nodes.length} nœuds · `+
-      `${state.links.length} relations`
-    );
-
-  }catch(e){
-
-    showError(e);
-
+    resetView();
+    update();
+  }catch(err){
+    console.error(err);
+    $("errorText").textContent =
+      `${err.message}\n\nPlace ce fichier dans le dépôt Synapses et ouvre-le via GitHub Pages ou un serveur local.\nChemins essayés :\n${indexCandidates().join("\n")}`;
+    $("error").style.display="block";
+    $("status").textContent="Erreur de chargement";
   }
-
 }
 
-
-/* =========================================================
-   SPHÈRES DE NIVEAU
-========================================================= */
-
-/*
-  Grands domaines scolaires attendus (CP → 6e).
-
-  Ces six sphères sont TOUJOURS affichées, même
-  si index.json ne contient encore que certains
-  niveaux : cela permet de voir la structure
-  d'ensemble de la scolarité pendant que les
-  données sont complétées progressivement.
-
-  Aucune compétence / séquence / séance n'est
-  inventée pour autant : les sphères sans données
-  restent simplement vides.
-*/
-
-const NIVEAUX_CANONIQUES=[
-  "CP","CE1","CE2","CM1","CM2","6E"
-];
-
-function niveauLabelCanonique(key){
-
-  return key==="6E" ? "6e" : key;
-
+/* ---------- Construction : aucun lien inventé ---------- */
+function fibonacciPoint(i,n,r){
+  const golden=Math.PI*(3-Math.sqrt(5));
+  const y=1-(i/(Math.max(1,n-1)))*2;
+  const rr=Math.sqrt(Math.max(0,1-y*y));
+  const a=golden*i;
+  return {x:Math.cos(a)*rr*r,y:y*r,z:Math.sin(a)*rr*r};
 }
-
-
-function buildSpheres(){
-
-  state.spheres={};
-
-  const levelsData=
-    state.index?.niveaux || [];
-
-  /*
-    Correspondance insensible à la casse
-    entre les niveaux réellement présents
-    dans index.json et les six grands
-    domaines attendus.
-  */
-
-  const byKey=new Map();
-
-  for(const level of levelsData){
-
-    byKey.set(
-      String(level.id).toUpperCase(),
-      level
-    );
-
-  }
-
-  const extra=
-    levelsData
-      .map(l=>String(l.id).toUpperCase())
-      .filter(k=>!NIVEAUX_CANONIQUES.includes(k));
-
-  const order=
-    NIVEAUX_CANONIQUES.concat(extra);
-
-  const count=
-    Math.max(1,order.length);
-
-  /*
-    Les sphères sont disposées autour du centre.
-
-    Elles sont suffisamment éloignées pour ne pas
-    fusionner visuellement.
-
-    Leur rayon dépend du nombre de niveaux.
-  */
-
-  const separation=
-    Math.max(
-      500,
-      Math.min(
-        900,
-        1150 / Math.sqrt(count)
-      )
-    );
-
-  const radius=
-    Math.max(
-      220,
-      Math.min(
-        360,
-        separation*.52
-      )
-    );
-
-
-  order.forEach((key,i)=>{
-
-    const level=
-      byKey.get(key);
-
-    const id=
-      level
-        ? String(level.id)
-        : key;
-
-    const angle=
-      -Math.PI/2 +
-      (i/count)*Math.PI*2;
-
-
-    state.spheres[id]={
-
-      id,
-
-      label:
-        level
-          ? (level.nom || niveauLabel(level.id))
-          : niveauLabelCanonique(key),
-
-      empty:!level,
-
-      x:
-        Math.cos(angle)*
-        separation,
-
-      y:0,
-
-      z:
-        Math.sin(angle)*
-        separation,
-
-      radius
-
-    };
-
-  });
-
-  state.spheresCount=
-    Object.keys(state.spheres).length;
-
+function sphereCenter(level){
+  const i=LEVEL_ORDER.indexOf(level);
+  const count=LEVEL_ORDER.length;
+  const cols=3, row=Math.floor(i/cols), col=i%cols;
+  return {
+    x:(col-(cols-1)/2)*state.sphereSpacing,
+    y:(row-.5)*state.sphereSpacing*.82,
+    z:(i%2===0?70:-70)
+  };
 }
+function buildGraph(){
+  state.nodes=[]; state.links=[];
+  const comps=state.compData.competences;
 
-
-/* =========================================================
-   CONSTRUCTION DES NŒUDS
-========================================================= */
-
-function buildNodes(){
-
-  state.nodes=[];
-  state.links=[];
-
-
-  /*
-  ----------------------------------------------------------
-  COMPÉTENCES
-  ----------------------------------------------------------
-  */
-
-  for(const c of state.competences){
-
-    const niveau=
-      String(c.niveau || "");
-
-    /*
-      Une compétence sans niveau explicite
-      n'est pas placée artificiellement dans une
-      autre sphère.
-    */
-
-    if(!state.spheres[niveau]){
-      continue;
-    }
-
-
-    const node={
-
-      id:"c:"+c.id,
-
-      type:"competence",
-
-      ref:c.id,
-
-      label:
-        c.intitule ||
-        c.nom ||
-        c.id,
-
-      niveau,
-
-      domaine_id:c.domaine_id,
-
-      domaine:c.domaine,
-
-      color:
-        c.couleur ||
-        "var(--competence)"
-
-    };
-
-
-    state.nodes.push(node);
-
-
-    /*
-      PRÉREQUIS
-    */
-
-    for(
-      const prerequis
-      of c.prerequis_competences || []
-    ){
-
-      const pid=
-        resolveCompetenceId(
-          prerequis
-        );
-
-      if(!pid)continue;
-
-
-      state.links.push({
-
-        source:"c:"+pid,
-
-        target:"c:"+c.id,
-
-        type:"prerequis"
-
+  for(const level of LEVEL_ORDER){
+    const group=comps.filter(c=>c.niveau===level);
+    const center=sphereCenter(level);
+    group.forEach((c,i)=>{
+      const p=fibonacciPoint(i,group.length,state.sphereR*.76);
+      state.nodes.push({
+        id:"c:"+c.id,type:"competence",ref:c.id,label:c.intitule,
+        niveau:level,domaine_id:c.domaine_id,discipline:c.discipline,
+        x:center.x+p.x,y:center.y+p.y,z:center.z+p.z
       });
-
-    }
-
+    });
   }
 
-
-  /*
-  ----------------------------------------------------------
-  SÉQUENCES
-  ----------------------------------------------------------
-  */
+  // Séquences : placées près de leur compétence seulement si competence_id exact existe.
+  // Sinon elles restent dans la sphère de leur niveau, sans faux lien.
+  const seqGroups=new Map();
+  for(const s of state.sequences){
+    const level=s.niveau;
+    if(!seqGroups.has(level)) seqGroups.set(level,[]);
+    seqGroups.get(level).push(s);
+  }
+  for(const [level,group] of seqGroups){
+    const center=sphereCenter(level);
+    group.forEach((s,i)=>{
+      const linked=extractExactCompetenceId(s);
+      let pos;
+      const target=linked && state.nodes.find(n=>n.id==="c:"+linked);
+      if(target){
+        pos={x:target.x+35+(i%3)*14,y:target.y+30,z:target.z+18};
+      }else{
+        const p=fibonacciPoint(i,Math.max(1,group.length),state.sphereR*.9);
+        pos={x:center.x+p.x,y:center.y+p.y,z:center.z+p.z};
+      }
+      state.nodes.push({
+        id:"s:"+s.id,type:"sequence",ref:s.id,label:s.titre||s.id,
+        niveau:level,domaine_id:s.domaine_id,discipline:s.discipline,
+        x:pos.x,y:pos.y,z:pos.z,competence_id:linked
+      });
+      if(linked) state.links.push({source:"c:"+linked,target:"s:"+s.id,type:"sequence"});
+    });
+  }
 
   for(const s of state.sequences){
-
-    /*
-      CRITIQUE :
-      le niveau vient de index.json.
-
-      Il ne dépend PAS de competence_id.
-    */
-
-    const niveau=
-      String(s.niveau || "");
-
-
-    const sphere=
-      state.spheres[niveau];
-
-
-    if(!sphere){
-
-      console.warn(
-        "Séquence sans sphère de niveau :",
-        s.id,
-        niveau
-      );
-
-      continue;
-
-    }
-
-
-    const sid=
-      "s:"+s.id;
-
-
-    const compId=
-      resolveCompetenceId(
-        s.competence_id
-      );
-
-
-    state.nodes.push({
-
-      id:sid,
-
-      type:"sequence",
-
-      ref:s.id,
-
-      label:
-        s.titre ||
-        s.id,
-
-      titre:s.titre,
-
-      niveau,
-
-      classe:niveau,
-
-      domaine_id:s.domaine_id,
-
-      domaine:s.domaine,
-
-      discipline:s.discipline,
-
-      competenceId:compId,
-
-      color:"#c28b35"
-
-    });
-
-
-    /*
-      COMPÉTENCE → SÉQUENCE
-    */
-
-    if(compId){
-
-      state.links.push({
-
-        source:"c:"+compId,
-
-        target:sid,
-
-        type:"sequence"
-
+    const seqNode=state.nodes.find(n=>n.id==="s:"+s.id);
+    if(!seqNode) continue;
+    const seances=(s.seances||[]);
+    seances.forEach((se,i)=>{
+      const a=(i/Math.max(1,seances.length))*Math.PI*2;
+      const rr=45+(i%2)*10;
+      const id=se.id;
+      state.nodes.push({
+        id:"x:"+id,type:"seance",ref:id,label:se.titre||id,
+        niveau:s.niveau,domaine_id:s.domaine_id,discipline:s.discipline,
+        x:seqNode.x+Math.cos(a)*rr,y:seqNode.y+Math.sin(a)*rr,z:seqNode.z+20+(i%3)*7,
+        sequence_id:s.id
       });
-
-    }
-
-  }
-
-
-  /*
-  ----------------------------------------------------------
-  SÉANCES
-  ----------------------------------------------------------
-  */
-
-  for(const s of state.seances){
-
-    const niveau=
-      String(s.niveau || "");
-
-
-    if(!state.spheres[niveau]){
-      continue;
-    }
-
-
-    const aid=
-      "a:"+s.id;
-
-
-    state.nodes.push({
-
-      id:aid,
-
-      type:"seance",
-
-      ref:s.id,
-
-      label:
-        s.titre ||
-        s.id,
-
-      titre:s.titre,
-
-      numero:s.numero,
-
-      niveau,
-
-      domaine_id:s.domaine_id,
-
-      domaine:s.domaine,
-
-      discipline:s.discipline,
-
-      sequenceId:s.sequence_id,
-
-      color:"#4c91bd"
-
+      state.links.push({source:"s:"+s.id,target:"x:"+id,type:"seance"});
     });
-
-
-    /*
-      SÉQUENCE → SÉANCE
-    */
-
-    if(s.sequence_id){
-
-      state.links.push({
-
-        source:
-          "s:"+s.sequence_id,
-
-        target:aid,
-
-        type:"seance"
-
-      });
-
-    }
-
   }
 
-
-  /*
-  ----------------------------------------------------------
-  PLACEMENT SPATIAL
-  ----------------------------------------------------------
-  */
-
-  placeNodes();
-
-}
-
-
-/* =========================================================
-   PLACEMENT DANS LES SPHÈRES
-========================================================= */
-
-function placeNodes(){
-
-  const sphereNodes={};
-
-
-  /*
-    Regrouper les nœuds par niveau.
-  */
-
-  for(const n of state.nodes){
-
-    if(!sphereNodes[n.niveau]){
-      sphereNodes[n.niveau]=[];
-    }
-
-    sphereNodes[n.niveau].push(n);
-
-  }
-
-
-  /*
-    COMPÉTENCES
-    proches du cœur de leur sphère.
-  */
-
-  for(const niveau of Object.keys(sphereNodes)){
-
-    const sphere=
-      state.spheres[niveau];
-
-    const comps=
-      sphereNodes[niveau]
-        .filter(n=>n.type==="competence");
-
-
-    comps.forEach((n,i)=>{
-
-      const angle=
-        (i/Math.max(1,comps.length))*
-        Math.PI*2;
-
-
-      const r=
-        sphere.radius*.32;
-
-
-      n.x=
-        sphere.x+
-        Math.cos(angle)*r;
-
-      n.y=
-        sphere.y+
-        Math.sin(angle)*r*.65;
-
-      n.z=
-        sphere.z+
-        Math.sin(angle*.7)*r;
-
-    });
-
-  }
-
-
-  /*
-    SÉQUENCES
-    autour de leur compétence.
-
-    S'il n'y a pas de compétence :
-    elles sont quand même placées dans
-    la sphère de leur niveau.
-  */
-
-  const sequences=
-    state.nodes.filter(
-      n=>n.type==="sequence"
-    );
-
-
-  sequences.forEach(n=>{
-
-    const sphere=
-      state.spheres[n.niveau];
-
-
-    const comp=
-      n.competenceId
-        ? state.nodes.find(
-            x=>
-              x.type==="competence" &&
-              x.ref===n.competenceId
-          )
-        : null;
-
-
-    const related=
-      sequences.filter(
-        x=>
-          x.niveau===n.niveau &&
-          x.competenceId===
-            n.competenceId
-      );
-
-
-    const i=
-      Math.max(
-        0,
-        related.indexOf(n)
-      );
-
-
-    const angle=
-      (i/Math.max(1,related.length))*
-      Math.PI*2;
-
-
-    const r=
-      comp
-        ? 105
-        : sphere.radius*.52;
-
-
-    const cx=
-      comp
-        ? comp.x
-        : sphere.x;
-
-
-    const cy=
-      comp
-        ? comp.y
-        : sphere.y;
-
-
-    const cz=
-      comp
-        ? comp.z
-        : sphere.z;
-
-
-    n.x=
-      cx+
-      Math.cos(angle)*r;
-
-    n.y=
-      cy+
-      Math.sin(angle)*r*.65;
-
-    n.z=
-      cz+
-      Math.cos(angle*.7)*r*.45;
-
-  });
-
-
-  /*
-    SÉANCES
-    autour de leur séquence.
-  */
-
-  const sessions=
-    state.nodes.filter(
-      n=>n.type==="seance"
-    );
-
-
-  sessions.forEach(n=>{
-
-    const sequence=
-      state.nodes.find(
-        x=>
-          x.type==="sequence" &&
-          x.ref===n.sequenceId
-      );
-
-
-    if(!sequence){
-
-      const sphere=
-        state.spheres[n.niveau];
-
-      n.x=sphere.x;
-      n.y=sphere.y;
-      n.z=sphere.z;
-
-      return;
-
-    }
-
-
-    const related=
-      sessions.filter(
-        x=>
-          x.sequenceId===
-          n.sequenceId
-      );
-
-
-    const i=
-      Math.max(
-        0,
-        related.indexOf(n)
-      );
-
-
-    const angle=
-      (i/Math.max(1,related.length))*
-      Math.PI*2;
-
-
-    const r=48;
-
-
-    n.x=
-      sequence.x+
-      Math.cos(angle)*r;
-
-    n.y=
-      sequence.y+
-      Math.sin(angle)*r*.75;
-
-    n.z=
-      sequence.z+
-      Math.cos(angle)*r*.6;
-
-  });
-
-}
-
-
-/* =========================================================
-   VISIBILITÉ
-========================================================= */
-
-function nodeVisible(n){
-
-  if(
-    n.niveau &&
-    !state.activeLevels.has(n.niveau)
-  ){
-
-    return false;
-
-  }
-
-
-  if(
-    n.domaine_id &&
-    !state.activeDomains.has(n.domaine_id)
-  ){
-
-    return false;
-
-  }
-
-
-  if(!state.search){
-    return true;
-  }
-
-
-  const q=
-    state.search.toLowerCase();
-
-
-  return [
-
-    n.id,
-    n.label,
-    n.titre,
-    n.type,
-    n.niveau,
-    n.domaine,
-    n.discipline
-
-  ]
-  .join(" ")
-  .toLowerCase()
-  .includes(q);
-
-}
-
-
-function visibleNodes(){
-
-  return state.nodes.filter(
-    nodeVisible
-  );
-
-}
-
-
-function visibleLinks(){
-
-  const ids=
-    new Set(
-      visibleNodes()
-        .map(n=>n.id)
-    );
-
-
-  return state.links.filter(
-    l=>
-      ids.has(l.source) &&
-      ids.has(l.target)
-  );
-
-}
-
-
-/* =========================================================
-   PROJECTION 3D
-========================================================= */
-
-function rotate(p){
-
-  const cy=
-    Math.cos(state.yaw);
-
-  const sy=
-    Math.sin(state.yaw);
-
-  const cp=
-    Math.cos(state.pitch);
-
-  const sp=
-    Math.sin(state.pitch);
-
-
-  const x=
-    p.x*cy -
-    p.z*sy;
-
-
-  const z=
-    p.x*sy +
-    p.z*cy;
-
-
-  const y=
-    p.y*cp -
-    z*sp;
-
-
-  const zz=
-    p.y*sp +
-    z*cp;
-
-
-  return {
-    x,
-    y,
-    z:zz
-  };
-
-}
-
-
-function project(p){
-
-  const r=
-    rotate(p);
-
-
-  const d=1000;
-
-
-  const scale=
-    d/(d+r.z)*
-    state.zoom;
-
-
-  return {
-
-    x:
-      innerWidth/2+
-      r.x*scale+
-      state.panX,
-
-    y:
-      innerHeight/2+
-      r.y*scale+
-      state.panY,
-
-    z:r.z,
-
-    scale
-
-  };
-
-}
-
-
-/* =========================================================
-   SPHÈRES
-========================================================= */
-
-function drawSphere(ctx,sphere){
-
-  const center=
-    project(sphere);
-
-
-  /*
-    Pour représenter réellement une sphère
-    en projection 3D, on dessine plusieurs
-    méridiens et parallèles.
-
-    Ce ne sont PAS des images de fond :
-    leur centre et leur rayon sont ceux
-    utilisés pour positionner les données.
-  */
-
-  const radius=
-    sphere.radius;
-
-
-  const segments=32;
-
-
-  ctx.save();
-
-  ctx.strokeStyle=
-    sphere.empty
-      ? "rgba(90,105,100,.14)"
-      : "rgba(90,105,100,.28)";
-
-  ctx.lineWidth=1;
-
-  if(sphere.empty){
-    ctx.setLineDash([3,4]);
-  }
-
-
-  /*
-    Méridiens.
-  */
-
-  for(let i=0;i<10;i++){
-
-    const a=
-      (i/10)*Math.PI;
-
-
-    ctx.beginPath();
-
-
-    for(let j=0;j<=segments;j++){
-
-      const t=
-        (j/segments)*
-        Math.PI*2;
-
-
-      const x=
-        Math.cos(t)*
-        Math.sin(a)*
-        radius;
-
-
-      const y=
-        Math.sin(t)*
-        Math.sin(a)*
-        radius*.82;
-
-
-      const z=
-        Math.cos(a)*
-        radius;
-
-
-      const p=
-        project({
-
-          x:sphere.x+x,
-          y:sphere.y+y,
-          z:sphere.z+z
-
-        });
-
-
-      if(j===0)
-        ctx.moveTo(p.x,p.y);
-      else
-        ctx.lineTo(p.x,p.y);
-
-    }
-
-    ctx.stroke();
-
-  }
-
-
-  /*
-    Parallèles.
-  */
-
-  for(let i=1;i<7;i++){
-
-    const lat=
-      -Math.PI/2+
-      (i/7)*Math.PI;
-
-
-    const rr=
-      Math.cos(lat)*radius;
-
-
-    const yy=
-      Math.sin(lat)*radius;
-
-
-    ctx.beginPath();
-
-
-    for(let j=0;j<=segments;j++){
-
-      const t=
-        (j/segments)*
-        Math.PI*2;
-
-
-      const p=
-        project({
-
-          x:
-            sphere.x+
-            Math.cos(t)*rr,
-
-          y:
-            sphere.y+
-            yy,
-
-          z:
-            sphere.z+
-            Math.sin(t)*rr
-
-        });
-
-
-      if(j===0)
-        ctx.moveTo(p.x,p.y);
-      else
-        ctx.lineTo(p.x,p.y);
-
-    }
-
-    ctx.stroke();
-
-  }
-
-
-  /*
-    Nom du niveau :
-    toujours visible car il appartient
-    à la sphère, pas à un nœud.
-  */
-
-  const labelPos=
-    project({
-
-      x:sphere.x,
-
-      y:
-        sphere.y-
-        sphere.radius-
-        20,
-
-      z:sphere.z
-
-    });
-
-
-  ctx.fillStyle=
-    sphere.empty
-      ? "#8a9090"
-      : "#303737";
-
-  ctx.font=
-    "bold 18px Georgia";
-
-  ctx.textAlign=
-    "center";
-
-  ctx.fillText(
-    sphere.label+
-    (sphere.empty ? " (à venir)" : ""),
-    labelPos.x,
-    labelPos.y
-  );
-
-
-  ctx.restore();
-
-}
-
-
-/* =========================================================
-   DESSIN
-========================================================= */
-
-function draw(){
-
-  const canvas=
-    $("graph");
-
-  const ctx=
-    canvas.getContext("2d");
-
-
-  canvas.width=
-    innerWidth*
-    devicePixelRatio;
-
-  canvas.height=
-    innerHeight*
-    devicePixelRatio;
-
-
-  ctx.setTransform(
-    devicePixelRatio,
-    0,
-    0,
-    devicePixelRatio,
-    0,
-    0
-  );
-
-
-  ctx.clearRect(
-    0,
-    0,
-    innerWidth,
-    innerHeight
-  );
-
-
-  /*
-    Fond blanc demandé.
-  */
-
-  ctx.fillStyle=
-    "#f7f7f4";
-
-  ctx.fillRect(
-    0,
-    0,
-    innerWidth,
-    innerHeight
-  );
-
-
-  /*
-    SPHÈRES :
-    elles sont dessinées indépendamment
-    des filtres pédagogiques.
-  */
-
-  Object.values(
-    state.spheres
-  ).forEach(
-    sphere =>
-      drawSphere(
-        ctx,
-        sphere
-      )
-  );
-
-
-  /*
-    Positions projetées.
-  */
-
-  const points=
-    new Map();
-
-
-  for(
-    const n
-    of visibleNodes()
-  ){
-
-    points.set(
-      n.id,
-      project(n)
-    );
-
-  }
-
-
-  /*
-    LIENS
-  */
-
-  for(
-    const l
-    of visibleLinks()
-  ){
-
-    const a=
-      points.get(l.source);
-
-    const b=
-      points.get(l.target);
-
-
-    if(!a || !b)continue;
-
-
-    ctx.save();
-
-
-    if(l.type==="prerequis"){
-
-      ctx.strokeStyle=
-        "rgba(155,122,60,.72)";
-
-      ctx.lineWidth=1.5;
-
-      ctx.setLineDash([5,5]);
-
-    }
-
-    else if(l.type==="sequence"){
-
-      ctx.strokeStyle=
-        "rgba(194,139,53,.65)";
-
-      ctx.lineWidth=1.1;
-
-    }
-
-    else{
-
-      ctx.strokeStyle=
-        "rgba(76,145,189,.48)";
-
-      ctx.lineWidth=.8;
-
-    }
-
-
-    ctx.beginPath();
-
-    ctx.moveTo(a.x,a.y);
-
-    ctx.lineTo(b.x,b.y);
-
-    ctx.stroke();
-
-    ctx.restore();
-
-  }
-
-
-  /*
-    NŒUDS.
-  */
-
-  const nodes=
-    visibleNodes()
-      .slice()
-      .sort(
-        (a,b)=>
-          points.get(a.id).z -
-          points.get(b.id).z
-      );
-
-
-  for(const n of nodes){
-
-    const p=
-      points.get(n.id);
-
-
-    const selected=
-      state.selected===n.id;
-
-    const hovered=
-      state.hover===n.id;
-
-
-    let base=5;
-
-
-    if(n.type==="competence")
-      base=11;
-
-    if(n.type==="sequence")
-      base=8;
-
-
-    const r=
-      base*
-      p.scale*
-      (selected?1.4:1);
-
-
-    ctx.save();
-
-
-    if(selected || hovered){
-
-      ctx.shadowBlur=16;
-
-      ctx.shadowColor=
-        n.color;
-
-    }
-
-
-    ctx.fillStyle=
-      n.type==="competence"
-        ? "#4b9b72"
-        : n.type==="sequence"
-          ? "#c28b35"
-          : "#4c91bd";
-
-
-    ctx.beginPath();
-
-    ctx.arc(
-      p.x,
-      p.y,
-      Math.max(2,r),
-      0,
-      Math.PI*2
-    );
-
-    ctx.fill();
-
-
-    ctx.strokeStyle=
-      selected
-        ? "#202525"
-        : "rgba(255,255,255,.8)";
-
-    ctx.lineWidth=
-      selected?2:1;
-
-    ctx.stroke();
-
-
-    /*
-      IMPORTANT :
-      Le nom d'un nœud n'est affiché
-      que s'il est activé/sélectionné
-      ou survolé.
-    */
-
-    if(
-      selected ||
-      hovered
-    ){
-
-      ctx.shadowBlur=0;
-
-      ctx.fillStyle=
-        "#202525";
-
-      ctx.font=
-        n.type==="competence"
-          ? "12px Georgia"
-          : "10px Georgia";
-
-      ctx.textAlign=
-        "center";
-
-      ctx.fillText(
-
-        n.label.length>42
-          ? n.label.slice(0,41)+"…"
-          : n.label,
-
-        p.x,
-
-        p.y+r+15
-
-      );
-
-    }
-
-
-    ctx.restore();
-
-  }
-
-
-  requestAnimationFrame(draw);
-
-}
-
-
-/* =========================================================
-   INTERACTION
-========================================================= */
-
-function hit(x,y){
-
-  let best=null;
-
-  let distance=Infinity;
-
-
-  for(
-    const n
-    of visibleNodes()
-  ){
-
-    const p=
-      project(n);
-
-
-    const r=
-      Math.max(
-        7,
-        (
-          n.type==="competence"
-            ? 11
-            : n.type==="sequence"
-              ? 8
-              : 5
-        )*
-        p.scale
-      );
-
-
-    const d=
-      Math.hypot(
-        x-p.x,
-        y-p.y
-      );
-
-
-    if(
-      d<r+8 &&
-      d<distance
-    ){
-
-      distance=d;
-
-      best=n;
-
-    }
-
-  }
-
-
-  return best;
-
-}
-
-
-/*
-  Clic gauche maintenu : rotation (yaw/pitch).
-  Clic droit maintenu : navigation (pan horizontal/vertical).
-  Molette : zoom.
-  Clic gauche sans déplacement : ouverture d'une fiche.
-*/
-
-$("graph").addEventListener(
-  "contextmenu",
-  e=>{
-
-    e.preventDefault();
-
-  }
-);
-
-
-$("graph").addEventListener(
-  "pointerdown",
-  e=>{
-
-    state.dragButton=e.button;
-
-    state.lastX=e.clientX;
-
-    state.lastY=e.clientY;
-
-
-    if(e.button===2){
-
-      state.panning=true;
-
-    }
-    else if(e.button===0){
-
-      state.drag=true;
-
-    }
-    else{
-
-      return;
-
-    }
-
-
-    $("graph")
-      .classList
-      .add("dragging");
-
-  }
-);
-
-
-window.addEventListener(
-  "pointerup",
-  e=>{
-
-    const wasDrag=
-      state.drag;
-
-    const wasPanning=
-      state.panning;
-
-
-    if(!wasDrag && !wasPanning)return;
-
-
-    const dx=
-      Math.abs(
-        e.clientX-state.lastX
-      );
-
-    const dy=
-      Math.abs(
-        e.clientY-state.lastY
-      );
-
-
-    state.drag=false;
-
-    state.panning=false;
-
-    $("graph")
-      .classList
-      .remove("dragging");
-
-
-    if(
-      wasDrag &&
-      !wasPanning &&
-      dx<4 &&
-      dy<4
-    ){
-
-      const n=
-        hit(
-          e.clientX,
-          e.clientY
-        );
-
-
-      if(n)
-        openNode(n);
-
-    }
-
-  }
-);
-
-
-window.addEventListener(
-  "pointermove",
-  e=>{
-
-    if(state.panning){
-
-      state.panX +=
-        e.clientX-state.lastX;
-
-      state.panY +=
-        e.clientY-state.lastY;
-
-
-      state.lastX=
-        e.clientX;
-
-      state.lastY=
-        e.clientY;
-
-    }
-    else if(state.drag){
-
-      state.yaw +=
-        (e.clientX-state.lastX)*
-        .008;
-
-      state.pitch +=
-        (e.clientY-state.lastY)*
-        .006;
-
-
-      state.pitch=
-        Math.max(
-          -1.25,
-          Math.min(
-            1.25,
-            state.pitch
-          )
-        );
-
-
-      state.lastX=
-        e.clientX;
-
-      state.lastY=
-        e.clientY;
-
-    }
-    else{
-
-      const n=
-        hit(
-          e.clientX,
-          e.clientY
-        );
-
-      state.hover=
-        n?.id || null;
-
-    }
-
-  }
-);
-
-
-$("graph").addEventListener(
-  "wheel",
-  e=>{
-
-    e.preventDefault();
-
-    state.zoom *=
-      e.deltaY<0
-        ? 1.08
-        : .92;
-
-
-    state.zoom=
-      Math.max(
-        .3,
-        Math.min(
-          3,
-          state.zoom
-        )
-      );
-
-
-    $("zoomRange").value=
-      state.zoom;
-
-  },
-  {passive:false}
-);
-
-
-/* =========================================================
-   FILTRES
-========================================================= */
-
-function renderFilters(){
-
-  $("levels").innerHTML="";
-
-  for(
-    const sphere
-    of Object.values(state.spheres)
-  ){
-
-    const id=
-      sphere.id;
-
-
-    const button=
-      document.createElement(
-        "button"
-      );
-
-
-    button.textContent=
-      sphere.label +
-      (sphere.empty ? " ·" : "");
-
-    button.title=
-      sphere.empty
-        ? "Aucune donnée pour ce niveau pour l'instant"
-        : "";
-
-
-    button.className=
-      state.activeLevels.has(id)
-        ? "active"
-        : "";
-
-
-    button.onclick=()=>{
-
-      if(
-        state.activeLevels
-          .has(id)
-      ){
-
-        /*
-          Au moins un niveau doit
-          rester actif.
-        */
-
-        if(
-          state.activeLevels.size>1
-        ){
-
-          state.activeLevels
-            .delete(id);
-
-        }
-
+  // Prérequis : uniquement les IDs explicitement déclarés dans prerequis_competences.
+  const ids=new Set(comps.map(c=>c.id));
+  for(const c of comps){
+    for(const pre of c.prerequis_competences||[]){
+      if(ids.has(pre)){
+        state.links.push({source:"c:"+pre,target:"c:"+c.id,type:"prerequis"});
       }
-      else{
-
-        state.activeLevels
-          .add(id);
-
-      }
-
-
-      renderFilters();
-
-      updateSubtitle();
-
-    };
-
-
-    $("levels")
-      .appendChild(button);
-
-  }
-
-
-  $("domains").innerHTML="";
-
-
-  const domains=
-    new Map();
-
-
-  for(
-    const c
-    of state.competences
-  ){
-
-    if(!c.domaine_id)
-      continue;
-
-
-    if(
-      !domains.has(c.domaine_id)
-    ){
-
-      domains.set(
-        c.domaine_id,
-        c.domaine ||
-        c.domaine_id
-      );
-
     }
-
   }
-
-
-  for(
-    const [id,label]
-    of domains
-  ){
-
-    const button=
-      document.createElement(
-        "button"
-      );
-
-
-    button.textContent=label;
-
-    button.className=
-      state.activeDomains
-        .has(id)
-        ? "active"
-        : "";
-
-
-    button.onclick=()=>{
-
-      if(
-        state.activeDomains
-          .has(id)
-      ){
-
-        state.activeDomains
-          .delete(id);
-
-      }
-      else{
-
-        state.activeDomains
-          .add(id);
-
-      }
-
-
-      renderFilters();
-
-      updateSubtitle();
-
-    };
-
-
-    $("domains")
-      .appendChild(button);
-
-  }
-
 }
 
-
-function updateSubtitle(){
-
-  const nodes=
-    visibleNodes();
-
-
-  const c=
-    nodes.filter(
-      n=>n.type==="competence"
-    ).length;
-
-
-  const s=
-    nodes.filter(
-      n=>n.type==="sequence"
-    ).length;
-
-
-  const a=
-    nodes.filter(
-      n=>n.type==="seance"
-    ).length;
-
-
-  $("subtitle").textContent=
-
-    `${Object.keys(state.spheres).length} niveaux scolaires · `+
-    `${c} compétences · `+
-    `${s} séquences · `+
-    `${a} séances`;
-
-}
-
-
-$("search").addEventListener(
-  "input",
-  e=>{
-
-    state.search=
-      e.target.value.trim();
-
-    updateSubtitle();
-
-  }
-);
-
-
-$("reset").onclick=()=>{
-
-  state.search="";
-
-  $("search").value="";
-
-
-  state.activeLevels=
-    new Set(
-      Object.keys(state.spheres)
-    );
-
-
-  state.activeDomains=
-    new Set(
-      state.competences
-        .map(c=>c.domaine_id)
-        .filter(Boolean)
-    );
-
-
-  state.selected=null;
-
-
-  renderFilters();
-
-  updateSubtitle();
-
-};
-
-
-$("zoomRange").oninput=e=>{
-
-  state.zoom=
-    Number(e.target.value);
-
-};
-
-
-$("plus").onclick=()=>{
-
-  state.zoom=
-    Math.min(
-      3,
-      state.zoom*1.15
-    );
-
-  $("zoomRange").value=
-    state.zoom;
-
-};
-
-
-$("minus").onclick=()=>{
-
-  state.zoom=
-    Math.max(
-      .3,
-      state.zoom/1.15
-    );
-
-  $("zoomRange").value=
-    state.zoom;
-
-};
-
-
-$("home").onclick=()=>{
-
-  state.yaw=.25;
-
-  state.pitch=-.15;
-
-  state.zoom=1;
-
-  state.panX=0;
-
-  state.panY=0;
-
-  $("zoomRange").value=1;
-
-};
-
-
-/* =========================================================
-   FICHES
-========================================================= */
-
-function openNode(n){
-
-  state.selected=n.id;
-
-
-  const panel=
-    $("panelContent");
-
-
-  /* -------------------------------------------------------
-     COMPÉTENCE
-  ------------------------------------------------------- */
-
+/* ---------- Filtres ---------- */
+function visible(n){
   if(n.type==="competence"){
-
-    const c=
-      competenceById(n.ref);
-
-
-    const prereqs=
-      (c?.prerequis_competences || [])
-        .map(resolveCompetenceId)
-        .filter(Boolean);
-
-
-    const sequences=
-      state.sequences.filter(
-        s=>
-          resolveCompetenceId(
-            s.competence_id
-          )===n.ref
-      );
-
-
-    panel.innerHTML=`
-
-      <span class="tag">
-        ${esc(c?.domaine || "Compétence")}
-      </span>
-
-      <h2>
-        ${esc(
-          c?.intitule ||
-          c?.nom ||
-          n.label
-        )}
-      </h2>
-
-      <div class="meta">
-        Niveau :
-        ${esc(
-          c?.niveau ||
-          n.niveau
-        )}
-      </div>
-
-
-      <div class="section">
-
-        <h3>Objectifs</h3>
-
-        ${
-          (c?.objectifs || [])
-            .map(
-              x=>
-                `<div class="card">
-                  ${esc(x)}
-                </div>`
-            )
-            .join("")
-          ||
-          `<div class="card">
-             Aucun objectif renseigné.
-           </div>`
-        }
-
-      </div>
-
-
-      <div class="section">
-
-        <h3>Prérequis</h3>
-
-        ${
-          prereqs.length
-
-            ? prereqs.map(id=>{
-
-                const p=
-                  competenceById(id);
-
-                return `
-                  <div class="card">
-                    <a data-open="c:${esc(id)}">
-                      ${esc(
-                        p?.intitule ||
-                        p?.nom ||
-                        id
-                      )}
-                    </a>
-                  </div>
-                `;
-
-              }).join("")
-
-            : `<div class="card">
-                 Aucun prérequis renseigné.
-               </div>`
-        }
-
-      </div>
-
-
-      <div class="section">
-
-        <h3>Séquences</h3>
-
-        ${
-          sequences.length
-
-            ? sequences.map(s=>`
-
-                <div class="card">
-
-                  <a data-open="s:${esc(s.id)}">
-                    ${esc(s.titre || s.id)}
-                  </a>
-
-                </div>
-
-              `).join("")
-
-            : `<div class="card">
-                 Aucune séquence reliée.
-               </div>`
-        }
-
-      </div>
-
-    `;
-
+    if(!state.levels.has(n.niveau)) return false;
+    if(state.domains.size && !state.domains.has(n.domaine_id)) return false;
+  } else {
+    if(!state.levels.has(n.niveau)) return false;
+    if(state.domains.size && n.domaine_id && !state.domains.has(n.domaine_id)) return false;
   }
-
-
-  /* -------------------------------------------------------
-     SÉQUENCE
-  ------------------------------------------------------- */
-
-  else if(n.type==="sequence"){
-
-    const s=
-      state.sequences.find(
-        x=>x.id===n.ref
-      );
-
-
-    const sessions=
-      state.seances.filter(
-        x=>x.sequence_id===n.ref
-      );
-
-
-    const competence=
-      n.competenceId
-        ? competenceById(
-            n.competenceId
-          )
-        : null;
-
-
-    panel.innerHTML=`
-
-      <span class="tag">
-        Séquence
-      </span>
-
-      <h2>
-        ${esc(
-          s?.titre ||
-          n.label
-        )}
-      </h2>
-
-      <div class="meta">
-        ${esc(n.niveau)}
-        ·
-        ${esc(n.discipline || "")}
-        ·
-        ${esc(n.domaine || "")}
-      </div>
-
-
-      <div class="section">
-
-        <h3>Compétence associée</h3>
-
-        ${
-          competence
-
-            ? `
-              <div class="card">
-
-                <a data-open="c:${esc(competence.id)}">
-                  ${esc(
-                    competence.intitule ||
-                    competence.nom
-                  )}
-                </a>
-
-              </div>
-            `
-
-            : `
-              <div class="card">
-                Aucune compétence associée.
-              </div>
-            `
-        }
-
-      </div>
-
-
-      <div class="section">
-
-        <h3>Séances</h3>
-
-        ${
-          sessions.length
-
-            ? sessions.map(x=>`
-
-                <div class="card">
-
-                  <a data-open="a:${esc(x.id)}">
-
-                    <b>
-                      Séance ${esc(x.numero)}
-                    </b>
-
-                    —
-                    ${esc(x.titre || x.id)}
-
-                  </a>
-
-                </div>
-
-              `).join("")
-
-            : `
-              <div class="card">
-                Aucune séance renseignée.
-              </div>
-            `
-        }
-
-      </div>
-
-
-      <div class="section">
-
-        ${
-          s?._indexPath
-
-            ? `
-              <a href="${esc(
-                "sequences.html?sequence="+
-                encodeURIComponent(n.ref)+
-                "#onglet-sequence-seance"
-              )}">
-                → Ouvrir dans la programmation des séquences
-              </a>
-            `
-
-            : `
-              <div class="meta">
-                Aucun fichier de séquence associé pour l'instant.
-              </div>
-            `
-        }
-
-      </div>
-
-    `;
-
+  const q=norm(state.search);
+  if(!q) return true;
+  return norm(n.label).includes(q) || norm(n.niveau).includes(q) || norm(n.discipline).includes(q);
+}
+function renderFilters(){
+  const levels=$("levels"), domains=$("domains");
+  levels.innerHTML=""; domains.innerHTML="";
+  for(const l of LEVEL_ORDER){
+    const b=document.createElement("button"); b.textContent=l;
+    b.className=state.levels.has(l)?"active":"";
+    b.onclick=()=>{state.levels.has(l)?state.levels.delete(l):state.levels.add(l);renderFilters();update();};
+    levels.appendChild(b);
   }
-
-
-  /* -------------------------------------------------------
-     SÉANCE
-  ------------------------------------------------------- */
-
-  else{
-
-    const s=
-      state.seances.find(
-        x=>x.id===n.ref
-      );
-
-
-    panel.innerHTML=`
-
-      <span class="tag">
-        Séance ${esc(
-          s?.numero ||
-          n.numero ||
-          ""
-        )}
-      </span>
-
-      <h2>
-        ${esc(
-          s?.titre ||
-          n.label
-        )}
-      </h2>
-
-      <div class="meta">
-        ${esc(n.niveau)}
-        ·
-        ${esc(s?.type || "")}
-      </div>
-
-
-      <div class="section">
-
-        <h3>Compétence ciblée</h3>
-
-        <div class="card">
-          ${esc(
-            s?.competence_cible ||
-            "Non renseignée"
-          )}
-        </div>
-
-      </div>
-
-
-      <div class="section">
-
-        <h3>Objectif</h3>
-
-        <div class="card">
-          ${esc(
-            s?.objectif_commun ||
-            "Non renseigné"
-          )}
-        </div>
-
-      </div>
-
-
-      <div class="section">
-
-        ${
-          s?._indexPath
-
-            ? `
-              <a href="${esc(
-                "sequences.html?sequence="+
-                encodeURIComponent(n.sequenceId || "")+
-                "&seance="+
-                encodeURIComponent(n.ref)+
-                "#onglet-sequence-seance"
-              )}">
-                → Ouvrir dans la programmation des séquences
-              </a>
-            `
-
-            : `
-              <div class="meta">
-                Aucun fichier de séance associé pour l'instant.
-              </div>
-            `
-        }
-
-      </div>
-
-    `;
-
+  for(const d of state.compData.domaines){
+    const b=document.createElement("button"); b.textContent=d.nom||d.id;
+    b.className=state.domains.has(d.id)?"active":"";
+    b.onclick=()=>{state.domains.has(d.id)?state.domains.delete(d.id):state.domains.add(d.id);renderFilters();update();};
+    domains.appendChild(b);
   }
-
-
-  $("panel")
-    .classList
-    .add("open");
-
-
-  panel
-    .querySelectorAll(
-      "[data-open]"
-    )
-    .forEach(a=>{
-
-      a.onclick=()=>{
-
-        const node=
-          state.nodes.find(
-            x=>
-              x.id===
-              a.dataset.open
-          );
-
-
-        if(node)
-          openNode(node);
-
-      };
-
-    });
-
 }
 
+/* ---------- Projection et rendu ---------- */
+function rotate(p){
+  const cy=Math.cos(state.yaw), sy=Math.sin(state.yaw);
+  const cp=Math.cos(state.pitch), sp=Math.sin(state.pitch);
+  const x=p.x*cy-p.z*sy, z=p.x*sy+p.z*cy;
+  return {x,y:p.y*cp-z*sp,z:p.y*sp+z*cp};
+}
+function projectPoint(p){
+  const r=rotate(p), d=1500;
+  const scale=(d/(d+r.z))*state.zoom;
+  return {x:innerWidth/2+state.panX+r.x*scale,y:innerHeight/2+state.panY+r.y*scale,z:r.z,scale};
+}
+function sphereProjection(level){
+  const p=projectPoint(sphereCenter(level));
+  return {...p,r:state.sphereR*p.scale};
+}
+function drawSphere(ctx,s,label){
+  const {x,y,r}=s;
+  ctx.save();
+  const g=ctx.createRadialGradient(x-r*.35,y-r*.42,r*.05,x,y,r);
+  g.addColorStop(0,"rgba(255,255,255,.95)");
+  g.addColorStop(.55,"rgba(232,238,241,.18)");
+  g.addColorStop(1,"rgba(169,183,191,.06)");
+  ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
+  ctx.strokeStyle="rgba(20,32,42,.9)";ctx.lineWidth=5;ctx.stroke();
+  ctx.setLineDash([9,12]);ctx.lineWidth=2;ctx.strokeStyle="rgba(20,32,42,.72)";
+  ctx.beginPath();ctx.ellipse(x,y,r,r*.32,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+  ctx.fillStyle="rgba(21,35,51,.96)";ctx.font=`500 ${Math.max(22,Math.min(40,r*.18))}px Georgia`;
+  ctx.textAlign="center";ctx.fillText(label,x,y-r-20);
+  ctx.restore();
+}
+function drawNode(ctx,p,n){
+  const r=Math.max(5,TYPE[n.type].radius*p.scale*.78);
+  ctx.save();
+  const base=TYPE[n.type].color;
+  const grad=ctx.createRadialGradient(p.x-r*.35,p.y-r*.42,1,p.x,p.y,r);
+  grad.addColorStop(0,"rgba(255,255,255,.9)");
+  grad.addColorStop(.25,base);grad.addColorStop(1,"rgba(0,0,0,.28)");
+  ctx.shadowColor="rgba(20,30,35,.22)";ctx.shadowBlur=8;
+  ctx.fillStyle=grad;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
+  ctx.shadowBlur=0;ctx.strokeStyle="rgba(255,255,255,.38)";ctx.lineWidth=1;ctx.stroke();
+  if(state.hover===n.id || state.selected===n.id){ctx.strokeStyle="#152333";ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,r+4,0,Math.PI*2);ctx.stroke();}
+  ctx.restore();
+}
+function draw(){
+  const canvas=$("graph"),ctx=canvas.getContext("2d");
+  const dpr=Math.min(devicePixelRatio||1,2);
+  canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,innerWidth,innerHeight);
 
-$("close").onclick=()=>{
+  const bg=ctx.createRadialGradient(innerWidth*.52,innerHeight*.45,30,innerWidth*.52,innerHeight*.45,Math.max(innerWidth,innerHeight)*.72);
+  bg.addColorStop(0,"#fff");bg.addColorStop(.7,"#f5f7f8");bg.addColorStop(1,"#e7ebee");
+  ctx.fillStyle=bg;ctx.fillRect(0,0,innerWidth,innerHeight);
 
-  $("panel")
-    .classList
-    .remove("open");
+  const spheres=LEVEL_ORDER.filter(l=>state.levels.has(l)).map(l=>({level:l,...sphereProjection(l)})).sort((a,b)=>b.z-a.z);
+  for(const s of spheres) drawSphere(ctx,s,s.level);
 
-  state.selected=null;
+  const projected=new Map();
+  for(const n of state.nodes.filter(visible)) projected.set(n.id,{...projectPoint(n),node:n});
+  state.projected=[...projected.values()];
 
-};
+  // liens d'abord
+  for(const l of state.links){
+    const a=projected.get(l.source),b=projected.get(l.target);
+    if(!a||!b) continue;
+    ctx.save();
+    if(l.type==="prerequis"){
+      ctx.strokeStyle="rgba(169,125,34,.76)";ctx.lineWidth=1.5;ctx.setLineDash([5,6]);
+    }else if(l.type==="sequence"){
+      ctx.strokeStyle="rgba(41,72,95,.82)";ctx.lineWidth=1.4;
+    }else{
+      ctx.strokeStyle="rgba(73,108,126,.48)";ctx.lineWidth=1;
+    }
+    ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore();
+  }
 
-
-/* =========================================================
-   INITIALISATION
-========================================================= */
-
-window.addEventListener(
-  "resize",
-  ()=>{}
-);
-
-
-load().then(()=>{
-
-  /*
-    Toutes les sphères (CP → 6e) sont actives
-    au démarrage, y compris celles encore vides.
-  */
-
-  state.activeLevels=
-    new Set(
-      Object.keys(state.spheres)
-    );
-
-
-  state.activeDomains=
-    new Set(
-      state.competences
-        .map(c=>c.domaine_id)
-        .filter(Boolean)
-    );
-
-
-  renderFilters();
-
-  updateSubtitle();
-
+  const ordered=[...projected.values()].sort((a,b)=>a.z-b.z);
+  for(const p of ordered) drawNode(ctx,p,p.node);
+}
+function update(){
   draw();
+  const comps=state.nodes.filter(n=>n.type==="competence"&&visible(n)).length;
+  const seq=state.nodes.filter(n=>n.type==="sequence"&&visible(n)).length;
+  const sea=state.nodes.filter(n=>n.type==="seance"&&visible(n)).length;
+  const pre=state.links.filter(l=>l.type==="prerequis"&&state.nodes.find(n=>n.id===l.source&&visible(n))&&state.nodes.find(n=>n.id===l.target&&visible(n))).length;
+  $("status").textContent=`${comps} compétences · ${seq} séquences · ${sea} séances · ${pre} prérequis`;
+  $("subtitle").textContent=`${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cartographie fondée sur les données déclarées`;
+}
+function hit(clientX,clientY){
+  const rect=$("graph").getBoundingClientRect();
+  const x=clientX-rect.left,y=clientY-rect.top;
+  let best=null,bestD=Infinity;
+  for(const p of state.projected){
+    const r=Math.max(8,TYPE[p.node.type].radius*p.scale*.9+6);
+    const d=Math.hypot(x-p.x,y-p.y);
+    if(d<r&&d<bestD){best=p.node;bestD=d;}
+  }
+  return best;
+}
 
+/* ---------- Fiches ---------- */
+function compById(id){return state.compData.competences.find(c=>c.id===id)}
+function seqById(id){return state.sequences.find(s=>s.id===id)}
+function showPanel(node){
+  state.selected=node.id;
+  let html="";
+  if(node.type==="competence"){
+    const c=compById(node.ref);
+    const pre=(c?.prerequis_competences||[]).map(compById).filter(Boolean);
+    const after=state.compData.competences.filter(x=>(x.prerequis_competences||[]).includes(c?.id));
+    html=`<span class="tag">Compétence · ${esc(c?.niveau)}</span><h2>${esc(c?.intitule)}</h2>
+      <div class="meta">${esc(c?.discipline)} · ${esc(c?.domaine)}</div>
+      <div class="section"><h4>Objectifs</h4>${(c?.objectifs||[]).map(x=>`<div class="item">${esc(x)}</div>`).join("")||"<div class='item'>Aucun objectif renseigné.</div>"}</div>
+      <div class="section"><h4>Prérequis explicitement déclarés</h4>${pre.length?pre.map(x=>`<div class="item">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucun prérequis déclaré.</div>"}</div>
+      <div class="section"><h4>Compétences qui en dépendent</h4>${after.length?after.map(x=>`<div class="item">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucune relation déclarée.</div>"}</div>`;
+  }else if(node.type==="sequence"){
+    const s=seqById(node.ref);
+    html=`<span class="tag">Séquence · ${esc(s?.niveau)}</span><h2>${esc(s?.titre)}</h2>
+      <div class="meta">${esc(s?.discipline)} · ${esc(s?.domaine)}</div>
+      <div class="section"><h4>Séances</h4>${(s?.seances||[]).map(x=>`<div class="item">${esc(x.numero?`Séance ${x.numero} — `:"")}${esc(x.titre)}</div>`).join("")||"<div class='item'>Aucune séance renseignée.</div>"}</div>
+      <a class="panelAction" href="Programmation/sequences.html?sequence=${encodeURIComponent(s?.id||"")}">Ouvrir dans la programmation</a>`;
+  }else{
+    const se=state.seances.find(x=>x.id===node.ref);
+    const seq=seqById(se?.sequence_id);
+    html=`<span class="tag">Séance · ${esc(se?.niveau)}</span><h2>${esc(se?.titre)}</h2>
+      <div class="meta">${esc(se?.type||"Séance")} · ${esc(seq?.titre||se?.sequence_id||"")}</div>
+      <a class="panelAction" href="Programmation/sequences.html?sequence=${encodeURIComponent(se?.sequence_id||"")}&seance=${encodeURIComponent(se?.id||"")}">Ouvrir dans l'onglet séquence / séance</a>`;
+  }
+  $("panelContent").innerHTML=html;
+  $("panel").classList.add("open");
+  update();
+}
+
+/* ---------- Navigation ---------- */
+function resetView(){
+  state.yaw=0.28;state.pitch=-0.12;state.zoom=1;state.panX=0;state.panY=0;
+  $("zoomRange").value=1;draw();
+}
+$("search").addEventListener("input",e=>{state.search=e.target.value;update();});
+$("reset").onclick=()=>{
+  state.search="";$("search").value="";
+  state.levels=new Set(LEVEL_ORDER);
+  state.domains=new Set(state.compData.domaines.map(d=>d.id));
+  renderFilters();resetView();update();
+};
+$("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null;update();};
+$("home").onclick=resetView;
+$("minus").onclick=()=>{state.zoom=Math.max(.42,state.zoom*.88);$("zoomRange").value=state.zoom;draw();};
+$("plus").onclick=()=>{state.zoom=Math.min(2.4,state.zoom*1.12);$("zoomRange").value=state.zoom;draw();};
+$("zoomRange").oninput=e=>{state.zoom=+e.target.value;draw();};
+$("fullscreen").onclick=()=>document.fullscreenElement?document.exitFullscreen():$("app").requestFullscreen?.();
+
+const canvas=$("graph");
+canvas.addEventListener("contextmenu",e=>e.preventDefault());
+canvas.addEventListener("pointerdown",e=>{
+  state.dragging=true;state.panning=e.button===2;state.moved=false;
+  state.lastX=e.clientX;state.lastY=e.clientY;canvas.classList.add("dragging");
+  canvas.setPointerCapture?.(e.pointerId);
 });
+canvas.addEventListener("pointermove",e=>{
+  if(!state.dragging){
+    state.hover=hit(e.clientX,e.clientY)?.id||null;draw();return;
+  }
+  const dx=e.clientX-state.lastX,dy=e.clientY-state.lastY;
+  if(Math.abs(dx)+Math.abs(dy)>2) state.moved=true;
+  if(state.panning){
+    state.panX+=dx;state.panY+=dy;
+  }else{
+    state.yaw+=dx*.006;
+    state.pitch=Math.max(-1.25,Math.min(1.25,state.pitch+dy*.004));
+  }
+  state.lastX=e.clientX;state.lastY=e.clientY;draw();
+});
+canvas.addEventListener("pointerup",e=>{
+  if(!state.dragging)return;
+  const wasPan=state.panning,moved=state.moved;
+  state.dragging=false;state.panning=false;canvas.classList.remove("dragging");
+  if(!wasPan&&!moved){
+    const n=hit(e.clientX,e.clientY);if(n)showPanel(n);
+  }
+});
+canvas.addEventListener("wheel",e=>{
+  e.preventDefault();
+  state.zoom*=e.deltaY<0?1.08:.925;
+  state.zoom=Math.max(.42,Math.min(2.4,state.zoom));
+  $("zoomRange").value=state.zoom;draw();
+},{passive:false});
+window.addEventListener("resize",draw);
 
+loadData();
 </script>
- <script>
-    const originalFetch = window.fetch;
-    window.fetch = function(...args) {
-        let url = args[0];
-        if (typeof url === 'string' && (url.startsWith('data/') || url.includes('index.json') || url.includes('competences.json'))) {
-            if (!url.startsWith('Programmation/')) {
-                args[0] = 'Programmation/' + url;
-            }
-        }
-        return originalFetch.apply(this, args);
-    };
-    </script>
 </body>
 </html>
