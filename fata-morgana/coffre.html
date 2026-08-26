@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coffre confidentiel — Synapses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2A4A;
+  --navy-deep:#141d33;
+  --bg:#F6F5F1;
+  --panel:#FFFFFF;
+  --line:#DEDBD2;
+  --ink:#20242E;
+  --ink-soft:#5B5F6B;
+  --accent-sky:#2E5EAA;
+  --danger:#B5502E;
+  --ok:#2A7F72;
+  --radius:10px;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;}
+h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 8px;letter-spacing:-0.01em;}
+button{font-family:inherit;cursor:pointer;}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-sky);font-weight:500;}
+header.site-header{background:var(--navy);color:#fff;padding:18px 24px;border-bottom:3px solid var(--accent-sky);}
+.header-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:14px;}
+.brand-mark{width:38px;height:38px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:#fff;flex-shrink:0;}
+main{max-width:960px;margin:0 auto;padding:32px 24px 80px;}
+.banner{background:#FFF7ED;border:1px solid #EFD9B8;color:#7A4A12;border-radius:var(--radius);padding:14px 18px;font-size:14px;margin-bottom:28px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:20px;}
+.card h2{font-size:19px;margin-bottom:4px;}
+.card p.hint{color:var(--ink-soft);font-size:13.5px;margin:4px 0 16px;}
+.row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:10px;}
+label{font-size:13px;font-weight:600;color:var(--ink-soft);display:block;margin-bottom:4px;}
+input[type=text],input[type=password],input[type=file],select,textarea{
+  font-family:inherit;font-size:14px;padding:9px 11px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink);min-width:220px;
+}
+textarea{width:100%;min-height:60px;resize:vertical;}
+.field{margin-bottom:10px;}
+.btn{border:none;border-radius:7px;padding:10px 16px;font-size:14px;font-weight:600;transition:.15s;}
+.btn-primary{background:var(--accent-sky);color:#fff;}
+.btn-primary:hover{background:#254c8c;}
+.btn-outline{background:#fff;border:1px solid var(--line);color:var(--ink);}
+.btn-outline:hover{border-color:var(--accent-sky);color:var(--accent-sky);}
+.btn-danger{background:#fff;border:1px solid var(--danger);color:var(--danger);}
+.btn-danger:hover{background:var(--danger);color:#fff;}
+.status{font-size:13.5px;margin-top:10px;padding:8px 12px;border-radius:7px;display:none;}
+.status.ok{display:block;background:#EAF6F3;color:var(--ok);border:1px solid #BFE3DA;}
+.status.err{display:block;background:#FBEAE5;color:var(--danger);border:1px solid #F0C6B8;}
+.pill{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 10px;border-radius:99px;background:#EEF2FB;color:var(--accent-sky);font-weight:600;}
+.pill.closed{background:#F1F1EC;color:var(--ink-soft);}
+table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;}
+th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);}
+th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+@media(max-width:640px){.grid2{grid-template-columns:1fr;}}
+.disabled-overlay{opacity:.45;pointer-events:none;}
+
+/* ===== suivi-individuel.js ===== */
+.si-loading,.si-error{padding:24px;color:var(--ink-soft);font-size:14px;}
+.si-error{color:var(--danger);}
+.si-layout{display:grid;grid-template-columns:240px 1fr;min-height:420px;}
+.si-sidebar{border-right:1px solid var(--line);padding:18px;background:#FAFAF7;}
+.si-sidebar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;}
+.si-sidebar-head h3{font-size:15px;margin:0;}
+.si-eleves-liste{display:flex;flex-direction:column;gap:4px;}
+.si-eleve-item{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:transparent;border:1px solid transparent;border-radius:7px;padding:8px 10px;font-size:13.5px;}
+.si-eleve-item:hover{background:#F0EFE9;}
+.si-eleve-item.active{background:#EEF2FB;border-color:var(--accent-sky);}
+.si-eleve-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-sky);font-weight:600;}
+.si-eleve-nom{color:var(--ink);}
+.si-fiche{padding:22px 24px;}
+.si-fiche-vide{color:var(--ink-soft);display:flex;align-items:center;justify-content:center;min-height:300px;}
+.si-fiche-entete{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;padding-bottom:16px;border-bottom:1px solid var(--line);}
+.si-fiche-id{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-sky);font-weight:600;letter-spacing:.04em;}
+.si-fiche-nom{font-size:20px;margin:2px 0 0;}
+.si-onglets-nav{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:16px;flex-wrap:wrap;}
+.si-onglet{background:none;border:none;padding:9px 14px;font-size:13.5px;font-weight:600;color:var(--ink-soft);border-bottom:2px solid transparent;}
+.si-onglet:hover{color:var(--ink);}
+.si-onglet.active{color:var(--accent-sky);border-bottom-color:var(--accent-sky);}
+.si-btn{border:none;border-radius:7px;padding:8px 14px;font-size:13.5px;font-weight:600;}
+.si-btn-primary{background:var(--accent-sky);color:#fff;}
+.si-btn-primary:hover{background:#254c8c;}
+.si-btn-danger-outline{background:#fff;border:1px solid var(--danger);color:var(--danger);}
+.si-btn-danger-outline:hover{background:var(--danger);color:#fff;}
+.si-form-observation{background:#FAFAF7;border:1px solid var(--line);border-radius:8px;padding:16px;margin-bottom:18px;display:flex;flex-direction:column;gap:10px;}
+.si-form-row label,.si-form-row-pair label{display:block;font-size:12.5px;font-weight:600;color:var(--ink-soft);margin-bottom:4px;}
+.si-form-row select,.si-form-row input{width:100%;}
+.si-form-row-pair{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+.si-form-row-pair select,.si-form-row-pair input{width:100%;margin-bottom:6px;}
+@media(max-width:640px){.si-form-row-pair{grid-template-columns:1fr;} .si-layout{grid-template-columns:1fr;}}
+.si-table{width:100%;border-collapse:collapse;font-size:13px;}
+.si-table th,.si-table td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);}
+.si-table th{color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+.si-empty{color:var(--ink-soft);font-size:13.5px;font-style:italic;}
+.si-hint{color:var(--ink-soft);font-size:12.5px;margin-top:10px;}
+.si-frise{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);padding-left:16px;}
+.si-frise-item{position:relative;padding:0 0 16px;}
+.si-frise-item::before{content:'';position:absolute;left:-21px;top:4px;width:9px;height:9px;border-radius:50%;background:var(--accent-sky);}
+.si-frise-date{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);}
+.si-frise-type{font-weight:600;font-size:13.5px;}
+.si-frise-detail{font-size:13px;color:var(--ink-soft);}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <div class="brand-mark">S</div>
+    <div>
+      <div class="eyebrow" style="color:#B9C6E5;">Synapses</div>
+      <h1 style="color:#fff;font-size:20px;">Coffre confidentiel</h1>
+    </div>
+    <div style="margin-left:auto;" id="etatCoffre"><span class="pill closed">Aucun coffre ouvert</span></div>
+  </div>
+</header>
+
+<main>
+  <div class="banner">
+    <strong>Confidentialité :</strong> les données saisies ici restent uniquement en mémoire de votre navigateur,
+    pour la durée de cette session. Rien n'est envoyé sur un serveur, ni écrit dans le stockage local du
+    navigateur. Elles ne persistent que si vous téléchargez explicitement un fichier <code>.synapses</code> chiffré
+    (par ex. sur une clé USB), et disparaissent immédiatement si vous cliquez sur « Détruire les données
+    confidentielles » ou si vous fermez cet onglet sans les enregistrer.
+  </div>
+
+  <!-- ============ Ouverture / création ============ -->
+  <section class="card" id="cardOuverture">
+    <h2>1. Créer ou ouvrir un coffre</h2>
+    <p class="hint">Un coffre correspond en général à une classe ou un établissement pour une année scolaire.</p>
+
+    <div class="grid2">
+      <div>
+        <h3 style="font-size:15px;margin-bottom:8px;">Créer un nouveau coffre</h3>
+        <div class="field">
+          <label for="nomEtab">Établissement / classe (optionnel)</label>
+          <input type="text" id="nomEtab" placeholder="ex : ULIS école Jean Moulin">
+        </div>
+        <button class="btn btn-primary" id="btnCreer">Créer un coffre vide</button>
+      </div>
+      <div>
+        <h3 style="font-size:15px;margin-bottom:8px;">Ouvrir un coffre existant</h3>
+        <div class="field">
+          <label for="fichierCoffre">Fichier .synapses</label>
+          <input type="file" id="fichierCoffre" accept=".synapses">
+        </div>
+        <div class="field">
+          <label for="mdpOuverture">Mot de passe</label>
+          <input type="password" id="mdpOuverture" placeholder="Mot de passe du coffre">
+        </div>
+        <button class="btn btn-outline" id="btnOuvrir">Ouvrir le coffre</button>
+      </div>
+    </div>
+    <div class="status" id="statutOuverture"></div>
+  </section>
+
+  <!-- ============ Suivi individuel (élèves + grille d'analyse BARRY/S4C) ============ -->
+  <section class="card disabled-overlay" id="cardSuivi" style="padding:0;overflow:hidden;">
+    <div id="suiviIndividuelApp"></div>
+  </section>
+
+  <!-- ============ Export / purge ============ -->
+  <section class="card disabled-overlay" id="cardExport">
+    <h2>3. Enregistrer ou détruire</h2>
+    <div class="grid2">
+      <div>
+        <h3 style="font-size:15px;margin-bottom:8px;">Enregistrer le coffre chiffré</h3>
+        <div class="field"><label for="mdpExport">Mot de passe (choisissez-en un si nouveau coffre)</label>
+          <input type="password" id="mdpExport" placeholder="Mot de passe du coffre"></div>
+        <div class="field"><label for="nomFichierExport">Nom du fichier</label>
+          <input type="text" id="nomFichierExport" placeholder="coffre.synapses"></div>
+        <button class="btn btn-primary" id="btnExporter">Télécharger le .synapses</button>
+      </div>
+      <div>
+        <h3 style="font-size:15px;margin-bottom:8px;color:var(--danger);">Zone de destruction</h3>
+        <p class="hint">Efface toutes les données confidentielles de la mémoire du navigateur. Sans effet sur un éventuel fichier déjà téléchargé.</p>
+        <button class="btn btn-danger" id="btnPurger">Détruire les données confidentielles</button>
+      </div>
+    </div>
+    <div class="status" id="statutExport"></div>
+  </section>
+</main>
+
+<script src="synapses-crypto.js"></script>
+<script src="synapses-coffre.js"></script>
+<script src="suivi-individuel.js"></script>
+<script>
+(function(){
+  const coffre = new SynapsesCoffre.Coffre();
+
+  const $ = (id) => document.getElementById(id);
+
+  function setStatus(el, message, ok){
+    el.textContent = message;
+    el.className = 'status ' + (ok ? 'ok' : 'err');
+  }
+
+  function refreshLockState(){
+    const on = coffre.ouvert;
+    ['cardSuivi','cardExport'].forEach(id=>{
+      $(id).classList.toggle('disabled-overlay', !on);
+    });
+    $('etatCoffre').innerHTML = on
+      ? '<span class="pill">Coffre ouvert' + (coffre.donnees.etablissement ? ' — ' + coffre.donnees.etablissement : '') + '</span>'
+      : '<span class="pill closed">Aucun coffre ouvert</span>';
+  }
+
+  const suivi = new SynapsesSuiviIndividuel.SuiviIndividuel(coffre);
+
+  async function ouvrirSuivi(){
+    await suivi.mount($('suiviIndividuelApp'));
+  }
+
+  function fermerSuivi(){
+    $('suiviIndividuelApp').innerHTML = '';
+  }
+
+  $('btnCreer').addEventListener('click', async ()=>{
+    coffre.creer($('nomEtab').value.trim());
+    setStatus($('statutOuverture'), 'Nouveau coffre créé en mémoire. Pensez à l\'enregistrer (§3) avant de fermer l\'onglet.', true);
+    refreshLockState();
+    await ouvrirSuivi();
+  });
+
+  $('btnOuvrir').addEventListener('click', async ()=>{
+    const fichier = $('fichierCoffre').files[0];
+    const mdp = $('mdpOuverture').value;
+    if (!fichier) { setStatus($('statutOuverture'), 'Sélectionnez un fichier .synapses.', false); return; }
+    if (!mdp) { setStatus($('statutOuverture'), 'Saisissez le mot de passe du coffre.', false); return; }
+    try{
+      await coffre.ouvrir(fichier, mdp);
+      $('mdpOuverture').value = '';
+      setStatus($('statutOuverture'), 'Coffre ouvert avec succès (' + coffre.listerEleves().length + ' élève(s)).', true);
+      refreshLockState();
+      await ouvrirSuivi();
+    }catch(e){
+      setStatus($('statutOuverture'), e.message, false);
+    }
+  });
+
+  $('btnExporter').addEventListener('click', async ()=>{
+    const mdp = $('mdpExport').value;
+    if (!mdp) { setStatus($('statutExport'), 'Choisissez un mot de passe pour chiffrer le coffre.', false); return; }
+    try{
+      await coffre.telecharger(mdp, $('nomFichierExport').value.trim() || 'coffre.synapses');
+      setStatus($('statutExport'), 'Coffre chiffré et téléchargé. Conservez-le sur un support sûr (clé USB).', true);
+    }catch(e){
+      setStatus($('statutExport'), e.message, false);
+    }
+  });
+
+  $('btnPurger').addEventListener('click', ()=>{
+    if (!confirm('Détruire toutes les données confidentielles en mémoire ? Cette action est irréversible pour la session en cours.')) return;
+    coffre.purger();
+    ['mdpExport','nomFichierExport'].forEach(id=>$(id).value='');
+    fermerSuivi();
+    setStatus($('statutExport'), 'Données confidentielles détruites de la mémoire du navigateur.', true);
+    refreshLockState();
+  });
+
+  // Sécurité supplémentaire : purge best-effort si l'onglet se ferme sans export.
+  window.addEventListener('beforeunload', ()=>{ coffre.purger(); });
+
+  refreshLockState();
+})();
+</script>
+</body>
+</html>
