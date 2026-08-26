@@ -1,7 +1,7 @@
 {
   "meta": {
     "titre": "Référentiel de compétences – Cycles 2 et 3 – Français, Mathématiques, Histoire-Géographie et EMC",
-    "version": "2.1-travail-cycle3-sans-doublons",
+    "version": "2.2-cycle2-francais-complet-sans-doublons",
     "description": "Base de travail structurée pour les séquences et séances. Les compétences sont organisées à partir des programmes officiels fournis pour le cycle 2 et des programmes officiels du cycle 3 joints.",
     "sources": [
       "Annexe 3 – Programme de français du cycle 2",
@@ -13,8 +13,8 @@
     ],
     "controle_doublons": {
       "regle": "Fusion des entrées strictement identiques sur discipline, domaine, intitulé, objectifs et mots-clés ; les variantes de niveau dont les objectifs diffèrent restent distinctes.",
-      "entrees_avant": 152,
-      "entrees_apres": 142,
+      "entrees_avant": 142,
+      "entrees_apres": 176,
       "entrees_fusionnees": 10,
       "fusions": [
         {
@@ -137,7 +137,8 @@
           ],
           "intitule": "Se découvrir, s’affirmer dans le rapport aux autres"
         }
-      ]
+      ],
+      "entrees_ajoutees_francais_cycle2": 34
     }
   },
   "domaines": [
@@ -4298,6 +4299,1118 @@
       },
       "statut": "actif",
       "question": "Comment les sociétés vivent-elles avec le risque dans le contexte du dérèglement climatique ?"
+    },
+    {
+      "id": "lecture_identifier_mots_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Automatiser le décodage et la reconnaissance des mots",
+      "objectifs": [
+        "Automatiser les correspondances graphophonémiques apprises au CP.",
+        "Décoder toutes les CGP, y compris les plus complexes.",
+        "Identifier directement les mots courants et décoder avec exactitude les mots nouveaux.",
+        "Lire les mots comportant des morphèmes muets sans vocaliser les lettres muettes."
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots"
+      ],
+      "mots_cles": [
+        "décodage",
+        "CGP",
+        "mots courants",
+        "lettres muettes"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_voix_haute_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire à voix haute avec fluidité et expressivité",
+      "objectifs": [
+        "Lire un texte adapté avec une fluence d’environ 70 mots par minute.",
+        "Respecter la ponctuation et les groupes de souffle.",
+        "Adapter le ton, le rythme et la voix au sens du texte."
+      ],
+      "prerequis_competences": [
+        "lecture_voix_haute"
+      ],
+      "mots_cles": [
+        "fluence",
+        "ponctuation",
+        "groupes de souffle",
+        "expressivité"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_comprendre_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Comprendre des textes de plus en plus complexes",
+      "objectifs": [
+        "Dégager le sens global d’un texte lu en autonomie.",
+        "Développer des stratégies pour comprendre les mots et expressions inconnus.",
+        "Résoudre des ambiguïtés en s’appuyant sur la chaîne anaphorique et le sens du texte.",
+        "Comprendre des inférences simples et justifier ses réponses par un retour au texte.",
+        "Lire et comprendre en autonomie des textes narratifs, informatifs ou prescriptifs d’une quinzaine de lignes."
+      ],
+      "prerequis_competences": [
+        "lecture_comprendre",
+        "lecture_identifier_mots_ce1"
+      ],
+      "mots_cles": [
+        "compréhension",
+        "inférences",
+        "chaîne anaphorique",
+        "texte"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_devenir_lecteur_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Développer son autonomie de lecteur",
+      "objectifs": [
+        "Lire 5 à 10 œuvres complètes et variées.",
+        "Se familiariser avec différents genres et types de textes.",
+        "Choisir des livres en fonction de ses goûts et relier ses lectures entre elles et à son expérience.",
+        "Commencer à écrire et parler à propos de ses lectures."
+      ],
+      "prerequis_competences": [
+        "lecture_devenir_lecteur",
+        "lecture_comprendre_ce1"
+      ],
+      "mots_cles": [
+        "culture littéraire",
+        "genres",
+        "choix de lecture",
+        "mise en réseau"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_cursive_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Automatiser l’écriture cursive et apprendre les majuscules",
+      "objectifs": [
+        "Automatiser le tracé des lettres minuscules cursives.",
+        "Reconnaître les lettres dans les quatre écritures.",
+        "Apprendre le tracé normé des majuscules cursives par familles de gestes."
+      ],
+      "prerequis_competences": [
+        "ecriture_cursive"
+      ],
+      "mots_cles": [
+        "cursive",
+        "majuscules",
+        "geste graphique"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_encoder_dictee_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Orthographier les mots et réaliser des accords sous dictée",
+      "objectifs": [
+        "Orthographier correctement les mots fréquents, réguliers puis irréguliers.",
+        "Réaliser les accords en genre et en nombre dans le groupe nominal et la marque du pluriel des verbes.",
+        "Réaliser des dictées en lien avec l’étude des graphèmes et de la langue."
+      ],
+      "prerequis_competences": [
+        "ecriture_encoder_dictee",
+        "ecriture_cursive_ce1",
+        "grammaire_orthographe_ce1"
+      ],
+      "mots_cles": [
+        "dictée",
+        "orthographe",
+        "accords",
+        "genre",
+        "nombre"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_copier_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Automatiser la copie et choisir des stratégies efficaces",
+      "objectifs": [
+        "Automatiser le geste d’écriture cursive par la copie de textes en temps limité.",
+        "Copier jusqu’à une dizaine de lignes en respectant ponctuation et mise en page.",
+        "Mobiliser différentes stratégies de copie et comparer leur efficacité.",
+        "Relire et corriger son écrit."
+      ],
+      "prerequis_competences": [
+        "ecriture_copier",
+        "ecriture_cursive_ce1"
+      ],
+      "mots_cles": [
+        "copie",
+        "stratégies",
+        "vitesse",
+        "exactitude",
+        "mise en page"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_produire_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Produire un texte court cohérent et le réviser",
+      "objectifs": [
+        "Rédiger des phrases et des textes courts en s’appuyant sur des phrases prototypiques.",
+        "Insérer des connecteurs pour assurer l’enchaînement des phrases.",
+        "Utiliser un brouillon et poursuivre la planification, la mise en mots et la révision.",
+        "Écrire jusqu’à six ou sept phrases en assurant la cohérence syntaxique et logique."
+      ],
+      "prerequis_competences": [
+        "ecriture_produire",
+        "ecriture_encoder_dictee_ce1",
+        "lecture_comprendre_ce1"
+      ],
+      "mots_cles": [
+        "production écrite",
+        "brouillon",
+        "connecteurs",
+        "révision"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_ecouter_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Écouter activement et organiser les informations entendues",
+      "objectifs": [
+        "Maintenir une attention active pendant quelques minutes.",
+        "Repérer, mémoriser, classer ou ordonner les informations importantes.",
+        "Réaliser une action à partir d’un discours injonctif.",
+        "Récapituler une information ou une leçon orale en ordonnant les informations."
+      ],
+      "prerequis_competences": [
+        "oral_ecouter"
+      ],
+      "mots_cles": [
+        "écoute active",
+        "attention",
+        "mémorisation",
+        "ordre"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_dire_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Produire un discours oral structuré et compréhensible",
+      "objectifs": [
+        "Utiliser les temps verbaux pour raconter, décrire, expliquer, comparer ou exposer.",
+        "Utiliser des critères pour évaluer sa prestation et progresser.",
+        "Organiser son propos avec des connecteurs adaptés.",
+        "Présenter une démarche en utilisant le lexique appris."
+      ],
+      "prerequis_competences": [
+        "oral_dire",
+        "oral_ecouter_ce1"
+      ],
+      "mots_cles": [
+        "expression orale",
+        "récit",
+        "explication",
+        "exposé"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_echanger_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Participer à des échanges en adaptant son langage",
+      "objectifs": [
+        "Respecter le propos des autres au cours des échanges.",
+        "Adapter le registre de langue à la situation de communication.",
+        "Exprimer et justifier un accord ou un désaccord.",
+        "Participer à des jeux de rôle en adaptant vocabulaire et syntaxe."
+      ],
+      "prerequis_competences": [
+        "oral_echanger",
+        "oral_ecouter_ce1",
+        "oral_dire_ce1"
+      ],
+      "mots_cles": [
+        "échanges",
+        "registre de langue",
+        "désaccord",
+        "interaction"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_enrichir_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Enrichir son vocabulaire et utiliser le dictionnaire",
+      "objectifs": [
+        "Enrichir les répertoires constitués au CP avec des expressions et locutions.",
+        "Automatiser différentes formulations associées à un même réseau.",
+        "S’appuyer sur la morphologie pour trouver le sens d’un mot.",
+        "Consulter un article de dictionnaire adapté."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_enrichir"
+      ],
+      "mots_cles": [
+        "lexique",
+        "locutions",
+        "morphologie",
+        "dictionnaire"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_relations_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Structurer les relations lexicales",
+      "objectifs": [
+        "Percevoir les catégories génériques, de base et spécifiques.",
+        "Percevoir les niveaux de langue.",
+        "Comprendre la différence entre sens propre et sens figuré.",
+        "Trier et apparier les mots et leurs dérivés selon les préfixes et suffixes."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_relations",
+        "vocabulaire_enrichir_ce1"
+      ],
+      "mots_cles": [
+        "catégories",
+        "générique",
+        "sens propre",
+        "sens figuré",
+        "préfixes",
+        "suffixes"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_reemployer_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Réemployer un vocabulaire précis et adapté",
+      "objectifs": [
+        "Mobiliser les mots rencontrés en contexte pour mieux parler, comprendre et écrire.",
+        "Utiliser les relations lexicales pour varier et adapter son expression.",
+        "Éviter les répétitions grâce aux synonymes et aux termes génériques."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_reemployer",
+        "vocabulaire_relations_ce1"
+      ],
+      "mots_cles": [
+        "réemploi",
+        "synonymes",
+        "termes génériques",
+        "expression"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_orthographe_lexicale_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Mémoriser l’orthographe des mots fréquents",
+      "objectifs": [
+        "Mémoriser l’orthographe des mots réguliers et irréguliers fréquents.",
+        "Tenir compte des accents et des graphèmes à prononciation variable.",
+        "Anticiper certaines lettres muettes grâce aux mots de la même famille.",
+        "Mémoriser des mots invariables et des affixes fréquents."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_orthographe_lexicale",
+        "vocabulaire_relations_ce1"
+      ],
+      "mots_cles": [
+        "orthographe lexicale",
+        "mots invariables",
+        "accents",
+        "analogies",
+        "affixes"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "grammaire_phrase_simple_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Identifier et manipuler les constituants de la phrase simple",
+      "objectifs": [
+        "Identifier la phrase simple et ses principaux constituants : groupe sujet, verbe et compléments.",
+        "Reconnaître et utiliser les trois types de phrases.",
+        "Reconnaître les formes négative et exclamative et effectuer des transformations.",
+        "Différencier les principales classes de mots : déterminant, nom commun, nom propre, adjectif, verbe, pronom personnel sujet.",
+        "Manipuler les phrases par déplacement, suppression, ajout et substitution."
+      ],
+      "prerequis_competences": [
+        "grammaire_phrase_simple"
+      ],
+      "mots_cles": [
+        "phrase simple",
+        "groupe sujet",
+        "verbe",
+        "classes grammaticales",
+        "manipulation"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "grammaire_orthographe_ce1",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Maîtriser les accords et la conjugaison de base",
+      "objectifs": [
+        "Reconnaître le groupe nominal et comprendre la chaîne d’accords.",
+        "Identifier la relation sujet-verbe dans des situations simples.",
+        "Identifier le radical et la terminaison d’un verbe du premier groupe et trouver son infinitif.",
+        "Conjuguer être, avoir et les verbes du premier groupe au présent, à l’imparfait, au futur et au passé composé."
+      ],
+      "prerequis_competences": [
+        "grammaire_orthographe",
+        "grammaire_phrase_simple_ce1"
+      ],
+      "mots_cles": [
+        "accords",
+        "groupe nominal",
+        "sujet-verbe",
+        "conjugaison",
+        "radical",
+        "terminaison"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_identifier_mots_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Automatiser la lecture des mots et maintenir une lecture fluide",
+      "objectifs": [
+        "Avoir automatisé toutes les correspondances graphophonémiques.",
+        "Lire un texte nouveau en s’appuyant sur un décodage rapide.",
+        "Automatiser la lecture des mots fréquents et irréguliers.",
+        "Décoder les mots inconnus en conservant une vitesse de lecture adaptée.",
+        "Lire avec fluidité sans vocaliser les lettres muettes et en réalisant les liaisons appropriées."
+      ],
+      "prerequis_competences": [
+        "lecture_identifier_mots_ce1"
+      ],
+      "mots_cles": [
+        "automatisation",
+        "décodage",
+        "mots irréguliers",
+        "fluidité",
+        "liaisons"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_voix_haute_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Lire à voix haute avec maîtrise de la fluence et de l’expressivité",
+      "objectifs": [
+        "Lire un texte adapté avec une fluence d’environ 90 mots par minute.",
+        "Respecter l’ensemble des marques de ponctuation et les liaisons.",
+        "Manifester sa compréhension par une lecture expressive respectant la structure et le sens.",
+        "Interpréter un texte théâtral en modulant la voix."
+      ],
+      "prerequis_competences": [
+        "lecture_voix_haute_ce1",
+        "lecture_identifier_mots_ce2"
+      ],
+      "mots_cles": [
+        "fluence",
+        "90 mots/minute",
+        "liaisons",
+        "lecture expressive",
+        "théâtre"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_comprendre_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Comprendre et réguler sa compréhension de textes variés",
+      "objectifs": [
+        "Lire et dégager le sens de textes narratifs, poétiques, documentaires ou théâtraux.",
+        "Adopter une posture active face au vocabulaire inconnu.",
+        "Résoudre des ambiguïtés en s’appuyant sur la chaîne anaphorique et le contexte.",
+        "Comprendre des inférences en mobilisant indices explicites et connaissances.",
+        "Lire et comprendre en autonomie des textes d’environ vingt lignes.",
+        "Mettre en œuvre des stratégies de régulation : relecture, dictionnaire, outils de langue ou recherche documentaire."
+      ],
+      "prerequis_competences": [
+        "lecture_comprendre_ce1",
+        "lecture_identifier_mots_ce2",
+        "vocabulaire_enrichir_ce2"
+      ],
+      "mots_cles": [
+        "compréhension",
+        "inférences",
+        "ambiguïtés",
+        "stratégies",
+        "relecture"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lecture_devenir_lecteur_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "lecture",
+      "domaine": "Lecture",
+      "couleur": "#B5502E",
+      "intitule": "Construire une culture littéraire et une autonomie de lecteur",
+      "objectifs": [
+        "Lire de manière autonome 5 à 10 œuvres complètes et variées.",
+        "Relier ses lectures à son expérience et construire des réseaux de textes.",
+        "Identifier les caractéristiques de genres et types de textes courants.",
+        "Conserver une mémoire de ses lectures dans un carnet de lecteur.",
+        "Partager une culture commune autour de textes patrimoniaux adaptés."
+      ],
+      "prerequis_competences": [
+        "lecture_devenir_lecteur_ce1",
+        "lecture_comprendre_ce2"
+      ],
+      "mots_cles": [
+        "culture littéraire",
+        "genres",
+        "types de textes",
+        "carnet de lecteur"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_cursive_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Automatiser l’écriture cursive minuscule et majuscule",
+      "objectifs": [
+        "Automatiser l’écriture de toutes les lettres minuscules et majuscules en cursive.",
+        "Écrire et transcrire avec fluidité les lettres cursives."
+      ],
+      "prerequis_competences": [
+        "ecriture_cursive_ce1"
+      ],
+      "mots_cles": [
+        "cursive",
+        "minuscules",
+        "majuscules",
+        "fluidité"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_encoder_dictee_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Orthographier correctement les mots et les phrases sous dictée",
+      "objectifs": [
+        "Orthographier correctement les mots fréquents, réguliers et irréguliers.",
+        "Orthographier des phrases en mobilisant les accords étudiés.",
+        "Transcrire correctement les phonèmes pouvant s’écrire avec plusieurs graphèmes.",
+        "Orthographier les chaînes d’accords dans la phrase."
+      ],
+      "prerequis_competences": [
+        "ecriture_encoder_dictee_ce1",
+        "grammaire_orthographe_ce2"
+      ],
+      "mots_cles": [
+        "dictée",
+        "orthographe",
+        "accords",
+        "graphèmes"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_copier_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Copier rapidement, exactement et en respectant la mise en page",
+      "objectifs": [
+        "Copier une dizaine de lignes sans erreur en conjuguant vitesse et exactitude.",
+        "Respecter les mises en page complexes.",
+        "Utiliser systématiquement des stratégies de copie pour améliorer vitesse, exactitude et endurance.",
+        "Se relire pour repérer omissions, erreurs orthographiques et erreurs de ponctuation."
+      ],
+      "prerequis_competences": [
+        "ecriture_copier_ce1",
+        "ecriture_cursive_ce2"
+      ],
+      "mots_cles": [
+        "copie",
+        "vitesse",
+        "exactitude",
+        "endurance",
+        "mise en page"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "ecriture_produire_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "ecriture",
+      "domaine": "Écriture",
+      "couleur": "#2A7F72",
+      "intitule": "Produire des écrits variés, structurés et révisés",
+      "objectifs": [
+        "Écrire pour transmettre un message, une émotion ou une information à un destinataire.",
+        "Rédiger des phrases qui réinvestissent les automatismes de grammaire et d’orthographe.",
+        "Produire un texte d’une dizaine de lignes de différents types en respectant syntaxe, orthographe et lexique.",
+        "Prendre en compte les contraintes d’écriture et relire méthodiquement sa production.",
+        "Améliorer son texte à partir d’indications et d’outils de référence."
+      ],
+      "prerequis_competences": [
+        "ecriture_produire_ce1",
+        "ecriture_encoder_dictee_ce2",
+        "vocabulaire_reemployer_ce2",
+        "grammaire_orthographe_ce2"
+      ],
+      "mots_cles": [
+        "production écrite",
+        "types de textes",
+        "révision",
+        "lexique",
+        "syntaxe"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_ecouter_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Comprendre et relier les informations d’un message oral complexe",
+      "objectifs": [
+        "Repérer, mémoriser et relier plusieurs informations importantes.",
+        "Construire la cohérence d’un message entendu de plus en plus long et complexe.",
+        "Évaluer son degré de compréhension.",
+        "Reformuler l’essentiel d’un message entendu."
+      ],
+      "prerequis_competences": [
+        "oral_ecouter_ce1"
+      ],
+      "mots_cles": [
+        "écoute",
+        "informations",
+        "cohérence",
+        "reformulation"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_dire_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Produire un discours oral long, structuré et adapté",
+      "objectifs": [
+        "Mener une production orale de plus en plus longue et structurée pour raconter, expliquer, argumenter ou justifier.",
+        "Maintenir l’intérêt de son auditoire.",
+        "Produire des phrases plus complexes et mobiliser un lexique varié et abstrait.",
+        "Présenter un exposé construit avec un support.",
+        "Expliquer un raisonnement ou une erreur et adapter son niveau de langue."
+      ],
+      "prerequis_competences": [
+        "oral_dire_ce1",
+        "oral_ecouter_ce2",
+        "vocabulaire_reemployer_ce2"
+      ],
+      "mots_cles": [
+        "oral",
+        "argumentation",
+        "justification",
+        "exposé",
+        "auditoire"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "oral_echanger_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "oral",
+      "domaine": "Oral",
+      "couleur": "#6B4E8E",
+      "intitule": "Participer à un échange en tenant compte des propos d’autrui",
+      "objectifs": [
+        "Tenir compte de ce qui a déjà été dit lors des interventions.",
+        "Utiliser un registre et des postures adaptés aux situations.",
+        "Reformuler le propos d’un camarade et s’appuyer dessus pour faire progresser l’échange."
+      ],
+      "prerequis_competences": [
+        "oral_echanger_ce1",
+        "oral_ecouter_ce2",
+        "oral_dire_ce2"
+      ],
+      "mots_cles": [
+        "échanges",
+        "reformulation",
+        "interaction",
+        "registre"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_enrichir_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Enrichir et analyser son vocabulaire avec autonomie",
+      "objectifs": [
+        "Enrichir les répertoires du CP et du CE1 avec des expressions et locutions.",
+        "Comprendre les liens entre sens propre et sens figuré.",
+        "S’appuyer sur la morphologie des mots pour en trouver le sens.",
+        "Consulter avec aisance un dictionnaire adapté.",
+        "Utiliser le contexte, la morphologie et les indices sémantiques pour élucider le sens d’un mot."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_enrichir_ce1",
+        "vocabulaire_relations_ce1"
+      ],
+      "mots_cles": [
+        "lexique",
+        "sens propre",
+        "sens figuré",
+        "morphologie",
+        "dictionnaire"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_relations_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Structurer les réseaux lexicaux et les dérivations",
+      "objectifs": [
+        "Percevoir et hiérarchiser les catégories génériques, de base et spécifiques.",
+        "Utiliser les niveaux de langue selon les situations et interlocuteurs.",
+        "Percevoir les relations de proximité et de synonymie.",
+        "Trier et apparier les mots et leurs dérivés selon les préfixes et suffixes.",
+        "Constituer un répertoire lexical personnel."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_relations_ce1",
+        "vocabulaire_enrichir_ce2"
+      ],
+      "mots_cles": [
+        "catégories",
+        "synonymie",
+        "niveaux de langue",
+        "dérivation",
+        "répertoire lexical"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_reemployer_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Employer avec précision le vocabulaire étudié",
+      "objectifs": [
+        "Employer à bon escient les mots étudiés en fonction de leur contexte et de leur polysémie.",
+        "Changer de niveau de langue selon les situations.",
+        "Automatiser la restitution des mots d’un corpus étudié.",
+        "Mobiliser synonymes, termes génériques et expressions pour éviter les répétitions."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_reemployer_ce1",
+        "vocabulaire_relations_ce2"
+      ],
+      "mots_cles": [
+        "réemploi",
+        "polysémie",
+        "registre",
+        "fluence verbale",
+        "synonymes"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "vocabulaire_orthographe_lexicale_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "vocabulaire",
+      "domaine": "Vocabulaire",
+      "couleur": "#B5871E",
+      "intitule": "Mémoriser et raisonner sur l’orthographe lexicale",
+      "objectifs": [
+        "Écrire correctement sous la dictée les mots fréquents réguliers et irréguliers.",
+        "Tenir compte des accents.",
+        "S’appuyer sur le radical, les préfixes, les suffixes et les analogies pour orthographier les mots.",
+        "Mobiliser des raisonnements morphologiques pour orthographier des mots inconnus."
+      ],
+      "prerequis_competences": [
+        "vocabulaire_orthographe_lexicale_ce1",
+        "vocabulaire_relations_ce2"
+      ],
+      "mots_cles": [
+        "orthographe lexicale",
+        "morphologie",
+        "radical",
+        "préfixe",
+        "suffixe",
+        "analogie"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "grammaire_phrase_simple_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Analyser et manipuler la phrase simple",
+      "objectifs": [
+        "Identifier la phrase simple et ses principaux constituants : groupe sujet, verbe et compléments.",
+        "Reconnaître et produire les trois types de phrases et les formes négative et exclamative.",
+        "Différencier les principales classes de mots et découvrir l’adverbe.",
+        "Utiliser la ponctuation de fin de phrase et reconnaître les marques du discours rapporté.",
+        "Mobiliser le vocabulaire grammatical pour résoudre des problèmes de lecture, d’écriture et d’orthographe."
+      ],
+      "prerequis_competences": [
+        "grammaire_phrase_simple_ce1"
+      ],
+      "mots_cles": [
+        "phrase simple",
+        "adverbe",
+        "discours direct",
+        "ponctuation",
+        "classes grammaticales"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "grammaire_orthographe_ce2",
+      "discipline": "Français",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "grammaire_orthographe",
+      "domaine": "Grammaire et orthographe",
+      "couleur": "#1E2A4A",
+      "intitule": "Maîtriser les accords et la conjugaison du cycle 2",
+      "objectifs": [
+        "Repérer, comprendre et mettre en œuvre les marques d’accord dans le groupe nominal.",
+        "Identifier la relation sujet-verbe dans des situations simples.",
+        "Conjuguer être, avoir, les verbes du premier groupe et les principaux verbes irréguliers du troisième groupe aux temps étudiés.",
+        "Identifier le radical et la terminaison et trouver l’infinitif.",
+        "Verbaliser les raisonnements orthographiques et corriger les accords."
+      ],
+      "prerequis_competences": [
+        "grammaire_orthographe_ce1",
+        "grammaire_phrase_simple_ce2"
+      ],
+      "mots_cles": [
+        "accords",
+        "groupe nominal",
+        "sujet-verbe",
+        "conjugaison",
+        "radical",
+        "infinitif"
+      ],
+      "source": {
+        "document": "Annexe 3 – Programme de français du cycle 2",
+        "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
     }
   ]
 }
