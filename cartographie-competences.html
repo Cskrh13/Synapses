@@ -40,6 +40,11 @@ input{width:280px;padding:8px 10px}
 .bottom{position:absolute;z-index:12;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid #d8dde2;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(24,40,55,.09);backdrop-filter:blur(8px)}
 .bottom button{font-size:18px;line-height:1;padding:3px 8px;border:0;background:transparent}
 #zoomRange{width:130px}
+#relationMenu{position:absolute;z-index:13;left:50%;bottom:62px;transform:translateX(-50%);display:none;gap:6px;padding:7px;border:1px solid #d8dde2;background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(24,40,55,.12);backdrop-filter:blur(8px)}
+#relationMenu.open{display:flex}
+#relationMenu button{font-size:11px;padding:7px 9px}
+.linkedItem{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
+.linkedItem:hover{background:#f5ead3}
 #panel{position:absolute;z-index:30;right:24px;top:145px;width:min(390px,calc(100vw - 48px));max-height:calc(100vh - 185px);overflow:auto;transform:translateX(calc(100% + 40px));transition:transform .2s ease;pointer-events:auto}
 #panel.open{transform:translateX(0)}
 .panelCard{background:rgba(255,255,255,.96);border:1px solid #d4dbe0;box-shadow:0 18px 50px rgba(26,44,60,.14);padding:18px}
@@ -89,10 +94,15 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
   <h3>Navigation</h3>
   <div class="navrow">Clic gauche maintenu : tourner les sphères</div>
   <div class="navrow">Clic droit maintenu : déplacer horizontalement et verticalement</div>
-  <div class="navrow">Molette : zoomer / dézoomer</div>
+  <div class="navrow">Molette : zoomer / dézoomer</div><div class="navrow">Double-clic sur une boule : zoomer dessus</div>
   <div class="navrow">Clic : ouvrir une fiche</div><div class="navrow"><strong>Spirale :</strong> TPS → PS → MS → GS → CP → CE1 → CE2 → CM1 → CM2 → 6e</div>
 </div>
 
+<div id="relationMenu">
+<button id="showImmediatePre">Prérequis immédiats</button>
+<button id="showAncestors">Chemin des antécédents</button>
+<button id="clearRelations">Effacer</button>
+</div>
 <div class="bottom">
   <button id="home" title="Recentrer">⌂</button>
   <button id="minus" title="Zoom arrière">−</button>
@@ -149,7 +159,9 @@ const state = {
   sequences:[], seances:[], nodes:[], links:[],
   levels:new Set(LEVEL_ORDER), domains:new Set(),
   search:"", selected:null, hover:null,
-  yaw:0.28, pitch:-0.12, zoom:1,
+  yaw:0.28, pitch:-0.12, zoom:.62,
+  minZoom:.16, maxZoom:2.4, openingSpin:true, openingSpinTimer:null,
+  relationMode:null, relationNodes:new Set(), relationLinks:new Set(),
   panX:0, panY:0,
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
   sphereR:170, sphereSpacing:470, spiralRadius:620, spiralRise:150, spiralTurns:1.35,
@@ -447,7 +459,7 @@ function drawSphere(ctx,s,label){
 function drawNode(ctx,p,n){
   const r=Math.max(5,TYPE[n.type].radius*p.scale*.78);
   ctx.save();
-  const base=TYPE[n.type].color;
+  const base=state.relationNodes.has(n.id) ? "#c52b2b" : TYPE[n.type].color;
   const grad=ctx.createRadialGradient(p.x-r*.35,p.y-r*.42,1,p.x,p.y,r);
   grad.addColorStop(0,"rgba(255,255,255,.9)");
   grad.addColorStop(.25,base);grad.addColorStop(1,"rgba(0,0,0,.28)");
@@ -489,6 +501,7 @@ function draw(){
     }else{
       ctx.strokeStyle="rgba(73,108,126,.48)";ctx.lineWidth=1;
     }
+    if(state.relationLinks.has(l)){ctx.strokeStyle="#c52b2b";ctx.lineWidth=2.5;ctx.setLineDash(l.type==="prerequis"?[5,6]:[]);}
     ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore();
   }
 
@@ -519,40 +532,62 @@ function hit(clientX,clientY){
 /* ---------- Fiches ---------- */
 function compById(id){return state.compData.competences.find(c=>c.id===id)}
 function seqById(id){return state.sequences.find(s=>s.id===id)}
+function relationData(id){
+  const byId=new Map(state.compData.competences.map(c=>[c.id,c]));
+  const pre=(byId.get(id)?.prerequis_competences||[]).filter(x=>byId.has(x));
+  const after=state.compData.competences.filter(c=>(c.prerequis_competences||[]).includes(id));
+  return {byId,pre,after};
+}
+function showRelations(mode){
+  state.relationNodes=new Set(); state.relationLinks=new Set();
+  const id=state.selected?.startsWith("c:")?state.selected.slice(2):null;
+  if(!id||!mode){$("relationMenu").classList.remove("open");update();return;}
+  const {pre}=relationData(id);
+  if(mode==="immediate"){
+    pre.forEach(x=>{state.relationNodes.add("c:"+x);state.relationLinks.add("c:"+x+"->c:"+id);});
+  }else{
+    const byId=new Map(state.compData.competences.map(c=>[c.id,c])), seen=new Set();
+    function walk(x){
+      for(const y of byId.get(x)?.prerequis_competences||[]){
+        if(!byId.has(y))continue;
+        state.relationNodes.add("c:"+y);state.relationLinks.add("c:"+y+"->c:"+x);
+        if(!seen.has(y)){seen.add(y);walk(y);}
+      }
+    }
+    walk(id);
+  }
+  $("relationMenu").classList.add("open");update();
+}
 function showPanel(node){
   state.selected=node.id;
   let html="";
   if(node.type==="competence"){
-    const c=compById(node.ref);
-    const pre=(c?.prerequis_competences||[]).map(compById).filter(Boolean);
-    const after=state.compData.competences.filter(x=>(x.prerequis_competences||[]).includes(c?.id));
+    const c=compById(node.ref), {byId,pre,after}=relationData(c?.id);
     html=`<span class="tag">Compétence · ${esc(c?.niveau)}</span><h2>${esc(c?.intitule)}</h2>
       <div class="meta">${esc(c?.discipline)} · ${esc(c?.domaine)}</div>
       <div class="section"><h4>Objectifs</h4>${(c?.objectifs||[]).map(x=>`<div class="item">${esc(x)}</div>`).join("")||"<div class='item'>Aucun objectif renseigné.</div>"}</div>
-      <div class="section"><h4>Prérequis explicitement déclarés</h4>${pre.length?pre.map(x=>`<div class="item">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucun prérequis déclaré.</div>"}</div>
-      <div class="section"><h4>Compétences qui en dépendent</h4>${after.length?after.map(x=>`<div class="item">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucune relation déclarée.</div>"}</div>
+      <div class="section"><h4>Prérequis explicitement déclarés</h4>${pre.length?pre.map(id=>`<div class="item linkedItem" data-c="${esc(id)}">${esc(byId.get(id)?.intitule||id)}</div>`).join(""):"<div class='item'>Aucun prérequis déclaré.</div>"}</div>
+      <div class="section"><h4>Compétences qui en dépendent</h4>${after.length?after.map(x=>`<div class="item linkedItem" data-c="${esc(x.id)}">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucune relation déclarée.</div>"}</div>
       <a class="panelAction" href="Programmation/sequences.html?competence=${encodeURIComponent(c?.id||"")}">Ouvrir dans la programmation</a>`;
   }else if(node.type==="sequence"){
     const s=seqById(node.ref);
-    html=`<span class="tag">Séquence · ${esc(s?.niveau)}</span><h2>${esc(s?.titre)}</h2>
-      <div class="meta">${esc(s?.discipline)} · ${esc(s?.domaine)}</div>
-      <div class="section"><h4>Séances</h4>${(s?.seances||[]).map(x=>`<div class="item">${esc(x.numero?`Séance ${x.numero} — `:"")}${esc(x.titre)}</div>`).join("")||"<div class='item'>Aucune séance renseignée.</div>"}</div>
-      <a class="panelAction" href="Programmation/sequences.html?sequence=${encodeURIComponent(s?.id||"")}">Ouvrir dans la programmation</a>`;
+    html=`<span class="tag">Séquence · ${esc(s?.niveau)}</span><h2>${esc(s?.titre)}</h2><div class="meta">${esc(s?.discipline)} · ${esc(s?.domaine)}</div>`;
   }else{
-    const se=state.seances.find(x=>x.id===node.ref);
-    const seq=seqById(se?.sequence_id);
-    html=`<span class="tag">Séance · ${esc(se?.niveau)}</span><h2>${esc(se?.titre)}</h2>
-      <div class="meta">${esc(se?.type||"Séance")} · ${esc(seq?.titre||se?.sequence_id||"")}</div>
-      <a class="panelAction" href="Programmation/sequences.html?sequence=${encodeURIComponent(se?.sequence_id||"")}&seance=${encodeURIComponent(se?.id||"")}">Ouvrir dans l'onglet séquence / séance</a>`;
+    const se=state.seances.find(x=>x.id===node.ref),seq=seqById(se?.sequence_id);
+    html=`<span class="tag">Séance · ${esc(se?.niveau)}</span><h2>${esc(se?.titre)}</h2><div class="meta">${esc(se?.type||"Séance")} · ${esc(seq?.titre||"")}</div>`;
   }
-  $("panelContent").innerHTML=html;
-  $("panel").classList.add("open");
+  $("panelContent").innerHTML=html;$("panel").classList.add("open");
+  if(node.type==="competence"){
+    $("relationMenu").classList.add("open");
+    $("panelContent").querySelectorAll("[data-c]").forEach(e=>e.onclick=()=>showPanel(state.nodes.find(n=>n.id==="c:"+e.dataset.c)));
+  }else $("relationMenu").classList.remove("open");
   update();
 }
 
 /* ---------- Navigation ---------- */
 function resetView(){
   state.yaw=0.42;state.pitch=-0.24;state.zoom=.62;state.panX=0;state.panY=0;
+  state.relationNodes=new Set();state.relationLinks=new Set();$("relationMenu").classList.remove("open");
   $("zoomRange").value=1;draw();
 }
 $("search").addEventListener("input",e=>{state.search=e.target.value;update();});
@@ -564,14 +599,15 @@ $("reset").onclick=()=>{
 };
 $("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null;update();};
 $("home").onclick=resetView;
-$("minus").onclick=()=>{state.zoom=Math.max(.42,state.zoom*.88);$("zoomRange").value=state.zoom;draw();};
-$("plus").onclick=()=>{state.zoom=Math.min(2.4,state.zoom*1.12);$("zoomRange").value=state.zoom;draw();};
+$("minus").onclick=()=>{state.zoom=Math.max(state.minZoom,state.zoom*.88);$("zoomRange").value=state.zoom;draw();};
+$("plus").onclick=()=>{state.zoom=Math.min(state.maxZoom,state.zoom*1.12);$("zoomRange").value=state.zoom;draw();};
 $("zoomRange").oninput=e=>{state.zoom=+e.target.value;draw();};
 $("fullscreen").onclick=()=>document.fullscreenElement?document.exitFullscreen():$("app").requestFullscreen?.();
 
 const canvas=$("graph");
 canvas.addEventListener("contextmenu",e=>e.preventDefault());
 canvas.addEventListener("pointerdown",e=>{
+  state.openingSpin=false;
   state.dragging=true;state.panning=e.button===2;state.moved=false;
   state.lastX=e.clientX;state.lastY=e.clientY;canvas.classList.add("dragging");
   canvas.setPointerCapture?.(e.pointerId);
@@ -590,6 +626,11 @@ canvas.addEventListener("pointermove",e=>{
   }
   state.lastX=e.clientX;state.lastY=e.clientY;draw();
 });
+canvas.addEventListener("dblclick",e=>{
+  state.openingSpin=false;
+  const n=hit(e.clientX,e.clientY);
+  if(n){const p=projectPoint(n);state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,1.8));state.panX+=innerWidth/2-p.x;state.panY+=innerHeight/2-p.y;$("zoomRange").value=state.zoom;draw();}
+});
 canvas.addEventListener("pointerup",e=>{
   if(!state.dragging)return;
   const wasPan=state.panning,moved=state.moved;
@@ -599,14 +640,24 @@ canvas.addEventListener("pointerup",e=>{
   }
 });
 canvas.addEventListener("wheel",e=>{
+  state.openingSpin=false;
   e.preventDefault();
   state.zoom*=e.deltaY<0?1.08:.925;
-  state.zoom=Math.max(.42,Math.min(2.4,state.zoom));
+  state.zoom=Math.max(state.minZoom,Math.min(state.maxZoom,state.zoom));
   $("zoomRange").value=state.zoom;draw();
 },{passive:false});
+$("showImmediatePre").onclick=()=>showRelations("immediate");
+$("showAncestors").onclick=()=>showRelations("ancestors");
+$("clearRelations").onclick=()=>showRelations(null);
 window.addEventListener("resize",draw);
+function openingSpin(t0){
+  if(!state.openingSpin)return;
+  const elapsed=performance.now()-t0;
+  if(elapsed>3500){state.openingSpin=false;draw();return;}
+  state.yaw+=0.004*(1-elapsed/3500);draw();requestAnimationFrame(()=>openingSpin(t0));
+}
 
-loadData();
+loadData().then(()=>openingSpin(performance.now()));
 </script>
 </body>
 </html>
