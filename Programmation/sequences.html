@@ -401,15 +401,23 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 </header>
 
 <div class="modal-overlay" id="modal-coffre">
-  <div class="modal" style="max-width:440px;">
+  <div class="modal" style="max-width:460px;">
     <div class="modal-head">
       <h3>Ouvrir le coffre élèves</h3>
       <button class="modal-close" data-close="modal-coffre">✕</button>
     </div>
     <div class="modal-body">
-      <p style="font-size:13px;color:var(--ink-soft);margin:0 0 16px;">Le coffre reste en mémoire de cet onglet uniquement — aucune donnée élève n'est écrite sur ce disque.</p>
-      <div class="field"><label>Fichier .synapses</label><input type="file" id="coffre-file" accept=".synapses"></div>
+      <div class="field">
+        <label>Fichier .synapses — sur cet ordinateur</label>
+        <button type="button" class="btn on-panel" id="coffre-browse-btn" style="width:100%;text-align:left;">📁 Parcourir mon ordinateur…</button>
+        <input type="file" id="coffre-file" accept=".synapses" style="display:none;">
+        <div id="coffre-file-name" style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;">Aucun fichier sélectionné.</div>
+      </div>
       <div class="field"><label>Mot de passe</label><input type="password" id="coffre-password" placeholder="Mot de passe du coffre"></div>
+      <p style="font-size:12.5px;color:var(--ink-soft);margin:14px 0 0;line-height:1.6;">
+        🔒 Ce fichier est lu <strong>directement depuis votre disque</strong> par votre navigateur : il n'est jamais envoyé au site, ni à un serveur, ni sur GitHub.<br>
+        ⚠️ Ne placez jamais ce fichier dans le dépôt GitHub du site — sinon il devient public dès la publication de la page, chiffré ou non.
+      </p>
     </div>
     <div class="modal-foot">
       <button class="btn on-panel" data-close="modal-coffre">Annuler</button>
@@ -783,6 +791,11 @@ if(document.getElementById('btn-coffre-toggle')){
       openModal('modal-coffre');
     }
   });
+  document.getElementById('coffre-browse-btn').addEventListener('click', ()=> document.getElementById('coffre-file').click());
+  document.getElementById('coffre-file').addEventListener('change', ()=>{
+    const f = document.getElementById('coffre-file').files[0];
+    document.getElementById('coffre-file-name').textContent = f ? ("Sélectionné : " + f.name) : "Aucun fichier sélectionné.";
+  });
   document.getElementById('btn-coffre-open-confirm').addEventListener('click', async ()=>{
     const file = document.getElementById('coffre-file').files[0];
     const pwd = document.getElementById('coffre-password').value;
@@ -792,6 +805,8 @@ if(document.getElementById('btn-coffre-toggle')){
       await coffre.ouvrir(file, pwd);
       closeModal('modal-coffre');
       document.getElementById('coffre-password').value = "";
+      document.getElementById('coffre-file').value = "";
+      document.getElementById('coffre-file-name').textContent = "Aucun fichier sélectionné.";
       updateCoffreWidget();
       toast("Coffre ouvert : " + coffre.listerEleves().length + " élève(s)");
     }catch(err){
