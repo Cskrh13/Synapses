@@ -114,7 +114,10 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
       <div class="eyebrow" style="color:#B9C6E5;">Synapses</div>
       <h1 style="color:#fff;font-size:20px;">Coffre confidentiel</h1>
     </div>
-    <div style="margin-left:auto;" id="etatCoffre"><span class="pill closed">Aucun coffre ouvert</span></div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
+      <a href="../index.html" style="color:#fff;font-size:13.5px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.3);border-radius:7px;padding:8px 14px;white-space:nowrap;">← Portail</a>
+      <div id="etatCoffre"><span class="pill closed">Aucun coffre ouvert</span></div>
+    </div>
   </div>
 </header>
 
@@ -213,7 +216,12 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
       : '<span class="pill closed">Aucun coffre ouvert</span>';
   }
 
-  const suivi = new SynapsesSuiviIndividuel.SuiviIndividuel(coffre);
+  const suivi = new SynapsesSuiviIndividuel.SuiviIndividuel(coffre, {
+    // coffre.html vit dans fata-morgana/, les référentiels publics dans Programmation/data/ :
+    // il faut donc remonter d'un niveau (../) pour les atteindre.
+    urlReferentielGeneral: '../Programmation/data/grille-analyse-generale.json',
+    urlReferentielDisciplinaire: '../Programmation/data/competences.json'
+  });
 
   async function ouvrirSuivi(){
     await suivi.mount($('suiviIndividuelApp'));
