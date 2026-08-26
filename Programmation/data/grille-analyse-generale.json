@@ -1,0 +1,131 @@
+{
+  "meta": {
+    "titre": "Grille d'analyse ULIS — domaines transversaux",
+    "version": "0.1-brouillon",
+    "description": "Référentiel PUBLIC et non nominatif. Contient uniquement des points d'appui, difficultés, besoins et adaptations génériques (aucune donnée élève). Structure inspirée de la grille BARRY pour les domaines transversaux ; les domaines disciplinaires (Mathématiques, Français) s'appuient sur Programmation/data/competences.json (S4C). Ce fichier est un point de départ à enrichir avec le contenu réel de la grille BARRY utilisée sur le terrain.",
+    "extensible": true
+  },
+  "domaines": [
+    {
+      "id": "affectif",
+      "nom": "Affectif",
+      "source": "BARRY",
+      "couleur": "#6B4E8E",
+      "pointsAppui": [
+        { "id": "aff_pa_motivation", "libelle": "Motivation pour certaines activités" },
+        { "id": "aff_pa_plaisir", "libelle": "Plaisir manifeste dans l'activité" },
+        { "id": "aff_pa_confiance_adulte", "libelle": "Relation de confiance avec l'adulte" },
+        { "id": "aff_pa_rituels", "libelle": "Attachement rassurant à certains rituels" }
+      ],
+      "difficultes": [
+        { "id": "aff_di_anxiete", "libelle": "Anxiété face à la nouveauté" },
+        { "id": "aff_di_estime", "libelle": "Faible estime de soi" },
+        { "id": "aff_di_erreur", "libelle": "Difficulté à accepter l'erreur" },
+        { "id": "aff_di_emotions", "libelle": "Réactions émotionnelles intenses" }
+      ],
+      "besoins": [
+        { "id": "aff_be_securisation", "libelle": "Sécurisation affective" },
+        { "id": "aff_be_valorisation", "libelle": "Valorisation régulière" },
+        { "id": "aff_be_anticipation", "libelle": "Anticipation des changements" },
+        { "id": "aff_be_droit_erreur", "libelle": "Droit à l'erreur explicite" }
+      ],
+      "adaptations": [
+        { "id": "aff_ad_encouragements", "libelle": "Encouragements fréquents et ciblés" },
+        { "id": "aff_ad_rituel_demarrage", "libelle": "Rituel de démarrage rassurant" },
+        { "id": "aff_ad_verbalisation", "libelle": "Verbalisation des émotions avec l'adulte" },
+        { "id": "aff_ad_contrat_confiance", "libelle": "Contrat de confiance explicite" }
+      ]
+    },
+    {
+      "id": "social",
+      "nom": "Social",
+      "source": "BARRY",
+      "couleur": "#2A7F72",
+      "pointsAppui": [
+        { "id": "soc_pa_contact_pairs", "libelle": "Recherche du contact avec les pairs" },
+        { "id": "soc_pa_imitation", "libelle": "Capacité à imiter les pairs" },
+        { "id": "soc_pa_regles", "libelle": "Respect de certaines règles collectives" },
+        { "id": "soc_pa_petit_groupe", "libelle": "Bonne participation en petit groupe" }
+      ],
+      "difficultes": [
+        { "id": "soc_di_partage", "libelle": "Difficulté à partager / coopérer" },
+        { "id": "soc_di_retrait", "libelle": "Retrait social" },
+        { "id": "soc_di_conflits", "libelle": "Conflits fréquents avec les pairs" },
+        { "id": "soc_di_tour_parole", "libelle": "Difficulté à respecter le tour de parole" }
+      ],
+      "besoins": [
+        { "id": "soc_be_codes", "libelle": "Apprentissage explicite des codes sociaux" },
+        { "id": "soc_be_cadre", "libelle": "Cadre explicite et stable" },
+        { "id": "soc_be_mediation", "libelle": "Médiation par l'adulte" },
+        { "id": "soc_be_petit_groupe", "libelle": "Travail en petits groupes" }
+      ],
+      "adaptations": [
+        { "id": "soc_ad_tutorat", "libelle": "Tutorat entre pairs" },
+        { "id": "soc_ad_regles_explicites", "libelle": "Règles du jeu explicitées en amont" },
+        { "id": "soc_ad_role_valorisant", "libelle": "Rôle valorisant confié dans le groupe" },
+        { "id": "soc_ad_mediation_conflit", "libelle": "Médiation systématique lors des conflits" }
+      ]
+    },
+    {
+      "id": "cognitif",
+      "nom": "Cognitif",
+      "source": "BARRY",
+      "couleur": "#2E5EAA",
+      "pointsAppui": [
+        { "id": "cog_pa_memoire_visuelle", "libelle": "Bonne mémoire visuelle" },
+        { "id": "cog_pa_curiosite", "libelle": "Curiosité, intérêt pour les activités" },
+        { "id": "cog_pa_raisonnement_oral", "libelle": "Capacité de raisonnement à l'oral" },
+        { "id": "cog_pa_comprehension_orale", "libelle": "Bonne compréhension orale" }
+      ],
+      "difficultes": [
+        { "id": "cog_di_attention", "libelle": "Difficulté à maintenir l'attention" },
+        { "id": "cog_di_lenteur", "libelle": "Lenteur de traitement de l'information" },
+        { "id": "cog_di_memorisation", "libelle": "Difficulté de mémorisation" },
+        { "id": "cog_di_planification", "libelle": "Difficulté à planifier une tâche" }
+      ],
+      "besoins": [
+        { "id": "cog_be_ecoute", "libelle": "Maintenir une écoute attentive" },
+        { "id": "cog_be_charge", "libelle": "Réduire la charge cognitive" },
+        { "id": "cog_be_reactivation", "libelle": "Répéter / réactiver les connaissances" },
+        { "id": "cog_be_structuration", "libelle": "Structurer les étapes d'une tâche" }
+      ],
+      "adaptations": [
+        { "id": "cog_ad_consigne_structuree", "libelle": "Consigne structurée et reformulée" },
+        { "id": "cog_ad_objectif_explicite", "libelle": "Objectif explicite avant la tâche" },
+        { "id": "cog_ad_activite_courte", "libelle": "Activité courte" },
+        { "id": "cog_ad_pauses", "libelle": "Pauses cognitives régulières" },
+        { "id": "cog_ad_support_visuel", "libelle": "Support visuel séquentiel des étapes" }
+      ]
+    },
+    {
+      "id": "sensorimoteur",
+      "nom": "Sensorimoteur",
+      "source": "BARRY",
+      "couleur": "#B5871E",
+      "pointsAppui": [
+        { "id": "sen_pa_motricite_globale", "libelle": "Bonne motricité globale" },
+        { "id": "sen_pa_aisance_manuelle", "libelle": "Aisance manuelle" },
+        { "id": "sen_pa_lateralisation", "libelle": "Bonne latéralisation" },
+        { "id": "sen_pa_tolerance", "libelle": "Tolérance sensorielle correcte dans certains contextes" }
+      ],
+      "difficultes": [
+        { "id": "sen_di_motricite_fine", "libelle": "Difficulté de motricité fine" },
+        { "id": "sen_di_hypersensibilite", "libelle": "Hypersensibilité sensorielle (bruit, lumière, toucher)" },
+        { "id": "sen_di_fatigabilite", "libelle": "Fatigabilité" },
+        { "id": "sen_di_espace", "libelle": "Difficulté de repérage spatial" }
+      ],
+      "besoins": [
+        { "id": "sen_be_amenagement", "libelle": "Aménagement sensoriel de l'environnement" },
+        { "id": "sen_be_materiel", "libelle": "Adaptation du matériel" },
+        { "id": "sen_be_pauses_motrices", "libelle": "Pauses motrices régulières" },
+        { "id": "sen_be_reperes", "libelle": "Repères spatiaux stables" }
+      ],
+      "adaptations": [
+        { "id": "sen_ad_materiel_adapte", "libelle": "Matériel adapté (crayon, ciseaux, ...)" },
+        { "id": "sen_ad_coin_calme", "libelle": "Casque anti-bruit / coin calme disponible" },
+        { "id": "sen_ad_pause_mouvement", "libelle": "Pause mouvement programmée" },
+        { "id": "sen_ad_marquage_visuel", "libelle": "Marquage visuel de l'espace de travail" }
+      ]
+    }
+  ]
+}
