@@ -3268,6 +3268,18 @@ load().then(()=>{
 });
 
 </script>
-
+ <!-- Collez le code juste ici, avant la fin du body -->
+    <script>
+    const originalFetch = window.fetch;
+    window.fetch = function(...args) {
+        let url = args[0];
+        if (typeof url === 'string' && (url.startsWith('data/') || url.includes('index.json') || url.includes('competences.json'))) {
+            if (!url.startsWith('Programmation/')) {
+                args[0] = 'Programmation/' + url;
+            }
+        }
+        return originalFetch.apply(this, args);
+    };
+    </script>
 </body>
 </html>
