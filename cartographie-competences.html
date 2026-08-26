@@ -420,7 +420,7 @@ a{
 </div>
 
 <div id="help" class="side">
-  Glisser : tourner · Molette : zoomer · Cliquer : ouvrir une fiche
+  Clic gauche : tourner · Clic droit maintenu : naviguer · Molette : zoomer · Cliquer : ouvrir une fiche
 </div>
 
 <div class="bottom">
@@ -524,7 +524,12 @@ const state = {
   pitch:-.15,
   zoom:1,
 
+  panX:0,
+  panY:0,
+
   drag:false,
+  panning:false,
+  dragButton:0,
   lastX:0,
   lastY:0
 
@@ -923,15 +928,66 @@ async function load(){
    SPHÈRES DE NIVEAU
 ========================================================= */
 
+/*
+  Grands domaines scolaires attendus (CP → 6e).
+
+  Ces six sphères sont TOUJOURS affichées, même
+  si index.json ne contient encore que certains
+  niveaux : cela permet de voir la structure
+  d'ensemble de la scolarité pendant que les
+  données sont complétées progressivement.
+
+  Aucune compétence / séquence / séance n'est
+  inventée pour autant : les sphères sans données
+  restent simplement vides.
+*/
+
+const NIVEAUX_CANONIQUES=[
+  "CP","CE1","CE2","CM1","CM2","6E"
+];
+
+function niveauLabelCanonique(key){
+
+  return key==="6E" ? "6e" : key;
+
+}
+
+
 function buildSpheres(){
 
   state.spheres={};
 
-  const levels=
+  const levelsData=
     state.index?.niveaux || [];
 
+  /*
+    Correspondance insensible à la casse
+    entre les niveaux réellement présents
+    dans index.json et les six grands
+    domaines attendus.
+  */
+
+  const byKey=new Map();
+
+  for(const level of levelsData){
+
+    byKey.set(
+      String(level.id).toUpperCase(),
+      level
+    );
+
+  }
+
+  const extra=
+    levelsData
+      .map(l=>String(l.id).toUpperCase())
+      .filter(k=>!NIVEAUX_CANONIQUES.includes(k));
+
+  const order=
+    NIVEAUX_CANONIQUES.concat(extra);
+
   const count=
-    Math.max(1,levels.length);
+    Math.max(1,order.length);
 
   /*
     Les sphères sont disposées autour du centre.
@@ -961,22 +1017,31 @@ function buildSpheres(){
     );
 
 
-  levels.forEach((level,i)=>{
+  order.forEach((key,i)=>{
+
+    const level=
+      byKey.get(key);
+
+    const id=
+      level
+        ? String(level.id)
+        : key;
 
     const angle=
       -Math.PI/2 +
       (i/count)*Math.PI*2;
 
 
-    state.spheres[
-      String(level.id)
-    ]={
+    state.spheres[id]={
 
-      id:String(level.id),
+      id,
 
       label:
-        level.nom ||
-        niveauLabel(level.id),
+        level
+          ? (level.nom || niveauLabel(level.id))
+          : niveauLabelCanonique(key),
+
+      empty:!level,
 
       x:
         Math.cos(angle)*
@@ -1655,11 +1720,13 @@ function project(p){
 
     x:
       innerWidth/2+
-      r.x*scale,
+      r.x*scale+
+      state.panX,
 
     y:
       innerHeight/2+
-      r.y*scale,
+      r.y*scale+
+      state.panY,
 
     z:r.z,
 
@@ -1700,9 +1767,15 @@ function drawSphere(ctx,sphere){
   ctx.save();
 
   ctx.strokeStyle=
-    "rgba(90,105,100,.28)";
+    sphere.empty
+      ? "rgba(90,105,100,.14)"
+      : "rgba(90,105,100,.28)";
 
   ctx.lineWidth=1;
+
+  if(sphere.empty){
+    ctx.setLineDash([3,4]);
+  }
 
 
   /*
@@ -1845,7 +1918,9 @@ function drawSphere(ctx,sphere){
 
 
   ctx.fillStyle=
-    "#303737";
+    sphere.empty
+      ? "#8a9090"
+      : "#303737";
 
   ctx.font=
     "bold 18px Georgia";
@@ -1854,7 +1929,8 @@ function drawSphere(ctx,sphere){
     "center";
 
   ctx.fillText(
-    sphere.label,
+    sphere.label+
+    (sphere.empty ? " (à venir)" : ""),
     labelPos.x,
     labelPos.y
   );
@@ -2221,15 +2297,50 @@ function hit(x,y){
 }
 
 
+/*
+  Clic gauche maintenu : rotation (yaw/pitch).
+  Clic droit maintenu : navigation (pan horizontal/vertical).
+  Molette : zoom.
+  Clic gauche sans déplacement : ouverture d'une fiche.
+*/
+
+$("graph").addEventListener(
+  "contextmenu",
+  e=>{
+
+    e.preventDefault();
+
+  }
+);
+
+
 $("graph").addEventListener(
   "pointerdown",
   e=>{
 
-    state.drag=true;
+    state.dragButton=e.button;
 
     state.lastX=e.clientX;
 
     state.lastY=e.clientY;
+
+
+    if(e.button===2){
+
+      state.panning=true;
+
+    }
+    else if(e.button===0){
+
+      state.drag=true;
+
+    }
+    else{
+
+      return;
+
+    }
+
 
     $("graph")
       .classList
@@ -2243,7 +2354,14 @@ window.addEventListener(
   "pointerup",
   e=>{
 
-    if(!state.drag)return;
+    const wasDrag=
+      state.drag;
+
+    const wasPanning=
+      state.panning;
+
+
+    if(!wasDrag && !wasPanning)return;
 
 
     const dx=
@@ -2259,12 +2377,16 @@ window.addEventListener(
 
     state.drag=false;
 
+    state.panning=false;
+
     $("graph")
       .classList
       .remove("dragging");
 
 
     if(
+      wasDrag &&
+      !wasPanning &&
       dx<4 &&
       dy<4
     ){
@@ -2289,7 +2411,23 @@ window.addEventListener(
   "pointermove",
   e=>{
 
-    if(state.drag){
+    if(state.panning){
+
+      state.panX +=
+        e.clientX-state.lastX;
+
+      state.panY +=
+        e.clientY-state.lastY;
+
+
+      state.lastX=
+        e.clientX;
+
+      state.lastY=
+        e.clientY;
+
+    }
+    else if(state.drag){
 
       state.yaw +=
         (e.clientX-state.lastX)*
@@ -2373,12 +2511,12 @@ function renderFilters(){
   $("levels").innerHTML="";
 
   for(
-    const level
-    of state.index?.niveaux || []
+    const sphere
+    of Object.values(state.spheres)
   ){
 
     const id=
-      String(level.id);
+      sphere.id;
 
 
     const button=
@@ -2388,7 +2526,13 @@ function renderFilters(){
 
 
     button.textContent=
-      level.nom || id;
+      sphere.label +
+      (sphere.empty ? " ·" : "");
+
+    button.title=
+      sphere.empty
+        ? "Aucune donnée pour ce niveau pour l'instant"
+        : "";
 
 
     button.className=
@@ -2581,8 +2725,7 @@ $("reset").onclick=()=>{
 
   state.activeLevels=
     new Set(
-      (state.index?.niveaux || [])
-        .map(n=>String(n.id))
+      Object.keys(state.spheres)
     );
 
 
@@ -2647,6 +2790,10 @@ $("home").onclick=()=>{
   state.pitch=-.15;
 
   state.zoom=1;
+
+  state.panX=0;
+
+  state.panY=0;
 
   $("zoomRange").value=1;
 
@@ -2917,11 +3064,25 @@ function openNode(n){
 
       <div class="section">
 
-        <a
-          href="Programmation/sequences/"
-        >
-          → Ouvrir la programmation des séquences
-        </a>
+        ${
+          s?._indexPath
+
+            ? `
+              <a href="${esc(
+                "sequences.html?sequence="+
+                encodeURIComponent(n.ref)+
+                "#onglet-sequence-seance"
+              )}">
+                → Ouvrir dans la programmation des séquences
+              </a>
+            `
+
+            : `
+              <div class="meta">
+                Aucun fichier de séquence associé pour l'instant.
+              </div>
+            `
+        }
 
       </div>
 
@@ -2996,11 +3157,27 @@ function openNode(n){
 
       <div class="section">
 
-        <a
-          href="Programmation/sequences/"
-        >
-          → Ouvrir la programmation
-        </a>
+        ${
+          s?._indexPath
+
+            ? `
+              <a href="${esc(
+                "sequences.html?sequence="+
+                encodeURIComponent(n.sequenceId || "")+
+                "&seance="+
+                encodeURIComponent(n.ref)+
+                "#onglet-sequence-seance"
+              )}">
+                → Ouvrir dans la programmation des séquences
+              </a>
+            `
+
+            : `
+              <div class="meta">
+                Aucun fichier de séance associé pour l'instant.
+              </div>
+            `
+        }
 
       </div>
 
@@ -3064,14 +3241,13 @@ window.addEventListener(
 load().then(()=>{
 
   /*
-    Tous les niveaux présents dans index.json
-    sont actifs au démarrage.
+    Toutes les sphères (CP → 6e) sont actives
+    au démarrage, y compris celles encore vides.
   */
 
   state.activeLevels=
     new Set(
-      (state.index?.niveaux || [])
-        .map(n=>String(n.id))
+      Object.keys(state.spheres)
     );
 
 
