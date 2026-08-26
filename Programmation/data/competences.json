@@ -1,7 +1,7 @@
 {
   "meta": {
     "titre": "Référentiel de compétences – Cycles 2 et 3 – Français, Mathématiques, Histoire-Géographie et EMC",
-    "version": "2.2-cycle2-francais-complet-sans-doublons",
+    "version": "2.3-cycle2-cycle3-francais-liens-progressifs",
     "description": "Base de travail structurée pour les séquences et séances. Les compétences sont organisées à partir des programmes officiels fournis pour le cycle 2 et des programmes officiels du cycle 3 joints.",
     "sources": [
       "Annexe 3 – Programme de français du cycle 2",
@@ -139,6 +139,15 @@
         }
       ],
       "entrees_ajoutees_francais_cycle2": 34
+    },
+    "controle_prerequis": {
+      "regle": "Les compétences de français du CE2 sont reliées aux compétences de CM1 ; les compétences de CM1 aux compétences de CM2 ; les compétences de CM2 aux compétences de 6e. Les liens supplémentaires sont utilisés lorsque plusieurs compétences concourent directement au même apprentissage.",
+      "niveaux_lies": [
+        "CE2",
+        "CM1",
+        "CM2",
+        "6e"
+      ]
     }
   },
   "domaines": [
@@ -1303,7 +1312,10 @@
         "Mémoriser de plus en plus de mots fréquents et irréguliers",
         "Lire correctement en ciblant 110 mots par minute en moyenne"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "lecture_identifier_mots_ce2",
+        "lecture_voix_haute_ce2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1330,7 +1342,9 @@
         "Lire à voix haute, après préparation, un texte long en tenant compte des marques de ponctuation, des liaisons et des unités syntaxiques",
         "Lire correctement en ciblant 120 mots par minute en moyenne"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_fluidite_cm1"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1357,7 +1371,9 @@
         "Prendre en compte les groupes syntaxiques, les marques de ponctuation et les liaisons",
         "Lire correctement en ciblant 130 mots par minute en moyenne"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_fluidite_cm2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1384,7 +1400,9 @@
         "Respecter la ponctuation et les groupes de sens",
         "Gérer l’intensité de la voix (volume, débit)"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "lecture_voix_haute_ce2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1411,7 +1429,9 @@
         "Travailler la mise en voix d’un texte (intonation, effets)",
         "S’entraîner à faire vivre le texte et prendre du plaisir à le lire"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_expressivite_cm1"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1438,7 +1458,9 @@
         "Rendre compte des émotions et sentiments des personnages et des intentions de l’auteur",
         "Rendre l’intonation, le rythme et la caractérisation des personnages dans le dialogue de récit"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_expressivite_cm2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1465,7 +1487,9 @@
         "Repérer les informations explicites et pointer des informations implicites",
         "Distinguer, par la mise en page et les caractéristiques d’écriture, un extrait de théâtre, un poème ou un texte narratif"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "lecture_comprendre_ce2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1492,7 +1516,9 @@
         "Restituer l’essentiel d’un texte contenant des informations explicites et implicites",
         "Reconnaître et nommer les principaux genres littéraires à l’aide de critères travaillés en classe"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_comprendre_cm1"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1519,7 +1545,9 @@
         "Repérer les informations explicites et implicites, les liens logiques et les reprises nominales",
         "Justifier ses interprétations en prenant appui sur le texte ou ses connaissances"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_comprendre_cm2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1547,7 +1575,10 @@
         "Trouver dans des documents simples les réponses à des questions",
         "Découvrir des documents composites et y repérer des informations"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "lecture_comprendre_ce2",
+        "vocabulaire_reemployer_ce2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1574,7 +1605,10 @@
         "Rapprocher deux documents convergents de genres différents",
         "Prélever et combiner des informations pour donner un sens global aux documents"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_documents_cm1",
+        "fr_lire_comprendre_cm1"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1603,7 +1637,10 @@
         "Mettre en relation les informations de documents composites",
         "Prendre appui sur les éléments essentiels d’une image fixe et les interpréter"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_documents_cm2",
+        "fr_lire_comprendre_cm2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1631,7 +1668,10 @@
         "Varier les expériences de lecture",
         "S’engager et persévérer dans sa lecture"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "lecture_devenir_lecteur_ce2",
+        "lecture_comprendre_ce2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1659,7 +1699,9 @@
         "Développer le plaisir de lire, notamment avec des œuvres choisies",
         "S’engager et persévérer dans sa lecture"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_oeuvre_cm1"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1688,7 +1730,9 @@
         "Fonder sa compréhension fine sur des éléments précis et engager son interprétation",
         "Partager ses impressions et confronter ses jugements"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_oeuvre_cm2"
+      ],
       "mots_cles": [
         "lecture",
         "compréhension"
@@ -1740,7 +1784,10 @@
         "Copier des textes de façon lisible, régulière, soignée et sans erreur d’orthographe ou de ponctuation",
         "Produire des textes en veillant à leur lisibilité et à leur mise en forme"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "ecriture_cursive_ce2",
+        "fr_ecrire_reflechir_cm2"
+      ],
       "mots_cles": [
         "écriture",
         "production d'écrits"
@@ -1768,7 +1815,10 @@
         "Reformuler l’essentiel d’une leçon ou d’une activité",
         "Produire des écrits courts pour appliquer une règle de grammaire ou employer et mémoriser le lexique appris"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "ecriture_produire_ce2",
+        "ecriture_copier_ce2"
+      ],
       "mots_cles": [
         "écriture",
         "production d'écrits"
@@ -1796,7 +1846,9 @@
         "Reformuler l’essentiel d’une leçon, y compris de manière schématique",
         "Produire des écrits courts pour appliquer une règle de grammaire ou employer et mémoriser le lexique appris"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_ecrire_reflechir_cm1"
+      ],
       "mots_cles": [
         "écriture",
         "production d'écrits"
@@ -1825,7 +1877,9 @@
         "Hiérarchiser des idées",
         "Produire des écrits courts pour appliquer une règle de grammaire ou employer et mémoriser le lexique appris"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_ecrire_reflechir_cm2"
+      ],
       "mots_cles": [
         "écriture",
         "production d'écrits"
@@ -1854,7 +1908,10 @@
         "Respecter les codes de l’écrit et construire la cohérence textuelle",
         "Améliorer son texte à partir des pistes de l’enseignant et/ou des pairs"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "ecriture_produire_ce2",
+        "ecriture_encoder_dictee_ce2"
+      ],
       "mots_cles": [
         "écriture",
         "production d'écrits"
@@ -1883,7 +1940,9 @@
         "Appliquer les principes de la cohérence textuelle",
         "Utiliser le brouillon et améliorer son texte avec l’enseignant, les pairs ou l’autoévaluation"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_produire_ecrits_cm1"
+      ],
       "mots_cles": [
         "écriture",
         "production d'écrits"
@@ -1912,7 +1971,9 @@
         "Respecter les codes et la cohérence textuelle",
         "Réviser un texte en prenant en compte les normes de l’écrit"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_produire_ecrits_cm2"
+      ],
       "mots_cles": [
         "écriture",
         "production d'écrits"
@@ -1941,7 +2002,9 @@
         "Identifier les caractéristiques des différents genres de discours",
         "Manifester sa sensibilité à l’écoute d’un texte"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "oral_ecouter_ce2"
+      ],
       "mots_cles": [
         "oral",
         "expression",
@@ -1971,7 +2034,10 @@
         "Identifier les caractéristiques des différents genres de discours",
         "Exprimer son ressenti à l’écoute d’un texte"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "oral_ecouter_ce2",
+        "fr_oral_ecouter_cm1"
+      ],
       "mots_cles": [
         "oral",
         "expression",
@@ -1999,7 +2065,9 @@
         "Faire vivre un texte littéraire, historique ou documentaire par une lecture expressive",
         "Utiliser l’oral comme outil réflexif"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "oral_dire_ce2"
+      ],
       "mots_cles": [
         "oral",
         "expression",
@@ -2027,7 +2095,10 @@
         "Lire devant un public, de manière claire et expressive, un texte littéraire ou documentaire",
         "Utiliser l’oral comme outil réflexif"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "oral_dire_ce2",
+        "fr_oral_dire_cm1"
+      ],
       "mots_cles": [
         "oral",
         "expression",
@@ -2058,7 +2129,9 @@
         "Adapter son discours à la situation",
         "Porter un regard critique sur l’oral produit"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "oral_echanger_ce2"
+      ],
       "mots_cles": [
         "oral",
         "expression",
@@ -2088,7 +2161,10 @@
         "Intervenir en tenant compte de ce qui a précédemment été dit par autrui",
         "Porter un regard critique sur l’oral produit"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "oral_echanger_ce2",
+        "fr_oral_echanges_cm1"
+      ],
       "mots_cles": [
         "oral",
         "expression",
@@ -2116,7 +2192,9 @@
         "Mémoriser des mots et expressions issus de corpus variés",
         "Identifier les mots inconnus et rechercher leur signification en s’appuyant sur la morphologie et le contexte"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "vocabulaire_enrichir_ce2"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2143,7 +2221,9 @@
         "Se servir du contexte et de la morphologie pour comprendre les mots inconnus",
         "Utiliser des dictionnaires"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_vocab_enrichir_cm1"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2170,7 +2250,9 @@
         "Choisir de manière autonome les stratégies efficaces pour comprendre un mot inconnu",
         "Prendre l’initiative de déduire, vérifier ou rechercher le sens d’un mot"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_vocab_enrichir_cm2"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2196,7 +2278,9 @@
         "Établir des relations morphologiques et sémantiques entre les mots",
         "Comprendre et utiliser la synonymie et l’antonymie"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "vocabulaire_relations_ce2"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2222,7 +2306,9 @@
         "Approfondir la notion de polysémie",
         "Approfondir les relations morphologiques et sémantiques entre les mots"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_vocab_relations_cm1"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2250,7 +2336,9 @@
         "Donner des exemples de synonymes et d’antonymes respectant la classe grammaticale",
         "Se sensibiliser à l’étymologie et à l’évolution du sens des mots"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_vocab_relations_cm2"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2276,7 +2364,9 @@
         "À l’oral et à l’écrit, utiliser à bon escient les mots appris",
         "Utiliser à bon escient les mots polysémiques dans différents contextes disciplinaires"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "vocabulaire_reemployer_ce2"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2302,7 +2392,9 @@
         "À l’oral et à l’écrit, utiliser précisément le vocabulaire de différents univers de référence",
         "Utiliser à bon escient les mots polysémiques dans différents contextes disciplinaires"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_vocab_reemployer_cm1"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2328,7 +2420,9 @@
         "Utiliser à bon escient le vocabulaire spécifique de différents univers de référence en respectant le registre de langue",
         "Utiliser à bon escient les mots polysémiques dans différents contextes disciplinaires"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_vocab_reemployer_cm2"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2354,7 +2448,9 @@
         "Écrire correctement les mots les plus fréquents en s’appuyant sur les régularités et la formation",
         "S’appuyer sur la dimension morphologique des mots pour les orthographier"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "vocabulaire_orthographe_lexicale_ce2"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2379,7 +2475,9 @@
       "objectifs": [
         "Écrire correctement les mots fréquents en s’appuyant sur les régularités et la formation"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_vocab_orthographe_cm1"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2404,7 +2502,9 @@
       "objectifs": [
         "Écrire correctement les mots fréquents en situation autonome"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_vocab_orthographe_cm2"
+      ],
       "mots_cles": [
         "vocabulaire",
         "lexique"
@@ -2432,7 +2532,9 @@
         "Identifier et analyser le groupe nominal",
         "Utiliser les manipulations syntaxiques"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "grammaire_phrase_simple_ce2"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2461,7 +2563,9 @@
         "Différencier COD, COI et compléments circonstanciels",
         "Mobiliser les manipulations syntaxiques"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_gram_identifier_phrase_cm1"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2489,7 +2593,9 @@
         "Identifier COD, COI et attribut du sujet",
         "Identifier les constituants et les fonctions dans des phrases plus complexes"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_gram_identifier_phrase_cm2"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2516,7 +2622,9 @@
         "Se préparer à distinguer les notions de nature et fonction et à reconnaître les constituants de la phrase",
         "Mobiliser les connaissances grammaticales dans les activités langagières"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "grammaire_phrase_simple_ce2"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2544,7 +2652,9 @@
         "Distinguer juxtaposition, coordination et subordination",
         "Mobiliser la syntaxe pour produire et améliorer les écrits"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_gram_phrase_complexe_cm1"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2572,7 +2682,9 @@
         "Identifier proposition, juxtaposition, coordination et subordination",
         "Comprendre la valeur des temps dans les textes littéraires"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_gram_phrase_complexe_cm2"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2601,7 +2713,9 @@
         "Accorder le sujet et le verbe",
         "Approfondir la conjugaison et mémoriser les temps étudiés"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "grammaire_orthographe_ce2"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2629,7 +2743,9 @@
         "Accorder le sujet et le verbe dans des phrases de plus en plus complexes",
         "Maîtriser les principales conjugaisons et marques de temps et de personne"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_gram_orthographe_grammaticale_cm1"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2657,7 +2773,9 @@
         "Mobiliser les connaissances grammaticales dans les productions",
         "Consolider la conjugaison et l’usage des temps verbaux"
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_gram_orthographe_grammaticale_cm2"
+      ],
       "mots_cles": [
         "grammaire",
         "orthographe",
@@ -2833,7 +2951,10 @@
       "objectifs": [
         "Comparer des textes fondateurs, mythes et contes étiologiques ; être sensible aux symboles, métaphores, représentations et valeurs ; produire des écrits créatifs."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_oeuvre_cm2",
+        "fr_culture_se_confronter_au_merveilleux_l_trange_cm1"
+      ],
       "mots_cles": [
         "culture littéraire",
         "lecture"
@@ -2858,7 +2979,10 @@
       "objectifs": [
         "Explorer différentes traditions poétiques, manipuler les ressources de la langue et comprendre le pouvoir d’évocation de la poésie."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_oeuvre_cm2",
+        "fr_culture_savourer_le_go_t_des_mots_imaginer_et_cr_er_en_po_sie_cm1"
+      ],
       "mots_cles": [
         "culture littéraire",
         "lecture"
@@ -2883,7 +3007,10 @@
       "objectifs": [
         "Comprendre le rapport entre illusion et réel au théâtre ; pratiquer mise en voix, mise en jeu et mise en scène ; développer écoute, concentration, expression, créativité et jugement critique."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_oeuvre_cm2",
+        "fr_culture_imaginer_et_vivre_d_autres_vies_cm1"
+      ],
       "mots_cles": [
         "culture littéraire",
         "lecture"
@@ -2908,7 +3035,10 @@
       "objectifs": [
         "Interroger l’élan de l’aventure, enrichir sa culture et sa réflexion et engager son imagination par la production de récits personnels."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_oeuvre_cm2",
+        "fr_culture_imaginer_et_vivre_d_autres_vies_cm1"
+      ],
       "mots_cles": [
         "culture littéraire",
         "lecture"
@@ -2933,7 +3063,10 @@
       "objectifs": [
         "Comprendre la figure du monstre, sa portée éducative et sa permanence ; créer de nouveaux monstres et les intégrer dans des récits ou mises en scène."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "fr_lire_oeuvre_cm2",
+        "fr_culture_se_confronter_au_merveilleux_l_trange_cm1"
+      ],
       "mots_cles": [
         "culture littéraire",
         "lecture"
