@@ -201,10 +201,27 @@ async function loadData(){
     state.index=idx.data;
     state.indexPath=idx.path;
 
-    const compPath = state.index?.meta?.competences || "data/competences.json";
+    // index.json peut contenir "data/competences.json" alors qu'il est déjà
+    // dans Programmation/data/. On essaie donc plusieurs chemins réels.
+    const declaredCompPath = state.index?.meta?.competences || "competences.json";
     $("status").textContent="Chargement de competences.json…";
-    const compURL = joinFromIndex(compPath);
-    state.compData = await getJSON(compURL);
+
+    const compCandidates = [
+      joinFromIndex(declaredCompPath),
+      joinFromIndex("competences.json"),
+      new URL("Programmation/data/competences.json", location.href).href,
+      new URL("data/competences.json", location.href).href
+    ].filter((v,i,a)=>a.indexOf(v)===i);
+
+    let compResult=null, lastCompError=null;
+    for(const candidate of compCandidates){
+      try{
+        compResult=await getJSON(candidate);
+        break;
+      }catch(e){ lastCompError=e; }
+    }
+    if(!compResult) throw lastCompError || new Error("competences.json introuvable");
+    state.compData = compResult;
     state.compData.competences ||= [];
     state.compData.domaines ||= [];
 
@@ -244,7 +261,7 @@ async function loadData(){
   }catch(err){
     console.error(err);
     $("errorText").textContent =
-      `${err.message}\n\nPlace ce fichier dans le dépôt Synapses et ouvre-le via GitHub Pages ou un serveur local.\nChemins essayés :\n${indexCandidates().join("\n")}`;
+      `${err.message}\n\nPlace ce fichier dans le dépôt Synapses et ouvre-le via GitHub Pages ou un serveur local.\nChemins index essayés :\n${indexCandidates().join("\n")}`;
     $("error").style.display="block";
     $("status").textContent="Erreur de chargement";
   }
