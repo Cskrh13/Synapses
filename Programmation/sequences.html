@@ -390,7 +390,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <button class="btn small" id="btn-coffre-toggle">Ouvrir le coffre</button>
       </div>
       <button class="btn" id="btn-view-reseau">🕸 Réseau de compétences</button>
-      <a class="btn" href="../cartographie-competences.html" target="_blank" rel="noopener">🗺 Cartographie des compétences</a>
+      <a class="btn" href="../cartographie-sequences.html" target="_blank" rel="noopener">🗺 Cartographie des séquences</a>
       <button class="btn" id="btn-export-competences">Exporter le référentiel</button>
       <button class="btn" id="btn-export-all">Exporter tout (JSON)</button>
       <button class="btn" id="btn-import-all">Importer un JSON</button>
@@ -1871,9 +1871,67 @@ document.getElementById('file-import').addEventListener('change', e=>{
 /* ============================================================
    INIT
    ============================================================ */
+
+/* ============================================================
+   NAVIGATION CROISÉE DEPUIS cartographie-sequences.html
+   Paramètres :
+   - ?competence=ID : ouvre la première séquence explicitement
+     associée à cette compétence (sans inventer de lien)
+   - ?sequence=ID : ouvre directement la séquence
+   - ?sequence=ID&seance=ID : ouvre la séquence puis la séance
+   ============================================================ */
+function openFromCartographyURL(){
+  const params = new URLSearchParams(window.location.search);
+  const requestedCompetence = params.get("competence");
+  const requestedSequence = params.get("sequence");
+  const requestedSeance = params.get("seance");
+
+  // Priorité à la séance : elle détermine aussi sa séquence.
+  if(requestedSeance){
+    const sea = state.seances.find(s => s.id === requestedSeance);
+    const sequenceId = requestedSequence || sea?.sequence_id;
+
+    if(sequenceId && state.sequences.some(s => s.id === sequenceId)){
+      openSeqDetail(sequenceId);
+      requestAnimationFrame(() => {
+        const currentSea = state.seances.find(s => s.id === requestedSeance);
+        if(currentSea && currentSea.sequence_id === sequenceId){
+          openSeaDrawer(requestedSeance);
+        }else{
+          toast("La séance demandée est introuvable dans cette séquence.");
+        }
+      });
+      return;
+    }
+    toast("La séance demandée est introuvable.");
+    return;
+  }
+
+  if(requestedSequence){
+    if(state.sequences.some(s => s.id === requestedSequence)){
+      openSeqDetail(requestedSequence);
+    }else{
+      toast("La séquence demandée est introuvable.");
+    }
+    return;
+  }
+
+  if(requestedCompetence){
+    // Lien uniquement si competence_id est explicitement déclaré.
+    const linked = state.sequences.find(s => s.competence_id === requestedCompetence);
+    if(linked){
+      openSeqDetail(linked.id);
+    }else{
+      toast("Aucune séquence n'est encore explicitement associée à cette compétence.");
+    }
+  }
+}
+
+
 renderFilters();
 renderSeqGrid();
 updateCoffreWidget();
+openFromCartographyURL();
 </script>
 </body>
 </html>
