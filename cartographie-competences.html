@@ -159,8 +159,8 @@ const state = {
   sequences:[], seances:[], nodes:[], links:[],
   levels:new Set(LEVEL_ORDER), domains:new Set(),
   search:"", selected:null, hover:null,
-  yaw:0.28, pitch:-0.12, zoom:.62,
-  minZoom:.16, maxZoom:2.4, openingSpin:true, openingSpinTimer:null,
+  yaw:0.28, pitch:-0.12, zoom:.42,
+  minZoom:.12, maxZoom:2.4, openingSpin:true, openingSpinTimer:null,
   relationMode:null, relationNodes:new Set(), relationLinks:new Set(),
   panX:0, panY:0,
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
@@ -459,11 +459,13 @@ function drawSphere(ctx,s,label){
 function drawNode(ctx,p,n){
   const r=Math.max(5,TYPE[n.type].radius*p.scale*.78);
   ctx.save();
-  const base=state.relationNodes.has(n.id) ? "#c52b2b" : TYPE[n.type].color;
+  const related=state.relationNodes.has(n.id);
+  const pulse=related ? (0.72+0.28*Math.sin(performance.now()/170)) : 1;
+  const base=related ? "#d71920" : TYPE[n.type].color;
   const grad=ctx.createRadialGradient(p.x-r*.35,p.y-r*.42,1,p.x,p.y,r);
   grad.addColorStop(0,"rgba(255,255,255,.9)");
   grad.addColorStop(.25,base);grad.addColorStop(1,"rgba(0,0,0,.28)");
-  ctx.shadowColor="rgba(20,30,35,.22)";ctx.shadowBlur=8;
+  ctx.shadowColor=related ? `rgba(215,25,32,${0.35*pulse})` : "rgba(20,30,35,.22)";ctx.shadowBlur=related ? 18*pulse : 8;
   ctx.fillStyle=grad;ctx.beginPath();ctx.arc(p.x,p.y,r,0,Math.PI*2);ctx.fill();
   ctx.shadowBlur=0;ctx.strokeStyle="rgba(255,255,255,.38)";ctx.lineWidth=1;ctx.stroke();
   if(state.hover===n.id || state.selected===n.id){ctx.strokeStyle="#152333";ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,r+4,0,Math.PI*2);ctx.stroke();}
@@ -495,13 +497,13 @@ function draw(){
     if(!a||!b) continue;
     ctx.save();
     if(l.type==="prerequis"){
-      ctx.strokeStyle="rgba(169,125,34,.76)";ctx.lineWidth=1.5;ctx.setLineDash([5,6]);
+      ctx.strokeStyle="rgba(197,43,43,.88)";ctx.lineWidth=1.8;ctx.setLineDash([5,6]);
     }else if(l.type==="sequence"){
       ctx.strokeStyle="rgba(41,72,95,.82)";ctx.lineWidth=1.4;
     }else{
       ctx.strokeStyle="rgba(73,108,126,.48)";ctx.lineWidth=1;
     }
-    if(state.relationLinks.has(l)){ctx.strokeStyle="#c52b2b";ctx.lineWidth=2.5;ctx.setLineDash(l.type==="prerequis"?[5,6]:[]);}
+    if(state.relationLinks.has(l)){const pulse=.72+.28*Math.sin(performance.now()/170);ctx.strokeStyle=`rgba(215,25,32,${pulse})`;ctx.lineWidth=3*pulse;ctx.setLineDash(l.type==="prerequis"?[5,6]:[]);}
     ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore();
   }
 
@@ -559,6 +561,7 @@ function showRelations(mode){
   $("relationMenu").classList.add("open");update();
 }
 function showPanel(node){
+  state.openingSpin=false;
   state.selected=node.id;
   let html="";
   if(node.type==="competence"){
@@ -586,9 +589,9 @@ function showPanel(node){
 
 /* ---------- Navigation ---------- */
 function resetView(){
-  state.yaw=0.42;state.pitch=-0.24;state.zoom=.62;state.panX=0;state.panY=0;
+  state.yaw=0.42;state.pitch=-0.24;state.zoom=.42;state.panX=0;state.panY=0;
   state.relationNodes=new Set();state.relationLinks=new Set();$("relationMenu").classList.remove("open");
-  $("zoomRange").value=1;draw();
+  $("zoomRange").value=state.zoom;draw();
 }
 $("search").addEventListener("input",e=>{state.search=e.target.value;update();});
 $("reset").onclick=()=>{
@@ -607,7 +610,6 @@ $("fullscreen").onclick=()=>document.fullscreenElement?document.exitFullscreen()
 const canvas=$("graph");
 canvas.addEventListener("contextmenu",e=>e.preventDefault());
 canvas.addEventListener("pointerdown",e=>{
-  state.openingSpin=false;
   state.dragging=true;state.panning=e.button===2;state.moved=false;
   state.lastX=e.clientX;state.lastY=e.clientY;canvas.classList.add("dragging");
   canvas.setPointerCapture?.(e.pointerId);
@@ -627,9 +629,8 @@ canvas.addEventListener("pointermove",e=>{
   state.lastX=e.clientX;state.lastY=e.clientY;draw();
 });
 canvas.addEventListener("dblclick",e=>{
-  state.openingSpin=false;
   const n=hit(e.clientX,e.clientY);
-  if(n){const p=projectPoint(n);state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,1.8));state.panX+=innerWidth/2-p.x;state.panY+=innerHeight/2-p.y;$("zoomRange").value=state.zoom;draw();}
+  if(n){const p=projectPoint(n);state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,2.15));state.panX+=innerWidth/2-p.x;state.panY+=innerHeight/2-p.y;$("zoomRange").value=state.zoom;draw();}
 });
 canvas.addEventListener("pointerup",e=>{
   if(!state.dragging)return;
@@ -640,7 +641,6 @@ canvas.addEventListener("pointerup",e=>{
   }
 });
 canvas.addEventListener("wheel",e=>{
-  state.openingSpin=false;
   e.preventDefault();
   state.zoom*=e.deltaY<0?1.08:.925;
   state.zoom=Math.max(state.minZoom,Math.min(state.maxZoom,state.zoom));
@@ -650,14 +650,14 @@ $("showImmediatePre").onclick=()=>showRelations("immediate");
 $("showAncestors").onclick=()=>showRelations("ancestors");
 $("clearRelations").onclick=()=>showRelations(null);
 window.addEventListener("resize",draw);
-function openingSpin(t0){
-  if(!state.openingSpin)return;
-  const elapsed=performance.now()-t0;
-  if(elapsed>3500){state.openingSpin=false;draw();return;}
-  state.yaw+=0.004*(1-elapsed/3500);draw();requestAnimationFrame(()=>openingSpin(t0));
+function openingSpin(){
+  // Rotation continue tant qu'aucune boule n'a été sélectionnée.
+  if(state.openingSpin){ state.yaw+=0.0022; }
+  draw();
+  requestAnimationFrame(openingSpin);
 }
 
-loadData().then(()=>openingSpin(performance.now()));
+loadData().then(()=>openingSpin());
 </script>
 </body>
 </html>
