@@ -144,7 +144,7 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
       <div>
         <h3 style="font-size:15px;margin-bottom:8px;">Ouvrir un coffre existant</h3>
         <div class="field">
-          <label for="fichierCoffre">Fichier .synapses</label>
+          <label for="fichierCoffre">Fichier .synapses — sur cet ordinateur</label>
           <input type="file" id="fichierCoffre" accept=".synapses">
         </div>
         <div class="field">
@@ -152,6 +152,10 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
           <input type="password" id="mdpOuverture" placeholder="Mot de passe du coffre">
         </div>
         <button class="btn btn-outline" id="btnOuvrir">Ouvrir le coffre</button>
+        <p class="hint" style="margin-top:10px;">
+          🔒 Ce fichier est lu directement depuis votre disque par le navigateur : il n'est jamais envoyé au site ni à un serveur.<br>
+          ⚠️ Ne le placez jamais dans le dépôt GitHub du site — il deviendrait public dès la publication de la page, même chiffré.
+        </p>
       </div>
     </div>
     <div class="status" id="statutOuverture"></div>
@@ -173,6 +177,7 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
         <div class="field"><label for="nomFichierExport">Nom du fichier</label>
           <input type="text" id="nomFichierExport" placeholder="coffre.synapses"></div>
         <button class="btn btn-primary" id="btnExporter">Télécharger le .synapses</button>
+        <p class="hint" style="margin-top:10px;">Le fichier est téléchargé dans votre dossier "Téléchargements" habituel — déplacez-le ensuite sur un support que vous seul contrôlez (clé USB, disque local). Ne le déposez jamais dans le dépôt GitHub du site.</p>
       </div>
       <div>
         <h3 style="font-size:15px;margin-bottom:8px;color:var(--danger);">Zone de destruction</h3>
