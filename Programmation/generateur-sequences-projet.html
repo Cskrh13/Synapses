@@ -169,6 +169,21 @@
     background: var(--ai);
     color: #fff;
   }
+  nav.tabs a.tab-back {
+    background: #fff;
+    border: 1px solid var(--muted);
+    color: var(--muted);
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    text-decoration: none;
+    margin-left: auto;
+  }
+  nav.tabs a.tab-back:hover {
+    border-color: var(--navy);
+    color: var(--navy);
+  }
 
   section.panel { display: none; }
   section.panel.active { display: block; }
@@ -346,6 +361,25 @@
   }
   .dropzone.dragover { background: var(--ai-soft); }
 
+  #resultats-competences { max-height: 320px; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px; }
+  #resultats-competences .suggestion-item { padding: 0.5rem 0.75rem; }
+  #resultats-competences .suggestion-item:hover { background: var(--bg); }
+  #referentiel-etat {
+    background: #fff;
+    border: 1px solid var(--line);
+    color: var(--ink-soft);
+    border-radius: 8px;
+    padding: 0.6rem 0.9rem;
+    font-size: 0.82rem;
+    margin: 0.6rem 0;
+  }
+  #competence-choisie {
+    background: var(--bg);
+    border-radius: 8px;
+    padding: 0.9rem 1rem;
+    margin-top: 1rem;
+  }
+
   footer.foot {
     text-align: center;
     color: var(--muted);
@@ -365,7 +399,7 @@
     </div>
   </div>
   <div class="pillbar">
-    <button class="pill disabled" disabled>Référentiel de démonstration</button>
+    <button class="pill disabled" disabled id="pill-referentiel-etat">Chargement du référentiel…</button>
     <button class="pill filled" onclick="UI.switchTab('classique')">Ouvrir le générateur</button>
     <button class="pill" onclick="UI.switchTab('couverture')">🧭 Cartographie de couverture</button>
     <button class="pill" onclick="UI.exporterEtat()">Exporter l'état (JSON)</button>
@@ -390,6 +424,7 @@
     <button data-tab="couverture">Matrice de couverture</button>
     <button class="tab-ai" data-tab="ia">✨ Paramètres IA</button>
     <button class="tab-ai" data-tab="atelier">💬 Atelier IA (gratuit)</button>
+    <a class="tab-back" href="sequences.html">↩ Retour à Séquences &amp; séances</a>
   </nav>
 
   <!-- ============================================================ -->
@@ -400,8 +435,28 @@
       <h3>1. Générer une séquence à partir d'une compétence</h3>
       <p class="muted">Logique linéaire : compétence → séquence → 7 séances types. C'est le mode « référentiel classique ».</p>
 
-      <label for="select-competence">Compétence du référentiel</label>
-      <select id="select-competence"></select>
+      <div class="flex-row">
+        <div>
+          <label for="filtre-niveau">Niveau</label>
+          <select id="filtre-niveau" onchange="UI.filtrerCompetences()">
+            <option value="">Tous les niveaux</option>
+          </select>
+        </div>
+        <div>
+          <label for="filtre-domaine">Domaine</label>
+          <select id="filtre-domaine" onchange="UI.filtrerCompetences()">
+            <option value="">Tous les domaines</option>
+          </select>
+        </div>
+      </div>
+
+      <label for="recherche-competence">Rechercher une compétence</label>
+      <input type="text" id="recherche-competence" placeholder="Tapez un mot-clé de l'intitulé…" oninput="UI.filtrerCompetences()" autocomplete="off">
+
+      <div id="resultats-competences"></div>
+
+      <div id="competence-choisie" style="display:none;"></div>
+      <input type="hidden" id="select-competence" value="">
 
       <label for="input-titre-seq">Titre de la séquence (modifiable)</label>
       <input type="text" id="input-titre-seq">
@@ -519,7 +574,8 @@
   <section class="panel" id="panel-atelier">
     <div class="card ai-accented">
       <h3>💬 Atelier IA — modèles gratuits (copier / coller)</h3>
-      <p class="muted">Pas de clé API nécessaire : le prompt ci-dessous est déjà rempli avec le contexte (compétence ou tâche). Copiez-le dans un chat gratuit, collez la réponse ici, puis glissez chaque séance proposée vers la séquence (onglet « Générateur classique ») ou vers une tâche (onglet « Mode projet »).</p>
+      <p class="muted">Pas de clé API nécessaire : le prompt ci-dessous est déjà rempli avec le contexte (compétence ou tâche) et reprend le modèle de séance de <code>sequences.html</code>. Copiez-le dans un chat gratuit, collez la réponse ci-dessous, puis cliquez sur « Ajouter » pour chaque séance proposée (ou glissez-la, si la séquence/tâche cible est visible dans le même onglet).</p>
+      <div class="ai-callout">⚠️ Rappel : le moteur IA intégré (onglet « Paramètres IA », connecté par clé API) est un service payant selon le fournisseur choisi. Cet atelier est l'alternative <strong>gratuite</strong>, sans clé : copiez le prompt dans un chat gratuit (ChatGPT, Claude.ai, Le Chat, Gemini…).</div>
 
       <label for="atelier-contexte">Contexte du prompt</label>
       <select id="atelier-contexte" onchange="Atelier.majContexte()">
@@ -558,80 +614,65 @@
 
 <script>
 /* ==================================================================
-   FICHIER 1 (à extraire) : Programmation/data/competences.json
+   FICHIER 1 : Programmation/data/competences.json (chargé en direct)
+   FICHIER 1bis : Programmation/data/index.json (niveaux reconnus)
    ================================================================== */
-const REFERENTIEL_COMPETENCES = [
-  {
-    id: "MATH-NUM-CP-03",
-    domaine: "mathematiques",
-    intitule: "Comparer deux collections organisées et verbaliser laquelle contient le plus d'éléments",
-    prerequis: ["MATH-NUM-CP-01"],
+let REFERENTIEL_COMPETENCES = [];
+let DOMAINES_REFERENTIEL = [];
+let NIVEAUX_REFERENTIEL = [];
+
+function normaliserCompetence(brut) {
+  return {
+    id: brut.id,
+    intitule: brut.intitule || brut.nom || "(sans intitulé)",
+    domaine: brut.domaine || brut.domaine_id || "",
+    domaine_id: brut.domaine_id || brut.domaine || "",
+    niveau: brut.niveau || "",
+    cycle: brut.cycle || "",
+    theme: brut.theme || "",
+    mots_cles: brut.mots_cles || [],
+    prerequis: brut.prerequis_competences || brut.prerequis || [],
     modalites_projet: {
       mobilisable_en_projet: true,
-      types_de_taches: ["mesure", "denombrement", "comparaison", "classement", "fabrication"]
+      types_de_taches: brut.mots_cles || []
     }
-  },
-  {
-    id: "MATH-GEO-CP-01",
-    domaine: "mathematiques",
-    intitule: "Reconnaître, nommer et reproduire quelques formes planes",
-    prerequis: [],
-    modalites_projet: {
-      mobilisable_en_projet: true,
-      types_de_taches: ["fabrication", "decoupage", "construction"]
+  };
+}
+
+async function chargerReferentiel() {
+  const pill = document.getElementById("pill-referentiel-etat");
+  try {
+    const [reponseCompetences, reponseIndex] = await Promise.all([
+      fetch("data/competences.json"),
+      fetch("data/index.json")
+    ]);
+    const jsonCompetences = await reponseCompetences.json();
+    const jsonIndex = await reponseIndex.json();
+
+    REFERENTIEL_COMPETENCES = (jsonCompetences.competences || []).map(normaliserCompetence);
+
+    const domainesVus = new Map();
+    (jsonCompetences.domaines || []).forEach(d => domainesVus.set(d.id, d.nom));
+    REFERENTIEL_COMPETENCES.forEach(c => {
+      if (c.domaine_id && !domainesVus.has(c.domaine_id)) domainesVus.set(c.domaine_id, c.domaine);
+    });
+    DOMAINES_REFERENTIEL = Array.from(domainesVus, ([id, nom]) => ({ id, nom }))
+      .sort((a, b) => a.nom.localeCompare(b.nom, "fr"));
+
+    NIVEAUX_REFERENTIEL = (jsonIndex.meta && jsonIndex.meta.niveaux_reconnus) ||
+      Array.from(new Set(REFERENTIEL_COMPETENCES.map(c => c.niveau).filter(Boolean)));
+
+    if (pill) {
+      pill.disabled = false;
+      pill.classList.remove("disabled");
+      pill.textContent = `${REFERENTIEL_COMPETENCES.length} compétences chargées`;
     }
-  },
-  {
-    id: "FR-ECRIRE-CP-02",
-    domaine: "francais",
-    intitule: "Rédiger un texte court en mobilisant les connaissances acquises",
-    prerequis: [],
-    modalites_projet: {
-      mobilisable_en_projet: true,
-      types_de_taches: ["ecriture", "redaction", "consigne"]
-    }
-  },
-  {
-    id: "FR-ORAL-CP-01",
-    domaine: "francais",
-    intitule: "Présenter un travail à un groupe en formulant des phrases correctes",
-    prerequis: [],
-    modalites_projet: {
-      mobilisable_en_projet: true,
-      types_de_taches: ["presentation", "oral", "restitution"]
-    }
-  },
-  {
-    id: "SOCIAL-COOP-01",
-    domaine: "social",
-    intitule: "Coopérer dans un groupe pour atteindre un objectif commun",
-    prerequis: [],
-    modalites_projet: {
-      mobilisable_en_projet: true,
-      types_de_taches: ["fabrication", "jeu", "presentation", "test"]
-    }
-  },
-  {
-    id: "COGNITIF-ATTENTION-01",
-    domaine: "cognitif",
-    intitule: "Maintenir une attention soutenue sur une tâche de plusieurs étapes",
-    prerequis: [],
-    modalites_projet: {
-      mobilisable_en_projet: true,
-      types_de_taches: ["fabrication", "construction", "ecriture"]
-    }
-  },
-  {
-    id: "MATH-GRANDEURS-CP-01",
-    domaine: "mathematiques",
-    intitule: "Utiliser des instruments de mesure simples (règle, gabarit)",
-    prerequis: [],
-    modalites_projet: {
-      mobilisable_en_projet: false,
-      types_de_taches: []
-    }
+  } catch (erreur) {
+    console.error("Erreur de chargement du référentiel :", erreur);
+    if (pill) pill.textContent = "Erreur de chargement du référentiel (voir console)";
   }
-];
+  UI.initSelectCompetences();
+}
 
 
 /* ==================================================================
@@ -896,13 +937,82 @@ const UI = (function () {
   }
 
   function initSelectCompetences() {
-    const select = document.getElementById("select-competence");
-    REFERENTIEL_COMPETENCES.forEach(c => {
+    const selectNiveau = document.getElementById("filtre-niveau");
+    const selectDomaine = document.getElementById("filtre-domaine");
+    if (!selectNiveau || !selectDomaine) return;
+
+    selectNiveau.querySelectorAll("option:not(:first-child)").forEach(o => o.remove());
+    NIVEAUX_REFERENTIEL.forEach(niveau => {
       const opt = document.createElement("option");
-      opt.value = c.id;
-      opt.textContent = `[${c.domaine}] ${c.intitule}`;
-      select.appendChild(opt);
+      opt.value = niveau;
+      opt.textContent = niveau;
+      selectNiveau.appendChild(opt);
     });
+
+    selectDomaine.querySelectorAll("option:not(:first-child)").forEach(o => o.remove());
+    DOMAINES_REFERENTIEL.forEach(d => {
+      const opt = document.createElement("option");
+      opt.value = d.id;
+      opt.textContent = d.nom;
+      selectDomaine.appendChild(opt);
+    });
+
+    filtrerCompetences();
+  }
+
+  function filtrerCompetences() {
+    const niveau = document.getElementById("filtre-niveau").value;
+    const domaine = document.getElementById("filtre-domaine").value;
+    const recherche = document.getElementById("recherche-competence").value.trim().toLowerCase();
+    const conteneur = document.getElementById("resultats-competences");
+
+    let resultats = REFERENTIEL_COMPETENCES;
+    if (niveau) resultats = resultats.filter(c => c.niveau === niveau);
+    if (domaine) resultats = resultats.filter(c => c.domaine_id === domaine);
+    if (recherche) {
+      resultats = resultats.filter(c =>
+        c.intitule.toLowerCase().includes(recherche) ||
+        c.theme.toLowerCase().includes(recherche) ||
+        c.mots_cles.some(m => m.toLowerCase().includes(recherche))
+      );
+    }
+
+    if (!niveau && !domaine && !recherche) {
+      conteneur.innerHTML = `<p class="muted" style="padding:0.5rem 0.75rem;">Choisissez un niveau, un domaine ou tapez une recherche pour afficher des compétences (${REFERENTIEL_COMPETENCES.length} au total).</p>`;
+      return;
+    }
+
+    const LIMITE = 100;
+    const tronque = resultats.length > LIMITE;
+    const aAfficher = resultats.slice(0, LIMITE);
+
+    if (aAfficher.length === 0) {
+      conteneur.innerHTML = `<p class="muted" style="padding:0.5rem 0.75rem;">Aucune compétence ne correspond à ces critères.</p>`;
+      return;
+    }
+
+    conteneur.innerHTML = aAfficher.map(c => `
+      <div class="suggestion-item" style="cursor:pointer;" onclick="UI.choisirCompetence('${c.id}')">
+        <strong>${c.niveau ? "[" + c.niveau + "] " : ""}${c.domaine}</strong><br>
+        <span>${c.intitule}</span>
+      </div>
+    `).join("") + (tronque ? `<p class="muted" style="padding:0.5rem 0.75rem;">… et ${resultats.length - LIMITE} autres résultats. Affinez la recherche.</p>` : "");
+  }
+
+  function choisirCompetence(id) {
+    const competence = REFERENTIEL_COMPETENCES.find(c => c.id === id);
+    if (!competence) return;
+    document.getElementById("select-competence").value = id;
+
+    const bloc = document.getElementById("competence-choisie");
+    bloc.style.display = "block";
+    bloc.innerHTML = `
+      <strong>Compétence sélectionnée</strong><br>
+      ${competence.niveau ? "[" + competence.niveau + "] " : ""}<em>${competence.domaine}</em><br>
+      ${competence.intitule}
+    `;
+
+    document.getElementById("resultats-competences").innerHTML = "";
   }
 
   function genererSequenceClassiqueUI() {
@@ -1267,25 +1377,55 @@ Réponds avec ce format JSON exact :
   }
 
   /* ---------- Dépôt (drag & drop) des propositions de l'Atelier IA ---------- */
+  function construireSeanceDepuisProposition(sequenceOuTache, s, prefixeId) {
+    return {
+      id: `${prefixeId}-ATELIER-${Date.now()}`,
+      type: s.type || "seance",
+      intitule: s.intitule,
+      numero: s.numero || "",
+      competence_cible: s.competence_cible || "",
+      competences_periph: s.competences_periph || "",
+      modalites: s.modalites || "",
+      niveaux: s.niveaux || [],
+      objectif: s.objectif || "",
+      problematique: s.problematique || "",
+      deroule: s.deroule || [],
+      vigilance: s.vigilance || "",
+      duree_estimee_min: s.duree_estimee_min || 45,
+      statut: "a_planifier",
+      origine: "ia"
+    };
+  }
+
+  function ajouterPropositionASequenceClassique(s) {
+    if (!sequenceCouranteClassique) {
+      alert("Générez d'abord une séquence dans l'onglet « Générateur classique » avant d'y ajouter une proposition.");
+      return;
+    }
+    const seance = construireSeanceDepuisProposition(sequenceCouranteClassique, s, sequenceCouranteClassique.id);
+    seance.competences_mobilisees = [sequenceCouranteClassique.competence_principale];
+    sequenceCouranteClassique.seances.push(seance);
+    afficherSequenceClassique(sequenceCouranteClassique);
+    alert(`Séance ajoutée à la séquence : « ${seance.intitule} »`);
+  }
+
+  function ajouterPropositionATache(s, tacheId) {
+    if (!projetCourant) return;
+    const tache = projetCourant.taches.find(t => t.id === tacheId);
+    if (!tache) return;
+    const seance = construireSeanceDepuisProposition(tache, s, `${projetCourant.id}-${tache.id}`);
+    seance.tache_projet_associee = tache.id;
+    seance.competences_mobilisees = tache.competences_retenues.map(c => c.id);
+    projetCourant.seances.push(seance);
+    alert(`Séance ajoutée au projet : « ${seance.intitule} »`);
+  }
+
   function deposerSeanceClassique(evt) {
     evt.preventDefault();
     evt.currentTarget.classList.remove("dragover");
-    if (!sequenceCouranteClassique) {
-      alert("Générez d'abord une séquence dans cet onglet avant d'y déposer une proposition.");
-      return;
-    }
     const brut = evt.dataTransfer.getData("application/json");
     if (!brut) return;
-    const s = JSON.parse(brut);
-    sequenceCouranteClassique.seances.push({
-      id: `${sequenceCouranteClassique.id}-ATELIER-${Date.now()}`,
-      type: s.type || "seance",
-      intitule: s.intitule,
-      competences_mobilisees: [sequenceCouranteClassique.competence_principale],
-      duree_estimee_min: s.duree_estimee_min || 45,
-      origine: "ia"
-    });
-    afficherSequenceClassique(sequenceCouranteClassique);
+    ajouterPropositionASequenceClassique(JSON.parse(brut));
   }
 
   function deposerSeanceTache(evt, tacheId) {
@@ -1293,19 +1433,7 @@ Réponds avec ce format JSON exact :
     evt.currentTarget.classList.remove("dragover");
     const brut = evt.dataTransfer.getData("application/json");
     if (!brut || !projetCourant) return;
-    const s = JSON.parse(brut);
-    const tache = projetCourant.taches.find(t => t.id === tacheId);
-    const seance = {
-      id: `${projetCourant.id}-${tache.id}-ATELIER-${Date.now()}`,
-      intitule: s.intitule,
-      tache_projet_associee: tache.id,
-      competences_mobilisees: tache.competences_retenues.map(c => c.id),
-      duree_estimee_min: s.duree_estimee_min || 45,
-      statut: "a_planifier",
-      origine: "ia"
-    };
-    projetCourant.seances.push(seance);
-    alert(`Séance ajoutée au projet : « ${seance.intitule} »`);
+    ajouterPropositionATache(JSON.parse(brut), tacheId);
   }
 
   function getProjetCourant() { return projetCourant; }
@@ -1313,11 +1441,14 @@ Réponds avec ce format JSON exact :
 
   return {
     initTabs, initSelectCompetences, switchTab,
+    filtrerCompetences, choisirCompetence,
     genererSequenceClassiqueUI, genererSequenceIA,
     creerProjet, ajouterTache, validerCompetence, genererSeance, suggererCompetencesIA,
     renderMatrice, genererComplements, genererComplementsIA,
     enregistrerParametresIA, testerConnexionIA, exporterEtat, importerEtat,
-    deposerSeanceClassique, deposerSeanceTache, getProjetCourant, getSequenceCouranteClassique
+    deposerSeanceClassique, deposerSeanceTache,
+    ajouterPropositionASequenceClassique, ajouterPropositionATache,
+    getProjetCourant, getSequenceCouranteClassique
   };
 })();
 
@@ -1357,9 +1488,27 @@ const Atelier = (function () {
     });
   }
 
+  const MODELE_SEANCE_SEQUENCES_HTML = `{"phase": "Présentation|Activité|Restitution|Institutionnalisation|Métacognition", "temps": "Ex. : 10 min", "modalite_materiel": "Ex. : Travail en groupe de 4, fiches A4", "deroulement": "Ce qui se passe concrètement pendant la phase", "analyse_tache": "Ce que l'élève doit mobiliser", "amenagement": "Différenciation / adaptation", "posture": "Posture de l'enseignant durant la phase"}`;
+
   function genererPrompt() {
     const mode = document.getElementById("atelier-contexte").value;
     let prompt = "";
+
+    const formatSeanceComplet = `Réponds avec ce format JSON exact (respecte la structure du modèle de séance utilisé dans Programmation/sequences.html) :
+{"seances": [{
+  "numero": "1",
+  "type": "diagnostique|exploration|references|structuration|systematisation|approfondissement|evaluation",
+  "titre": "titre concret et concis de la séance",
+  "competence_cible": "intitulé de la compétence visée",
+  "competences_periph": "compétences périphériques éventuelles",
+  "modalites": "Ex. : travail en groupe de 4",
+  "niveaux": ["CP", "CE1"],
+  "objectif": "Je veux que les élèves soient capables de…",
+  "problematique": "question ou défi posé aux élèves en amont",
+  "deroule": [${MODELE_SEANCE_SEQUENCES_HTML}],
+  "vigilance": "points de vigilance",
+  "duree_estimee_min": 45
+}]}`;
 
     if (mode === "competence") {
       const selectCompetence = document.getElementById("select-competence");
@@ -1371,8 +1520,7 @@ const Atelier = (function () {
 Propose une séquence de 7 séances pour la compétence suivante :
 Domaine : ${competence.domaine}
 Intitulé : ${competence.intitule}
-Réponds avec ce format JSON exact :
-{"titre": "titre de la séquence", "seances": [{"type": "diagnostique|exploration|structuration|systematisation|approfondissement|evaluation", "intitule": "intitulé concret et concis de la séance", "duree_estimee_min": 45}]}`;
+${formatSeanceComplet}`;
       }
     } else {
       const projet = UI.getProjetCourant();
@@ -1386,8 +1534,7 @@ Voici une tâche de projet :
 Nom : ${tache.nom}
 Mots-clés : ${tache.motsCles.join(", ")}
 Propose 1 à 3 séances de projet concrètes permettant de réaliser cette tâche avec des élèves.
-Réponds avec ce format JSON exact :
-{"seances": [{"type": "seance-projet", "intitule": "intitulé concret", "duree_estimee_min": 45}]}`;
+${formatSeanceComplet}`;
       }
     }
     document.getElementById("atelier-prompt").value = prompt;
@@ -1410,8 +1557,17 @@ Réponds avec ce format JSON exact :
     try {
       const objet = MoteurIA.extraireJSON(texte);
       seances = (objet.seances || []).map(s => ({
+        numero: s.numero || "",
         type: s.type || "seance",
-        intitule: s.intitule,
+        intitule: s.titre || s.intitule,
+        competence_cible: s.competence_cible || "",
+        competences_periph: s.competences_periph || "",
+        modalites: s.modalites || "",
+        niveaux: s.niveaux || [],
+        objectif: s.objectif || "",
+        problematique: s.problematique || "",
+        deroule: s.deroule || [],
+        vigilance: s.vigilance || "",
         duree_estimee_min: s.duree_estimee_min || 45
       })).filter(s => s.intitule);
     } catch (e) {
@@ -1419,7 +1575,7 @@ Réponds avec ce format JSON exact :
       seances = texte.split("\n")
         .map(l => l.replace(/^[-*\d.\)\s]+/, "").trim())
         .filter(l => l.length > 3)
-        .map(l => ({ type: "seance", intitule: l, duree_estimee_min: 45 }));
+        .map(l => ({ type: "seance", intitule: l, duree_estimee_min: 45, deroule: [], niveaux: [] }));
     }
     propositions = seances;
     renderPropositions();
@@ -1431,14 +1587,39 @@ Réponds avec ce format JSON exact :
       cont.innerHTML = `<p class="muted">Aucune proposition détectée. Vérifiez le format de la réponse collée.</p>`;
       return;
     }
-    let html = `<div class="muted" style="margin-top:0.9rem;">Glissez une proposition vers la séquence (onglet Générateur classique) ou vers une tâche (onglet Mode projet) :</div>`;
+    const mode = document.getElementById("atelier-contexte").value;
+    const libelleAjout = mode === "competence"
+      ? "➕ Ajouter à la séquence en cours"
+      : "➕ Ajouter à la tâche sélectionnée";
+    let html = `<div class="muted" style="margin-top:0.9rem;">Cliquez sur « Ajouter » pour chaque séance à intégrer (le glisser-déposer ne fonctionne que si la cible est visible dans le même onglet) :</div>`;
     propositions.forEach((s, i) => {
       html += `<div class="proposition-card" draggable="true" ondragstart="Atelier.dragStart(event, ${i})">
         <strong>${s.intitule}</strong><br>
-        <span class="tag ai">${s.type}</span> <span class="tag">${s.duree_estimee_min} min</span>
+        <span class="tag ai">${s.type}</span> <span class="tag">${s.duree_estimee_min} min</span>${(s.niveaux && s.niveaux.length) ? ` <span class="tag">${s.niveaux.join(", ")}</span>` : ""}
+        <div style="margin-top:0.5rem;">
+          <button type="button" class="pill-outline" onclick="Atelier.ajouterProposition(${i})">${libelleAjout}</button>
+        </div>
       </div>`;
     });
     cont.innerHTML = html;
+  }
+
+  function ajouterProposition(index) {
+    const mode = document.getElementById("atelier-contexte").value;
+    const s = propositions[index];
+    if (!s) return;
+    if (mode === "competence") {
+      UI.ajouterPropositionASequenceClassique(s);
+    } else {
+      const projet = UI.getProjetCourant();
+      const selectTache = document.getElementById("atelier-select-tache");
+      const tacheId = selectTache ? selectTache.value : null;
+      if (!projet || !tacheId) {
+        alert("Créez d'abord un projet et une tâche dans l'onglet « Mode projet ».");
+        return;
+      }
+      UI.ajouterPropositionATache(s, tacheId);
+    }
   }
 
   function dragStart(evt, index) {
@@ -1446,11 +1627,11 @@ Réponds avec ce format JSON exact :
     evt.dataTransfer.effectAllowed = "copy";
   }
 
-  return { majContexte, genererPrompt, copierPrompt, analyserReponse, dragStart };
+  return { majContexte, genererPrompt, copierPrompt, analyserReponse, ajouterProposition, dragStart };
 })();
 
 UI.initTabs();
-UI.initSelectCompetences();
+chargerReferentiel();
 document.addEventListener("DOMContentLoaded", () => {
   const c = MoteurIA.chargerConfig();
   document.getElementById("pill-ai-status").classList.toggle("on", MoteurIA.estActif());
