@@ -77,6 +77,33 @@ details summary{cursor:pointer;font-weight:800}
 .proposition{border:1px solid #cfc4ef;background:#faf8ff;border-radius:10px;padding:12px;margin-top:9px}
 .notice{padding:11px 13px;border-radius:10px;background:#fff8e9;border:1px solid #edd7a1;color:#705a25;font-size:.82rem}
 footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
+.coffre-widget{display:flex;align-items:center;gap:8px;padding:4px 5px 4px 11px;border:1px solid rgba(255,255,255,.3);border-radius:999px}
+.badge-coffre{font-size:.72rem;color:#fff;white-space:nowrap}
+.badge-coffre.ouvert{color:#bfe3da}
+.private-box{border:1px solid #d8e5df;background:#f5faf7;border-left:4px solid var(--ok);border-radius:11px;padding:13px;margin:12px 0}
+.private-box h4{margin:0 0 5px;color:var(--ok)}
+.private-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.private-row{display:grid;grid-template-columns:1fr 1.5fr 1.5fr auto;gap:8px;align-items:start;margin:8px 0}
+.private-row textarea,.private-row input{min-height:44px}
+.private-note{font-size:.76rem;color:var(--muted);margin-top:5px}
+#print-area{display:none}
+@media print{
+  body *{visibility:hidden}
+  #print-area,#print-area *{visibility:visible}
+  #print-area{display:block;position:absolute;left:0;top:0;width:100%;background:#fff}
+  .topbar,footer{display:none!important}
+  @page{size:A4;margin:14mm 13mm}
+  .pdf-doc{font-family:Arial,sans-serif;color:#182543}
+  .pdf-doc h1{font-family:Georgia,serif;font-size:22px;border-left:5px solid #c9622f;padding-left:10px}
+  .pdf-doc h2{font-family:Georgia,serif;font-size:17px;color:#182543;margin-top:20px}
+  .pdf-doc h3{font-size:14px;color:#c9622f;border-bottom:1px solid #dfe3e8;padding-bottom:4px}
+  .pdf-meta{background:#f5f7f8;border:1px solid #dfe3e8;border-radius:8px;padding:8px 10px;font-size:11px}
+  .pdf-session{border:1px solid #dfe3e8;border-radius:9px;padding:11px;margin:12px 0;break-inside:avoid}
+  .pdf-session table{width:100%;border-collapse:collapse;font-size:9px}
+  .pdf-session th,.pdf-session td{border:1px solid #dfe3e8;padding:5px;vertical-align:top}
+  .pdf-session th{background:#f2f4f5;text-align:left}
+  .pdf-private{background:#f5faf7;border-left:4px solid #397957;padding:8px;margin:8px 0}
+}
 @media(max-width:900px){.workspace{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.phase-grid{grid-template-columns:1fr}.phase-grid.header{display:none}.phase-grid>div{border-right:0}.two,.seq-grid,.objectives,.session-fields{grid-template-columns:1fr}.student-row{grid-template-columns:1fr}.topbar{position:static}}
 </style>
 </head>
@@ -85,13 +112,35 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
   <div class="topbar-inner">
     <div class="brand"><div class="brand-badge">RÉ</div><div><h1>Créateur de séquences</h1><small>Mode guidé · séquences et séances détaillées</small></div></div>
     <div class="top-actions">
+      <div class="coffre-widget">
+        <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
+        <button type="button" onclick="App.toggleCoffre()">Ouvrir le coffre</button>
+      </div>
       <button id="ref-status">Chargement du référentiel…</button>
+      <button onclick="App.exporterPDF('sequence')">PDF</button>
       <button onclick="App.exporter()">Exporter</button>
       <button onclick="document.getElementById('import-file').click()">Importer</button>
       <input id="import-file" type="file" accept="application/json" hidden onchange="App.importer(event)">
     </div>
   </div>
 </header>
+
+<div class="modal-overlay" id="modal-coffre" style="display:none;position:fixed;inset:0;background:rgba(24,37,67,.5);z-index:100;align-items:flex-start;justify-content:center;padding:40px 16px">
+  <div class="card" style="max-width:480px;width:100%;margin:0;box-shadow:0 25px 70px rgba(0,0,0,.25)">
+    <h3>Ouvrir le coffre élèves</h3>
+    <label>Fichier .synapses</label>
+    <input type="file" id="coffre-file" accept=".synapses">
+    <label>Mot de passe</label>
+    <input type="password" id="coffre-password" placeholder="Mot de passe du coffre">
+    <p class="help">Le fichier est lu localement par votre navigateur et n'est pas envoyé au site.</p>
+    <div class="toolbar">
+      <button class="btn secondary" type="button" onclick="App.closeCoffre()">Annuler</button>
+      <button class="btn" type="button" onclick="App.openCoffre()">Ouvrir</button>
+    </div>
+  </div>
+</div>
+
+<div id="print-area"></div>
 
 <main>
   <section class="hero">
@@ -210,7 +259,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
         <div id="view-preview">
           <div class="card">
             <h3>5. Finaliser</h3>
-            <div class="toolbar"><span class="status ok">Structure prête à relire</span><div class="row"><button class="btn secondary" onclick="App.go(4)">← Modifier les séances</button><button class="btn" onclick="App.exporter()">Exporter le JSON</button></div></div>
+            <div class="toolbar"><span class="status ok">Structure prête à relire</span><div class="row"><button class="btn secondary" onclick="App.go(4)">← Modifier les séances</button><button class="btn secondary" onclick="App.exporterPDF('sequence')">Télécharger le PDF</button><button class="btn" onclick="App.exporter()">Exporter le JSON</button></div></div>
             <div id="preview" class="preview"></div>
           </div>
         </div>
@@ -243,8 +292,16 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
 </main>
 <footer>Créateur local · Les données du référentiel sont chargées depuis <code>data/competences.json</code> et <code>data/index.json</code>.</footer>
 
+<script src="../fata-morgana/synapses-crypto.js"></script>
+<script src="../fata-morgana/synapses-coffre.js"></script>
 <script>
 "use strict";
+
+let coffre=null;
+try{coffre=new SynapsesCoffre.Coffre()}catch(e){coffre=null}
+function coffreDisponible(){return !!coffre}
+function coffreOuvert(){return !!(coffre&&coffre.ouvert)}
+function eleveLabel(e){const id=e.identite||{};return (`${id.prenom||""} ${id.nom||""}`).trim()||e.identifiantSynapses}
 
 const App = (() => {
   let refs = [], domaines = [], niveaux = [], selected = null, step = 1;
@@ -451,6 +508,7 @@ const App = (() => {
   function renderDetails(){
     const box=document.getElementById("detail-list");if(!sequence){box.innerHTML="";return}
     box.innerHTML=sequence.seances.map((s,i)=>renderDetail(s,i)).join("");
+    sequence.seances.forEach((s,i)=>renderPrivateStudents(i));
   }
 
   function renderDetail(s,i){
@@ -476,6 +534,17 @@ const App = (() => {
           <div><label>Modalités générales</label><textarea placeholder="Travail individuel, groupe, collectif…" oninput="App.sessionField(${i},'modalites_generales',this.value)">${esc(s.modalites_generales)}</textarea></div>
           <div><label>Niveaux / classe</label><input value="${esc(arr(s.niveaux).join(", "))}" oninput="App.sessionField(${i},'niveaux',this.value.split(',').map(x=>x.trim()).filter(Boolean))"></div>
           <div class="full"><label>Objectif</label><textarea placeholder="Je veux que les élèves soient capables de…" oninput="App.sessionField(${i},'objectif',this.value)">${esc(s.objectif)}</textarea></div>
+          <div class="full">
+            <div class="private-box">
+              <h4>🔒 Adaptations individuelles — données du coffre</h4>
+              <div class="private-note">Cette zone apparaît pour chaque séance. Elle reste en mémoire tant que le coffre est ouvert et n'est pas intégrée à l'export JSON public.</div>
+              <div id="private-students-${i}"></div>
+              <div class="private-tools">
+                <button type="button" class="btn secondary small" onclick="App.loadPrivateStudents(${i})">↺ Charger les élèves du coffre</button>
+                <button type="button" class="btn secondary small" onclick="App.addPrivateStudent(${i})">+ Ajouter une adaptation</button>
+              </div>
+            </div>
+          </div>
           <div class="full"><label>Problématique pour les élèves</label><textarea placeholder="Est-ce que je peux… ? / Comment… ?" oninput="App.sessionField(${i},'problematique',this.value)">${esc(s.problematique)}</textarea></div>
           <div><label>Consigne</label><textarea oninput="App.sessionField(${i},'consigne',this.value)">${esc(s.consigne)}</textarea></div>
           <div><label>Tâche</label><textarea oninput="App.sessionField(${i},'tache',this.value)">${esc(s.tache)}</textarea></div>
@@ -486,11 +555,55 @@ const App = (() => {
         <h4>Déroulé détaillé</h4>
         <div class="phase-grid header"><div>Phase</div><div>Temps</div><div>Modalité + matériel</div><div>Déroulement</div><div>Analyse de la tâche</div><div>Aménagement</div><div>Posture enseignant</div></div>
         ${phaseRows}
-        <div class="toolbar"><button class="btn secondary small" onclick="App.addPhase(${i})">+ Ajouter une phase</button><button class="btn small" onclick="App.go(5)">Voir l’aperçu</button></div>
+        <div class="toolbar"><button class="btn secondary small" onclick="App.addPhase(${i})">+ Ajouter une phase</button><button class="btn secondary small" onclick="App.exporterPDF('seance',${i})">Télécharger le PDF</button><button class="btn small" onclick="App.go(5)">Voir l’aperçu</button></div>
       </div>
     </details>`;
   }
 
+  function privateStudentLabel(id){
+    if(!coffreOuvert()) return id || "Élève";
+    const e=coffre.listerEleves().find(x=>x.identifiantSynapses===id);
+    return e ? eleveLabel(e) : id || "Élève";
+  }
+  function renderPrivateStudents(i){
+    const wrap=document.getElementById("private-students-"+i);
+    const s=sequence?.seances[i];
+    if(!wrap||!s)return;
+    const rows=s.adaptations_individuelles||[];
+    if(!rows.length){wrap.innerHTML='<div class="help">Aucune adaptation individuelle pour cette séance.</div>';return}
+    const options=coffreOuvert()?coffre.listerEleves().map(e=>`<option value="${esc(e.identifiantSynapses)}">${esc(eleveLabel(e))}</option>`).join(""):"";
+    wrap.innerHTML=rows.map((r,j)=>`<div class="private-row">
+      <select onchange="App.privateField(${i},${j},'identifiant',this.value)">
+        <option value="">— Élève —</option>${options}
+        ${r.identifiant && !coffreOuvert()?`<option value="${esc(r.identifiant)}" selected>${esc(privateStudentLabel(r.identifiant))}</option>`:""}
+      </select>
+      <textarea placeholder="Adaptation / aide prévue" oninput="App.privateField(${i},${j},'adaptation',this.value)">${esc(r.adaptation)}</textarea>
+      <textarea placeholder="Point de vigilance / modalité individuelle" oninput="App.privateField(${i},${j},'vigilance',this.value)">${esc(r.vigilance)}</textarea>
+      <button class="btn danger small" type="button" onclick="App.removePrivateStudent(${i},${j})">×</button>
+    </div>`).join("");
+    rows.forEach((r,j)=>{
+      const sel=wrap.querySelectorAll("select")[j]; if(sel) sel.value=r.identifiant||"";
+    });
+  }
+  function addPrivateStudent(i,id="",adaptation="",vigilance=""){
+    if(!sequence?.seances[i])return;
+    sequence.seances[i].adaptations_individuelles=sequence.seances[i].adaptations_individuelles||[];
+    sequence.seances[i].adaptations_individuelles.push({identifiant:id,adaptation,vigilance});
+    renderPrivateStudents(i);
+  }
+  function removePrivateStudent(i,j){
+    sequence.seances[i].adaptations_individuelles.splice(j,1); renderPrivateStudents(i);
+  }
+  function privateField(i,j,k,v){
+    if(sequence?.seances[i]?.adaptations_individuelles?.[j]) sequence.seances[i].adaptations_individuelles[j][k]=v;
+  }
+  function loadPrivateStudents(i){
+    if(!coffreOuvert()){alert("Ouvrez d’abord le coffre élèves.");return}
+    const s=sequence.seances[i]; s.adaptations_individuelles=s.adaptations_individuelles||[];
+    const ids=new Set(s.adaptations_individuelles.map(x=>x.identifiant).filter(Boolean));
+    coffre.listerEleves().forEach(e=>{if(!ids.has(e.identifiantSynapses))s.adaptations_individuelles.push({identifiant:e.identifiantSynapses,adaptation:"",vigilance:""})});
+    renderPrivateStudents(i);
+  }
   function phaseField(si,pi,k,v){if(sequence?.seances[si]?.deroule?.[pi])sequence.seances[si].deroule[pi][k]=v}
   function addPhase(si){sequence.seances[si].deroule.push({phase:"Nouvelle phase",temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""});renderDetails()}
 
@@ -675,6 +788,68 @@ ${schemaPrompt()}`;
     document.getElementById("json-view").textContent=JSON.stringify(sequence||{},null,2);
   }
 
+  function pdfEscape(v){return esc(v||"—")}
+  function pdfPhaseTable(phases){
+    const rows=(phases||[]).map(p=>`<tr><td><strong>${pdfEscape(p.phase)}</strong><br>${pdfEscape(p.temps)}</td><td>${pdfEscape(p.modalite_materiel)}</td><td>${pdfEscape(p.deroulement)}</td><td>${pdfEscape(p.analyse_tache)}</td><td>${pdfEscape(p.amenagement)}</td><td>${pdfEscape(p.posture)}</td></tr>`).join("");
+    return rows?`<table><thead><tr><th>Phase / temps</th><th>Modalité & matériel</th><th>Déroulement</th><th>Analyse de la tâche</th><th>Aménagement</th><th>Posture</th></tr></thead><tbody>${rows}</tbody></table>`:"";
+  }
+  function pdfPrivate(adaptations){
+    if(!coffreOuvert() || !(adaptations||[]).length) return "";
+    const rows=adaptations.map(a=>`<div class="pdf-private"><strong>${pdfEscape(privateStudentLabel(a.identifiant))}</strong><br>${pdfEscape(a.adaptation)}${a.vigilance?`<br><em>${pdfEscape(a.vigilance)}</em>`:""}</div>`).join("");
+    return `<h3>Adaptations individuelles</h3>${rows}`;
+  }
+  function pdfSessionHTML(s){
+    return `<section class="pdf-session">
+      <h2>Séance ${pdfEscape(s.numero)} · ${pdfEscape(s.titre)}</h2>
+      <div class="pdf-meta">${pdfEscape(s.type)} · ${pdfEscape(s.duree_estimee_min||45)} min · ${pdfEscape(s.niveaux?.join(", "))}</div>
+      <p><strong>Compétence cible :</strong> ${pdfEscape(s.competence_cible)}</p>
+      <p><strong>Objectif :</strong> ${pdfEscape(s.objectif)}</p>
+      ${pdfPrivate(s.adaptations_individuelles)}
+      <p><strong>Problématique pour les élèves :</strong> ${pdfEscape(s.problematique)}</p>
+      <p><strong>Consigne :</strong> ${pdfEscape(s.consigne)}</p>
+      <p><strong>Tâche :</strong> ${pdfEscape(s.tache)}</p>
+      <p><strong>Critères de réussite :</strong> ${pdfEscape(s.criteres_reussite)}</p>
+      ${pdfPhaseTable(s.deroule)}
+      ${s.vigilance?`<p><strong>Points de vigilance :</strong> ${pdfEscape(s.vigilance)}</p>`:""}
+    </section>`;
+  }
+  function exporterPDF(mode="sequence", index=0){
+    if(!sequence){alert("Aucune séquence à exporter.");return}
+    const sessions=mode==="seance"?[sequence.seances[index]].filter(Boolean):sequence.seances;
+    const html=`<div class="pdf-doc">
+      <div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#4a6fa8">Programmation · séquence pédagogique</div>
+      <h1>${pdfEscape(sequence.titre)}</h1>
+      <div class="pdf-meta"><strong>${pdfEscape(sequence.domaine)}</strong> · ${pdfEscape(sequence.classe)}</div>
+      <h2>Objectif commun</h2><p>${pdfEscape(sequence.objectif_commun)}</p>
+      <h2>Compétences travaillées</h2><p>${pdfEscape(arr(sequence.competences_travaillees).join(" · "))}</p>
+      ${sessions.map(pdfSessionHTML).join("")}
+    </div>`;
+    const area=document.getElementById("print-area"); area.innerHTML=html;
+    const old=document.title; document.title=(mode==="seance"?"Séance":"Séquence")+" — "+sequence.titre;
+    window.print(); document.title=old;
+  }
+
+  function toggleCoffre(){
+    if(coffreOuvert()){
+      if(confirm("Fermer le coffre et purger les données élèves de la mémoire de cet onglet ?")){coffre.purger();updateCoffreWidget();renderDetails()}
+    }else{
+      const m=document.getElementById("modal-coffre");m.style.display="flex";
+    }
+  }
+  function closeCoffre(){document.getElementById("modal-coffre").style.display="none"}
+  async function openCoffre(){
+    if(!coffreDisponible()){alert("Le coffre est indisponible.");return}
+    const file=document.getElementById("coffre-file").files[0],pwd=document.getElementById("coffre-password").value;
+    if(!file||!pwd){alert("Sélectionnez le fichier .synapses et saisissez le mot de passe.");return}
+    try{await coffre.ouvrir(file,pwd);closeCoffre();document.getElementById("coffre-password").value="";updateCoffreWidget();renderDetails();alert("Coffre ouvert : "+coffre.listerEleves().length+" élève(s)")}catch(e){alert(e.message)}
+  }
+  function updateCoffreWidget(){
+    const el=document.getElementById("coffre-status"); if(!el)return;
+    if(!coffreDisponible()){el.textContent="Coffre indisponible";return}
+    el.textContent=coffreOuvert()?"Coffre ouvert · "+coffre.listerEleves().length+" élève(s)":"Coffre fermé";
+    el.classList.toggle("ouvert",coffreOuvert());
+  }
+
   function exporter(){
     if(!sequence){alert("Aucune séquence à exporter.");return}
     const blob=new Blob([JSON.stringify(sequence,null,2)],{type:"application/json"});
@@ -697,10 +872,12 @@ ${schemaPrompt()}`;
     r.readAsText(file);event.target.value="";
   }
 
-  return {init,go,filterCompetences,selectCompetence,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer};
+  return {init,go,filterCompetences,selectCompetence,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents};
 })();
 
 App.init();
+updateCoffreWidget();
+window.addEventListener("beforeunload",()=>{if(coffre)coffre.purger()});
 </script>
 </body>
 </html>
