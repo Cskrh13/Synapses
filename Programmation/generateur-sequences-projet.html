@@ -77,42 +77,70 @@ details summary{cursor:pointer;font-weight:800}
 .proposition{border:1px solid #cfc4ef;background:#faf8ff;border-radius:10px;padding:12px;margin-top:9px}
 .notice{padding:11px 13px;border-radius:10px;background:#fff8e9;border:1px solid #edd7a1;color:#705a25;font-size:.82rem}
 footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
+.coffre-widget{display:flex;align-items:center;gap:8px;padding:4px 5px 4px 11px;border:1px solid rgba(255,255,255,.3);border-radius:999px}
+.badge-coffre{font-size:.72rem;color:#fff;white-space:nowrap}
+.badge-coffre.ouvert{color:#bfe3da}
+.private-box{border:1px solid #d8e5df;background:#f5faf7;border-left:4px solid var(--ok);border-radius:11px;padding:13px;margin:12px 0}
+.private-box h4{margin:0 0 5px;color:var(--ok)}
+.private-tools{display:flex;gap:8px;flex-wrap:wrap;margin-top:9px}
+.private-row{display:grid;grid-template-columns:1fr 1.5fr 1.5fr auto;gap:8px;align-items:start;margin:8px 0}
+.private-row textarea,.private-row input{min-height:44px}
+.private-note{font-size:.76rem;color:var(--muted);margin-top:5px}
+#print-area{display:none}
+@media print{
+  body *{visibility:hidden}
+  #print-area,#print-area *{visibility:visible}
+  #print-area{display:block;position:absolute;left:0;top:0;width:100%;background:#fff}
+  .topbar,footer{display:none!important}
+  @page{size:A4;margin:14mm 13mm}
+  .pdf-doc{font-family:Arial,sans-serif;color:#182543}
+  .pdf-doc h1{font-family:Georgia,serif;font-size:22px;border-left:5px solid #c9622f;padding-left:10px}
+  .pdf-doc h2{font-family:Georgia,serif;font-size:17px;color:#182543;margin-top:20px}
+  .pdf-doc h3{font-size:14px;color:#c9622f;border-bottom:1px solid #dfe3e8;padding-bottom:4px}
+  .pdf-meta{background:#f5f7f8;border:1px solid #dfe3e8;border-radius:8px;padding:8px 10px;font-size:11px}
+  .pdf-session{border:1px solid #dfe3e8;border-radius:9px;padding:11px;margin:12px 0;break-inside:avoid}
+  .pdf-session table{width:100%;border-collapse:collapse;font-size:9px}
+  .pdf-session th,.pdf-session td{border:1px solid #dfe3e8;padding:5px;vertical-align:top}
+  .pdf-session th{background:#f2f4f5;text-align:left}
+  .pdf-private{background:#f5faf7;border-left:4px solid #397957;padding:8px;margin:8px 0}
+}
 @media(max-width:900px){.workspace{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.phase-grid{grid-template-columns:1fr}.phase-grid.header{display:none}.phase-grid>div{border-right:0}.two,.seq-grid,.objectives,.session-fields{grid-template-columns:1fr}.student-row{grid-template-columns:1fr}.topbar{position:static}}
 </style>
-
-<style>
-.nav-index-link{
-  display:inline-flex;
-  align-items:center;
-  margin:10px 12px;
-  padding:8px 12px;
-  border:1px solid rgba(127,127,127,.28);
-  border-radius:8px;
-  text-decoration:none;
-  font-size:.85rem;
-  font-weight:600;
-  color:inherit;
-  background:rgba(255,255,255,.72);
-}
-.nav-index-link:hover{filter:brightness(.96);}
-</style>
-
-\n<style>\n/* Construction de la progression */\n.progression-builder{margin-top:18px;padding:20px;border:1px solid var(--line);border-radius:var(--radius);background:#f8f9f8;box-shadow:var(--shadow)}\n.progression-builder h4{margin:0 0 5px}.progression-intro{color:var(--soft);font-size:.84rem;margin:0 0 16px}.progression-grid{display:grid;grid-template-columns:1fr 1.5fr;gap:14px}.progression-panel{background:#fff;border:1px solid var(--line);border-radius:11px;padding:14px}.progression-panel-title{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-bottom:10px}.progression-panel-title h5{margin:0;font-size:.92rem}.progression-readonly{font-size:.72rem;padding:4px 7px;border-radius:999px;background:#edf1f5;color:var(--soft)}.progression-official,.progression-sequences{display:grid;gap:7px;max-height:300px;overflow:auto}.progression-official-item{padding:9px 10px;border-radius:9px;background:#f4f6f8;border-left:3px solid var(--blue);font-size:.82rem}.progression-official-item strong,.progression-official-item small{display:block}.progression-official-item small{color:var(--muted);margin-top:2px}.progression-tools{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:10px}.progression-tools input,.progression-tools select{min-height:36px;border:1px solid var(--line);border-radius:8px;padding:6px 9px;background:#fff}.progression-tools input{flex:1;min-width:180px}.progression-sequence{display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:center;padding:10px;border:1px solid var(--line);border-radius:9px;background:#fff}.progression-sequence.is-selected{background:#f2f7f4;border-color:#8cac9b}.progression-sequence strong,.progression-sequence small{display:block}.progression-sequence small{color:var(--muted);margin-top:3px}.progression-match{color:var(--ok)!important;font-weight:700}.progression-selected{margin-top:14px;padding-top:14px;border-top:1px solid var(--line)}.progression-selected-list{display:flex;flex-wrap:wrap;gap:7px}.progression-chip{display:flex;align-items:center;gap:7px;padding:7px 10px;background:var(--navy);color:#fff;border-radius:999px;font-size:.78rem}.progression-chip button{border:0;background:rgba(255,255,255,.15);color:#fff;width:20px;height:20px;border-radius:50%;cursor:pointer}.progression-empty{color:var(--muted);font-size:.82rem;padding:10px}@media(max-width:850px){.progression-grid{grid-template-columns:1fr}}\n</style>\n</head>
+</head>
 <body>
-  <nav class="site-nav">
-    <a href="../index.html" class="nav-index-link" title="Retour à l’accueil">Accueil</a>
-  </nav>
 <header class="topbar">
   <div class="topbar-inner">
     <div class="brand"><div class="brand-badge">RÉ</div><div><h1>Créateur de séquences</h1><small>Mode guidé · séquences et séances détaillées</small></div></div>
     <div class="top-actions">
+      <div class="coffre-widget">
+        <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
+        <button type="button" onclick="App.toggleCoffre()">Ouvrir le coffre</button>
+      </div>
       <button id="ref-status">Chargement du référentiel…</button>
+      <button onclick="App.exporterPDF('sequence')">PDF</button>
       <button onclick="App.exporter()">Exporter</button>
       <button onclick="document.getElementById('import-file').click()">Importer</button>
       <input id="import-file" type="file" accept="application/json" hidden onchange="App.importer(event)">
     </div>
   </div>
 </header>
+
+<div class="modal-overlay" id="modal-coffre" style="display:none;position:fixed;inset:0;background:rgba(24,37,67,.5);z-index:100;align-items:flex-start;justify-content:center;padding:40px 16px">
+  <div class="card" style="max-width:480px;width:100%;margin:0;box-shadow:0 25px 70px rgba(0,0,0,.25)">
+    <h3>Ouvrir le coffre élèves</h3>
+    <label>Fichier .synapses</label>
+    <input type="file" id="coffre-file" accept=".synapses">
+    <label>Mot de passe</label>
+    <input type="password" id="coffre-password" placeholder="Mot de passe du coffre">
+    <p class="help">Le fichier est lu localement par votre navigateur et n'est pas envoyé au site.</p>
+    <div class="toolbar">
+      <button class="btn secondary" type="button" onclick="App.closeCoffre()">Annuler</button>
+      <button class="btn" type="button" onclick="App.openCoffre()">Ouvrir</button>
+    </div>
+  </div>
+</div>
+
+<div id="print-area"></div>
 
 <main>
   <section class="hero">
@@ -174,7 +202,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
             <div><label>Références théoriques</label><textarea id="seq-references" oninput="App.updateSequenceField('references_theoriques',this.value)"></textarea></div>
           </div>
           <div class="toolbar"><button class="btn" onclick="App.generateSequence()">Préparer la progression</button><button class="btn ai" onclick="App.go(5);App.openAtelier()">✨ Faire proposer la séquence par l’IA gratuite</button></div>
-        </div>\n\n        <div class="progression-builder" id="progression-builder" style="display:none">\n          <h4>Construire la progression</h4>\n          <p class="progression-intro">Les compétences officielles restent celles du référentiel et ne sont pas modifiables. Les séquences proposées ci-dessous proviennent de la bibliothèque existante et peuvent être retenues comme étapes précédentes.</p>\n          <div class="progression-grid">\n            <div class="progression-panel">\n              <div class="progression-panel-title"><h5>Pré-requis du programme</h5><span class="progression-readonly">Référentiel · lecture seule</span></div>\n              <div id="progression-official" class="progression-official"><div class="progression-empty">Sélectionnez une compétence.</div></div>\n            </div>\n            <div class="progression-panel">\n              <div class="progression-panel-title"><h5>Séquences existantes pouvant préparer cette compétence</h5></div>\n              <div class="progression-tools">\n                <input id="progression-search" type="search" placeholder="Rechercher une séquence…">\n                <select id="progression-filter"><option value="auto">Pertinence automatique</option><option value="same">Même niveau</option><option value="previous">Niveaux précédents</option><option value="all">Tous les niveaux</option></select>\n              </div>\n              <div id="progression-sequences" class="progression-sequences"><div class="progression-empty">Les séquences existantes apparaîtront ici.</div></div>\n            </div>\n          </div>\n          <div class="progression-selected">\n            <div class="progression-panel-title"><h5>Séquences précédentes retenues</h5><span id="progression-count" class="progression-readonly">0 séquence</span></div>\n            <div id="progression-selected-list" class="progression-selected-list"><div class="progression-empty">Aucune séquence précédente sélectionnée.</div></div>\n          </div>\n        </div>
+        </div>
       </div>
 
       <!-- STEP 2 -->
@@ -231,7 +259,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
         <div id="view-preview">
           <div class="card">
             <h3>5. Finaliser</h3>
-            <div class="toolbar"><span class="status ok">Structure prête à relire</span><div class="row"><button class="btn secondary" onclick="App.go(4)">← Modifier les séances</button><button class="btn" onclick="App.exporter()">Exporter le JSON</button></div></div>
+            <div class="toolbar"><span class="status ok">Structure prête à relire</span><div class="row"><button class="btn secondary" onclick="App.go(4)">← Modifier les séances</button><button class="btn secondary" onclick="App.exporterPDF('sequence')">Télécharger le PDF</button><button class="btn" onclick="App.exporter()">Exporter le JSON</button></div></div>
             <div id="preview" class="preview"></div>
           </div>
         </div>
@@ -264,14 +292,20 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
 </main>
 <footer>Créateur local · Les données du référentiel sont chargées depuis <code>data/competences.json</code> et <code>data/index.json</code>.</footer>
 
+<script src="../fata-morgana/synapses-crypto.js"></script>
+<script src="../fata-morgana/synapses-coffre.js"></script>
 <script>
 "use strict";
+
+let coffre=null;
+try{coffre=new SynapsesCoffre.Coffre()}catch(e){coffre=null}
+function coffreDisponible(){return !!coffre}
+function coffreOuvert(){return !!(coffre&&coffre.ouvert)}
+function eleveLabel(e){const id=e.identite||{};return (`${id.prenom||""} ${id.nom||""}`).trim()||e.identifiantSynapses}
 
 const App = (() => {
   let refs = [], domaines = [], niveaux = [], selected = null, step = 1;
   let sequence = null;
-  let bibliothequeSequences = [];
-  let sequencesProgressionSelectionnees = [];
 
   const TYPES = [
     ["diagnostique","Diagnostique"],
@@ -339,9 +373,7 @@ const App = (() => {
       titre:"Séquence : "+selected.intitule, domaine_socle:"", classe:selected.niveau||"",
       competences_travaillees:[selected.intitule], objectif_coeur_de_cible:selected.intitule,
       objectif_commun:"", references_theoriques:"", prerequis:selected.prerequis||[],
-      objectifs_individuels:[], seances:[],
-      prerequis_competences:Array.isArray(selected.prerequis)?[...selected.prerequis]:[],
-      sequences_precedentes:[]
+      objectifs_individuels:[], seances:[]
     };
     document.getElementById("selection-status").className="status ok";
     document.getElementById("selection-status").textContent="Compétence sélectionnée";
@@ -350,9 +382,6 @@ const App = (() => {
     document.getElementById("seq-cadrage").style.display="block";
     setFields();
     filterCompetences();
-    document.getElementById("progression-builder").style.display="block";
-    sequencesProgressionSelectionnees=[];
-    initialiserConstructionProgression();
     go(1);
   }
 
@@ -479,6 +508,7 @@ const App = (() => {
   function renderDetails(){
     const box=document.getElementById("detail-list");if(!sequence){box.innerHTML="";return}
     box.innerHTML=sequence.seances.map((s,i)=>renderDetail(s,i)).join("");
+    sequence.seances.forEach((s,i)=>renderPrivateStudents(i));
   }
 
   function renderDetail(s,i){
@@ -504,6 +534,17 @@ const App = (() => {
           <div><label>Modalités générales</label><textarea placeholder="Travail individuel, groupe, collectif…" oninput="App.sessionField(${i},'modalites_generales',this.value)">${esc(s.modalites_generales)}</textarea></div>
           <div><label>Niveaux / classe</label><input value="${esc(arr(s.niveaux).join(", "))}" oninput="App.sessionField(${i},'niveaux',this.value.split(',').map(x=>x.trim()).filter(Boolean))"></div>
           <div class="full"><label>Objectif</label><textarea placeholder="Je veux que les élèves soient capables de…" oninput="App.sessionField(${i},'objectif',this.value)">${esc(s.objectif)}</textarea></div>
+          <div class="full">
+            <div class="private-box">
+              <h4>🔒 Adaptations individuelles — données du coffre</h4>
+              <div class="private-note">Cette zone apparaît pour chaque séance. Elle reste en mémoire tant que le coffre est ouvert et n'est pas intégrée à l'export JSON public.</div>
+              <div id="private-students-${i}"></div>
+              <div class="private-tools">
+                <button type="button" class="btn secondary small" onclick="App.loadPrivateStudents(${i})">↺ Charger les élèves du coffre</button>
+                <button type="button" class="btn secondary small" onclick="App.addPrivateStudent(${i})">+ Ajouter une adaptation</button>
+              </div>
+            </div>
+          </div>
           <div class="full"><label>Problématique pour les élèves</label><textarea placeholder="Est-ce que je peux… ? / Comment… ?" oninput="App.sessionField(${i},'problematique',this.value)">${esc(s.problematique)}</textarea></div>
           <div><label>Consigne</label><textarea oninput="App.sessionField(${i},'consigne',this.value)">${esc(s.consigne)}</textarea></div>
           <div><label>Tâche</label><textarea oninput="App.sessionField(${i},'tache',this.value)">${esc(s.tache)}</textarea></div>
@@ -514,105 +555,57 @@ const App = (() => {
         <h4>Déroulé détaillé</h4>
         <div class="phase-grid header"><div>Phase</div><div>Temps</div><div>Modalité + matériel</div><div>Déroulement</div><div>Analyse de la tâche</div><div>Aménagement</div><div>Posture enseignant</div></div>
         ${phaseRows}
-        <div class="toolbar"><button class="btn secondary small" onclick="App.addPhase(${i})">+ Ajouter une phase</button><button class="btn small" onclick="App.go(5)">Voir l’aperçu</button></div>
+        <div class="toolbar"><button class="btn secondary small" onclick="App.addPhase(${i})">+ Ajouter une phase</button><button class="btn secondary small" onclick="App.exporterPDF('seance',${i})">Télécharger le PDF</button><button class="btn small" onclick="App.go(5)">Voir l’aperçu</button></div>
       </div>
     </details>`;
   }
 
+  function privateStudentLabel(id){
+    if(!coffreOuvert()) return id || "Élève";
+    const e=coffre.listerEleves().find(x=>x.identifiantSynapses===id);
+    return e ? eleveLabel(e) : id || "Élève";
+  }
+  function renderPrivateStudents(i){
+    const wrap=document.getElementById("private-students-"+i);
+    const s=sequence?.seances[i];
+    if(!wrap||!s)return;
+    const rows=s.adaptations_individuelles||[];
+    if(!rows.length){wrap.innerHTML='<div class="help">Aucune adaptation individuelle pour cette séance.</div>';return}
+    const options=coffreOuvert()?coffre.listerEleves().map(e=>`<option value="${esc(e.identifiantSynapses)}">${esc(eleveLabel(e))}</option>`).join(""):"";
+    wrap.innerHTML=rows.map((r,j)=>`<div class="private-row">
+      <select onchange="App.privateField(${i},${j},'identifiant',this.value)">
+        <option value="">— Élève —</option>${options}
+        ${r.identifiant && !coffreOuvert()?`<option value="${esc(r.identifiant)}" selected>${esc(privateStudentLabel(r.identifiant))}</option>`:""}
+      </select>
+      <textarea placeholder="Adaptation / aide prévue" oninput="App.privateField(${i},${j},'adaptation',this.value)">${esc(r.adaptation)}</textarea>
+      <textarea placeholder="Point de vigilance / modalité individuelle" oninput="App.privateField(${i},${j},'vigilance',this.value)">${esc(r.vigilance)}</textarea>
+      <button class="btn danger small" type="button" onclick="App.removePrivateStudent(${i},${j})">×</button>
+    </div>`).join("");
+    rows.forEach((r,j)=>{
+      const sel=wrap.querySelectorAll("select")[j]; if(sel) sel.value=r.identifiant||"";
+    });
+  }
+  function addPrivateStudent(i,id="",adaptation="",vigilance=""){
+    if(!sequence?.seances[i])return;
+    sequence.seances[i].adaptations_individuelles=sequence.seances[i].adaptations_individuelles||[];
+    sequence.seances[i].adaptations_individuelles.push({identifiant:id,adaptation,vigilance});
+    renderPrivateStudents(i);
+  }
+  function removePrivateStudent(i,j){
+    sequence.seances[i].adaptations_individuelles.splice(j,1); renderPrivateStudents(i);
+  }
+  function privateField(i,j,k,v){
+    if(sequence?.seances[i]?.adaptations_individuelles?.[j]) sequence.seances[i].adaptations_individuelles[j][k]=v;
+  }
+  function loadPrivateStudents(i){
+    if(!coffreOuvert()){alert("Ouvrez d’abord le coffre élèves.");return}
+    const s=sequence.seances[i]; s.adaptations_individuelles=s.adaptations_individuelles||[];
+    const ids=new Set(s.adaptations_individuelles.map(x=>x.identifiant).filter(Boolean));
+    coffre.listerEleves().forEach(e=>{if(!ids.has(e.identifiantSynapses))s.adaptations_individuelles.push({identifiant:e.identifiantSynapses,adaptation:"",vigilance:""})});
+    renderPrivateStudents(i);
+  }
   function phaseField(si,pi,k,v){if(sequence?.seances[si]?.deroule?.[pi])sequence.seances[si].deroule[pi][k]=v}
   function addPhase(si){sequence.seances[si].deroule.push({phase:"Nouvelle phase",temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""});renderDetails()}
-
-  async function chargerBibliothequeSequences(){
-    bibliothequeSequences=[];
-    const chemins=["data/index.json","../Programmation/data/index.json","../data/index.json"];
-    for(const chemin of chemins){
-      try{
-        const r=await fetch(chemin,{cache:"no-store"});
-        if(!r.ok) continue;
-        const data=await r.json();
-        parcourirIndexSequences(data);
-        break;
-      }catch(e){}
-    }
-    const map=new Map();
-    bibliothequeSequences.forEach(x=>{if(x.id)map.set(String(x.id),x)});
-    bibliothequeSequences=[...map.values()];
-  }
-
-  function parcourirIndexSequences(data){
-    if(!data)return;
-    if(Array.isArray(data)){data.forEach(parcourirIndexSequences);return}
-    if(typeof data!=="object")return;
-    if(data.id && (data.titre||data.nom||data.fichier_sequence||data.competence_id||data.competence_principale)){
-      bibliothequeSequences.push({
-        id:data.id,titre:data.titre||data.nom||data.id,
-        niveau:data.niveau||data.classe||"",domaine:data.domaine||data.domaine_id||"",
-        competence_id:data.competence_id||data.competence_principale||"",
-        fichier:data.fichier_sequence||data.fichier||""
-      });
-    }
-    ["sequences","items","data","niveaux","disciplines","domaines"].forEach(k=>{if(data[k])parcourirIndexSequences(data[k])});
-  }
-
-  function afficherPrerequisOfficiels(){
-    const box=document.getElementById("progression-official"); if(!box)return;
-    if(!selected){box.innerHTML='<div class="progression-empty">Sélectionnez une compétence.</div>';return}
-    const ids=Array.isArray(selected.prerequis)?selected.prerequis:[];
-    if(!ids.length){box.innerHTML='<div class="progression-empty">Aucun pré-requis explicite n’est déclaré dans le référentiel pour cette compétence.</div>';return}
-    box.innerHTML=ids.map(p=>{
-      const id=typeof p==="string"?p:p.id;
-      const c=refs.find(x=>String(x.id)===String(id));
-      return `<div class="progression-official-item"><strong>${esc(c?c.intitule:id)}</strong><small>${esc(id)}</small></div>`;
-    }).join("");
-  }
-
-  function scoreSequenceProgression(seq){
-    if(!selected)return 0; let score=0;
-    const pre=Array.isArray(selected.prerequis)?selected.prerequis:[];
-    if(seq.competence_id && pre.some(p=>String(typeof p==="string"?p:p.id)===String(seq.competence_id)))score+=100;
-    if(seq.niveau && selected.niveau && String(seq.niveau)===String(selected.niveau))score+=25;
-    if(seq.domaine && selected.domaine && String(seq.domaine)===String(selected.domaine))score+=20;
-    return score;
-  }
-
-  function afficherSequencesProgression(){
-    const box=document.getElementById("progression-sequences");if(!box)return;
-    if(!selected){box.innerHTML='<div class="progression-empty">Sélectionnez une compétence.</div>';return}
-    const q=(document.getElementById("progression-search")?.value||"").trim().toLowerCase();
-    const filtre=document.getElementById("progression-filter")?.value||"auto";
-    let liste=bibliothequeSequences.filter(s=>String(s.id)!==String(sequence?.id));
-    if(filtre==="same")liste=liste.filter(s=>!selected.niveau||String(s.niveau)===String(selected.niveau));
-    if(filtre==="previous"){const ordre={CP:0,CE1:1,CE2:2,CM1:3,CM2:4};const n=ordre[selected.niveau];if(n!==undefined)liste=liste.filter(s=>ordre[s.niveau]!==undefined&&ordre[s.niveau]<n)}
-    if(q)liste=liste.filter(s=>[s.titre,s.niveau,s.domaine,s.competence_id].join(" ").toLowerCase().includes(q));
-    liste.sort((a,b)=>scoreSequenceProgression(b)-scoreSequenceProgression(a));
-    if(!liste.length){box.innerHTML='<div class="progression-empty">Aucune séquence correspondante dans la bibliothèque.</div>';return}
-    box.innerHTML=liste.slice(0,80).map(s=>{
-      const sel=sequencesProgressionSelectionnees.some(x=>String(x.sequence_id)===String(s.id));
-      const score=scoreSequenceProgression(s);
-      return `<div class="progression-sequence ${sel?"is-selected":""}"><div><strong>${esc(s.titre)}</strong><small>${esc([s.niveau,s.domaine].filter(Boolean).join(" · "))}</small>${score>=100?'<small class="progression-match">✓ Travaille un pré-requis officiel</small>':''}</div><button class="btn secondary small" type="button" onclick="App.toggleSequenceProgression('${esc(s.id)}')">${sel?"Retirer":"Ajouter"}</button></div>`;
-    }).join("");
-  }
-
-  function afficherSelectionProgression(){
-    const box=document.getElementById("progression-selected-list"),count=document.getElementById("progression-count");if(!box)return;
-    if(count)count.textContent=sequencesProgressionSelectionnees.length+" séquence"+(sequencesProgressionSelectionnees.length>1?"s":"");
-    if(!sequencesProgressionSelectionnees.length){box.innerHTML='<div class="progression-empty">Aucune séquence précédente sélectionnée.</div>';return}
-    box.innerHTML=sequencesProgressionSelectionnees.map(s=>`<span class="progression-chip">${esc(s.titre)}<button type="button" onclick="App.toggleSequenceProgression('${esc(s.sequence_id)}')">×</button></span>`).join("");
-  }
-
-  function toggleSequenceProgression(id){
-    const i=sequencesProgressionSelectionnees.findIndex(x=>String(x.sequence_id)===String(id));
-    if(i>=0)sequencesProgressionSelectionnees.splice(i,1);
-    else{const s=bibliothequeSequences.find(x=>String(x.id)===String(id));if(!s)return;sequencesProgressionSelectionnees.push({sequence_id:s.id,competence_id:s.competence_id||null,titre:s.titre,niveau:s.niveau||null,domaine:s.domaine||null});}
-    if(sequence)sequence.sequences_precedentes=sequencesProgressionSelectionnees.map(x=>({...x}));
-    afficherSequencesProgression();afficherSelectionProgression();
-  }
-
-  async function initialiserConstructionProgression(){
-    await chargerBibliothequeSequences();
-    afficherPrerequisOfficiels();afficherSequencesProgression();afficherSelectionProgression();
-    ["progression-search","progression-filter"].forEach(id=>{const el=document.getElementById(id);if(el&&!el.dataset.progressionBound){el.dataset.progressionBound="1";el.addEventListener("input",afficherSequencesProgression);el.addEventListener("change",afficherSequencesProgression);}});
-  }
 
   function go(n){
     if(n>1&&!sequence){alert("Sélectionnez d’abord une compétence.");return}
@@ -637,7 +630,6 @@ const App = (() => {
       <h4>Objectifs individuels prioritaires</h4>
       ${sequence.objectifs_individuels.length?sequence.objectifs_individuels.map(s=>`<p><strong>${esc(s.nom||"Élève")}</strong> — ${esc(s.objectif)}<br><span class="help">Critère : ${esc(s.criteres_reussite)}</span></p>`).join(""):"<p class='help'>Aucun objectif individuel.</p>"}
       <h4>Progression</h4>
-      ${(sequence.sequences_precedentes||[]).length?`<div class="meta-box"><strong>Séquences précédentes</strong><ul>${sequence.sequences_precedentes.map(x=>`<li>${esc(x.titre||x.sequence_id)}</li>`).join("")}</ul></div>`:""}
       ${sequence.seances.map((s,i)=>`<div class="meta-box" style="margin:7px 0"><strong>Séance ${i+1} · ${esc(s.type)} · ${s.duree_estimee_min||45} min</strong>${esc(s.titre)}<br><span class="help">${esc(s.objectif||"Objectif à préciser")}</span></div>`).join("")}`;
   }
 
@@ -671,8 +663,6 @@ const App = (() => {
   "objectif_coeur_de_cible": "…",
   "objectif_commun": "…",
   "references_theoriques": "…",
-  "prerequis_competences": ["id_competence_officielle"],
-  "sequences_precedentes": [{"sequence_id":"…","competence_id":"…","titre":"…","niveau":"…","domaine":"…"}],
   "objectifs_individuels": [
     {"nom":"…","objectif":"…","criteres_reussite":"…"}
   ],
@@ -715,8 +705,6 @@ const App = (() => {
 Domaine : ${selected?.domaine||sequence.domaine}
 Niveau/classe : ${sequence.classe||selected?.niveau||"à préciser"}
 Objectif cœur de cible : ${sequence.objectif_coeur_de_cible||"à définir"}
-Pré-requis officiels : ${JSON.stringify(sequence.prerequis_competences||sequence.prerequis||[])}
-Séquences précédentes retenues : ${JSON.stringify(sequence.sequences_precedentes||[])}
 `;
     let task="";
     if(action==="seance"){
@@ -779,9 +767,6 @@ ${schemaPrompt()}`;
       ["domaine_socle","classe","objectif_coeur_de_cible","objectif_commun","references_theoriques"].forEach(k=>{if(obj[k]!==undefined)sequence[k]=obj[k]});
       if(obj.competences_travaillees)sequence.competences_travaillees=obj.competences_travaillees;
       if(obj.objectifs_individuels)sequence.objectifs_individuels=obj.objectifs_individuels;
-      if(obj.prerequis_competences)sequence.prerequis_competences=obj.prerequis_competences;
-      if(obj.sequences_precedentes)sequence.sequences_precedentes=obj.sequences_precedentes;
-      sequencesProgressionSelectionnees=Array.isArray(sequence.sequences_precedentes)?sequence.sequences_precedentes.map(x=>({...x})):[];
       sequence.seances=obj.seances.map(normaliserSeance);
       document.getElementById("nb-seances").value=Math.min(10,sequence.seances.length);
       setFields();renderSessions();renderDetails();
@@ -803,6 +788,68 @@ ${schemaPrompt()}`;
     document.getElementById("json-view").textContent=JSON.stringify(sequence||{},null,2);
   }
 
+  function pdfEscape(v){return esc(v||"—")}
+  function pdfPhaseTable(phases){
+    const rows=(phases||[]).map(p=>`<tr><td><strong>${pdfEscape(p.phase)}</strong><br>${pdfEscape(p.temps)}</td><td>${pdfEscape(p.modalite_materiel)}</td><td>${pdfEscape(p.deroulement)}</td><td>${pdfEscape(p.analyse_tache)}</td><td>${pdfEscape(p.amenagement)}</td><td>${pdfEscape(p.posture)}</td></tr>`).join("");
+    return rows?`<table><thead><tr><th>Phase / temps</th><th>Modalité & matériel</th><th>Déroulement</th><th>Analyse de la tâche</th><th>Aménagement</th><th>Posture</th></tr></thead><tbody>${rows}</tbody></table>`:"";
+  }
+  function pdfPrivate(adaptations){
+    if(!coffreOuvert() || !(adaptations||[]).length) return "";
+    const rows=adaptations.map(a=>`<div class="pdf-private"><strong>${pdfEscape(privateStudentLabel(a.identifiant))}</strong><br>${pdfEscape(a.adaptation)}${a.vigilance?`<br><em>${pdfEscape(a.vigilance)}</em>`:""}</div>`).join("");
+    return `<h3>Adaptations individuelles</h3>${rows}`;
+  }
+  function pdfSessionHTML(s){
+    return `<section class="pdf-session">
+      <h2>Séance ${pdfEscape(s.numero)} · ${pdfEscape(s.titre)}</h2>
+      <div class="pdf-meta">${pdfEscape(s.type)} · ${pdfEscape(s.duree_estimee_min||45)} min · ${pdfEscape(s.niveaux?.join(", "))}</div>
+      <p><strong>Compétence cible :</strong> ${pdfEscape(s.competence_cible)}</p>
+      <p><strong>Objectif :</strong> ${pdfEscape(s.objectif)}</p>
+      ${pdfPrivate(s.adaptations_individuelles)}
+      <p><strong>Problématique pour les élèves :</strong> ${pdfEscape(s.problematique)}</p>
+      <p><strong>Consigne :</strong> ${pdfEscape(s.consigne)}</p>
+      <p><strong>Tâche :</strong> ${pdfEscape(s.tache)}</p>
+      <p><strong>Critères de réussite :</strong> ${pdfEscape(s.criteres_reussite)}</p>
+      ${pdfPhaseTable(s.deroule)}
+      ${s.vigilance?`<p><strong>Points de vigilance :</strong> ${pdfEscape(s.vigilance)}</p>`:""}
+    </section>`;
+  }
+  function exporterPDF(mode="sequence", index=0){
+    if(!sequence){alert("Aucune séquence à exporter.");return}
+    const sessions=mode==="seance"?[sequence.seances[index]].filter(Boolean):sequence.seances;
+    const html=`<div class="pdf-doc">
+      <div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#4a6fa8">Programmation · séquence pédagogique</div>
+      <h1>${pdfEscape(sequence.titre)}</h1>
+      <div class="pdf-meta"><strong>${pdfEscape(sequence.domaine)}</strong> · ${pdfEscape(sequence.classe)}</div>
+      <h2>Objectif commun</h2><p>${pdfEscape(sequence.objectif_commun)}</p>
+      <h2>Compétences travaillées</h2><p>${pdfEscape(arr(sequence.competences_travaillees).join(" · "))}</p>
+      ${sessions.map(pdfSessionHTML).join("")}
+    </div>`;
+    const area=document.getElementById("print-area"); area.innerHTML=html;
+    const old=document.title; document.title=(mode==="seance"?"Séance":"Séquence")+" — "+sequence.titre;
+    window.print(); document.title=old;
+  }
+
+  function toggleCoffre(){
+    if(coffreOuvert()){
+      if(confirm("Fermer le coffre et purger les données élèves de la mémoire de cet onglet ?")){coffre.purger();updateCoffreWidget();renderDetails()}
+    }else{
+      const m=document.getElementById("modal-coffre");m.style.display="flex";
+    }
+  }
+  function closeCoffre(){document.getElementById("modal-coffre").style.display="none"}
+  async function openCoffre(){
+    if(!coffreDisponible()){alert("Le coffre est indisponible.");return}
+    const file=document.getElementById("coffre-file").files[0],pwd=document.getElementById("coffre-password").value;
+    if(!file||!pwd){alert("Sélectionnez le fichier .synapses et saisissez le mot de passe.");return}
+    try{await coffre.ouvrir(file,pwd);closeCoffre();document.getElementById("coffre-password").value="";updateCoffreWidget();renderDetails();alert("Coffre ouvert : "+coffre.listerEleves().length+" élève(s)")}catch(e){alert(e.message)}
+  }
+  function updateCoffreWidget(){
+    const el=document.getElementById("coffre-status"); if(!el)return;
+    if(!coffreDisponible()){el.textContent="Coffre indisponible";return}
+    el.textContent=coffreOuvert()?"Coffre ouvert · "+coffre.listerEleves().length+" élève(s)":"Coffre fermé";
+    el.classList.toggle("ouvert",coffreOuvert());
+  }
+
   function exporter(){
     if(!sequence){alert("Aucune séquence à exporter.");return}
     const blob=new Blob([JSON.stringify(sequence,null,2)],{type:"application/json"});
@@ -819,19 +866,18 @@ ${schemaPrompt()}`;
         sequence=obj;
         selected=refs.find(c=>c.id===sequence.competence_principale)||{id:sequence.competence_principale,intitule:sequence.competences_travaillees?.[0]||"",domaine:sequence.domaine||"",niveau:""};
         sequence.seances=sequence.seances.map(normaliserSeance);
-        setFields();renderSessions();renderDetails();
-        document.getElementById("progression-builder").style.display="block";
-        afficherPrerequisOfficiels();afficherSequencesProgression();afficherSelectionProgression();
-        go(5);
+        setFields();renderSessions();renderDetails();go(5);
       }catch(e){alert("Import impossible : "+e.message)}
     };
     r.readAsText(file);event.target.value="";
   }
 
-  return {init,go,filterCompetences,selectCompetence,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSequenceProgression,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer};
+  return {init,go,filterCompetences,selectCompetence,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents};
 })();
 
 App.init();
+updateCoffreWidget();
+window.addEventListener("beforeunload",()=>{if(coffre)coffre.purger()});
 </script>
 </body>
 </html>
