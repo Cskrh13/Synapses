@@ -88,9 +88,9 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
 
 <div class="side card" id="legend">
   <h3>Légende</h3>
-  <div class="legendrow"><span class="dot" style="background:#2f8f68"></span>Compétence</div>
-  <div class="legendrow"><span class="dot" style="background:#d79224"></span>Séquence</div>
-  <div class="legendrow"><span class="dot" style="background:#4d91b7"></span>Séance</div>
+  <div class="legendrow"><span class="dot" style="background:#2f8f68"></span>Compétence (dans la sphère)</div>
+  <div class="legendrow"><span class="dot" style="background:#d79224"></span>Séquence (au clic)</div>
+  <div class="legendrow"><span class="dot" style="background:#4d91b7"></span>Séance (au clic)</div>
   <div class="legendrow"><span class="dashSample"></span>Prérequis déclaré</div>
   <div class="legendrow"><span class="lineSample"></span>Compétence → séquence</div>
   <div class="legendrow"><span class="lineSample" style="opacity:.55"></span>Séquence → séance</div>
@@ -101,7 +101,9 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
   <div class="navrow">Clic gauche maintenu : tourner les sphères</div>
   <div class="navrow">Clic droit maintenu : déplacer horizontalement et verticalement</div>
   <div class="navrow">Molette : zoomer / dézoomer</div><div class="navrow">Double-clic sur une boule : zoomer dessus</div>
-  <div class="navrow">Clic : ouvrir une fiche</div><div class="navrow"><strong>Spirale :</strong> TPS → PS → MS → GS → CP → CE1 → CE2 → CM1 → CM2 → 6e</div>
+  <div class="navrow">Clic sur une compétence : charge ses séquences et séances liées</div>
+  <div class="navrow">Fermer la fiche : décharge les séquences/séances affichées</div>
+  <div class="navrow"><strong>Spirale :</strong> TPS → PS → MS → GS → CP → CE1 → CE2 → CM1 → CM2 → 6e</div>
 </div>
 
 <div id="relationMenu">
@@ -334,15 +336,14 @@ function sphereCenter(level){
     z:Math.sin(angle)*radius
   };
 }
-/* ---------- Taille des sphères adaptée à leur contenu ---------- */
+/* ---------- Taille des sphères adaptée à leur contenu ----------
+   Les sphères n'accueillent au repos que les nœuds compétences
+   (séquences et séances ne se chargent qu'au clic), donc leur
+   taille dépend uniquement du nombre de compétences par niveau. */
 function computeSphereSizing(comps){
   const counts={};
   for(const level of LEVEL_ORDER) counts[level]=0;
   for(const c of comps) counts[normalizeLevel(c.niveau)]=(counts[normalizeLevel(c.niveau)]||0)+1;
-  for(const s of state.sequences){
-    const level=normalizeLevel(s.niveau);
-    counts[level]=(counts[level]||0)+1+(s.seances?.length||0);
-  }
   const rByLevel={};
   for(const level of LEVEL_ORDER){
     const n=counts[level]||0;
@@ -361,6 +362,7 @@ function buildGraph(){
   const comps=state.compData.competences;
   computeSphereSizing(comps);
 
+  // Au repos, seules les compétences peuplent les sphères — cf. schéma cible.
   for(const level of LEVEL_ORDER){
     const group=comps.filter(c=>normalizeLevel(c.niveau)===level);
     const center=sphereCenter(level);
@@ -375,54 +377,6 @@ function buildGraph(){
     });
   }
 
-  // Séquences : placées près de leur compétence seulement si competence_id exact existe.
-  // Sinon elles restent dans la sphère de leur niveau, sans faux lien.
-  const seqGroups=new Map();
-  for(const s of state.sequences){
-    const level=normalizeLevel(s.niveau);
-    if(!seqGroups.has(level)) seqGroups.set(level,[]);
-    seqGroups.get(level).push(s);
-  }
-  for(const [level,group] of seqGroups){
-    const center=sphereCenter(level);
-    const r=sphereRadiusFor(level);
-    group.forEach((s,i)=>{
-      const linked=extractExactCompetenceId(s);
-      let pos;
-      const target=linked && state.nodes.find(n=>n.id==="c:"+linked);
-      if(target){
-        pos={x:target.x+35+(i%3)*14,y:target.y+30,z:target.z+18};
-      }else{
-        const p=fibonacciPoint(i,Math.max(1,group.length),r*.9);
-        pos={x:center.x+p.x,y:center.y+p.y,z:center.z+p.z};
-      }
-      state.nodes.push({
-        id:"s:"+s.id,type:"sequence",ref:s.id,label:s.titre||s.id,
-        niveau:normalizeLevel(level),domaine_id:s.domaine_id,discipline:s.discipline,
-        x:pos.x,y:pos.y,z:pos.z,competence_id:linked
-      });
-      if(linked) state.links.push({source:"c:"+linked,target:"s:"+s.id,type:"sequence"});
-    });
-  }
-
-  for(const s of state.sequences){
-    const seqNode=state.nodes.find(n=>n.id==="s:"+s.id);
-    if(!seqNode) continue;
-    const seances=(s.seances||[]);
-    seances.forEach((se,i)=>{
-      const a=(i/Math.max(1,seances.length))*Math.PI*2;
-      const rr=45+(i%2)*10;
-      const id=se.id;
-      state.nodes.push({
-        id:"x:"+id,type:"seance",ref:id,label:se.titre||id,
-        niveau:normalizeLevel(s.niveau),domaine_id:s.domaine_id,discipline:s.discipline,
-        x:seqNode.x+Math.cos(a)*rr,y:seqNode.y+Math.sin(a)*rr,z:seqNode.z+20+(i%3)*7,
-        sequence_id:s.id
-      });
-      state.links.push({source:"s:"+s.id,target:"x:"+id,type:"seance"});
-    });
-  }
-
   // Prérequis : uniquement les IDs explicitement déclarés dans prerequis_competences.
   const ids=new Set(comps.map(c=>c.id));
   for(const c of comps){
@@ -432,6 +386,55 @@ function buildGraph(){
       }
     }
   }
+}
+
+/* ---------- Chargement à la demande : séquences puis séances ----------
+   Aucune séquence ni séance n'existe comme nœud tant qu'une compétence
+   n'a pas été sélectionnée. Au clic sur une compétence, on ajoute
+   uniquement ses séquences liées (competence_id exact) juste au-dessus
+   d'elle, et les séances de ces séquences juste en dessous — comme
+   dans le schéma cible (sphère → compétence → séquence → séances). */
+function clearDynamicNodes(){
+  if(!state.nodes.some(n=>n.dynamic)) { state.activeCompetenceSatellite=null; return; }
+  state.nodes=state.nodes.filter(n=>!n.dynamic);
+  state.links=state.links.filter(l=>!l.dynamic);
+  state.activeCompetenceSatellite=null;
+}
+function loadCompetenceSatellites(compId){
+  clearDynamicNodes();
+  const compNode=state.nodes.find(n=>n.id==="c:"+compId);
+  if(!compNode) return;
+  const seqs=state.sequences.filter(s=>extractExactCompetenceId(s)===compId);
+  seqs.forEach((s,i)=>{
+    const angle=(i/Math.max(1,seqs.length))*Math.PI*2;
+    const rr=60;
+    const seqPos={
+      x:compNode.x+Math.cos(angle)*rr*.4,
+      y:compNode.y-85-i*10,
+      z:compNode.z+Math.sin(angle)*rr*.4+15
+    };
+    state.nodes.push({
+      id:"s:"+s.id,type:"sequence",ref:s.id,label:s.titre||s.id,
+      niveau:normalizeLevel(s.niveau),domaine_id:s.domaine_id,discipline:s.discipline,
+      x:seqPos.x,y:seqPos.y,z:seqPos.z,competence_id:compId,dynamic:true
+    });
+    state.links.push({source:"c:"+compId,target:"s:"+s.id,type:"sequence",dynamic:true});
+
+    const seances=s.seances||[];
+    seances.forEach((se,j)=>{
+      const rr2=42+(j%2)*10;
+      state.nodes.push({
+        id:"x:"+se.id,type:"seance",ref:se.id,label:se.titre||se.id,
+        niveau:normalizeLevel(s.niveau),domaine_id:s.domaine_id,discipline:s.discipline,
+        x:compNode.x-rr2*.5-(j%3)*10,
+        y:compNode.y+30+j*26,
+        z:compNode.z+10+(j%4)*8,
+        sequence_id:s.id,dynamic:true
+      });
+      state.links.push({source:"s:"+s.id,target:"x:"+se.id,type:"seance",dynamic:true});
+    });
+  });
+  state.activeCompetenceSatellite=compId;
 }
 
 /* ---------- Filtres ---------- */
@@ -488,14 +491,38 @@ function sphereProjection(level){
 function drawSphere(ctx,s,label){
   const {x,y,r}=s;
   ctx.save();
-  const g=ctx.createRadialGradient(x-r*.35,y-r*.42,r*.05,x,y,r);
-  g.addColorStop(0,"rgba(255,255,255,.95)");
-  g.addColorStop(.55,"rgba(232,238,241,.18)");
-  g.addColorStop(1,"rgba(169,183,191,.06)");
+  // Fond très léger pour donner du volume, sans masquer le maillage.
+  const g=ctx.createRadialGradient(x-r*.3,y-r*.35,r*.05,x,y,r);
+  g.addColorStop(0,"rgba(255,255,255,.55)");
+  g.addColorStop(.65,"rgba(235,239,242,.10)");
+  g.addColorStop(1,"rgba(180,190,198,.02)");
   ctx.fillStyle=g;ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.fill();
-  ctx.strokeStyle="rgba(20,32,42,.9)";ctx.lineWidth=5;ctx.stroke();
-  ctx.setLineDash([9,12]);ctx.lineWidth=2;ctx.strokeStyle="rgba(20,32,42,.72)";
-  ctx.beginPath();ctx.ellipse(x,y,r,r*.32,0,0,Math.PI*2);ctx.stroke();ctx.setLineDash([]);
+
+  // Maillage façon globe filaire (méridiens + parallèles), comme sur le schéma.
+  const TILT=.34; // aplatissement des parallèles, cohérent avec l'ancien équateur
+  ctx.strokeStyle="rgba(20,32,42,.55)";ctx.lineWidth=1;
+
+  // Méridiens : ellipses pleines partageant les pôles (haut/bas de la sphère).
+  const meridianCount=9;
+  for(let i=0;i<meridianCount;i++){
+    const theta=((i+1)/(meridianCount+1))*Math.PI;
+    const rx=Math.max(1,r*Math.sin(theta));
+    ctx.beginPath();ctx.ellipse(x,y,rx,r,0,0,Math.PI*2);ctx.stroke();
+  }
+  // Parallèles : ellipses horizontales aplaties, plus petites vers les pôles.
+  const latCount=5;
+  for(let i=1;i<latCount;i++){
+    const phi=(i/latCount-0.5)*Math.PI;
+    const rx=r*Math.cos(phi);
+    const ry=Math.max(.6,rx*TILT);
+    const dy=-r*Math.sin(phi)*(1-TILT);
+    ctx.beginPath();ctx.ellipse(x,y+dy,rx,ry,0,0,Math.PI*2);ctx.stroke();
+  }
+
+  // Contour extérieur bien marqué, comme la limite visible du globe.
+  ctx.strokeStyle="rgba(20,32,42,.9)";ctx.lineWidth=3;
+  ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();
+
   ctx.fillStyle="rgba(21,35,51,.96)";ctx.font=`500 ${Math.max(22,Math.min(40,r*.18))}px Georgia`;
   ctx.textAlign="center";ctx.fillText(label,x,y-r-20);
   ctx.restore();
@@ -588,7 +615,9 @@ function update(){
       $("subtitle").textContent="Vue compétence : sélectionnez une compétence pour l'activer";
     }
   }else{
-    $("subtitle").textContent=`${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cartographie fondée sur les données déclarées`;
+    $("subtitle").textContent=state.activeCompetenceSatellite
+      ? `${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cliquez une compétence pour ses séquences/séances`
+      : `${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cliquez une compétence pour charger ses séquences et séances`;
   }
 }
 function hit(clientX,clientY){
@@ -654,10 +683,15 @@ function showPanel(node){
   state.selected=node.id;
   let html="";
   if(node.type==="competence"){
+    // Charge (et affiche) les séquences liées et leurs séances,
+    // uniquement maintenant que cette compétence est sélectionnée.
+    loadCompetenceSatellites(node.ref);
     const c=compById(node.ref), {byId,pre,after}=relationData(c?.id);
+    const linkedSeqs=state.sequences.filter(s=>extractExactCompetenceId(s)===c?.id);
     html=`<span class="tag">Compétence · ${esc(c?.niveau)}</span><h2>${esc(c?.intitule)}</h2>
       <div class="meta">${esc(c?.discipline)} · ${esc(c?.domaine)}</div>
       <div class="section"><h4>Objectifs</h4>${(c?.objectifs||[]).map(x=>`<div class="item">${esc(x)}</div>`).join("")||"<div class='item'>Aucun objectif renseigné.</div>"}</div>
+      <div class="section"><h4>Séquences liées (chargées à l'instant)</h4>${linkedSeqs.length?linkedSeqs.map(s=>`<div class="item linkedItem" data-s="${esc(s.id)}">${esc(s.titre||s.id)} — ${s.seances?.length||0} séance(s)</div>`).join(""):"<div class='item'>Aucune séquence rattachée par competence_id.</div>"}</div>
       <div class="section"><h4>Prérequis explicitement déclarés</h4>${pre.length?pre.map(id=>`<div class="item linkedItem" data-c="${esc(id)}">${esc(byId.get(id)?.intitule||id)}</div>`).join(""):"<div class='item'>Aucun prérequis déclaré.</div>"}</div>
       <div class="section"><h4>Compétences qui en dépendent</h4>${after.length?after.map(x=>`<div class="item linkedItem" data-c="${esc(x.id)}">${esc(x.intitule)}</div>`).join(""):"<div class='item'>Aucune relation déclarée.</div>"}</div>
       <a class="panelAction" href="Programmation/sequences.html?competence=${encodeURIComponent(c?.id||"")}">Ouvrir dans la programmation</a>`;
@@ -672,6 +706,7 @@ function showPanel(node){
   if(node.type==="competence"){
     $("relationMenu").classList.add("open");
     $("panelContent").querySelectorAll("[data-c]").forEach(e=>e.onclick=()=>showPanel(state.nodes.find(n=>n.id==="c:"+e.dataset.c)));
+    $("panelContent").querySelectorAll("[data-s]").forEach(e=>e.onclick=()=>showPanel(state.nodes.find(n=>n.id==="s:"+e.dataset.s)));
     if(state.viewMode==="competence") focusOnCompetenceNode(node);
   }else $("relationMenu").classList.remove("open");
   update();
@@ -734,9 +769,10 @@ $("reset").onclick=()=>{
   state.levels=new Set(LEVEL_ORDER);
   state.domains=new Set(state.compData.domaines.map(d=>d.id));
   state.selected=null;$("panel").classList.remove("open");
+  clearDynamicNodes();
   renderFilters();setViewMode("global");update();
 };
-$("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null;update();};
+$("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null;clearDynamicNodes();update();};
 $("home").onclick=resetView;
 $("minus").onclick=()=>{state.zoom=Math.max(state.minZoom,state.zoom*.88);$("zoomRange").value=state.zoom;draw();};
 $("plus").onclick=()=>{state.zoom=Math.min(state.maxZoom,state.zoom*1.12);$("zoomRange").value=state.zoom;draw();};
