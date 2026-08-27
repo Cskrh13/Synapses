@@ -340,6 +340,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 .comp-node{background:var(--panel);border:1.5px solid var(--line);border-radius:var(--radius);padding:16px;position:relative;}
 .comp-node::before{content:"";position:absolute;left:0;top:0;bottom:0;width:5px;border-radius:var(--radius) 0 0 var(--radius);background:var(--ccolor,var(--accent-sky));}
 .comp-node h4{font-size:15px;color:var(--navy);padding-left:8px;line-height:1.3;}
+.comp-node .cn-niveau{font-size:10px;font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);font-weight:normal;border:1px solid var(--line);border-radius:999px;padding:1px 7px;vertical-align:middle;}
 .comp-node .cn-obj{font-size:11.5px;color:var(--ink-soft);margin-top:6px;padding-left:8px;line-height:1.5;}
 .comp-node .cn-seqs{margin-top:14px;display:flex;flex-direction:column;gap:8px;}
 .comp-node .cn-seq-item{
@@ -831,26 +832,51 @@ const DOMAINES = {
 const NIVEAUX = ["CP","CE1","CE2","CM1","CM2"];
 const MATIERE_DEFAUT = "Français";
 
-/* Référentiel de compétences — reflète competences.json.
-   Une séquence pointe vers UNE compétence "cible" (competence_id), qui correspond
-   à un "champ d'apprentissage" (lecture, écriture, oral, vocabulaire, orthographe…) au
-   sein d'un domaine/matière (ex. Français). Une même compétence peut être la cible de
-   plusieurs séquences/séances. Une séquence peut aussi lister des compétences
-   "antérieures" (pré-requis), ce qui construit un réseau plutôt qu'une progression
-   strictement linéaire. */
-const COMPETENCES = [
-  { id:"lecture", discipline:"Français", cycle:"Cycle 2", domaine:"Lecture", couleur:"#B5502E",
-    objectifs:["Identifier des mots de manière de plus en plus aisée","Comprendre un texte et contrôler sa compréhension"] },
-  { id:"ecriture", discipline:"Français", cycle:"Cycle 2", domaine:"Écriture", couleur:"#2A7F72",
-    objectifs:["Copier de manière experte","Produire des écrits en commençant à s'approprier une démarche"] },
-  { id:"oral", discipline:"Français", cycle:"Cycle 2", domaine:"Oral", couleur:"#6B4E8E",
-    objectifs:["Écouter pour comprendre des messages oraux ou des textes lus","Participer à des échanges dans des situations diversifiées"] },
-  { id:"vocabulaire", discipline:"Français", cycle:"Cycle 2", domaine:"Vocabulaire", couleur:"#B5871E",
-    objectifs:["Acquérir un vocabulaire juste et précis","Maîtriser le sens des mots"] },
-  { id:"orthographe", discipline:"Français", cycle:"Cycle 2", domaine:"Orthographe & grammaire", couleur:"#7A4A9E",
-    objectifs:["Maîtriser les correspondances graphophonologiques","Raisonner pour réaliser les accords"] }
-];
+/* Référentiel de compétences — chargé dynamiquement depuis competences.json
+   (le même référentiel public que cartographie-competences.html, jamais recopié
+   ni redéfini en dur ici). Une séquence pointe vers UNE compétence "cible"
+   (competence_id). Une même compétence peut être la cible de plusieurs
+   séquences/séances. Une séquence peut aussi lister des compétences
+   "antérieures" (pré-requis), ce qui construit un réseau plutôt qu'une
+   progression strictement linéaire. */
+let COMPETENCES = [];
+let COMPETENCE_DOMAINES = [];
+const PALETTE_DOMAINES = ["#B5502E","#2A7F72","#6B4E8E","#B5871E","#7A4A9E","#2E5EAA","#B23A5C","#3F8C4B","#8C5E2A","#4C6E91"];
+function colorForDomaine(domaineId){
+  if(!domaineId) return PALETTE_DOMAINES[0];
+  let hash = 0;
+  const s = String(domaineId);
+  for(let i=0;i<s.length;i++) hash = (hash*31 + s.charCodeAt(i)) >>> 0;
+  return PALETTE_DOMAINES[hash % PALETTE_DOMAINES.length];
+}
+function getDomaineNom(domaineId){
+  const d = COMPETENCE_DOMAINES.find(x=>x.id===domaineId);
+  return (d && d.nom) || domaineId || "Compétence";
+}
 function getCompetence(id){ return COMPETENCES.find(c=>c.id===id); }
+/* Essaie plusieurs chemins relatifs, car sequences.html peut être ouvert
+   depuis Programmation/ ou depuis la racine du dépôt selon le contexte. */
+async function chargerReferentielCompetences(){
+  const candidats = [
+    "data/competences.json",
+    "Programmation/data/competences.json",
+    "../Programmation/data/competences.json",
+    "../data/competences.json"
+  ];
+  for(const chemin of candidats){
+    try{
+      const r = await fetch(chemin, {cache:"no-store"});
+      if(!r.ok) continue;
+      const data = await r.json();
+      COMPETENCES = Array.isArray(data.competences) ? data.competences : [];
+      COMPETENCE_DOMAINES = Array.isArray(data.domaines) ? data.domaines : [];
+      return true;
+    }catch(e){ /* on tente le chemin suivant */ }
+  }
+  console.warn("competences.json introuvable : le référentiel de compétences reste vide.");
+  toast("Référentiel de compétences introuvable (competences.json).");
+  return false;
+}
 
 /* ------------------------------------------------------------
    Arborescence de stockage : data/{niveau}/{matiere}/{champ}/…
@@ -1115,19 +1141,26 @@ function renderReseau(){
   const svg = document.getElementById('reseau-svg');
   grid.innerHTML = "";
 
+  if(!COMPETENCES.length){
+    grid.innerHTML = `<div class="empty-state"><h4>Référentiel de compétences en cours de chargement…</h4>
+      <p>Si ce message persiste, vérifiez que <code>data/competences.json</code> est accessible depuis cette page.</p></div>`;
+    return;
+  }
+
   COMPETENCES.forEach(c=>{
     const node = document.createElement('div');
     node.className = "comp-node";
     node.id = "cnode-" + c.id;
-    node.style.setProperty('--ccolor', c.couleur);
+    node.style.setProperty('--ccolor', colorForDomaine(c.domaine_id));
+    const intitule = c.intitule || (Array.isArray(c.objectifs) && c.objectifs[0]) || "";
     const seqsForComp = state.sequences.filter(s=>(s.competence_id||s.domaine)===c.id);
     const seqsHTML = seqsForComp.length ? seqsForComp.map(s=>{
       const nb = state.seances.filter(x=>x.sequence_id===s.id).length;
       return `<button class="cn-seq-item" data-open-seq="${s.id}">${escapeHTML(s.titre)}<span class="csi-meta">P${s.periode} · S${s.semaine_debut}–S${s.semaine_fin} · ${nb} séance${nb>1?'s':''}</span></button>`;
     }).join('') : `<div class="cn-empty">Aucune séquence liée pour l'instant.</div>`;
     node.innerHTML = `
-      <h4>${escapeHTML(c.domaine)}</h4>
-      <div class="cn-obj">${escapeHTML(c.objectifs[0])}</div>
+      <h4>${escapeHTML(getDomaineNom(c.domaine_id))}${c.niveau? ` <span class="cn-niveau">${escapeHTML(c.niveau)}</span>`:""}</h4>
+      <div class="cn-obj">${escapeHTML(intitule)}</div>
       <div class="cn-seqs">${seqsHTML}</div>
       <button class="cn-add" data-add-for="${c.id}">＋ Ajouter une séquence</button>
     `;
@@ -1215,7 +1248,8 @@ function renderSeqDetail(){
     const chipsHTML = prereqCompIds.map(id=>{
       const c = getCompetence(id);
       if(!c) return "";
-      return `<span class="prereq-chip"><span class="dot" style="--ccolor:${c.couleur}"></span>${escapeHTML(c.domaine)}</span>`;
+      const nom = c.niveau ? `${c.niveau} · ${getDomaineNom(c.domaine_id)}` : getDomaineNom(c.domaine_id);
+      return `<span class="prereq-chip"><span class="dot" style="--ccolor:${colorForDomaine(c.domaine_id)}"></span>${escapeHTML(nom)}</span>`;
     }).join('');
     document.getElementById('seq-prerequis').innerHTML = `
       ${chipsHTML? `<div class="prereq-chips" style="margin-bottom:${prereqs.length?'10px':'0'};">${chipsHTML}</div>`:""}
@@ -1373,10 +1407,18 @@ document.getElementById('load-seq-eleves-coffre').addEventListener('click', ()=>
 document.getElementById('fix-seq-eleves-coffre').addEventListener('click', ()=> fixerObjectifsDansCoffre('seq-eleves-repeater', "Séquence : " + document.getElementById('f-seq-titre').value.trim()));
 
 function competenceLabel(c){
-  return `${c.domaine} — ${c.objectifs[0].slice(0,46)}${c.objectifs[0].length>46?'…':''}`;
+  const nom = getDomaineNom(c.domaine_id);
+  const intitule = c.intitule || (Array.isArray(c.objectifs) && c.objectifs[0]) || "";
+  const court = intitule.length>46 ? intitule.slice(0,46)+'…' : intitule;
+  const prefixe = c.niveau ? `${c.niveau} · ${nom}` : nom;
+  return court ? `${prefixe} — ${court}` : prefixe;
 }
 function fillCompetenceSelect(selected){
   const sel = document.getElementById('f-seq-competence');
+  if(!COMPETENCES.length){
+    sel.innerHTML = `<option value="">Référentiel de compétences non chargé</option>`;
+    return;
+  }
   sel.innerHTML = COMPETENCES.map(c=>`<option value="${c.id}">${escapeHTML(competenceLabel(c))}</option>`).join('');
   sel.value = selected || (COMPETENCES[0] && COMPETENCES[0].id) || "";
 }
@@ -1384,11 +1426,15 @@ function fillPrereqPicker(currentCompetenceId, checkedIds){
   const wrap = document.getElementById('seq-prereq-picker');
   const others = COMPETENCES.filter(c=>c.id!==currentCompetenceId);
   if(!others.length){ wrap.innerHTML = `<span style="font-size:12.5px;color:var(--ink-soft);">Aucune autre compétence dans le référentiel.</span>`; return; }
-  wrap.innerHTML = others.map(c=>`
+  wrap.innerHTML = others.map(c=>{
+    const nom = c.niveau ? `${c.niveau} · ${getDomaineNom(c.domaine_id)}` : getDomaineNom(c.domaine_id);
+    const intitule = c.intitule || (Array.isArray(c.objectifs) && c.objectifs[0]) || "";
+    return `
     <label>
       <input type="checkbox" class="seq-prereq-comp" value="${c.id}" ${checkedIds&&checkedIds.includes(c.id)?'checked':''}>
-      <span>${escapeHTML(c.domaine)}<span class="pp-dom">${escapeHTML(c.objectifs[0])}</span></span>
-    </label>`).join('');
+      <span>${escapeHTML(nom)}<span class="pp-dom">${escapeHTML(intitule)}</span></span>
+    </label>`;
+  }).join('');
 }
 document.getElementById('f-seq-competence').addEventListener('change', (e)=>{
   const checked = [...document.querySelectorAll('.seq-prereq-comp:checked')].map(cb=>cb.value);
@@ -1931,7 +1977,14 @@ function openFromCartographyURL(){
 renderFilters();
 renderSeqGrid();
 updateCoffreWidget();
-openFromCartographyURL();
+
+/* Le référentiel de compétences est chargé une fois, au démarrage.
+   S'il n'était pas encore prêt quand la vue Réseau a été ouverte,
+   on la redessine dès que le chargement aboutit. */
+chargerReferentielCompetences().then(()=>{
+  if(document.getElementById('view-reseau').classList.contains('open')) renderReseau();
+  openFromCartographyURL();
+});
 </script>
 </body>
 </html>
