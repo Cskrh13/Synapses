@@ -184,6 +184,119 @@ input[type="file"]{display:none;}
 }
 .week-cell.in-range{color:#fff;font-weight:700;}
 
+/* ---- Focus de progression autour de la séquence ---- */
+.focus-progression{
+  display:grid;
+  grid-template-columns:minmax(180px,1fr) minmax(280px,1.25fr) minmax(180px,1fr);
+  gap:14px;
+  align-items:stretch;
+}
+.focus-column{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+}
+.focus-label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+  margin-bottom:2px;
+}
+.focus-card{
+  display:block;
+  width:100%;
+  text-align:left;
+  background:#fff;
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:11px 12px;
+  color:var(--ink);
+  cursor:pointer;
+}
+.focus-card:hover{border-color:var(--accent-sky);background:#F8FAFC;}
+.focus-card strong{
+  display:block;
+  color:var(--navy);
+  font-family:'Fraunces',serif;
+  font-size:14px;
+  line-height:1.3;
+}
+.focus-card span{
+  display:block;
+  margin-top:4px;
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;
+  color:var(--ink-soft);
+}
+.focus-current{
+  background:#F4F7FC;
+  border:1px solid #C8D6E8;
+  border-radius:10px;
+  padding:16px;
+  position:relative;
+}
+.focus-current:before,.focus-current:after{
+  content:"";
+  position:absolute;
+  top:50%;
+  width:14px;
+  border-top:1px solid #B8C7DB;
+}
+.focus-current:before{left:-14px}.focus-current:after{right:-14px}
+.focus-current .kicker{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  color:var(--accent-sky);
+}
+.focus-current h3{
+  color:var(--navy);
+  font-size:21px;
+  line-height:1.25;
+  margin:5px 0 7px;
+}
+.focus-current .meta{
+  font-size:11px;
+  color:var(--ink-soft);
+}
+.focus-competences{
+  margin-top:12px;
+  padding-top:11px;
+  border-top:1px solid var(--line);
+}
+.focus-competences-title{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9.5px;
+  letter-spacing:.07em;
+  text-transform:uppercase;
+  color:var(--ink-soft);
+}
+.focus-pill{
+  display:inline-block;
+  margin:5px 5px 0 0;
+  padding:5px 8px;
+  border:1px solid var(--line);
+  border-radius:999px;
+  background:#fff;
+  color:var(--navy);
+  font-size:10.5px;
+}
+.focus-empty{
+  padding:12px;
+  border:1px dashed var(--line);
+  border-radius:8px;
+  background:#fff;
+  color:var(--ink-soft);
+  font-size:11.5px;
+}
+@media(max-width:760px){
+  .focus-progression{grid-template-columns:1fr;}
+  .focus-current:before,.focus-current:after{display:none;}
+}
+
 /* ---- Séances : sous-briques ---- */
 .seances-head{display:flex;justify-content:space-between;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
 .seances-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;}
@@ -444,8 +557,8 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
     <div class="list-head">
       <div>
         <p class="eyebrow">Cycle 2 · Français · Programmation</p>
-        <h1>Séquences &amp; séances</h1>
-        <p>Chaque séquence est une brique de l'année. Ouvrez-la pour composer ses séances (sous-briques) selon vos modèles habituels. Tout est enregistré en JSON, dans ce navigateur.</p>
+        <h1>Programmation · Séquences &amp; séances</h1>
+        <p>Chaque séquence est une brique de la programmation. Ouvrez-la pour voir ses séances et son positionnement dans la progression. Les compétences du référentiel restent officielles et en lecture seule.</p>
       </div>
     </div>
 
@@ -490,6 +603,16 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
       <p class="txt" id="seq-refs"></p>
     </div>
 
+    <div class="cp-block" id="seq-focus-block">
+      <h5>Progression — focus sur cette séquence</h5>
+      <div class="focus-progression" id="seq-focus-progression"></div>
+      <p class="field-hint" style="margin-top:10px;">
+        Le réseau de progression reste volontairement local : séquence(s) précédente(s),
+        séquence sélectionnée et séquence(s) suivante(s). Les compétences officielles
+        restent celles du référentiel et ne sont pas modifiées par cette interface.
+      </p>
+    </div>
+
     <div class="cp-block" id="seq-eleves-block">
       <h5>Objectifs individuels</h5>
       <table class="eleves-table">
@@ -521,7 +644,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
       <div>
         <p class="eyebrow">Cartographie pédagogique · non linéaire</p>
         <h1>Réseau de compétences</h1>
-        <p>Chaque compétence peut correspondre à plusieurs séquences (et séances décrochées). Les flèches en pointillés indiquent qu'une compétence est un pré-requis d'une séquence liée à une autre compétence. Cliquez sur une séquence pour l'ouvrir.</p>
+        <p>Le réseau est consulté depuis une séquence sélectionnée : on affiche son contexte de progression, sans transformer la page en liste exhaustive du référentiel.</p>
       </div>
       <a class="btn on-panel" href="../cartographie-competences.html" target="_blank" rel="noopener">🗺 Voir la cartographie interactive</a>
     </div>
@@ -1236,49 +1359,71 @@ window.addEventListener('resize', ()=>{
 function renderSeqDetail(){
   const seq = state.sequences.find(s=>s.id===state.currentSeqId);
   if(!seq){ backToList(); return; }
+
   const dom = DOMAINES[seq.domaine] || {nom:seq.domaine,couleur:"#2E5EAA"};
 
-  document.getElementById('seq-eyebrow').textContent = `${seqNiveau(seq)} · ${seqMatiere(seq)} · ${dom.nom} · Période ${seq.periode} · Semaines ${seq.semaine_debut}–${seq.semaine_fin}`;
+  document.getElementById('seq-eyebrow').textContent =
+    `${seqNiveau(seq)} · ${seqMatiere(seq)} · ${dom.nom} · Période ${seq.periode} · Semaines ${seq.semaine_debut}–${seq.semaine_fin}`;
+
   document.getElementById('seq-title').textContent = seq.titre;
+
   document.getElementById('seq-tags').innerHTML = `
     <span class="badge plain">${escapeHTML(seqNiveau(seq))}</span>
     <span class="badge plain">${escapeHTML(seqMatiere(seq))}</span>
-    <span class="badge" style="--dcolor:${dom.couleur}">${dom.nom}</span>
+    <span class="badge" style="--dcolor:${dom.couleur}">${escapeHTML(dom.nom)}</span>
     ${seq.classe? `<span class="badge plain">${escapeHTML(seq.classe)}</span>`:""}
     ${seq.competences? `<span class="badge plain">${escapeHTML(seq.competences)}</span>`:""}
     <span class="chemin-data">${escapeHTML(seqChemin(seq))}/</span>
   `;
+
   document.getElementById('seq-objectif').textContent = seq.objectif_commun || "—";
 
   const prereqBlock = document.getElementById('seq-prerequis-block');
-  const prereqs = seq.prerequis || [];
-  const prereqCompIds = seq.prerequis_competences || [];
+  const prereqs = Array.isArray(seq.prerequis) ? seq.prerequis : (seq.prerequis ? [seq.prerequis] : []);
+  const prereqCompIds = Array.isArray(seq.prerequis_competences) ? seq.prerequis_competences : [];
+
   if(prereqs.length || prereqCompIds.length){
     prereqBlock.style.display = "";
     const chipsHTML = prereqCompIds.map(id=>{
       const c = getCompetence(id);
       if(!c) return "";
       const nom = c.niveau ? `${c.niveau} · ${getDomaineNom(c.domaine_id)}` : getDomaineNom(c.domaine_id);
-      return `<span class="prereq-chip"><span class="dot" style="--ccolor:${colorForDomaine(c.domaine_id)}"></span>${escapeHTML(nom)}</span>`;
-    }).join('');
+      const intitule = c.intitule || (Array.isArray(c.objectifs) ? c.objectifs[0] : "") || "";
+      return `<span class="prereq-chip">
+        <span class="dot" style="--ccolor:${colorForDomaine(c.domaine_id)}"></span>
+        ${escapeHTML(nom)} — ${escapeHTML(intitule)}
+      </span>`;
+    }).join("");
+
     document.getElementById('seq-prerequis').innerHTML = `
-      ${chipsHTML? `<div class="prereq-chips" style="margin-bottom:${prereqs.length?'10px':'0'};">${chipsHTML}</div>`:""}
-      ${prereqs.length? escapeHTML(prereqs.join(" · ")) : ""}
+      ${chipsHTML ? `<div class="prereq-chips" style="margin-bottom:${prereqs.length?'10px':'0'};">${chipsHTML}</div>` : ""}
+      ${prereqs.length ? escapeHTML(prereqs.join(" · ")) : ""}
     `;
-  } else prereqBlock.style.display = "none";
+  } else {
+    prereqBlock.style.display = "none";
+  }
 
   const refsBlock = document.getElementById('seq-refs-block');
   if(seq.references_theoriques){
-    refsBlock.style.display=""; document.getElementById('seq-refs').textContent = seq.references_theoriques;
-  } else refsBlock.style.display = "none";
+    refsBlock.style.display="";
+    document.getElementById('seq-refs').textContent = seq.references_theoriques;
+  } else {
+    refsBlock.style.display="none";
+  }
+
+  renderProgressionFocus(seq);
 
   const elevesBlock = document.getElementById('seq-eleves-block');
   const elevesBody = document.getElementById('seq-eleves-body');
   const eleves = (seq.objectifs_individuels||[]).filter(e=>e.nom);
   if(eleves.length){
     elevesBlock.style.display = "";
-    elevesBody.innerHTML = eleves.map(e=>`<tr><td>${escapeHTML(e.nom)}</td><td>${escapeHTML(e.objectif)}</td></tr>`).join('');
-  } else elevesBlock.style.display = "none";
+    elevesBody.innerHTML = eleves.map(e=>
+      `<tr><td>${escapeHTML(e.nom)}</td><td>${escapeHTML(e.objectif)}</td></tr>`
+    ).join('');
+  } else {
+    elevesBlock.style.display = "none";
+  }
 
   const weekGrid = document.getElementById('seq-week-grid');
   weekGrid.innerHTML = "";
@@ -1295,6 +1440,166 @@ function renderSeqDetail(){
 
   renderSeancesGrid(seq);
 }
+
+/* ============================================================
+   PROGRESSION — FOCUS SUR LA SÉQUENCE SÉLECTIONNÉE
+
+   Important :
+   - aucun lien n'est inventé ;
+   - les relations explicites sont prioritaires ;
+   - les champs historiques sont acceptés pour compatibilité ;
+   - les compétences officielles ne sont jamais modifiées.
+   ============================================================ */
+function arrayIds(value){
+  if(!value) return [];
+  if(Array.isArray(value)){
+    return value.map(v=>{
+      if(typeof v==="string") return v;
+      if(v && typeof v==="object") return v.id || v.sequence_id || v.cible || "";
+      return "";
+    }).filter(Boolean);
+  }
+  if(typeof value==="string"){
+    return value.split(",").map(x=>x.trim()).filter(Boolean);
+  }
+  return [];
+}
+
+function sequenceRelationIds(seq, direction){
+  const keys = direction==="previous"
+    ? [
+        "precedentes","précédentes","precedents","précédents",
+        "sequences_precedentes","sequences_précédentes",
+        "sequence_precedente","sequence_précédente",
+        "progression_precedentes",
+        "progression_precedentes_sequences"
+      ]
+    : [
+        "suivantes","sequences_suivantes","sequence_suivante",
+        "progression_suivantes",
+        "progression_suivantes_sequences"
+      ];
+
+  const out = [];
+  keys.forEach(k=>out.push(...arrayIds(seq[k])));
+
+  if(seq.progression && typeof seq.progression==="object"){
+    const nested = direction==="previous"
+      ? ["precedentes","précédentes","previous"]
+      : ["suivantes","next"];
+    nested.forEach(k=>out.push(...arrayIds(seq.progression[k])));
+  }
+
+  return [...new Set(out)];
+}
+
+function sequenceById(id){
+  return state.sequences.find(s=>s.id===id);
+}
+
+function getProgressionNeighbors(seq){
+  const previous = sequenceRelationIds(seq,"previous")
+    .map(sequenceById).filter(Boolean);
+
+  const next = sequenceRelationIds(seq,"next")
+    .map(sequenceById).filter(Boolean);
+
+  /* Complément sans invention :
+     si une autre séquence déclare explicitement la séquence actuelle,
+     on peut retrouver la relation inverse. */
+  state.sequences.forEach(other=>{
+    if(other.id===seq.id) return;
+
+    if(!previous.some(s=>s.id===other.id) &&
+       sequenceRelationIds(other,"next").includes(seq.id)){
+      previous.push(other);
+    }
+
+    if(!next.some(s=>s.id===other.id) &&
+       sequenceRelationIds(other,"previous").includes(seq.id)){
+      next.push(other);
+    }
+  });
+
+  return {
+    previous:[...new Map(previous.map(s=>[s.id,s])).values()],
+    next:[...new Map(next.map(s=>[s.id,s])).values()]
+  };
+}
+
+function focusSequenceCard(seq, relation){
+  const dom = DOMAINES[seq.domaine] || {nom:seq.domaine};
+  return `
+    <button class="focus-card" data-focus-seq="${escapeAttr(seq.id)}">
+      <strong>${escapeHTML(seq.titre || "Séquence sans titre")}</strong>
+      <span>${escapeHTML(seqNiveau(seq))} · ${escapeHTML(dom.nom || "")}${seq.periode ? ` · P${escapeHTML(seq.periode)}` : ""}</span>
+      ${relation ? `<span>${escapeHTML(relation)}</span>` : ""}
+    </button>
+  `;
+}
+
+function competencePillsForSequence(seq){
+  const ids = [
+    seq.competence_id,
+    ...(Array.isArray(seq.competences_mobilisees) ? seq.competences_mobilisees : [])
+  ].filter(Boolean);
+
+  const unique = [...new Set(ids)];
+  const labels = unique.map(id=>{
+    const c = getCompetence(id);
+    if(!c) return `Référence : ${id}`;
+    return c.intitule || c.id;
+  });
+
+  return labels.length
+    ? labels.map(x=>`<span class="focus-pill">${escapeHTML(x)}</span>`).join("")
+    : `<span class="focus-pill">Aucune compétence explicitement associée</span>`;
+}
+
+function renderProgressionFocus(seq){
+  const wrap = document.getElementById('seq-focus-progression');
+  if(!wrap) return;
+
+  const {previous,next} = getProgressionNeighbors(seq);
+  const dom = DOMAINES[seq.domaine] || {nom:seq.domaine};
+
+  wrap.innerHTML = `
+    <div class="focus-column">
+      <div class="focus-label">Séquence(s) précédente(s)</div>
+      ${previous.length
+        ? previous.map(s=>focusSequenceCard(s,"Avant")).join("")
+        : `<div class="focus-empty">Aucune séquence précédente explicitement déclarée.</div>`}
+    </div>
+
+    <div class="focus-current">
+      <div class="kicker">Séquence sélectionnée</div>
+      <h3>${escapeHTML(seq.titre || "Séquence")}</h3>
+      <div class="meta">
+        ${escapeHTML(seqNiveau(seq))} · ${escapeHTML(dom.nom || "")}
+        ${seq.periode ? ` · Période ${escapeHTML(seq.periode)}` : ""}
+      </div>
+
+      <div class="focus-competences">
+        <div class="focus-competences-title">Compétence(s) associée(s)</div>
+        ${competencePillsForSequence(seq)}
+      </div>
+    </div>
+
+    <div class="focus-column">
+      <div class="focus-label">Séquence(s) suivante(s)</div>
+      ${next.length
+        ? next.map(s=>focusSequenceCard(s,"Après")).join("")
+        : `<div class="focus-empty">Aucune séquence suivante explicitement déclarée.</div>`}
+    </div>
+  `;
+
+  wrap.querySelectorAll("[data-focus-seq]").forEach(btn=>{
+    btn.addEventListener("click",()=>{
+      openSeqDetail(btn.getAttribute("data-focus-seq"));
+    });
+  });
+}
+
 
 function renderSeancesGrid(seq){
   const grid = document.getElementById('seances-grid');
