@@ -312,6 +312,40 @@
   }
   .ai-callout code { background: rgba(255,255,255,0.6); padding: 0.05rem 0.3rem; border-radius: 3px; }
 
+  .pill-outline {
+    border: 1px solid var(--navy);
+    background: #fff;
+    color: var(--navy);
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin: 0.2rem 0.4rem 0.2rem 0;
+  }
+  .pill-outline:hover { background: var(--bg); }
+  .proposition-card {
+    border: 1px solid var(--ai);
+    background: var(--ai-soft);
+    border-radius: 8px;
+    padding: 0.65rem 0.85rem;
+    margin: 0.5rem 0;
+    cursor: grab;
+    font-size: 0.85rem;
+  }
+  .proposition-card:active { cursor: grabbing; }
+  .dropzone {
+    border: 2px dashed var(--ai);
+    border-radius: 8px;
+    padding: 0.7rem;
+    margin-top: 0.7rem;
+    font-size: 0.8rem;
+    color: var(--ai);
+    text-align: center;
+    font-weight: 600;
+  }
+  .dropzone.dragover { background: var(--ai-soft); }
+
   footer.foot {
     text-align: center;
     color: var(--muted);
@@ -355,6 +389,7 @@
     <button data-tab="projet">Mode projet</button>
     <button data-tab="couverture">Matrice de couverture</button>
     <button class="tab-ai" data-tab="ia">✨ Paramètres IA</button>
+    <button class="tab-ai" data-tab="atelier">💬 Atelier IA (gratuit)</button>
   </nav>
 
   <!-- ============================================================ -->
@@ -378,6 +413,11 @@
     <div class="card" id="resultat-classique" style="display:none;">
       <h3 id="titre-resultat-classique"></h3>
       <div id="seances-classique"></div>
+      <div class="dropzone" ondragover="event.preventDefault(); this.classList.add('dragover')"
+           ondragleave="this.classList.remove('dragover')"
+           ondrop="UI.deposerSeanceClassique(event)">
+        ✨ Déposer ici une proposition de l'Atelier IA pour l'ajouter à cette séquence
+      </div>
     </div>
   </section>
 
@@ -470,6 +510,45 @@
       <div class="ai-callout" id="ia-statut-message">Aucune configuration enregistrée pour le moment.</div>
 
       <p class="muted">Une fois activé, des boutons <span class="tag ai">✨ IA</span> apparaissent dans le générateur classique, le mode projet et la matrice de couverture pour obtenir des propositions à valider.</p>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANEL 5 : ATELIER IA (modèles gratuits, copier/coller)         -->
+  <!-- ============================================================ -->
+  <section class="panel" id="panel-atelier">
+    <div class="card ai-accented">
+      <h3>💬 Atelier IA — modèles gratuits (copier / coller)</h3>
+      <p class="muted">Pas de clé API nécessaire : le prompt ci-dessous est déjà rempli avec le contexte (compétence ou tâche). Copiez-le dans un chat gratuit, collez la réponse ici, puis glissez chaque séance proposée vers la séquence (onglet « Générateur classique ») ou vers une tâche (onglet « Mode projet »).</p>
+
+      <label for="atelier-contexte">Contexte du prompt</label>
+      <select id="atelier-contexte" onchange="Atelier.majContexte()">
+        <option value="competence">Compétence sélectionnée (Générateur classique)</option>
+        <option value="tache">Tâche de projet (Mode projet)</option>
+      </select>
+
+      <div id="atelier-contexte-tache" style="display:none;">
+        <label for="atelier-select-tache">Tâche du projet en cours</label>
+        <select id="atelier-select-tache" onchange="Atelier.genererPrompt()"></select>
+      </div>
+
+      <label for="atelier-prompt">Prompt prêt à copier</label>
+      <textarea id="atelier-prompt" rows="8" readonly></textarea>
+      <button class="ghost" onclick="Atelier.copierPrompt()">📋 Copier le prompt</button>
+
+      <div style="margin: 0.9rem 0;">
+        <span class="muted" style="display:block; margin-bottom:0.4rem;">Ouvrir un chat gratuit dans un nouvel onglet :</span>
+        <button class="pill-outline" onclick="window.open('https://chat.openai.com','_blank')">ChatGPT</button>
+        <button class="pill-outline" onclick="window.open('https://claude.ai','_blank')">Claude.ai</button>
+        <button class="pill-outline" onclick="window.open('https://chat.mistral.ai','_blank')">Le Chat (Mistral)</button>
+        <button class="pill-outline" onclick="window.open('https://gemini.google.com','_blank')">Gemini</button>
+      </div>
+
+      <label for="atelier-reponse">Réponse collée du modèle</label>
+      <textarea id="atelier-reponse" rows="8" placeholder="Collez ici la réponse complète du modèle (idéalement au format JSON demandé dans le prompt ; une simple liste à puces fonctionne aussi)"></textarea>
+      <button class="action" onclick="Atelier.analyserReponse()">Analyser la réponse</button>
+
+      <div id="atelier-propositions"></div>
     </div>
   </section>
 
@@ -799,6 +878,7 @@ const MoteurIA = (function () {
    ================================================================== */
 const UI = (function () {
   let projetCourant = null;
+  let sequenceCouranteClassique = null;
 
   function initTabs() {
     document.querySelectorAll("nav.tabs button").forEach(btn => {
@@ -812,6 +892,7 @@ const UI = (function () {
     document.getElementById("panel-" + tab).classList.add("active");
     if (tab === "couverture") renderMatrice();
     if (tab === "ia") chargerFormulaireIA();
+    if (tab === "atelier") Atelier.majContexte();
   }
 
   function initSelectCompetences() {
@@ -833,6 +914,7 @@ const UI = (function () {
   }
 
   function afficherSequenceClassique(sequence) {
+    sequenceCouranteClassique = sequence;
     document.getElementById("resultat-classique").style.display = "block";
     document.getElementById("titre-resultat-classique").textContent = sequence.titre;
 
@@ -955,6 +1037,12 @@ Réponds avec ce format JSON exact :
         html += `<button class="action" onclick="UI.genererSeance('${tache.id}')">Générer la séance de projet</button>`;
       }
       html += `<button class="ai-btn" ${MoteurIA.estActif() ? "" : "disabled title='Activez l\\'IA dans Paramètres IA'"} onclick="UI.suggererCompetencesIA('${tache.id}')">✨ Suggestions IA</button>`;
+
+      html += `<div class="dropzone" ondragover="event.preventDefault(); this.classList.add('dragover')"
+           ondragleave="this.classList.remove('dragover')"
+           ondrop="UI.deposerSeanceTache(event, '${tache.id}')">
+        ✨ Déposer ici une proposition de l'Atelier IA pour créer une séance liée à cette tâche
+      </div>`;
 
       block.innerHTML = html;
       cont.appendChild(block);
@@ -1178,13 +1266,187 @@ Réponds avec ce format JSON exact :
     lecteur.readAsText(fichier);
   }
 
+  /* ---------- Dépôt (drag & drop) des propositions de l'Atelier IA ---------- */
+  function deposerSeanceClassique(evt) {
+    evt.preventDefault();
+    evt.currentTarget.classList.remove("dragover");
+    if (!sequenceCouranteClassique) {
+      alert("Générez d'abord une séquence dans cet onglet avant d'y déposer une proposition.");
+      return;
+    }
+    const brut = evt.dataTransfer.getData("application/json");
+    if (!brut) return;
+    const s = JSON.parse(brut);
+    sequenceCouranteClassique.seances.push({
+      id: `${sequenceCouranteClassique.id}-ATELIER-${Date.now()}`,
+      type: s.type || "seance",
+      intitule: s.intitule,
+      competences_mobilisees: [sequenceCouranteClassique.competence_principale],
+      duree_estimee_min: s.duree_estimee_min || 45,
+      origine: "ia"
+    });
+    afficherSequenceClassique(sequenceCouranteClassique);
+  }
+
+  function deposerSeanceTache(evt, tacheId) {
+    evt.preventDefault();
+    evt.currentTarget.classList.remove("dragover");
+    const brut = evt.dataTransfer.getData("application/json");
+    if (!brut || !projetCourant) return;
+    const s = JSON.parse(brut);
+    const tache = projetCourant.taches.find(t => t.id === tacheId);
+    const seance = {
+      id: `${projetCourant.id}-${tache.id}-ATELIER-${Date.now()}`,
+      intitule: s.intitule,
+      tache_projet_associee: tache.id,
+      competences_mobilisees: tache.competences_retenues.map(c => c.id),
+      duree_estimee_min: s.duree_estimee_min || 45,
+      statut: "a_planifier",
+      origine: "ia"
+    };
+    projetCourant.seances.push(seance);
+    alert(`Séance ajoutée au projet : « ${seance.intitule} »`);
+  }
+
+  function getProjetCourant() { return projetCourant; }
+  function getSequenceCouranteClassique() { return sequenceCouranteClassique; }
+
   return {
     initTabs, initSelectCompetences, switchTab,
     genererSequenceClassiqueUI, genererSequenceIA,
     creerProjet, ajouterTache, validerCompetence, genererSeance, suggererCompetencesIA,
     renderMatrice, genererComplements, genererComplementsIA,
-    enregistrerParametresIA, testerConnexionIA, exporterEtat, importerEtat
+    enregistrerParametresIA, testerConnexionIA, exporterEtat, importerEtat,
+    deposerSeanceClassique, deposerSeanceTache, getProjetCourant, getSequenceCouranteClassique
   };
+})();
+
+/* ==================================================================
+   FICHIER 5 (à extraire) : Programmation/atelier-ia.js
+   Atelier IA "sans clé" : prépare un prompt avec le contexte courant,
+   à copier vers un chat gratuit (ChatGPT, Claude.ai, Le Chat, Gemini...).
+   La réponse collée est analysée (JSON attendu, repli en liste à puces)
+   puis affichée sous forme de cartes glissables (drag & drop) vers le
+   générateur classique ou une tâche de mode projet.
+   ================================================================== */
+const Atelier = (function () {
+  let propositions = [];
+
+  function majContexte() {
+    const mode = document.getElementById("atelier-contexte").value;
+    document.getElementById("atelier-contexte-tache").style.display = mode === "tache" ? "block" : "none";
+    if (mode === "tache") remplirSelectTaches();
+    genererPrompt();
+  }
+
+  function remplirSelectTaches() {
+    const select = document.getElementById("atelier-select-tache");
+    select.innerHTML = "";
+    const projet = UI.getProjetCourant();
+    if (!projet || projet.taches.length === 0) {
+      const opt = document.createElement("option");
+      opt.textContent = "Aucune tâche disponible";
+      select.appendChild(opt);
+      return;
+    }
+    projet.taches.forEach(t => {
+      const opt = document.createElement("option");
+      opt.value = t.id;
+      opt.textContent = t.nom;
+      select.appendChild(opt);
+    });
+  }
+
+  function genererPrompt() {
+    const mode = document.getElementById("atelier-contexte").value;
+    let prompt = "";
+
+    if (mode === "competence") {
+      const selectCompetence = document.getElementById("select-competence");
+      const competence = selectCompetence ? REFERENTIEL_COMPETENCES.find(c => c.id === selectCompetence.value) : null;
+      if (!competence) {
+        prompt = "Choisissez d'abord une compétence dans l'onglet « Générateur classique ».";
+      } else {
+        prompt = `Tu es un conseiller pédagogique. Réponds UNIQUEMENT en JSON valide, sans texte ni explication autour.
+Propose une séquence de 7 séances pour la compétence suivante :
+Domaine : ${competence.domaine}
+Intitulé : ${competence.intitule}
+Réponds avec ce format JSON exact :
+{"titre": "titre de la séquence", "seances": [{"type": "diagnostique|exploration|structuration|systematisation|approfondissement|evaluation", "intitule": "intitulé concret et concis de la séance", "duree_estimee_min": 45}]}`;
+      }
+    } else {
+      const projet = UI.getProjetCourant();
+      const selectTache = document.getElementById("atelier-select-tache");
+      const tache = projet && selectTache ? projet.taches.find(t => t.id === selectTache.value) : null;
+      if (!tache) {
+        prompt = "Créez un projet et une tâche dans l'onglet « Mode projet » avant de générer ce prompt.";
+      } else {
+        prompt = `Tu es un conseiller pédagogique. Réponds UNIQUEMENT en JSON valide, sans texte ni explication autour.
+Voici une tâche de projet :
+Nom : ${tache.nom}
+Mots-clés : ${tache.motsCles.join(", ")}
+Propose 1 à 3 séances de projet concrètes permettant de réaliser cette tâche avec des élèves.
+Réponds avec ce format JSON exact :
+{"seances": [{"type": "seance-projet", "intitule": "intitulé concret", "duree_estimee_min": 45}]}`;
+      }
+    }
+    document.getElementById("atelier-prompt").value = prompt;
+  }
+
+  function copierPrompt() {
+    const zone = document.getElementById("atelier-prompt");
+    zone.select();
+    if (navigator.clipboard) {
+      navigator.clipboard.writeText(zone.value).catch(() => {});
+    } else {
+      document.execCommand("copy");
+    }
+  }
+
+  function analyserReponse() {
+    const texte = document.getElementById("atelier-reponse").value.trim();
+    if (!texte) return;
+    let seances = [];
+    try {
+      const objet = MoteurIA.extraireJSON(texte);
+      seances = (objet.seances || []).map(s => ({
+        type: s.type || "seance",
+        intitule: s.intitule,
+        duree_estimee_min: s.duree_estimee_min || 45
+      })).filter(s => s.intitule);
+    } catch (e) {
+      // repli : la réponse n'est pas un JSON exploitable, on tente une liste à puces
+      seances = texte.split("\n")
+        .map(l => l.replace(/^[-*\d.\)\s]+/, "").trim())
+        .filter(l => l.length > 3)
+        .map(l => ({ type: "seance", intitule: l, duree_estimee_min: 45 }));
+    }
+    propositions = seances;
+    renderPropositions();
+  }
+
+  function renderPropositions() {
+    const cont = document.getElementById("atelier-propositions");
+    if (propositions.length === 0) {
+      cont.innerHTML = `<p class="muted">Aucune proposition détectée. Vérifiez le format de la réponse collée.</p>`;
+      return;
+    }
+    let html = `<div class="muted" style="margin-top:0.9rem;">Glissez une proposition vers la séquence (onglet Générateur classique) ou vers une tâche (onglet Mode projet) :</div>`;
+    propositions.forEach((s, i) => {
+      html += `<div class="proposition-card" draggable="true" ondragstart="Atelier.dragStart(event, ${i})">
+        <strong>${s.intitule}</strong><br>
+        <span class="tag ai">${s.type}</span> <span class="tag">${s.duree_estimee_min} min</span>
+      </div>`;
+    });
+    cont.innerHTML = html;
+  }
+
+  function dragStart(evt, index) {
+    evt.dataTransfer.setData("application/json", JSON.stringify(propositions[index]));
+    evt.dataTransfer.effectAllowed = "copy";
+  }
+
+  return { majContexte, genererPrompt, copierPrompt, analyserReponse, dragStart };
 })();
 
 UI.initTabs();
