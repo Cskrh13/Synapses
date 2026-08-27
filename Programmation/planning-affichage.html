@@ -1,0 +1,336 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning — Affichage</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2A4A; --navy-deep:#141d33; --bg:#F6F5F1; --panel:#FFFFFF; --panel-raised:#FAF9F5;
+  --line:#DEDBD2; --ink:#20242E; --ink-soft:#5B5F6B; --accent-sky:#2E5EAA; --ring:#2E5EAA;
+  --danger:#B5502E; --ok:#2A7F72; --radius:10px; --radius-sm:6px;
+  --lecture:#B5502E; --ecriture:#2A7F72; --oral:#6B4E8E; --vocabulaire:#B5871E; --grammaire:#1E2A4A;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:600;margin:0;letter-spacing:-0.01em;}
+button{cursor:pointer;font-family:inherit;}
+a{color:inherit;}
+:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-sky);font-weight:500;}
+header.site-header{background:var(--navy);color:#fff;padding:16px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.brand-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:#fff;flex-shrink:0;}
+.brand-text{font-family:'Fraunces',serif;font-weight:600;font-size:16px;}
+nav.pl-nav{display:flex;gap:8px;}
+nav.pl-nav a{color:#D9E0F2;text-decoration:none;font-size:13.5px;font-weight:500;padding:7px 12px;border-radius:6px;background:rgba(255,255,255,.06);}
+nav.pl-nav a.active{background:var(--accent-sky);color:#fff;}
+main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
+.toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;}
+.toolbar .chip-toggle{display:flex;gap:6px;flex-wrap:wrap;}
+.toolbar .chip-toggle button{border:1px solid var(--line);background:var(--panel);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;}
+.toolbar .chip-toggle button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.week-nav{display:flex;align-items:center;gap:10px;margin-left:auto;}
+.week-nav button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px;font-weight:700;}
+.week-nav .label{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-soft);min-width:170px;text-align:center;}
+.empty-state{background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);padding:32px;text-align:center;color:var(--ink-soft);}
+.week-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+.day-col{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px;min-height:120px;}
+.day-col h3{font-size:14px;margin-bottom:2px;}
+.day-col .day-date{font-size:11.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-bottom:10px;}
+.niveau-group{margin-bottom:12px;}
+.niveau-group .niveau-label{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px;}
+.creneau-card{border-radius:8px;padding:7px 9px;margin-bottom:6px;font-size:12.5px;border:1px solid var(--line);}
+.creneau-card.seance{cursor:pointer;background:var(--panel-raised);border-left:4px solid var(--accent-sky);}
+.creneau-card.seance:hover{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.08);}
+.creneau-card.seance.vide{border-left-color:var(--danger);}
+.creneau-card.recreation,.creneau-card.pause,.creneau-card.autre{background:#F1EFE9;color:var(--ink-soft);border-left:4px solid var(--ink-soft);font-style:italic;}
+.creneau-heure{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--ink-soft);}
+.creneau-titre{font-weight:600;margin-top:1px;}
+.creneau-domaine{font-size:10.5px;color:var(--ink-soft);}
+
+/* Drawer */
+.drawer-overlay{position:fixed;inset:0;background:rgba(20,29,51,.45);opacity:0;pointer-events:none;transition:opacity .2s;z-index:60;}
+.drawer-overlay.open{opacity:1;pointer-events:auto;}
+.drawer{position:fixed;top:0;right:0;height:100%;width:min(640px,92vw);background:#fff;box-shadow:-8px 0 30px rgba(0,0,0,.15);transform:translateX(100%);transition:transform .25s;z-index:61;overflow-y:auto;}
+.drawer.open{transform:translateX(0);}
+.drawer-head{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);padding:18px 22px;display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.drawer-crumb{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--accent-sky);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px;}
+.drawer-close{background:var(--panel-raised);border:1px solid var(--line);border-radius:8px;width:32px;height:32px;font-size:16px;flex-shrink:0;}
+.drawer-body{padding:22px;}
+.drawer-body h2{font-size:20px;margin-bottom:10px;}
+.drawer-meta{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px;}
+.drawer-meta span{font-size:11.5px;font-weight:700;padding:3px 10px;border-radius:20px;background:var(--panel-raised);border:1px solid var(--line);}
+.drawer-block{margin-bottom:16px;}
+.drawer-block h4{font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:6px;}
+.drawer-block p{margin:0;font-size:14px;}
+table.deroule{width:100%;border-collapse:collapse;font-size:13px;margin-top:6px;}
+table.deroule th{text-align:left;background:var(--panel-raised);padding:6px 8px;font-size:11px;text-transform:uppercase;color:var(--ink-soft);}
+table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top;}
+.drawer-manual{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);}
+.drawer-manual select{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px;font-size:13.5px;}
+.drawer-manual .btn{margin-top:8px;border:1px solid var(--accent-sky);background:var(--accent-sky);color:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html">
+      <div class="brand-mark">S</div>
+      <div class="brand-text">Synapses</div>
+    </a>
+    <nav class="pl-nav">
+      <a href="planning-gestion.html">Planning — Gestion</a>
+      <a href="planning-affichage.html" class="active">Planning — Affichage</a>
+      <a href="sequences.html">Séquences &amp; séances</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="eyebrow">Dimension temporelle</div>
+  <h1 style="font-size:24px;margin:6px 0 18px;">Planning de la semaine</h1>
+
+  <div class="toolbar">
+    <div class="chip-toggle" id="niveaux-affiches"></div>
+    <div class="week-nav">
+      <button id="prev-week">◀</button>
+      <span class="label" id="week-label">—</span>
+      <button id="next-week">▶</button>
+    </div>
+  </div>
+
+  <div id="content"></div>
+</main>
+
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer">
+  <div class="drawer-head">
+    <div><div class="drawer-crumb" id="drawerCrumb"></div></div>
+    <button class="drawer-close" id="drawerClose">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<script src="planning-core.js"></script>
+<script>
+"use strict";
+const PC = window.PlanningCore;
+const $ = id => document.getElementById(id);
+
+let config = PC.chargerConfig();
+let grilles = PC.chargerGrilles();
+let affectations = PC.chargerAffectations();
+let banque = {};
+let semaines = [];
+let semaineIdx = 0;
+let niveauxAffiches = [];
+
+function couleurDomaine(cle){
+  let hash=0; const s=String(cle||"");
+  for(let i=0;i<s.length;i++) hash=(hash*31+s.charCodeAt(i))>>>0;
+  const palette=["#B5502E","#2A7F72","#6B4E8E","#B5871E","#7A4A9E","#2E5EAA","#B23A5C","#3F8C4B","#8C5E2A","#4C6E91"];
+  return palette[hash%palette.length];
+}
+
+function renderNiveauxToggle(){
+  const wrap = $("niveaux-affiches");
+  wrap.innerHTML = "";
+  const disponibles = (config.niveauxActifs && config.niveauxActifs.length) ? config.niveauxActifs : PC.NIVEAUX;
+  if(!niveauxAffiches.length) niveauxAffiches = disponibles.slice();
+  disponibles.forEach(n=>{
+    const b = document.createElement("button");
+    b.textContent = n;
+    b.className = niveauxAffiches.includes(n) ? "active" : "";
+    b.addEventListener("click", ()=>{
+      const i = niveauxAffiches.indexOf(n);
+      if(i>=0) niveauxAffiches.splice(i,1); else niveauxAffiches.push(n);
+      renderNiveauxToggle();
+      renderSemaine();
+    });
+    wrap.appendChild(b);
+  });
+}
+
+function renderWeekNav(){
+  const sem = semaines[semaineIdx];
+  $("week-label").textContent = sem ? `Semaine ${sem.numero} — ${PC.formatDateShort(sem.lundi)} au ${PC.formatDateShort(sem.vendredi)}` : "—";
+}
+
+function itemPourCle(niveau, domaineCle, seanceId){
+  const bucket = banque[niveau] && banque[niveau][domaineCle];
+  if(!bucket) return null;
+  return bucket.items.find(it=>it.id===seanceId) || null;
+}
+
+function renderSemaine(){
+  renderWeekNav();
+  const content = $("content");
+  content.innerHTML = "";
+  const sem = semaines[semaineIdx];
+  if(!sem){
+    content.innerHTML = '<div class="empty-state">Aucune configuration de rentrée / semaines n\'est encore définie. Rendez-vous sur la page « Planning — Gestion ».</div>';
+    return;
+  }
+  if(!niveauxAffiches.length){
+    content.innerHTML = '<div class="empty-state">Sélectionnez au moins un niveau à afficher.</div>';
+    return;
+  }
+
+  const grid = document.createElement("div");
+  grid.className = "week-grid";
+
+  PC.JOURS.forEach(j=>{
+    const jourDate = PC.addDays(sem.lundi, j.n-1);
+    const iso = PC.dateISO(jourDate);
+    const col = document.createElement("div");
+    col.className = "day-col";
+    col.innerHTML = `<h3>${j.nom}</h3><div class="day-date">${PC.formatDateShort(jourDate)}</div>`;
+
+    niveauxAffiches.forEach(niveau=>{
+      const creneauxJour = (grilles[niveau]||[]).filter(c=>c.jour===j.n).sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
+      if(!creneauxJour.length) return;
+      const groupe = document.createElement("div");
+      groupe.className = "niveau-group";
+      groupe.innerHTML = `<div class="niveau-label">${niveau}</div>`;
+      creneauxJour.forEach(c=>{
+        const carte = document.createElement("div");
+        if(c.type === "seance"){
+          const aff = (affectations[niveau]||{})[PC.cleCreneau(iso,c.id)];
+          const item = aff && aff.seanceId ? itemPourCle(niveau, c.domaineCle, aff.seanceId) : null;
+          carte.className = "creneau-card seance" + (item ? "" : " vide");
+          const domaineLabel = (banque[niveau] && banque[niveau][c.domaineCle]) ? banque[niveau][c.domaineCle].label : c.domaineCle;
+          carte.style.borderLeftColor = couleurDomaine(c.domaineCle);
+          carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div>
+            <div class="creneau-titre">${item ? (item.titre || item.type || "Séance") : "— aucune séance disponible"}</div>
+            <div class="creneau-domaine">${domaineLabel}${item && item.numero ? " · n°"+item.numero : ""}</div>`;
+          carte.addEventListener("click", ()=> ouvrirDrawer(niveau, iso, c, item));
+        } else {
+          carte.className = "creneau-card " + c.type;
+          carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div><div class="creneau-titre">${PC.TYPES_CRENEAU[c.type].label}</div>`;
+        }
+        groupe.appendChild(carte);
+      });
+      col.appendChild(groupe);
+    });
+    grid.appendChild(col);
+  });
+
+  content.appendChild(grid);
+}
+
+/* ---------------- Drawer : déroulé de séance ---------------- */
+async function ouvrirDrawer(niveau, iso, creneau, itemResume){
+  const overlay = $("drawerOverlay"), drawer = $("drawer"), body = $("drawerBody");
+  overlay.classList.add("open"); drawer.classList.add("open");
+  $("drawerCrumb").textContent = `${niveau} · ${PC.formatDateLong(PC.parseISO(iso))} · ${creneau.debut}–${creneau.fin}`;
+  body.innerHTML = '<p style="color:var(--ink-soft);">Chargement du déroulé…</p>';
+
+  const domaineLabel = (banque[niveau] && banque[niveau][creneau.domaineCle]) ? banque[niveau][creneau.domaineCle].label : creneau.domaineCle;
+
+  if(!itemResume){
+    renderDrawerVide(niveau, iso, creneau, domaineLabel);
+    return;
+  }
+  try{
+    const item = await PC.chargerDerouleDeItem(itemResume);
+    renderDrawerSeance(niveau, iso, creneau, domaineLabel, item);
+  }catch(e){
+    body.innerHTML = `<p style="color:var(--danger);">Impossible de charger le déroulé (${e.message}).</p>`;
+  }
+}
+
+function fermerDrawer(){
+  $("drawerOverlay").classList.remove("open");
+  $("drawer").classList.remove("open");
+}
+$("drawerClose").addEventListener("click", fermerDrawer);
+$("drawerOverlay").addEventListener("click", fermerDrawer);
+
+function renderDrawerSeance(niveau, iso, creneau, domaineLabel, item){
+  const body = $("drawerBody");
+  const phases = (item.deroule||[]).map(p=>`
+    <tr>
+      <td><b>${p.phase||""}</b><br><span style="color:var(--ink-soft);font-size:11.5px;">${p.temps||""}</span></td>
+      <td>${p.modalite_materiel||""}</td>
+      <td>${p.deroulement||""}</td>
+      <td>${p.amenagement||""}</td>
+    </tr>`).join("");
+  body.innerHTML = `
+    <h2>${item.titre || "Séance"}</h2>
+    <div class="drawer-meta">
+      <span>${niveau}</span><span>${domaineLabel}</span>${item.numero?`<span>N° ${item.numero}</span>`:""}${item.type?`<span>${item.type}</span>`:""}
+    </div>
+    ${item.objectif_commun?`<div class="drawer-block"><h4>Objectif</h4><p>${item.objectif_commun}</p></div>`:""}
+    ${item.problematique?`<div class="drawer-block"><h4>Problématique</h4><p>${item.problematique}</p></div>`:""}
+    ${item.competence_cible?`<div class="drawer-block"><h4>Compétence ciblée</h4><p>${item.competence_cible}</p></div>`:""}
+    <div class="drawer-block">
+      <h4>Déroulé</h4>
+      <table class="deroule"><thead><tr><th>Phase</th><th>Modalité / matériel</th><th>Déroulement</th><th>Aménagement</th></tr></thead>
+      <tbody>${phases || '<tr><td colspan="4" style="color:var(--ink-soft);">Aucun déroulé renseigné.</td></tr>'}</tbody></table>
+    </div>
+    ${renderChoixManuel(niveau, iso, creneau)}
+  `;
+  brancherChoixManuel(niveau, iso, creneau);
+}
+
+function renderDrawerVide(niveau, iso, creneau, domaineLabel){
+  const body = $("drawerBody");
+  body.innerHTML = `
+    <h2>Créneau libre</h2>
+    <div class="drawer-meta"><span>${niveau}</span><span>${domaineLabel}</span></div>
+    <p style="color:var(--ink-soft);">Aucune séance disponible dans ce domaine n'a pu être affectée automatiquement (banque épuisée). Choisissez-en une manuellement, ou ajoutez de nouvelles séances dans « Séquences &amp; séances ».</p>
+    ${renderChoixManuel(niveau, iso, creneau)}
+  `;
+  brancherChoixManuel(niveau, iso, creneau);
+}
+
+function renderChoixManuel(niveau, iso, creneau){
+  const bucket = banque[niveau] && banque[niveau][creneau.domaineCle];
+  const options = bucket ? bucket.items.map(it=>`<option value="${it.id}">${it.titre||it.type||it.id} (n°${it.numero||"?"})</option>`).join("") : "";
+  return `
+    <div class="drawer-manual">
+      <h4 style="font-size:12px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:6px;">Affecter une autre séance à ce créneau</h4>
+      <select id="choix-manuel"><option value="">— Choisir une séance —</option>${options}</select>
+      <button class="btn" id="btn-affecter-manuel">Affecter</button>
+    </div>`;
+}
+function brancherChoixManuel(niveau, iso, creneau){
+  const btn = $("btn-affecter-manuel");
+  if(!btn) return;
+  btn.addEventListener("click", ()=>{
+    const sel = $("choix-manuel");
+    const id = sel.value;
+    if(!id) return;
+    const bucket = banque[niveau] && banque[niveau][creneau.domaineCle];
+    const item = bucket.items.find(it=>it.id===id);
+    affectations[niveau] = affectations[niveau] || {};
+    affectations[niveau][PC.cleCreneau(iso, creneau.id)] = {
+      seanceId: id, source: item.source, fichier: item.fichier || null, domaineCle: creneau.domaineCle, manuel: true
+    };
+    PC.sauverAffectations(affectations);
+    fermerDrawer();
+    renderSemaine();
+  });
+}
+
+/* ---------------- Navigation semaines ---------------- */
+$("prev-week").addEventListener("click", ()=>{ if(semaineIdx>0){ semaineIdx--; renderSemaine(); } });
+$("next-week").addEventListener("click", ()=>{ if(semaineIdx<semaines.length-1){ semaineIdx++; renderSemaine(); } });
+
+/* ---------------- Initialisation ---------------- */
+(async function init(){
+  semaines = PC.calculerSemaines(config);
+  renderNiveauxToggle();
+  try{
+    banque = await PC.chargerBanque();
+  }catch(e){ /* le planning reste affichable, sans détail de séance */ }
+  renderSemaine();
+})();
+</script>
+</body>
+</html>

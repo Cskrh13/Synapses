@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planning — Gestion</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2A4A; --navy-deep:#141d33; --bg:#F6F5F1; --panel:#FFFFFF; --panel-raised:#FAF9F5;
+  --line:#DEDBD2; --ink:#20242E; --ink-soft:#5B5F6B; --accent-sky:#2E5EAA; --ring:#2E5EAA;
+  --danger:#B5502E; --ok:#2A7F72; --radius:10px; --radius-sm:6px;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:600;margin:0;letter-spacing:-0.01em;}
+button,input,select{font-family:inherit;}
+button{cursor:pointer;}
+a{color:inherit;}
+:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-sky);font-weight:500;}
+header.site-header{background:var(--navy);color:#fff;padding:16px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
+.header-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.brand-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:#fff;flex-shrink:0;}
+.brand-text{font-family:'Fraunces',serif;font-weight:600;font-size:16px;}
+nav.pl-nav{display:flex;gap:8px;}
+nav.pl-nav a{color:#D9E0F2;text-decoration:none;font-size:13.5px;font-weight:500;padding:7px 12px;border-radius:6px;background:rgba(255,255,255,.06);}
+nav.pl-nav a.active{background:var(--accent-sky);color:#fff;}
+main{max-width:1240px;margin:0 auto;padding:28px 24px 90px;}
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:22px;}
+.card h2{font-size:19px;margin-bottom:4px;}
+.card p.hint{color:var(--ink-soft);font-size:13.5px;margin:4px 0 16px;}
+.row{display:flex;gap:14px;flex-wrap:wrap;align-items:flex-end;}
+.field{display:flex;flex-direction:column;gap:5px;}
+.field label{font-size:12px;font-weight:600;color:var(--ink-soft);}
+.field input,.field select{border:1px solid var(--line);border-radius:var(--radius-sm);padding:8px 10px;font-size:14px;background:var(--panel-raised);}
+.btn{border:1px solid var(--line);background:var(--panel-raised);border-radius:var(--radius-sm);padding:8px 14px;font-size:13.5px;font-weight:600;color:var(--ink);}
+.btn:hover{background:#fff;}
+.btn.primary{background:var(--accent-sky);border-color:var(--accent-sky);color:#fff;}
+.btn.primary:hover{background:#264d8c;}
+.btn.danger{color:var(--danger);}
+.btn.sm{padding:5px 10px;font-size:12.5px;}
+.chip-toggle{display:flex;gap:8px;flex-wrap:wrap;}
+.chip-toggle button{border:1px solid var(--line);background:var(--panel-raised);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;}
+.chip-toggle button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+table.vac{width:100%;border-collapse:collapse;font-size:13.5px;}
+table.vac th{text-align:left;color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:.06em;padding:4px 8px;}
+table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
+.niveau-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:16px;}
+.niveau-tabs button{border:1px solid var(--line);background:var(--panel-raised);border-radius:8px;padding:8px 16px;font-weight:700;font-size:13.5px;}
+.niveau-tabs button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.jour-block{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;background:var(--panel-raised);}
+.jour-block h4{font-size:14px;margin-bottom:10px;}
+.creneau-row{display:grid;grid-template-columns:90px 90px 150px 1fr auto;gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line);}
+.creneau-row:first-of-type{border-top:none;}
+.creneau-row input,.creneau-row select{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:13px;}
+.badge-type{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap;}
+.empty-hint{color:var(--ink-soft);font-size:13px;font-style:italic;padding:8px 0;}
+.summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px;}
+.summary-item{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--panel-raised);font-size:13px;}
+.summary-item b{display:block;font-size:13.5px;margin-bottom:2px;}
+.summary-item .warn{color:var(--danger);font-weight:600;}
+.summary-item .ok{color:var(--ok);font-weight:600;}
+.toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:8px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99;}
+.toast.show{opacity:1;}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html">
+      <div class="brand-mark">S</div>
+      <div class="brand-text">Synapses</div>
+    </a>
+    <nav class="pl-nav">
+      <a href="planning-gestion.html" class="active">Planning — Gestion</a>
+      <a href="planning-affichage.html">Planning — Affichage</a>
+      <a href="sequences.html">Séquences &amp; séances</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+  <div class="eyebrow">Dimension temporelle</div>
+  <h1 style="font-size:26px;margin:6px 0 20px;">Gestion du planning annuel</h1>
+
+  <!-- =============== CONFIGURATION GÉNÉRALE =============== -->
+  <section class="card">
+    <h2>Configuration générale</h2>
+    <p class="hint">Date de rentrée, nombre de semaines à couvrir (36 par défaut) et périodes de vacances / fermetures (qui suspendent le décompte des semaines).</p>
+    <div class="row">
+      <div class="field">
+        <label for="cfg-rentree">Date de rentrée</label>
+        <input type="date" id="cfg-rentree">
+      </div>
+      <div class="field">
+        <label for="cfg-semaines">Nombre de semaines</label>
+        <input type="number" id="cfg-semaines" min="1" max="52" value="36" style="width:90px;">
+      </div>
+      <button class="btn primary" id="btn-save-config">Enregistrer la configuration</button>
+    </div>
+
+    <h3 style="font-size:15px;margin-top:22px;margin-bottom:8px;">Périodes de vacances</h3>
+    <p class="hint" style="margin-top:0;">Toute semaine (lundi–vendredi) touchant une de ces périodes est exclue du décompte des semaines de classe.</p>
+    <table class="vac" id="vac-table">
+      <thead><tr><th>Libellé</th><th>Début</th><th>Fin</th><th></th></tr></thead>
+      <tbody id="vac-body"></tbody>
+    </table>
+    <div class="row" style="margin-top:10px;">
+      <div class="field"><label>Libellé</label><input type="text" id="vac-libelle" placeholder="Vacances de la Toussaint" style="width:220px;"></div>
+      <div class="field"><label>Début</label><input type="date" id="vac-debut"></div>
+      <div class="field"><label>Fin</label><input type="date" id="vac-fin"></div>
+      <button class="btn" id="btn-add-vac">+ Ajouter une période</button>
+    </div>
+  </section>
+
+  <!-- =============== NIVEAUX ACTIFS =============== -->
+  <section class="card">
+    <h2>Niveaux gérés</h2>
+    <p class="hint">Planning multi-niveaux : sélectionnez les classes à planifier simultanément. Chaque niveau a sa propre grille horaire.</p>
+    <div class="chip-toggle" id="niveaux-actifs"></div>
+  </section>
+
+  <!-- =============== GRILLE HORAIRE TYPE =============== -->
+  <section class="card">
+    <h2>Grille horaire type (hebdomadaire)</h2>
+    <p class="hint">Définissez, pour chaque niveau, les créneaux du lundi au vendredi : séances (rattachées à un domaine — remplies automatiquement à la génération), récréations, pauses ou autres rituels. Cette grille se répète sur toutes les semaines de classe.</p>
+    <div class="niveau-tabs" id="grille-niveau-tabs"></div>
+    <div id="grille-body"></div>
+  </section>
+
+  <!-- =============== GÉNÉRATION =============== -->
+  <section class="card">
+    <h2>Génération du planning</h2>
+    <p class="hint">Répartit automatiquement, pour chaque créneau de type « Séance », la prochaine séance disponible du domaine choisi (fichiers du dépôt + séances créées dans « Séquences &amp; séances »). Les créneaux déjà modifiés à la main dans la page d'affichage <strong>ne sont jamais écrasés</strong>.</p>
+    <button class="btn primary" id="btn-generer">Générer / mettre à jour le planning</button>
+    <span id="gen-status" style="margin-left:12px;color:var(--ink-soft);font-size:13.5px;"></span>
+    <div class="summary-grid" id="summary"></div>
+  </section>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="planning-core.js"></script>
+<script>
+"use strict";
+const PC = window.PlanningCore;
+const $ = id => document.getElementById(id);
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2200); }
+
+let config = PC.chargerConfig();
+let grilles = PC.chargerGrilles();
+let banque = {}; // rempli au chargement
+let grilleNiveauCourant = null;
+
+/* ---------------- Configuration générale ---------------- */
+function renderConfig(){
+  $("cfg-rentree").value = config.rentree || "";
+  $("cfg-semaines").value = config.semaines || 36;
+  renderVacances();
+}
+function renderVacances(){
+  const body = $("vac-body");
+  body.innerHTML = "";
+  (config.vacances||[]).forEach((v,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${v.libelle||"—"}</td><td>${v.debut}</td><td>${v.fin}</td><td><button class="btn sm danger" data-i="${i}">Retirer</button></td>`;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll("button[data-i]").forEach(b=>{
+    b.addEventListener("click", ()=>{ config.vacances.splice(+b.dataset.i,1); renderVacances(); });
+  });
+}
+$("btn-add-vac").addEventListener("click", ()=>{
+  const debut = $("vac-debut").value, fin = $("vac-fin").value;
+  if(!debut || !fin){ toast("Indiquez une date de début et de fin."); return; }
+  config.vacances = config.vacances || [];
+  config.vacances.push({ libelle: $("vac-libelle").value.trim(), debut, fin });
+  $("vac-libelle").value=""; $("vac-debut").value=""; $("vac-fin").value="";
+  renderVacances();
+});
+$("btn-save-config").addEventListener("click", ()=>{
+  config.rentree = $("cfg-rentree").value;
+  config.semaines = parseInt($("cfg-semaines").value,10) || 36;
+  PC.sauverConfig(config);
+  toast(config.rentree ? "Configuration enregistrée." : "Configuration enregistrée (pensez à indiquer la date de rentrée).");
+  renderSummary();
+});
+
+/* ---------------- Niveaux actifs ---------------- */
+function renderNiveauxActifs(){
+  const wrap = $("niveaux-actifs");
+  wrap.innerHTML = "";
+  PC.NIVEAUX.forEach(n=>{
+    const b = document.createElement("button");
+    const actif = (config.niveauxActifs||[]).includes(n);
+    b.textContent = n; b.className = actif ? "active" : "";
+    b.addEventListener("click", ()=>{
+      config.niveauxActifs = config.niveauxActifs || [];
+      const idx = config.niveauxActifs.indexOf(n);
+      if(idx>=0) config.niveauxActifs.splice(idx,1); else config.niveauxActifs.push(n);
+      PC.sauverConfig(config);
+      renderNiveauxActifs();
+      renderGrilleTabs();
+      renderSummary();
+    });
+    wrap.appendChild(b);
+  });
+}
+
+/* ---------------- Grille horaire par niveau ---------------- */
+function renderGrilleTabs(){
+  const wrap = $("grille-niveau-tabs");
+  wrap.innerHTML = "";
+  const actifs = config.niveauxActifs || [];
+  if(!actifs.length){ wrap.innerHTML = '<span class="empty-hint">Sélectionnez au moins un niveau ci-dessus.</span>'; $("grille-body").innerHTML=""; return; }
+  if(!actifs.includes(grilleNiveauCourant)) grilleNiveauCourant = actifs[0];
+  actifs.forEach(n=>{
+    const b = document.createElement("button");
+    b.textContent = n; b.className = n===grilleNiveauCourant ? "active" : "";
+    b.addEventListener("click", ()=>{ grilleNiveauCourant = n; renderGrilleTabs(); renderGrilleBody(); });
+    wrap.appendChild(b);
+  });
+  renderGrilleBody();
+}
+
+function domainesDisponibles(niveau){
+  const parNiveau = banque[niveau] || {};
+  return Object.entries(parNiveau).map(([cle,b])=>({cle,label:b.label,count:b.items.length}));
+}
+
+function renderGrilleBody(){
+  const wrap = $("grille-body");
+  wrap.innerHTML = "";
+  if(!grilleNiveauCourant) return;
+  grilles[grilleNiveauCourant] = grilles[grilleNiveauCourant] || [];
+  const domaines = domainesDisponibles(grilleNiveauCourant);
+
+  PC.JOURS.forEach(j=>{
+    const bloc = document.createElement("div");
+    bloc.className = "jour-block";
+    const creneauxJour = grilles[grilleNiveauCourant].filter(c=>c.jour===j.n);
+    bloc.innerHTML = `<h4>${j.nom}</h4><div class="creneaux-list" data-jour="${j.n}"></div>
+      <button class="btn sm" data-add="${j.n}">+ Ajouter un créneau</button>`;
+    const list = bloc.querySelector(".creneaux-list");
+    if(!creneauxJour.length) list.innerHTML = '<div class="empty-hint">Aucun créneau ce jour.</div>';
+    creneauxJour
+      .sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut))
+      .forEach(c=> list.appendChild(renderCreneauRow(c, domaines)));
+    wrap.appendChild(bloc);
+  });
+
+  wrap.querySelectorAll("button[data-add]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      grilles[grilleNiveauCourant].push({ id:PC.uid("cr"), jour:+b.dataset.add, debut:"09:00", fin:"09:30", type:"seance", domaineCle: domaines[0]?domaines[0].cle:"" });
+      PC.sauverGrilles(grilles);
+      renderGrilleBody();
+    });
+  });
+}
+
+function renderCreneauRow(c, domaines){
+  const row = document.createElement("div");
+  row.className = "creneau-row";
+  const typeOpts = Object.entries(PC.TYPES_CRENEAU).map(([k,v])=>`<option value="${k}" ${c.type===k?"selected":""}>${v.label}</option>`).join("");
+  const domOpts = domaines.length
+    ? domaines.map(d=>`<option value="${d.cle}" ${c.domaineCle===d.cle?"selected":""}>${d.label} (${d.count})</option>`).join("")
+    : `<option value="">Aucun domaine disponible</option>`;
+  row.innerHTML = `
+    <input type="time" value="${c.debut}" data-f="debut">
+    <input type="time" value="${c.fin}" data-f="fin">
+    <select data-f="type">${typeOpts}</select>
+    <select data-f="domaineCle" ${c.type!=="seance"?"disabled":""}>${domOpts}</select>
+    <button class="btn sm danger" data-del="1">✕</button>
+  `;
+  row.querySelectorAll("[data-f]").forEach(input=>{
+    input.addEventListener("change", ()=>{
+      c[input.dataset.f] = input.value;
+      if(input.dataset.f==="type") renderGrilleBody(); // active/désactive le select domaine
+      PC.sauverGrilles(grilles);
+    });
+  });
+  row.querySelector("[data-del]").addEventListener("click", ()=>{
+    grilles[grilleNiveauCourant] = grilles[grilleNiveauCourant].filter(x=>x.id!==c.id);
+    PC.sauverGrilles(grilles);
+    renderGrilleBody();
+  });
+  return row;
+}
+
+/* ---------------- Résumé / génération ---------------- */
+function renderSummary(){
+  const wrap = $("summary");
+  wrap.innerHTML = "";
+  const semaines = PC.calculerSemaines(config);
+  (config.niveauxActifs||[]).forEach(niveau=>{
+    const grille = (grilles[niveau]||[]).filter(c=>c.type==="seance");
+    const besoinsParDomaine = {};
+    grille.forEach(c=>{ besoinsParDomaine[c.domaineCle] = (besoinsParDomaine[c.domaineCle]||0) + semaines.length; });
+    Object.entries(besoinsParDomaine).forEach(([cle,besoin])=>{
+      const dispo = (banque[niveau] && banque[niveau][cle]) ? banque[niveau][cle].items.length : 0;
+      const label = (banque[niveau] && banque[niveau][cle]) ? banque[niveau][cle].label : cle;
+      const div = document.createElement("div");
+      div.className = "summary-item";
+      div.innerHTML = `<b>${niveau} · ${label}</b>${dispo} séance(s) disponible(s) pour ${besoin} créneau(x) sur ${semaines.length} semaine(s) — <span class="${dispo>=besoin?'ok':'warn'}">${dispo>=besoin?'suffisant':'insuffisant'}</span>`;
+      wrap.appendChild(div);
+    });
+  });
+  if(!wrap.children.length) wrap.innerHTML = '<div class="empty-hint">Aucun créneau de type « Séance » configuré pour l\'instant.</div>';
+}
+
+$("btn-generer").addEventListener("click", async ()=>{
+  if(!config.rentree){ toast("Renseignez une date de rentrée avant de générer."); return; }
+  const actifs = config.niveauxActifs||[];
+  if(!actifs.length){ toast("Sélectionnez au moins un niveau."); return; }
+  $("gen-status").textContent = "Génération en cours…";
+  try{
+    const affectationsExistantes = PC.chargerAffectations();
+    const nouvelles = await PC.genererAffectations(actifs, config, grilles, affectationsExistantes);
+    PC.sauverAffectations(nouvelles);
+    $("gen-status").textContent = "Planning généré. Consultez la page « Planning — Affichage ».";
+    toast("Planning généré avec succès.");
+  }catch(e){
+    $("gen-status").textContent = "Erreur : " + e.message;
+  }
+});
+
+/* ---------------- Initialisation ---------------- */
+(async function init(){
+  renderConfig();
+  renderNiveauxActifs();
+  try{
+    banque = await PC.chargerBanque();
+  }catch(e){
+    toast("Impossible de charger le référentiel de séances.");
+  }
+  renderGrilleTabs();
+  renderSummary();
+})();
+</script>
+</body>
+</html>
