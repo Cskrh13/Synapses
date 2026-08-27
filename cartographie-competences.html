@@ -488,6 +488,26 @@ function sphereProjection(level){
   const p=projectPoint(sphereCenter(level));
   return {...p,r:sphereRadiusFor(level)*p.scale};
 }
+/* ---------- Projection d'un nœud, ancrée à sa sphère ----------
+   Un nœud appartenant à une sphère (compétence, ou séquence/séance
+   affichée sous une compétence) est projeté avec la MÊME échelle
+   que le centre de sa sphère, et pas avec sa propre profondeur.
+   Sans cela, l'écart de profondeur entre nœuds d'une même sphère se
+   traduisait en perspective par un étalement en cône bien au-delà
+   du contour dessiné. En "vue compétence", les sphères sont masquées
+   et on garde la perspective complète, individuelle par nœud. */
+function projectNode(n){
+  if(state.viewMode!=="competence"){
+    const lvl=normalizeLevel(n.niveau);
+    if(lvl && LEVEL_ORDER.includes(lvl)){
+      const center=sphereCenter(lvl);
+      const sp=projectPoint(center);
+      const off=rotate({x:n.x-center.x,y:n.y-center.y,z:n.z-center.z});
+      return {x:sp.x+off.x*sp.scale,y:sp.y+off.y*sp.scale,z:sp.z+off.z,scale:sp.scale};
+    }
+  }
+  return projectPoint(n);
+}
 function drawSphere(ctx,s,label){
   const {x,y,r}=s;
   ctx.save();
@@ -566,7 +586,7 @@ function draw(){
   }
 
   const projected=new Map();
-  for(const n of state.nodes.filter(visible)) projected.set(n.id,{...projectPoint(n),node:n});
+  for(const n of state.nodes.filter(visible)) projected.set(n.id,{...projectNode(n),node:n});
   state.projected=[...projected.values()];
 
   // liens d'abord
@@ -804,7 +824,7 @@ canvas.addEventListener("pointermove",e=>{
 canvas.addEventListener("dblclick",e=>{
   state.openingSpin=false;
   const n=hit(e.clientX,e.clientY);
-  if(n){const p=projectPoint(n);state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,1.8));state.panX+=innerWidth/2-p.x;state.panY+=innerHeight/2-p.y;$("zoomRange").value=state.zoom;draw();}
+  if(n){const p=projectNode(n);state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,1.8));state.panX+=innerWidth/2-p.x;state.panY+=innerHeight/2-p.y;$("zoomRange").value=state.zoom;draw();}
 });
 canvas.addEventListener("pointerup",e=>{
   if(!state.dragging)return;
