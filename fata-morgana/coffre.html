@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<!-- SYNAPSES-AUTHOR: Cskrh13 / Vincent | © 2026 -->
+<meta name="author" content="Cskrh13 / Vincent">
+<meta name="copyright" content="© 2026 Cskrh13 / Vincent — Synapses">
+<meta name="application-name" content="Synapses">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Coffre confidentiel — Synapses</title>
@@ -103,6 +107,19 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 .si-frise-date{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);}
 .si-frise-type{font-weight:600;font-size:13.5px;}
 .si-frise-detail{font-size:13px;color:var(--ink-soft);}
+
+.synapses-footer {
+    margin-top: 40px;
+    padding: 18px 24px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+}
+.synapses-footer div:first-child {
+    font-weight: 600;
+    letter-spacing: .04em;
+}
 </style>
 </head>
 <body>
@@ -196,6 +213,23 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 <script src="synapses-coffre.js"></script>
 <script src="suivi-individuel.js"></script>
 <script>
+/* =========================================================
+   SYNAPSES — AUTHOR MARKER
+   Project: Grand Planificateur pédagogique
+   Author: Cskrh13 / Vincent
+   Copyright: © 2026
+   Version: 0.9.0-test
+   Build: 2026-08-27
+   ========================================================= */
+
+const SYNAPSES_BUILD = {
+    project: "Synapses",
+    author: "Cskrh13",
+    year: 2026,
+    version: "0.9.0-test",
+    build: "2026-08-27"
+};
+
 (function(){
   const coffre = new SynapsesCoffre.Coffre();
 
@@ -280,5 +314,10 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
   refreshLockState();
 })();
 </script>
+
+<footer class="synapses-footer">
+    <div>Synapses — Grand Planificateur pédagogique</div>
+    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
+</footer>
 </body>
 </html>
