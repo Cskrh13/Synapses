@@ -175,7 +175,7 @@ const state = {
   panX:0, panY:0,
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
   sphereR:340, sphereSpacing:600, spiralRadiusBase:850, spiralRiseBase:190, spiralTurns:1.35,
-  sphereRByLevel:{}, sphereScaleFactor:1,
+  sphereRByLevel:{}, sphereScaleFactor:1, camDist:1500, fitZoom:.4,
   projected:[],
   viewMode:"global", // "global" | "niveau" | "competence"
   focusLevel:null
@@ -294,6 +294,7 @@ async function loadData(){
     }
 
     buildGraph();
+    computeCameraFraming();
     renderFilters();
     resetView();
     update();
@@ -356,6 +357,32 @@ function computeSphereSizing(comps){
   // Facteur d'espacement global : plus les plus grosses sphères sont grandes,
   // plus elles sont éloignées les unes des autres sur la spirale.
   state.sphereScaleFactor=Math.max(1,maxR/340);
+}
+/* ---------- Cadrage : distance de caméra et zoom initial ----------
+   La spirale grandit avec le contenu (sphereScaleFactor). Avec une
+   distance de caméra fixe, les sphères les plus lointaines pouvaient
+   dépasser le plan de la caméra et s'inverser à l'écran (représentation
+   illisible). On calcule donc une distance de caméra et un zoom de
+   démarrage proportionnés à l'étendue réelle de la spirale, pour que
+   l'ensemble reste toujours visible et bien ordonné dès l'ouverture. */
+function spiralExtent(){
+  const maxR=Math.max(...LEVEL_ORDER.map(sphereRadiusFor));
+  const maxRadiusXZ=state.spiralRadiusBase*state.sphereScaleFactor+maxR;
+  const maxHeight=0.5*state.spiralRiseBase*state.sphereScaleFactor*LEVEL_ORDER.length+maxR;
+  return {maxRadiusXZ,maxHeight};
+}
+function computeCameraFraming(){
+  const {maxRadiusXZ,maxHeight}=spiralExtent();
+  // Distance de caméra très supérieure à l'étendue max : perspective
+  // stable (pas d'inversion) et déformation douce, pour une lecture nette.
+  state.camDist=Math.max(2600,maxRadiusXZ*2.6,maxHeight*2.6);
+  const fitW=(Math.min(innerWidth,innerHeight)*0.42)/maxRadiusXZ;
+  const fitH=(innerHeight*0.40)/maxHeight;
+  state.fitZoom=Math.max(0.02,Math.min(fitW,fitH,state.maxZoom));
+  state.minZoom=Math.max(0.008,state.fitZoom*0.28);
+  const range=$("zoomRange");
+  range.min=state.minZoom;range.max=state.maxZoom;
+  range.step=Math.max(0.001,(state.maxZoom-state.minZoom)/500);
 }
 function buildGraph(){
   state.nodes=[]; state.links=[];
@@ -480,7 +507,7 @@ function rotate(p){
   return {x,y:p.y*cp-z*sp,z:p.y*sp+z*cp};
 }
 function projectPoint(p){
-  const r=rotate(p), d=1500;
+  const r=rotate(p), d=state.camDist;
   const scale=(d/(d+r.z))*state.zoom;
   return {x:innerWidth/2+state.panX+r.x*scale,y:innerHeight/2+state.panY+r.y*scale,z:r.z,scale};
 }
@@ -779,7 +806,7 @@ $("viewCompetence").onclick=()=>setViewMode("competence");
 
 /* ---------- Navigation ---------- */
 function resetView(){
-  state.yaw=0.42;state.pitch=-0.24;state.zoom=state.minZoom;state.panX=0;state.panY=0;
+  state.yaw=0.42;state.pitch=-0.24;state.zoom=state.fitZoom;state.panX=0;state.panY=0;
   state.relationNodes=new Set();state.relationLinks=new Set();$("relationMenu").classList.remove("open");
   $("zoomRange").value=state.zoom;draw();
 }
