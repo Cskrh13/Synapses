@@ -111,7 +111,7 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
 <div class="bottom">
   <button id="home" title="Recentrer">⌂</button>
   <button id="minus" title="Zoom arrière">−</button>
-  <input id="zoomRange" type="range" min="0.42" max="2.4" step="0.01" value="0.62" aria-label="Zoom">
+  <input id="zoomRange" type="range" min="0.055" max="2.4" step="0.005" value="0.62" aria-label="Zoom">
   <button id="plus" title="Zoom avant">+</button>
   <button id="fullscreen" title="Plein écran">⛶</button>
 </div>
@@ -165,11 +165,12 @@ const state = {
   levels:new Set(LEVEL_ORDER), domains:new Set(),
   search:"", selected:null, hover:null,
   yaw:0.28, pitch:-0.12, zoom:.62,
-  minZoom:.16, maxZoom:2.4, openingSpin:true, openingSpinTimer:null,
+  minZoom:.055, maxZoom:2.4, openingSpin:true, openingSpinTimer:null,
+  autoRotate:true,
   relationMode:null, relationNodes:new Set(), relationLinks:new Set(),
   panX:0, panY:0,
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
-  sphereR:245, sphereSpacing:600, spiralRadius:850, spiralRise:190, spiralTurns:1.35,
+  sphereR:340, sphereSpacing:600, spiralRadius:850, spiralRise:190, spiralTurns:1.35,
   projected:[],
   viewMode:"global", // "global" | "niveau" | "competence"
   focusLevel:null
@@ -480,7 +481,10 @@ function drawNode(ctx,p,n){
   if(state.hover===n.id || state.selected===n.id){ctx.strokeStyle="#152333";ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,r+4,0,Math.PI*2);ctx.stroke();}
   ctx.restore();
 }
-
+function focusOpacityFor(n){
+  // Estompage désactivé : toutes les boules restent pleinement visibles.
+  return 1;
+}
 function draw(){
   const canvas=$("graph"),ctx=canvas.getContext("2d");
   const dpr=Math.min(devicePixelRatio||1,2);
@@ -498,8 +502,7 @@ function draw(){
       .map(l=>({level:l,...sphereProjection(l)}))
       .sort((a,b)=>b.z-a.z);
     for(const s of spheres){
-      const alpha=(state.viewMode==="niveau" && state.focusLevel && s.level!==state.focusLevel)?0.15:1;
-      ctx.save();ctx.globalAlpha=alpha;drawSphere(ctx,s,s.level);ctx.restore();
+      ctx.save();ctx.globalAlpha=1;drawSphere(ctx,s,s.level);ctx.restore();
     }
   }
 
@@ -520,7 +523,7 @@ function draw(){
     }else{
       ctx.strokeStyle="rgba(73,108,126,.48)";ctx.lineWidth=1;
     }
-    if(state.relationLinks.has(l)){ctx.strokeStyle="#c52b2b";ctx.lineWidth=2.5;ctx.setLineDash(l.type==="prerequis"?[5,6]:[]);}
+    if(state.relationLinks.has(l.source+"->"+l.target)){ctx.strokeStyle="#c52b2b";ctx.lineWidth=3;ctx.setLineDash(l.type==="prerequis"?[5,6]:[]);}
     ctx.beginPath();ctx.moveTo(a.x,a.y);ctx.lineTo(b.x,b.y);ctx.stroke();ctx.restore();
   }
 
@@ -766,14 +769,15 @@ $("showImmediatePre").onclick=()=>showRelations("immediate");
 $("showAncestors").onclick=()=>showRelations("ancestors");
 $("clearRelations").onclick=()=>showRelations(null);
 window.addEventListener("resize",draw);
-function openingSpin(t0){
-  if(!state.openingSpin)return;
-  const elapsed=performance.now()-t0;
-  if(elapsed>3500){state.openingSpin=false;draw();return;}
-  state.yaw+=0.004*(1-elapsed/3500);draw();requestAnimationFrame(()=>openingSpin(t0));
+function autoRotateLoop(){
+  if(state.autoRotate && !state.dragging){
+    state.yaw+=0.0022;
+    draw();
+  }
+  requestAnimationFrame(autoRotateLoop);
 }
 
-loadData().then(()=>openingSpin(performance.now()));
+loadData().then(()=>autoRotateLoop());
 </script>
 </body>
 </html>
