@@ -2,1643 +2,705 @@
 <html lang="fr">
 <head>
 <meta charset="UTF-8">
-<title>Générateur de séquences & Mode projet — Portail non institutionnel</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Générateur de séquences — création guidée</title>
 <style>
-  :root {
-    --navy: #182543;
-    --navy-2: #1f2f54;
-    --navy-soft: #2c4160;
-    --blue-pill: #4a6fa8;
-    --blue-pill-dark: #3b5c8f;
-    --bg: #eef0ee;
-    --card: #ffffff;
-    --line: #e2e4e0;
-    --ink: #182543;
-    --ink-soft: #5b6472;
-    --muted: #7a8290;
-    --accent: #c9622f;
-    --accent-soft: #f6e2d2;
-    --ok: #3f7a5c;
-    --warn: #b3542e;
-    --ai: #6a4fc9;
-    --ai-soft: #ece6fb;
-    --font-serif: Georgia, "Times New Roman", serif;
-    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-    --font-mono: "Courier New", Consolas, monospace;
-  }
-  * { box-sizing: border-box; }
-  body {
-    margin: 0;
-    background: var(--bg);
-    color: var(--ink);
-    font-family: var(--font-sans);
-    line-height: 1.5;
-  }
-
-  /* ---------- HEADER (DA portail) ---------- */
-  header.topbar {
-    background: var(--navy);
-    color: #fff;
-    padding: 1.25rem 2rem 1.5rem 2rem;
-    border-bottom: 3px solid var(--blue-pill);
-  }
-  .brand-row {
-    display: flex;
-    align-items: center;
-    gap: 0.9rem;
-    margin-bottom: 1.1rem;
-  }
-  .brand-badge {
-    background: var(--blue-pill);
-    color: #fff;
-    font-family: var(--font-serif);
-    font-weight: 700;
-    font-size: 1.1rem;
-    width: 42px;
-    height: 42px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    letter-spacing: 0.02em;
-  }
-  .brand-text .eyebrow {
-    font-family: var(--font-mono);
-    font-size: 0.7rem;
-    letter-spacing: 0.12em;
-    color: #a9b6cc;
-    text-transform: uppercase;
-  }
-  .brand-text h1 {
-    margin: 0.15rem 0 0 0;
-    font-size: 1.25rem;
-    font-weight: 700;
-  }
-  .pillbar {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-bottom: 0.6rem;
-  }
-  .pill {
-    border: 1px solid rgba(255,255,255,0.35);
-    background: transparent;
-    color: #fff;
-    padding: 0.45rem 1rem;
-    border-radius: 999px;
-    font-size: 0.85rem;
-    font-weight: 600;
-    cursor: pointer;
-    white-space: nowrap;
-  }
-  .pill:hover { background: rgba(255,255,255,0.08); }
-  .pill.filled {
-    background: #fff;
-    color: var(--navy);
-    border-color: #fff;
-  }
-  .pill.accent {
-    background: var(--blue-pill);
-    border-color: var(--blue-pill);
-    color: #fff;
-  }
-  .pill.accent:hover { background: var(--blue-pill-dark); }
-  .pill.disabled {
-    opacity: 0.55;
-    cursor: default;
-  }
-  .pill.ai-status {
-    border-color: var(--ai);
-  }
-  .pill.ai-status.on {
-    background: var(--ai);
-    border-color: var(--ai);
-  }
-
-  /* ---------- MAIN LAYOUT ---------- */
-  main {
-    padding: 2rem;
-    max-width: 1100px;
-    margin: 0 auto;
-  }
-  .breadcrumb {
-    font-family: var(--font-mono);
-    font-size: 0.78rem;
-    letter-spacing: 0.1em;
-    text-transform: uppercase;
-    color: var(--muted);
-    margin-bottom: 0.6rem;
-  }
-  h2.page-title {
-    font-family: var(--font-serif);
-    font-size: 2.1rem;
-    margin: 0 0 0.5rem 0;
-    color: var(--ink);
-  }
-  p.page-lede {
-    color: var(--ink-soft);
-    max-width: 640px;
-    margin: 0 0 1.5rem 0;
-  }
-
-  nav.tabs {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.6rem;
-    margin-bottom: 1.75rem;
-  }
-  nav.tabs button {
-    background: var(--bg);
-    border: 1px solid var(--navy);
-    color: var(--navy);
-    padding: 0.55rem 1.1rem;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 0.85rem;
-    cursor: pointer;
-  }
-  nav.tabs button.active {
-    background: var(--navy);
-    color: #fff;
-  }
-  nav.tabs button.tab-ai {
-    border-color: var(--ai);
-    color: var(--ai);
-  }
-  nav.tabs button.tab-ai.active {
-    background: var(--ai);
-    color: #fff;
-  }
-  nav.tabs a.tab-back {
-    background: #fff;
-    border: 1px solid var(--muted);
-    color: var(--muted);
-    padding: 0.55rem 1.1rem;
-    border-radius: 999px;
-    font-weight: 700;
-    font-size: 0.85rem;
-    text-decoration: none;
-    margin-left: auto;
-  }
-  nav.tabs a.tab-back:hover {
-    border-color: var(--navy);
-    color: var(--navy);
-  }
-
-  section.panel { display: none; }
-  section.panel.active { display: block; }
-
-  .card {
-    background: var(--card);
-    border: 1px solid var(--line);
-    border-radius: 10px;
-    padding: 1.4rem 1.6rem;
-    margin-bottom: 1.4rem;
-    box-shadow: 0 1px 2px rgba(20,30,50,0.04);
-  }
-  .card.accented { border-left: 5px solid var(--accent); }
-  .card.ai-accented { border-left: 5px solid var(--ai); }
-
-  .card h3 {
-    font-family: var(--font-serif);
-    margin-top: 0;
-    font-size: 1.15rem;
-    border-bottom: 1px solid var(--line);
-    padding-bottom: 0.6rem;
-  }
-  label {
-    display: block;
-    font-weight: 700;
-    font-size: 0.8rem;
-    margin: 0.8rem 0 0.3rem 0;
-    color: var(--ink-soft);
-  }
-  input[type=text], input[type=password], select, textarea {
-    width: 100%;
-    padding: 0.55rem 0.7rem;
-    border: 1px solid var(--line);
-    border-radius: 6px;
-    font-family: var(--font-sans);
-    font-size: 0.9rem;
-    background: #fbfbfa;
-  }
-  input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--blue-pill);
-  }
-
-  button.action {
-    background: var(--navy);
-    color: #fff;
-    border: none;
-    padding: 0.65rem 1.2rem;
-    border-radius: 999px;
-    font-weight: 700;
-    cursor: pointer;
-    margin-top: 1rem;
-    margin-right: 0.5rem;
-    font-size: 0.88rem;
-  }
-  button.action:hover { background: var(--navy-soft); }
-  button.ghost {
-    background: transparent;
-    border: 1px solid var(--navy-soft);
-    color: var(--navy-soft);
-    padding: 0.45rem 0.9rem;
-    border-radius: 999px;
-    cursor: pointer;
-    font-size: 0.85rem;
-    margin-top: 1rem;
-    margin-right: 0.5rem;
-  }
-  button.ai-btn {
-    background: var(--ai);
-    color: #fff;
-    border: none;
-    padding: 0.5rem 1rem;
-    border-radius: 999px;
-    cursor: pointer;
-    font-size: 0.82rem;
-    font-weight: 700;
-    margin-top: 1rem;
-    margin-right: 0.5rem;
-  }
-  button.ai-btn:hover { background: #5a3fb0; }
-  button.ai-btn:disabled { background: #b9aee0; cursor: not-allowed; }
-  button[disabled] { opacity: 0.55; cursor: default; }
-
-  .tag {
-    display: inline-block;
-    background: var(--bg);
-    color: var(--ink-soft);
-    font-size: 0.72rem;
-    font-weight: 700;
-    padding: 0.2rem 0.65rem;
-    border-radius: 999px;
-    margin: 0.1rem 0.25rem 0.1rem 0;
-    font-family: var(--font-mono);
-  }
-  .tag.domaine   { background: var(--accent-soft); color: var(--accent); }
-  .tag.ai        { background: var(--ai-soft); color: var(--ai); }
-  .tag.period    { background: #fff; border: 1px solid var(--line); }
-
-  .seance-item {
-    border-left: 4px solid var(--accent);
-    padding: 0.6rem 0.85rem;
-    margin: 0.6rem 0;
-    background: var(--bg);
-    border-radius: 0 6px 6px 0;
-  }
-  .seance-item.ai-made { border-left-color: var(--ai); }
-
-  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-  th, td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--line); }
-  th { color: var(--ink-soft); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
-  .statut-couverte { color: var(--ok); font-weight: 700; }
-  .statut-non-couverte { color: var(--warn); font-weight: 700; }
-
-  .tache-block {
-    border: 1px dashed var(--line);
-    padding: 0.9rem 1rem;
-    border-radius: 8px;
-    margin-bottom: 0.9rem;
-    background: #fcfcfb;
-  }
-  .suggestion-item {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 0.75rem;
-    padding: 0.4rem 0;
-    border-bottom: 1px solid var(--line);
-    font-size: 0.85rem;
-  }
-  .muted { color: var(--muted); font-size: 0.82rem; }
-  .flex-row { display: flex; gap: 1.2rem; flex-wrap: wrap; }
-  .flex-row > div { flex: 1; min-width: 220px; }
-
-  .ai-callout {
-    background: var(--ai-soft);
-    color: #46348f;
-    border-radius: 8px;
-    padding: 0.7rem 0.9rem;
-    font-size: 0.82rem;
-    margin: 0.7rem 0;
-  }
-  .ai-callout code { background: rgba(255,255,255,0.6); padding: 0.05rem 0.3rem; border-radius: 3px; }
-
-  .pill-outline {
-    border: 1px solid var(--navy);
-    background: #fff;
-    color: var(--navy);
-    padding: 0.45rem 1rem;
-    border-radius: 999px;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-    margin: 0.2rem 0.4rem 0.2rem 0;
-  }
-  .pill-outline:hover { background: var(--bg); }
-  .proposition-card {
-    border: 1px solid var(--ai);
-    background: var(--ai-soft);
-    border-radius: 8px;
-    padding: 0.65rem 0.85rem;
-    margin: 0.5rem 0;
-    cursor: grab;
-    font-size: 0.85rem;
-  }
-  .proposition-card:active { cursor: grabbing; }
-  .dropzone {
-    border: 2px dashed var(--ai);
-    border-radius: 8px;
-    padding: 0.7rem;
-    margin-top: 0.7rem;
-    font-size: 0.8rem;
-    color: var(--ai);
-    text-align: center;
-    font-weight: 600;
-  }
-  .dropzone.dragover { background: var(--ai-soft); }
-
-  #resultats-competences { max-height: 320px; overflow-y: auto; border: 1px solid var(--line); border-radius: 6px; }
-  #resultats-competences .suggestion-item { padding: 0.5rem 0.75rem; }
-  #resultats-competences .suggestion-item:hover { background: var(--bg); }
-  #referentiel-etat {
-    background: #fff;
-    border: 1px solid var(--line);
-    color: var(--ink-soft);
-    border-radius: 8px;
-    padding: 0.6rem 0.9rem;
-    font-size: 0.82rem;
-    margin: 0.6rem 0;
-  }
-  #competence-choisie {
-    background: var(--bg);
-    border-radius: 8px;
-    padding: 0.9rem 1rem;
-    margin-top: 1rem;
-  }
-
-  footer.foot {
-    text-align: center;
-    color: var(--muted);
-    font-size: 0.82rem;
-    padding: 2rem 0 3rem 0;
-  }
+:root{
+  --navy:#182543;--navy2:#26385e;--blue:#4a6fa8;--bg:#eef0ee;--card:#fff;
+  --line:#dfe3e8;--ink:#182543;--soft:#5b6472;--muted:#7a8290;
+  --accent:#c9622f;--accentSoft:#f7e6da;--ai:#6a4fc9;--aiSoft:#eee9fb;
+  --ok:#397957;--danger:#b64d42;--radius:14px;
+  --shadow:0 3px 14px rgba(24,37,67,.07);
+}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5}
+button,input,select,textarea{font:inherit}
+button{cursor:pointer}
+.topbar{background:var(--navy);color:#fff;padding:18px 24px;position:sticky;top:0;z-index:20;box-shadow:0 2px 12px rgba(0,0,0,.12)}
+.topbar-inner{max-width:1250px;margin:auto;display:flex;gap:18px;align-items:center;justify-content:space-between}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-badge{width:42px;height:42px;border-radius:11px;background:var(--blue);display:grid;place-items:center;font-weight:800}
+.brand h1{font-size:1.05rem;margin:0}.brand small{color:#b9c4d8}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.top-actions button{border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;padding:8px 12px;border-radius:999px}
+.top-actions button:hover{background:rgba(255,255,255,.1)}
+main{max-width:1250px;margin:auto;padding:26px 20px 50px}
+.hero h2{margin:0;font-family:Georgia,serif;font-size:2rem}.hero p{max-width:800px;color:var(--soft);margin-top:7px}
+.stepper{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:22px 0}
+.step{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;text-align:left;color:var(--soft);font-weight:700}
+.step.active{border-color:var(--navy);background:var(--navy);color:#fff}.step.done{border-color:#9fb5a8;background:#f4faf6;color:var(--ok)}
+.step span{display:block;font-size:.72rem;font-weight:600;opacity:.8}
+.workspace{display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px;align-items:start}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
+.card h3{font-family:Georgia,serif;margin:0 0 10px;font-size:1.18rem}.card h4{margin:15px 0 8px}
+label{display:block;font-size:.78rem;font-weight:800;color:var(--soft);margin:11px 0 5px}
+input,select,textarea{width:100%;border:1px solid var(--line);background:#fbfcfc;border-radius:9px;padding:9px 11px;color:var(--ink)}
+textarea{resize:vertical;min-height:90px}input:focus,select:focus,textarea:focus{outline:2px solid rgba(74,111,168,.18);border-color:var(--blue)}
+.btn{border:0;border-radius:999px;padding:9px 14px;font-weight:800;background:var(--navy);color:#fff}
+.btn:hover{background:var(--navy2)}.btn.secondary{background:#fff;color:var(--navy);border:1px solid var(--navy)}
+.btn.ai{background:var(--ai)}.btn.ai:hover{background:#5940b3}.btn.danger{background:#fff;color:var(--danger);border:1px solid #d7a39d}
+.btn.small{padding:6px 10px;font-size:.8rem}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.row{display:flex;gap:8px;flex-wrap:wrap;align-items:center}.grow{flex:1}.two{display:grid;grid-template-columns:1fr 1fr;gap:10px}.three{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.help{font-size:.8rem;color:var(--muted)}.status{font-size:.82rem;padding:8px 10px;border-radius:9px;background:#f5f7f8;color:var(--soft)}
+.status.ok{background:#edf8f1;color:var(--ok)}.status.ai{background:var(--aiSoft);color:#4b378d}
+.choice-list{max-height:390px;overflow:auto;border:1px solid var(--line);border-radius:10px;margin-top:8px}
+.choice{padding:10px 12px;border-bottom:1px solid var(--line);cursor:pointer}.choice:last-child{border-bottom:0}.choice:hover{background:#f5f7f8}.choice.selected{background:#edf2fa;border-left:4px solid var(--blue);padding-left:8px}
+.choice strong{font-size:.82rem}.choice div{font-size:.82rem}.tag{display:inline-block;padding:2px 7px;border-radius:999px;background:#eef1f4;color:var(--soft);font-size:.68rem;font-weight:800;margin:2px}.tag.ai{background:var(--aiSoft);color:var(--ai)}.tag.accent{background:var(--accentSoft);color:var(--accent)}
+.empty{padding:25px;text-align:center;color:var(--muted);border:1px dashed var(--line);border-radius:10px}
+.sequence-head{border-left:5px solid var(--accent);padding-left:14px}
+.sequence-title{font-family:Georgia,serif;font-size:1.55rem;margin:0}
+.seq-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}.seq-grid .full{grid-column:1/-1}
+.session-list{display:flex;flex-direction:column;gap:10px}
+.session{border:1px solid var(--line);border-radius:12px;background:#fff;overflow:hidden}
+.session-head{display:grid;grid-template-columns:42px 1fr auto;gap:10px;align-items:center;padding:12px 14px;background:#f7f8f8}
+.session-num{width:34px;height:34px;border-radius:50%;background:var(--navy);color:#fff;display:grid;place-items:center;font-weight:900}
+.session-main{min-width:0}.session-main strong{display:block}.session-main small{color:var(--muted)}
+.session-body{padding:14px;display:none}.session.open .session-body{display:block}
+.session-actions{display:flex;gap:5px}.icon-btn{border:1px solid var(--line);background:#fff;border-radius:8px;padding:6px 8px;color:var(--soft)}
+.session-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.session-fields .full{grid-column:1/-1}
+.phase{border:1px solid var(--line);border-radius:10px;margin-top:10px;overflow:hidden}
+.phase-head{display:flex;justify-content:space-between;align-items:center;background:#f8f9f9;padding:8px 10px;font-weight:800}
+.phase-grid{display:grid;grid-template-columns:100px 1.1fr 1.7fr 1.2fr 1.5fr 1.3fr;gap:0;border-top:1px solid var(--line)}
+.phase-grid>div{padding:8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.78rem}
+.phase-grid>div:nth-child(6n){border-right:0}.phase-grid input,.phase-grid textarea{font-size:.76rem;padding:6px;min-height:50px}
+.phase-grid.header{background:#f2f4f5;font-weight:800;color:var(--soft)}
+.objectives{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.student-row{display:grid;grid-template-columns:1fr 2fr 2fr auto;gap:8px;align-items:start;margin-bottom:7px}
+.meta-box{background:#f8f9f9;border-radius:10px;padding:10px}.meta-box strong{display:block;font-size:.75rem;color:var(--soft);text-transform:uppercase}
+.toolbar{display:flex;justify-content:space-between;gap:10px;align-items:center;flex-wrap:wrap;margin:10px 0}
+.preview{background:#fff;border:1px solid var(--line);border-radius:10px;padding:16px}
+.preview h3,.preview h4{font-family:Georgia,serif}
+details summary{cursor:pointer;font-weight:800}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:14px}.tabs button{border:1px solid var(--navy);background:#fff;color:var(--navy);border-radius:999px;padding:8px 12px;font-weight:800}.tabs button.active{background:var(--navy);color:#fff}
+.ai-panel{border-left:5px solid var(--ai)}.prompt-box{font-family:Consolas,monospace;font-size:.76rem;background:#151922;color:#eef2f8;border-radius:10px;padding:12px;white-space:pre-wrap;max-height:430px;overflow:auto}
+.proposition{border:1px solid #cfc4ef;background:#faf8ff;border-radius:10px;padding:12px;margin-top:9px}
+.notice{padding:11px 13px;border-radius:10px;background:#fff8e9;border:1px solid #edd7a1;color:#705a25;font-size:.82rem}
+footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
+@media(max-width:900px){.workspace{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.phase-grid{grid-template-columns:1fr}.phase-grid.header{display:none}.phase-grid>div{border-right:0}.two,.seq-grid,.objectives,.session-fields{grid-template-columns:1fr}.student-row{grid-template-columns:1fr}.topbar{position:static}}
 </style>
 </head>
 <body>
-
 <header class="topbar">
-  <div class="brand-row">
-    <div class="brand-badge">RÉ</div>
-    <div class="brand-text">
-      <div class="eyebrow">Portail non institutionnel</div>
-      <h1>Générateur de séquences &amp; Mode projet</h1>
+  <div class="topbar-inner">
+    <div class="brand"><div class="brand-badge">RÉ</div><div><h1>Créateur de séquences</h1><small>Mode guidé · séquences et séances détaillées</small></div></div>
+    <div class="top-actions">
+      <button id="ref-status">Chargement du référentiel…</button>
+      <button onclick="App.exporter()">Exporter</button>
+      <button onclick="document.getElementById('import-file').click()">Importer</button>
+      <input id="import-file" type="file" accept="application/json" hidden onchange="App.importer(event)">
     </div>
-  </div>
-  <div class="pillbar">
-    <button class="pill disabled" disabled id="pill-referentiel-etat">Chargement du référentiel…</button>
-    <button class="pill filled" onclick="UI.switchTab('classique')">Ouvrir le générateur</button>
-    <button class="pill" onclick="UI.switchTab('couverture')">🧭 Cartographie de couverture</button>
-    <button class="pill" onclick="UI.exporterEtat()">Exporter l'état (JSON)</button>
-  </div>
-  <div class="pillbar">
-    <button class="pill" onclick="document.getElementById('import-json-input').click()">Importer un JSON</button>
-    <input type="file" id="import-json-input" accept="application/json" style="display:none" onchange="UI.importerEtat(event)">
-    <button class="pill ai-status" id="pill-ai-status" onclick="UI.switchTab('ia')">✨ IA : désactivée</button>
-    <button class="pill accent" onclick="UI.switchTab('ia')">⚙ Paramètres IA</button>
   </div>
 </header>
 
 <main>
-
-  <div class="breadcrumb">Cycle 2 · Référentiel démo · Programmation</div>
-  <h2 class="page-title">Séquences &amp; mode projet</h2>
-  <p class="page-lede">Composez vos séquences depuis une compétence, ou partez d'une tâche de projet concrète et laissez le moteur suggérer des compétences à valider. Tout reste enregistré localement ; l'IA, si vous l'activez, ne fait que proposer.</p>
-
-  <nav class="tabs">
-    <button class="active" data-tab="classique">Générateur classique</button>
-    <button data-tab="projet">Mode projet</button>
-    <button data-tab="couverture">Matrice de couverture</button>
-    <button class="tab-ai" data-tab="ia">✨ Paramètres IA</button>
-    <button class="tab-ai" data-tab="atelier">💬 Atelier IA (gratuit)</button>
-    <a class="tab-back" href="sequences.html">↩ Retour à Séquences &amp; séances</a>
-  </nav>
-
-  <!-- ============================================================ -->
-  <!-- PANEL 1 : GÉNÉRATEUR CLASSIQUE                                 -->
-  <!-- ============================================================ -->
-  <section class="panel active" id="panel-classique">
-    <div class="card accented">
-      <h3>1. Générer une séquence à partir d'une compétence</h3>
-      <p class="muted">Logique linéaire : compétence → séquence → 7 séances types. C'est le mode « référentiel classique ».</p>
-
-      <div class="flex-row">
-        <div>
-          <label for="filtre-niveau">Niveau</label>
-          <select id="filtre-niveau" onchange="UI.filtrerCompetences()">
-            <option value="">Tous les niveaux</option>
-          </select>
-        </div>
-        <div>
-          <label for="filtre-domaine">Domaine</label>
-          <select id="filtre-domaine" onchange="UI.filtrerCompetences()">
-            <option value="">Tous les domaines</option>
-          </select>
-        </div>
-      </div>
-
-      <label for="recherche-competence">Rechercher une compétence</label>
-      <input type="text" id="recherche-competence" placeholder="Tapez un mot-clé de l'intitulé…" oninput="UI.filtrerCompetences()" autocomplete="off">
-
-      <div id="resultats-competences"></div>
-
-      <div id="competence-choisie" style="display:none;"></div>
-      <input type="hidden" id="select-competence" value="">
-
-      <label for="input-titre-seq">Titre de la séquence (modifiable)</label>
-      <input type="text" id="input-titre-seq">
-
-      <button class="action" onclick="UI.genererSequenceClassiqueUI()">Générer la séquence</button>
-      <button class="ai-btn" id="btn-ia-classique" onclick="UI.genererSequenceIA()" disabled title="Activez l'IA dans Paramètres IA">✨ Rédiger les séances avec l'IA</button>
-    </div>
-
-    <div class="card" id="resultat-classique" style="display:none;">
-      <h3 id="titre-resultat-classique"></h3>
-      <div id="seances-classique"></div>
-      <div class="dropzone" ondragover="event.preventDefault(); this.classList.add('dragover')"
-           ondragleave="this.classList.remove('dragover')"
-           ondrop="UI.deposerSeanceClassique(event)">
-        ✨ Déposer ici une proposition de l'Atelier IA pour l'ajouter à cette séquence
-      </div>
-    </div>
+  <section class="hero">
+    <h2>Construire une séquence sans se perdre</h2>
+    <p>Le créateur suit maintenant la logique des documents de référence : <strong>cadrage de la séquence → objectifs → progression → séances détaillées → validation</strong>. Chaque séance possède son déroulé, son analyse de tâche, ses aménagements et la posture de l’enseignant.</p>
   </section>
 
-  <!-- ============================================================ -->
-  <!-- PANEL 2 : MODE PROJET                                          -->
-  <!-- ============================================================ -->
-  <section class="panel" id="panel-projet">
-    <div class="card accented">
-      <h3>2. Déclarer un projet</h3>
-      <div class="flex-row">
-        <div>
-          <label for="projet-titre">Titre du projet</label>
-          <input type="text" id="projet-titre" placeholder="Ex. Créer un jeu de société sur les animaux">
-        </div>
-        <div>
-          <label for="projet-production">Production finale</label>
-          <input type="text" id="projet-production" placeholder="Ex. Plateau de jeu + règles + boîte">
-        </div>
+  <div class="stepper" id="stepper">
+    <button class="step active" data-step="1" onclick="App.go(1)">1 · Cadrer<span>niveau, domaine, compétence</span></button>
+    <button class="step" data-step="2" onclick="App.go(2)">2 · Structurer<span>objectifs et élèves</span></button>
+    <button class="step" data-step="3" onclick="App.go(3)">3 · Organiser<span>progression des séances</span></button>
+    <button class="step" data-step="4" onclick="App.go(4)">4 · Détailler<span>déroulé de chaque séance</span></button>
+    <button class="step" data-step="5" onclick="App.go(5)">5 · Finaliser<span>aperçu, JSON, IA gratuite</span></button>
+  </div>
+
+  <div class="workspace">
+    <aside>
+      <div class="card">
+        <h3>Votre séquence</h3>
+        <div id="selection-status" class="status">Commencez par sélectionner une compétence.</div>
+        <div id="selection-card" style="display:none;margin-top:10px"></div>
       </div>
-      <button class="action" onclick="UI.creerProjet()">Créer le projet</button>
-    </div>
-
-    <div class="card" id="bloc-taches" style="display:none;">
-      <h3>3. Ajouter une tâche du projet</h3>
-      <p class="muted">On part de l'action concrète, jamais de la compétence en premier lieu.</p>
-
-      <label for="tache-nom">Nom de la tâche</label>
-      <input type="text" id="tache-nom" placeholder="Ex. Fabriquer le plateau et les pions">
-
-      <label for="tache-motscles">Mots-clés de la tâche (séparés par des virgules)</label>
-      <input type="text" id="tache-motscles" placeholder="Ex. mesure, decoupage, fabrication">
-
-      <button class="action" onclick="UI.ajouterTache()">Ajouter la tâche et voir les suggestions</button>
-
-      <div id="liste-taches"></div>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- PANEL 3 : MATRICE DE COUVERTURE                                -->
-  <!-- ============================================================ -->
-  <section class="panel" id="panel-couverture">
-    <div class="card accented">
-      <h3>4. Couverture du référentiel par le projet en cours</h3>
-      <p class="muted">Permet de repérer les compétences non travaillées par le projet, pour compléter par une mini-séance classique si besoin.</p>
-      <div id="matrice-couverture"></div>
-      <button class="ghost" onclick="UI.genererComplements()">Proposer des séances complémentaires (règles)</button>
-      <button class="ai-btn" id="btn-ia-complements" onclick="UI.genererComplementsIA()" disabled title="Activez l'IA dans Paramètres IA">✨ Proposer des compléments avec l'IA</button>
-      <div id="complements"></div>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- PANEL 4 : PARAMÈTRES IA                                        -->
-  <!-- ============================================================ -->
-  <section class="panel" id="panel-ia">
-    <div class="card ai-accented">
-      <h3>✨ Moteur IA — facultatif</h3>
-      <p class="muted">Le moteur IA n'est jamais obligatoire : le générateur fonctionne entièrement par règles sans lui. Si vous l'activez, il ne fait que <strong>proposer</strong> — vous validez toujours vous-même. Votre clé API n'est envoyée qu'au fournisseur choisi et reste stockée uniquement dans ce navigateur (localStorage), jamais sur un serveur tiers de ce portail.</p>
-
-      <label for="ia-active">Activer les suggestions IA</label>
-      <select id="ia-active">
-        <option value="off">Désactivé</option>
-        <option value="on">Activé</option>
-      </select>
-
-      <label for="ia-provider">Fournisseur</label>
-      <select id="ia-provider">
-        <option value="openai-compatible">Compatible OpenAI (OpenAI, Mistral, Groq, Ollama local, etc.)</option>
-        <option value="anthropic">Anthropic (Claude)</option>
-      </select>
-
-      <div class="flex-row">
-        <div>
-          <label for="ia-url">URL de l'endpoint</label>
-          <input type="text" id="ia-url" placeholder="Ex. https://api.openai.com/v1/chat/completions">
+      <div class="card">
+        <h3>Raccourcis</h3>
+        <div class="row">
+          <button class="btn secondary small" onclick="App.go(1)">Cadrage</button>
+          <button class="btn secondary small" onclick="App.go(3)">Séances</button>
+          <button class="btn ai small" onclick="App.go(5);App.openAtelier()">Atelier IA gratuit</button>
         </div>
-        <div>
-          <label for="ia-modele">Modèle</label>
-          <input type="text" id="ia-modele" placeholder="Ex. gpt-4o-mini ou claude-sonnet-4-6">
+        <p class="help">Vous pouvez revenir à une étape à tout moment. Les modifications restent dans cette page jusqu'à l'export.</p>
+      </div>
+    </aside>
+
+    <section id="content">
+      <!-- STEP 1 -->
+      <div class="step-panel" data-panel="1">
+        <div class="card">
+          <h3>1. Cadrer la séquence</h3>
+          <p class="help">Ne remplissez pas tout. Choisissez d’abord la compétence : le générateur prépare ensuite une structure que vous pourrez corriger.</p>
+          <div class="two">
+            <div><label>Niveau</label><select id="niveau" onchange="App.filterCompetences()"><option value="">Tous les niveaux</option></select></div>
+            <div><label>Domaine</label><select id="domaine" onchange="App.filterCompetences()"><option value="">Tous les domaines</option></select></div>
+          </div>
+          <label>Rechercher une compétence</label>
+          <input id="search" placeholder="Ex. comparer, lire, écrire, mesurer…" oninput="App.filterCompetences()">
+          <div id="competences" class="choice-list"></div>
+        </div>
+
+        <div class="card" id="seq-cadrage" style="display:none">
+          <div class="sequence-head">
+            <h3 class="sequence-title">Cadrage</h3>
+            <p class="help">Ces informations correspondent à la partie introductive de la séquence de référence.</p>
+          </div>
+          <div class="seq-grid">
+            <div class="full"><label>Titre de la séquence</label><input id="seq-titre" oninput="App.updateSequenceField('titre',this.value)"></div>
+            <div><label>Domaine du socle</label><textarea id="seq-domaine-socle" oninput="App.updateSequenceField('domaine_socle',this.value)"></textarea></div>
+            <div><label>Objectif cœur de cible</label><textarea id="seq-coeur" oninput="App.updateSequenceField('objectif_coeur_de_cible',this.value)"></textarea></div>
+            <div><label>Compétences travaillées</label><textarea id="seq-competences" placeholder="Une compétence par ligne" oninput="App.updateSequenceField('competences_travaillees',this.value)"></textarea></div>
+            <div><label>Références théoriques</label><textarea id="seq-references" oninput="App.updateSequenceField('references_theoriques',this.value)"></textarea></div>
+          </div>
+          <div class="toolbar"><button class="btn" onclick="App.generateSequence()">Préparer la progression</button><button class="btn ai" onclick="App.go(5);App.openAtelier()">✨ Faire proposer la séquence par l’IA gratuite</button></div>
         </div>
       </div>
 
-      <label for="ia-clef">Clé API</label>
-      <input type="password" id="ia-clef" placeholder="Collez votre clé API personnelle">
-
-      <button class="action" onclick="UI.enregistrerParametresIA()">Enregistrer les paramètres</button>
-      <button class="ghost" onclick="UI.testerConnexionIA()">Tester la connexion</button>
-
-      <div class="ai-callout" id="ia-statut-message">Aucune configuration enregistrée pour le moment.</div>
-
-      <p class="muted">Une fois activé, des boutons <span class="tag ai">✨ IA</span> apparaissent dans le générateur classique, le mode projet et la matrice de couverture pour obtenir des propositions à valider.</p>
-    </div>
-  </section>
-
-  <!-- ============================================================ -->
-  <!-- PANEL 5 : ATELIER IA (modèles gratuits, copier/coller)         -->
-  <!-- ============================================================ -->
-  <section class="panel" id="panel-atelier">
-    <div class="card ai-accented">
-      <h3>💬 Atelier IA — modèles gratuits (copier / coller)</h3>
-      <p class="muted">Pas de clé API nécessaire : le prompt ci-dessous est déjà rempli avec le contexte (compétence ou tâche) et reprend le modèle de séance de <code>sequences.html</code>. Copiez-le dans un chat gratuit, collez la réponse ci-dessous, puis cliquez sur « Ajouter » pour chaque séance proposée (ou glissez-la, si la séquence/tâche cible est visible dans le même onglet).</p>
-      <div class="ai-callout">⚠️ Rappel : le moteur IA intégré (onglet « Paramètres IA », connecté par clé API) est un service payant selon le fournisseur choisi. Cet atelier est l'alternative <strong>gratuite</strong>, sans clé : copiez le prompt dans un chat gratuit (ChatGPT, Claude.ai, Le Chat, Gemini…).</div>
-
-      <label for="atelier-contexte">Contexte du prompt</label>
-      <select id="atelier-contexte" onchange="Atelier.majContexte()">
-        <option value="competence">Compétence sélectionnée (Générateur classique)</option>
-        <option value="tache">Tâche de projet (Mode projet)</option>
-      </select>
-
-      <div id="atelier-contexte-tache" style="display:none;">
-        <label for="atelier-select-tache">Tâche du projet en cours</label>
-        <select id="atelier-select-tache" onchange="Atelier.genererPrompt()"></select>
+      <!-- STEP 2 -->
+      <div class="step-panel" data-panel="2" style="display:none">
+        <div class="card">
+          <h3>2. Objectifs et besoins des élèves</h3>
+          <p class="help">Cette étape reprend la logique de la séquence spécialisée : objectif commun puis objectifs individuels prioritaires avec critères de réussite.</p>
+          <label>Objectif commun</label><textarea id="objectif-commun" oninput="App.updateSequenceField('objectif_commun',this.value)"></textarea>
+          <h4>Objectifs individuels prioritaires</h4>
+          <div id="students"></div>
+          <button class="btn secondary small" onclick="App.addStudent()">+ Ajouter un élève</button>
+        </div>
+        <div class="card">
+          <h3>Réglages de la progression</h3>
+          <div class="three">
+            <div><label>Nombre de séances</label><select id="nb-seances" onchange="App.resizeSessions()"><option>5</option><option selected>6</option><option>7</option><option>8</option><option>9</option><option>10</option></select></div>
+            <div><label>Durée par défaut (min)</label><input id="duree-defaut" type="number" min="10" step="5" value="45" onchange="App.resizeSessions()"></div>
+            <div><label>Classe / groupe</label><input id="classe" placeholder="Ex. cycle 2 / CE1-CE2" oninput="App.updateSequenceField('classe',this.value)"></div>
+          </div>
+          <div class="toolbar"><button class="btn" onclick="App.go(3)">Construire la progression →</button></div>
+        </div>
       </div>
 
-      <label for="atelier-prompt">Prompt prêt à copier</label>
-      <textarea id="atelier-prompt" rows="8" readonly></textarea>
-      <button class="ghost" onclick="Atelier.copierPrompt()">📋 Copier le prompt</button>
-
-      <div style="margin: 0.9rem 0;">
-        <span class="muted" style="display:block; margin-bottom:0.4rem;">Ouvrir un chat gratuit dans un nouvel onglet :</span>
-        <button class="pill-outline" onclick="window.open('https://chat.openai.com','_blank')">ChatGPT</button>
-        <button class="pill-outline" onclick="window.open('https://claude.ai','_blank')">Claude.ai</button>
-        <button class="pill-outline" onclick="window.open('https://chat.mistral.ai','_blank')">Le Chat (Mistral)</button>
-        <button class="pill-outline" onclick="window.open('https://gemini.google.com','_blank')">Gemini</button>
+      <!-- STEP 3 -->
+      <div class="step-panel" data-panel="3" style="display:none">
+        <div class="card">
+          <h3>3. Organiser les séances</h3>
+          <p class="help">Une progression lisible. Chaque séance peut ensuite être ouverte et détaillée. Les types proposés reprennent la progression du document : diagnostique, exploration, références, structuration, systématisation, approfondissement, évaluation.</p>
+          <div class="toolbar">
+            <span id="session-count" class="status"></span>
+            <button class="btn secondary small" onclick="App.addSession()">+ Ajouter une séance</button>
+            <button class="btn ai small" onclick="App.go(5);App.openAtelier('sequence')">✨ Générer une progression avec l’IA</button>
+          </div>
+          <div id="session-list" class="session-list"></div>
+        </div>
       </div>
 
-      <label for="atelier-reponse">Réponse collée du modèle</label>
-      <textarea id="atelier-reponse" rows="8" placeholder="Collez ici la réponse complète du modèle (idéalement au format JSON demandé dans le prompt ; une simple liste à puces fonctionne aussi)"></textarea>
-      <button class="action" onclick="Atelier.analyserReponse()">Analyser la réponse</button>
+      <!-- STEP 4 -->
+      <div class="step-panel" data-panel="4" style="display:none">
+        <div class="card">
+          <h3>4. Détailler les séances</h3>
+          <p class="help">Ouvrez une séance pour compléter son objectif, sa problématique, sa consigne, ses critères de réussite et son déroulé. Le tableau suit la structure du document de séance joint.</p>
+          <div id="detail-list"></div>
+        </div>
+      </div>
 
-      <div id="atelier-propositions"></div>
-    </div>
-  </section>
-
+      <!-- STEP 5 -->
+      <div class="step-panel" data-panel="5" style="display:none">
+        <div class="tabs">
+          <button id="tab-preview" class="active" onclick="App.tab('preview')">Aperçu</button>
+          <button id="tab-atelier" onclick="App.tab('atelier')">✨ Atelier IA gratuit</button>
+          <button id="tab-json" onclick="App.tab('json')">JSON</button>
+        </div>
+        <div id="view-preview">
+          <div class="card">
+            <h3>5. Finaliser</h3>
+            <div class="toolbar"><span class="status ok">Structure prête à relire</span><div class="row"><button class="btn secondary" onclick="App.go(4)">← Modifier les séances</button><button class="btn" onclick="App.exporter()">Exporter le JSON</button></div></div>
+            <div id="preview" class="preview"></div>
+          </div>
+        </div>
+        <div id="view-atelier" style="display:none">
+          <div class="card ai-panel">
+            <h3>✨ Atelier IA gratuit</h3>
+            <div class="notice">Aucune clé API n’est nécessaire. L’atelier prépare un prompt complet à copier dans un chat gratuit. La réponse peut être recollée ici pour créer ou enrichir la séquence. L’IA propose ; vous validez.</div>
+            <label>Action demandée</label>
+            <select id="atelier-action" onchange="App.updatePrompt()">
+              <option value="sequence">Proposer toute la séquence</option>
+              <option value="seance">Proposer / améliorer une séance</option>
+              <option value="ameliorer">Améliorer la progression existante</option>
+            </select>
+            <div id="atelier-session-wrap" style="display:none"><label>Séance concernée</label><select id="atelier-session" onchange="App.updatePrompt()"></select></div>
+            <label>Prompt prêt à copier</label>
+            <div id="atelier-prompt" class="prompt-box"></div>
+            <div class="toolbar"><button class="btn ai" onclick="App.copyPrompt()">📋 Copier le prompt</button><span class="help">Puis collez-le dans votre chat gratuit préféré.</span></div>
+            <label>Réponse du modèle</label>
+            <textarea id="atelier-response" rows="12" placeholder="Collez ici le JSON retourné par l’IA…"></textarea>
+            <div class="toolbar"><button class="btn" onclick="App.importAI()">Analyser et intégrer la proposition</button></div>
+            <div id="atelier-result"></div>
+          </div>
+        </div>
+        <div id="view-json" style="display:none">
+          <div class="card"><h3>JSON de la séquence</h3><div id="json-view" class="prompt-box"></div></div>
+        </div>
+      </div>
+    </section>
+  </div>
 </main>
-
-<footer class="foot">Portail de consultation non institutionnel · Données stockées localement en JSON dans votre navigateur.</footer>
+<footer>Créateur local · Les données du référentiel sont chargées depuis <code>data/competences.json</code> et <code>data/index.json</code>.</footer>
 
 <script>
-/* ==================================================================
-   FICHIER 1 : Programmation/data/competences.json (chargé en direct)
-   FICHIER 1bis : Programmation/data/index.json (niveaux reconnus)
-   ================================================================== */
-let REFERENTIEL_COMPETENCES = [];
-let DOMAINES_REFERENTIEL = [];
-let NIVEAUX_REFERENTIEL = [];
+"use strict";
 
-function normaliserCompetence(brut) {
-  return {
-    id: brut.id,
-    intitule: brut.intitule || brut.nom || "(sans intitulé)",
-    domaine: brut.domaine || brut.domaine_id || "",
-    domaine_id: brut.domaine_id || brut.domaine || "",
-    niveau: brut.niveau || "",
-    cycle: brut.cycle || "",
-    theme: brut.theme || "",
-    mots_cles: brut.mots_cles || [],
-    prerequis: brut.prerequis_competences || brut.prerequis || [],
-    modalites_projet: {
-      mobilisable_en_projet: true,
-      types_de_taches: brut.mots_cles || []
-    }
-  };
-}
+const App = (() => {
+  let refs = [], domaines = [], niveaux = [], selected = null, step = 1;
+  let sequence = null;
 
-async function chargerReferentiel() {
-  const pill = document.getElementById("pill-referentiel-etat");
-  try {
-    const [reponseCompetences, reponseIndex] = await Promise.all([
-      fetch("data/competences.json"),
-      fetch("data/index.json")
-    ]);
-    const jsonCompetences = await reponseCompetences.json();
-    const jsonIndex = await reponseIndex.json();
-
-    REFERENTIEL_COMPETENCES = (jsonCompetences.competences || []).map(normaliserCompetence);
-
-    const domainesVus = new Map();
-    (jsonCompetences.domaines || []).forEach(d => domainesVus.set(d.id, d.nom));
-    REFERENTIEL_COMPETENCES.forEach(c => {
-      if (c.domaine_id && !domainesVus.has(c.domaine_id)) domainesVus.set(c.domaine_id, c.domaine);
-    });
-    DOMAINES_REFERENTIEL = Array.from(domainesVus, ([id, nom]) => ({ id, nom }))
-      .sort((a, b) => a.nom.localeCompare(b.nom, "fr"));
-
-    NIVEAUX_REFERENTIEL = (jsonIndex.meta && jsonIndex.meta.niveaux_reconnus) ||
-      Array.from(new Set(REFERENTIEL_COMPETENCES.map(c => c.niveau).filter(Boolean)));
-
-    if (pill) {
-      pill.disabled = false;
-      pill.classList.remove("disabled");
-      pill.textContent = `${REFERENTIEL_COMPETENCES.length} compétences chargées`;
-    }
-  } catch (erreur) {
-    console.error("Erreur de chargement du référentiel :", erreur);
-    if (pill) pill.textContent = "Erreur de chargement du référentiel (voir console)";
-  }
-  UI.initSelectCompetences();
-}
-
-
-/* ==================================================================
-   FICHIER 2 (à extraire) : Programmation/generateur-classique.js
-   ================================================================== */
-const GenerateurClassique = (function () {
-
-  const TYPES_SEANCES_PAR_DEFAUT = [
-    { type: "diagnostique",     intitule: "Évaluation diagnostique" },
-    { type: "exploration",      intitule: "Exploration de la notion" },
-    { type: "references",       intitule: "Apport de références" },
-    { type: "structuration",    intitule: "Structuration des connaissances" },
-    { type: "systematisation",  intitule: "Systématisation (1)" },
-    { type: "systematisation",  intitule: "Systématisation (2)" },
-    { type: "approfondissement",intitule: "Approfondissement / différenciation" },
-    { type: "evaluation",       intitule: "Évaluation finale" }
+  const TYPES = [
+    ["diagnostique","Diagnostique"],
+    ["exploration","Exploration"],
+    ["references","Références"],
+    ["structuration","Structuration"],
+    ["systematisation","Systématisation"],
+    ["approfondissement","Approfondissement"],
+    ["evaluation","Évaluation"]
   ];
 
-  function genererSequence(competence, titrePersonnalise) {
-    const seances = TYPES_SEANCES_PAR_DEFAUT.map((modele, index) => ({
-      id: `${competence.id}-S${index + 1}`,
-      type: modele.type,
-      intitule: `${modele.intitule} — ${competence.intitule}`,
-      competences_mobilisees: [competence.id],
-      tache_projet_associee: null,
-      duree_estimee_min: 45,
-      statut: "a_planifier",
-      origine: "regle"
-    }));
+  const DEFAULT_PHASES = ["Présentation","Réactivation / enrôlement","Activité","Restitution & métacognition","Institutionnalisation"];
 
+  function esc(v){ return String(v ?? "").replace(/[&<>"']/g,m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[m])); }
+  function arr(v){ return Array.isArray(v)?v:(v?String(v).split(/\\n/).map(x=>x.trim()).filter(Boolean):[]); }
+  function uid(prefix="id"){ return prefix+"-"+Date.now()+"-"+Math.random().toString(36).slice(2,7); }
+
+  function normaliserCompetence(c){
     return {
-      id: `SEQ-${competence.id}`,
-      competence_principale: competence.id,
-      domaine: competence.domaine,
-      titre: titrePersonnalise || `Séquence : ${competence.intitule}`,
-      prerequis: competence.prerequis,
-      seances: seances
+      id:c.id, intitule:c.intitule||c.nom||"", domaine:c.domaine||c.domaine_id||"",
+      domaine_id:c.domaine_id||c.domaine||"", niveau:c.niveau||"", cycle:c.cycle||"",
+      theme:c.theme||"", mots_cles:Array.isArray(c.mots_cles)?c.mots_cles:[],
+      prerequis:c.prerequis_competences||c.prerequis||[]
     };
   }
 
-  return { genererSequence, TYPES_SEANCES_PAR_DEFAUT };
-})();
+  async function init(){
+    try{
+      const [a,b]=await Promise.all([fetch("data/competences.json"),fetch("data/index.json")]);
+      if(!a.ok||!b.ok) throw new Error("Impossible de charger data/competences.json ou data/index.json");
+      const cj=await a.json(), ij=await b.json();
+      refs=(cj.competences||[]).map(normaliserCompetence);
+      const dm=new Map();
+      (cj.domaines||[]).forEach(d=>dm.set(d.id,d.nom));
+      refs.forEach(c=>{if(c.domaine_id&&!dm.has(c.domaine_id))dm.set(c.domaine_id,c.domaine)});
+      domaines=[...dm].map(([id,nom])=>({id,nom})).sort((a,b)=>a.nom.localeCompare(b.nom,"fr"));
+      niveaux=(ij.meta&&ij.meta.niveaux_reconnus)||[...new Set(refs.map(c=>c.niveau).filter(Boolean))];
+      document.getElementById("ref-status").textContent=refs.length+" compétences";
+      fillFilters(); filterCompetences();
+    }catch(e){
+      document.getElementById("ref-status").textContent="Référentiel non chargé";
+      document.getElementById("competences").innerHTML='<div class="empty">Erreur : '+esc(e.message)+'<br>Vérifiez que ce fichier est bien placé dans le dossier <code>Programmation/</code>.</div>';
+    }
+  }
 
+  function fillFilters(){
+    const n=document.getElementById("niveau"), d=document.getElementById("domaine");
+    niveaux.forEach(x=>{const o=document.createElement("option");o.value=x;o.textContent=x;n.appendChild(o)});
+    domaines.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.nom;d.appendChild(o)});
+  }
 
-/* ==================================================================
-   FICHIER 3 (à extraire) : Programmation/mode-projet.js
-   ================================================================== */
-const ModeProjet = (function () {
+  function filterCompetences(){
+    const n=document.getElementById("niveau").value, d=document.getElementById("domaine").value, q=document.getElementById("search").value.trim().toLowerCase();
+    let r=refs.filter(c=>(!n||c.niveau===n)&&(!d||c.domaine_id===d)&&(!q||[c.intitule,c.theme,c.domaine,...c.mots_cles].join(" ").toLowerCase().includes(q)));
+    const box=document.getElementById("competences");
+    if(!n&&!d&&!q){box.innerHTML='<div class="empty">Choisissez un niveau, un domaine ou saisissez un mot-clé.</div>';return}
+    if(!r.length){box.innerHTML='<div class="empty">Aucune compétence trouvée.</div>';return}
+    box.innerHTML=r.slice(0,120).map(c=>`<div class="choice ${selected&&selected.id===c.id?"selected":""}" onclick="App.selectCompetence('${esc(c.id)}')"><strong>${esc(c.niveau?`[${c.niveau}] `:"")}${esc(c.domaine)}</strong><div>${esc(c.intitule)}</div></div>`).join("");
+  }
 
-  function creerProjet(titre, production) {
+  function selectCompetence(id){
+    selected=refs.find(c=>c.id===id)||null;if(!selected)return;
+    sequence={
+      id:"SEQ-"+selected.id+"-"+Date.now(), competence_principale:selected.id, domaine:selected.domaine,
+      titre:"Séquence : "+selected.intitule, domaine_socle:"", classe:selected.niveau||"",
+      competences_travaillees:[selected.intitule], objectif_coeur_de_cible:selected.intitule,
+      objectif_commun:"", references_theoriques:"", prerequis:selected.prerequis||[],
+      objectifs_individuels:[], seances:[]
+    };
+    document.getElementById("selection-status").className="status ok";
+    document.getElementById("selection-status").textContent="Compétence sélectionnée";
+    document.getElementById("selection-card").style.display="block";
+    document.getElementById("selection-card").innerHTML=`<strong>${esc(selected.intitule)}</strong><div class="tag accent">${esc(selected.domaine)}</div>${selected.niveau?`<div class="tag">${esc(selected.niveau)}</div>`:""}`;
+    document.getElementById("seq-cadrage").style.display="block";
+    setFields();
+    filterCompetences();
+    go(1);
+  }
+
+  function setFields(){
+    if(!sequence)return;
+    document.getElementById("seq-titre").value=sequence.titre||"";
+    document.getElementById("seq-domaine-socle").value=sequence.domaine_socle||"";
+    document.getElementById("seq-coeur").value=sequence.objectif_coeur_de_cible||"";
+    document.getElementById("seq-competences").value=arr(sequence.competences_travaillees).join("\\n");
+    document.getElementById("seq-references").value=sequence.references_theoriques||"";
+    document.getElementById("objectif-commun").value=sequence.objectif_commun||"";
+    document.getElementById("classe").value=sequence.classe||"";
+    renderStudents();
+    if(sequence.seances.length===0) generateSequence();
+    else {renderSessions();renderDetails();}
+  }
+
+  function updateSequenceField(k,v){
+    if(!sequence)return;
+    sequence[k]=k==="competences_travaillees"?arr(v):v;
+  }
+
+  function addStudent(data={}){
+    if(!sequence)return;
+    sequence.objectifs_individuels.push({id:uid("eleve"),nom:data.nom||"",objectif:data.objectif||"",criteres_reussite:data.criteres_reussite||""});
+    renderStudents();
+  }
+  function renderStudents(){
+    const box=document.getElementById("students");
+    if(!sequence||!sequence.objectifs_individuels.length){box.innerHTML='<div class="empty">Aucun objectif individuel ajouté. Vous pouvez en ajouter si nécessaire.</div>';return}
+    box.innerHTML=sequence.objectifs_individuels.map((s,i)=>`<div class="student-row">
+      <input placeholder="Élève / groupe" value="${esc(s.nom)}" oninput="App.studentField(${i},'nom',this.value)">
+      <textarea placeholder="Objectif individuel prioritaire" oninput="App.studentField(${i},'objectif',this.value)">${esc(s.objectif)}</textarea>
+      <textarea placeholder="Critère de réussite observable" oninput="App.studentField(${i},'criteres_reussite',this.value)">${esc(s.criteres_reussite)}</textarea>
+      <button class="btn danger small" onclick="App.removeStudent(${i})">×</button>
+    </div>`).join("");
+  }
+  function studentField(i,k,v){if(sequence&&sequence.objectifs_individuels[i])sequence.objectifs_individuels[i][k]=v}
+  function removeStudent(i){sequence.objectifs_individuels.splice(i,1);renderStudents()}
+
+  function sessionTemplate(type="exploration",i=1){
+    const name=TYPES.find(x=>x[0]===type)?.[1]||"Séance";
     return {
-      id: `PROJ-${Date.now()}`,
-      titre: titre,
-      production_finale: production,
-      taches: [],
-      seances: []
+      id:uid("SEANCE"),numero:i,type,titre:`Séance ${i} — ${name}`,
+      competence_cible:selected?.intitule||"",competences_periph:[],
+      modalites_generales:"",niveaux:sequence?.classe?[sequence.classe]:(selected?.niveau?[selected.niveau]:[]),
+      objectif:"",problematique:"",consigne:"",tache:"",
+      criteres_reussite:"",materiel:[],duree_estimee_min:Number(document.getElementById("duree-defaut").value)||45,
+      vigilance:"",deroule:DEFAULT_PHASES.map((p,j)=>({phase:p,temps:j===0?5:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""})),
+      remarques:""
     };
   }
 
-  function ajouterTache(projet, nom, motsClesTexte) {
-    const motsCles = motsClesTexte
-      .split(",")
-      .map(m => m.trim().toLowerCase())
-      .filter(Boolean);
-
-    const tache = {
-      id: `TACHE-${Date.now()}`,
-      nom: nom,
-      motsCles: motsCles,
-      competences_retenues: [],
-      suggestions_ia: []
-    };
-    projet.taches.push(tache);
-    return tache;
+  function recommendedTypes(n){
+    const base=["diagnostique","exploration","references","structuration","systematisation","approfondissement","evaluation"];
+    if(n<=5)return [base[0],base[1],base[3],base[4],base[6]].slice(0,n);
+    return base.slice(0,n);
   }
 
-  function suggererCompetences(tache, referentiel) {
-    return referentiel.filter(c => {
-      if (!c.modalites_projet || !c.modalites_projet.mobilisable_en_projet) return false;
-      return c.modalites_projet.types_de_taches.some(type =>
-        tache.motsCles.includes(type)
-      );
-    });
+  function generateSequence(){
+    if(!sequence||!selected){alert("Sélectionnez d’abord une compétence.");return}
+    const n=Number(document.getElementById("nb-seances").value)||7;
+    const types=recommendedTypes(n);
+    sequence.seances=types.map((t,i)=>sessionTemplate(t,i+1));
+    renderSessions();renderDetails();go(3);
   }
 
-  function validerCompetencePourTache(tache, competence) {
-    if (!tache.competences_retenues.some(c => c.id === competence.id)) {
-      tache.competences_retenues.push(competence);
-    }
+  function resizeSessions(){
+    if(!sequence)return;
+    const n=Number(document.getElementById("nb-seances").value)||7;
+    while(sequence.seances.length<n)sequence.seances.push(sessionTemplate("systematisation",sequence.seances.length+1));
+    while(sequence.seances.length>n)sequence.seances.pop();
+    sequence.seances.forEach((s,i)=>s.numero=i+1);
+    renderSessions();renderDetails();
   }
 
-  function genererSeancePourTache(projet, tache) {
-    const seance = {
-      id: `${projet.id}-${tache.id}`,
-      intitule: `Séance projet : ${tache.nom}`,
-      tache_projet_associee: tache.id,
-      competences_mobilisees: tache.competences_retenues.map(c => c.id),
-      duree_estimee_min: 45,
-      statut: "a_planifier"
-    };
-    projet.seances.push(seance);
-    return seance;
+  function addSession(){
+    if(!sequence)return;
+    sequence.seances.push(sessionTemplate("systematisation",sequence.seances.length+1));
+    document.getElementById("nb-seances").value=Math.min(10,sequence.seances.length);
+    renderSessions();renderDetails();
   }
 
-  function construireMatriceCouverture(projet, referentiel) {
-    const competencesMobilisables = referentiel.filter(
-      c => c.modalites_projet && c.modalites_projet.mobilisable_en_projet
-    );
-
-    return competencesMobilisables.map(competence => {
-      const tacheAssociee = projet.taches.find(t =>
-        t.competences_retenues.some(c => c.id === competence.id)
-      );
-      return {
-        competence: competence,
-        couverte: Boolean(tacheAssociee),
-        tache: tacheAssociee ? tacheAssociee.nom : null
-      };
-    });
-  }
-
-  function genererComplementsPourNonCouvertes(matriceCouverture, generateurClassique) {
-    return matriceCouverture
-      .filter(ligne => !ligne.couverte)
-      .map(ligne => generateurClassique.genererSequence(ligne.competence));
-  }
-
-  return {
-    creerProjet,
-    ajouterTache,
-    suggererCompetences,
-    validerCompetencePourTache,
-    genererSeancePourTache,
-    construireMatriceCouverture,
-    genererComplementsPourNonCouvertes
-  };
-})();
-
-
-/* ==================================================================
-   FICHIER 4 (à extraire) : Programmation/moteur-ia.js
-   Moteur IA générique — brancheur, pas de dépendance à un fournisseur.
-   Deux formats supportés : "openai-compatible" (chat completions,
-   couvre OpenAI, Mistral, Groq, Ollama, etc.) et "anthropic".
-   Le moteur ne fait QUE proposer du texte/JSON ; c'est toujours l'UI
-   qui décide comment l'exploiter, et l'enseignant qui valide.
-   ================================================================== */
-const MoteurIA = (function () {
-
-  const CLE_STOCKAGE = "synapses_ia_config_v1";
-
-  function chargerConfig() {
-    try {
-      const brut = localStorage.getItem(CLE_STOCKAGE);
-      return brut ? JSON.parse(brut) : { actif: false, provider: "openai-compatible", url: "", modele: "", clef: "" };
-    } catch (e) {
-      return { actif: false, provider: "openai-compatible", url: "", modele: "", clef: "" };
-    }
-  }
-
-  function sauvegarderConfig(config) {
-    localStorage.setItem(CLE_STOCKAGE, JSON.stringify(config));
-  }
-
-  function estActif() {
-    const c = chargerConfig();
-    return Boolean(c.actif && c.clef && c.modele && (c.provider === "anthropic" || c.url));
-  }
-
-  /**
-   * Envoie un prompt système + utilisateur au fournisseur configuré et
-   * renvoie le texte brut de la réponse. Lève une erreur explicite en
-   * cas de configuration incomplète ou d'échec réseau/API.
-   */
-  async function demander(promptSysteme, promptUtilisateur) {
-    const config = chargerConfig();
-    if (!config.actif) throw new Error("Le moteur IA est désactivé.");
-    if (!config.clef) throw new Error("Aucune clé API renseignée.");
-    if (!config.modele) throw new Error("Aucun modèle renseigné.");
-
-    if (config.provider === "anthropic") {
-      const url = config.url || "https://api.anthropic.com/v1/messages";
-      const reponse = await fetch(url, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "x-api-key": config.clef,
-          "anthropic-version": "2023-06-01",
-          "anthropic-dangerous-direct-browser-access": "true"
-        },
-        body: JSON.stringify({
-          model: config.modele,
-          max_tokens: 1200,
-          system: promptSysteme,
-          messages: [{ role: "user", content: promptUtilisateur }]
-        })
-      });
-      if (!reponse.ok) throw new Error(`Erreur API Anthropic (${reponse.status})`);
-      const data = await reponse.json();
-      return (data.content || []).map(b => b.text || "").join("\n");
-    }
-
-    // Par défaut : format "openai-compatible" (chat completions)
-    if (!config.url) throw new Error("Aucune URL d'endpoint renseignée.");
-    const reponse = await fetch(config.url, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${config.clef}`
-      },
-      body: JSON.stringify({
-        model: config.modele,
-        messages: [
-          { role: "system", content: promptSysteme },
-          { role: "user", content: promptUtilisateur }
-        ],
-        temperature: 0.4
-      })
-    });
-    if (!reponse.ok) throw new Error(`Erreur API (${reponse.status})`);
-    const data = await reponse.json();
-    return data.choices && data.choices[0] && data.choices[0].message
-      ? data.choices[0].message.content
-      : "";
-  }
-
-  /** Extrait le premier bloc JSON valide d'une réponse texte libre. */
-  function extraireJSON(texte) {
-    const nettoye = texte.replace(/```json/gi, "").replace(/```/g, "").trim();
-    const debut = nettoye.indexOf("[") === -1
-      ? nettoye.indexOf("{")
-      : (nettoye.indexOf("{") === -1 ? nettoye.indexOf("[") : Math.min(nettoye.indexOf("{"), nettoye.indexOf("[")));
-    const fin = Math.max(nettoye.lastIndexOf("}"), nettoye.lastIndexOf("]"));
-    const segment = debut >= 0 && fin >= 0 ? nettoye.slice(debut, fin + 1) : nettoye;
-    return JSON.parse(segment);
-  }
-
-  return { chargerConfig, sauvegarderConfig, estActif, demander, extraireJSON };
-})();
-
-
-/* ==================================================================
-   COUCHE UI DE DÉMONSTRATION
-   ================================================================== */
-const UI = (function () {
-  let projetCourant = null;
-  let sequenceCouranteClassique = null;
-
-  function initTabs() {
-    document.querySelectorAll("nav.tabs button").forEach(btn => {
-      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
-    });
-  }
-
-  function switchTab(tab) {
-    document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
-    document.querySelectorAll("section.panel").forEach(p => p.classList.remove("active"));
-    document.getElementById("panel-" + tab).classList.add("active");
-    if (tab === "couverture") renderMatrice();
-    if (tab === "ia") chargerFormulaireIA();
-    if (tab === "atelier") Atelier.majContexte();
-  }
-
-  function initSelectCompetences() {
-    const selectNiveau = document.getElementById("filtre-niveau");
-    const selectDomaine = document.getElementById("filtre-domaine");
-    if (!selectNiveau || !selectDomaine) return;
-
-    selectNiveau.querySelectorAll("option:not(:first-child)").forEach(o => o.remove());
-    NIVEAUX_REFERENTIEL.forEach(niveau => {
-      const opt = document.createElement("option");
-      opt.value = niveau;
-      opt.textContent = niveau;
-      selectNiveau.appendChild(opt);
-    });
-
-    selectDomaine.querySelectorAll("option:not(:first-child)").forEach(o => o.remove());
-    DOMAINES_REFERENTIEL.forEach(d => {
-      const opt = document.createElement("option");
-      opt.value = d.id;
-      opt.textContent = d.nom;
-      selectDomaine.appendChild(opt);
-    });
-
-    filtrerCompetences();
-  }
-
-  function filtrerCompetences() {
-    const niveau = document.getElementById("filtre-niveau").value;
-    const domaine = document.getElementById("filtre-domaine").value;
-    const recherche = document.getElementById("recherche-competence").value.trim().toLowerCase();
-    const conteneur = document.getElementById("resultats-competences");
-
-    let resultats = REFERENTIEL_COMPETENCES;
-    if (niveau) resultats = resultats.filter(c => c.niveau === niveau);
-    if (domaine) resultats = resultats.filter(c => c.domaine_id === domaine);
-    if (recherche) {
-      resultats = resultats.filter(c =>
-        c.intitule.toLowerCase().includes(recherche) ||
-        c.theme.toLowerCase().includes(recherche) ||
-        c.mots_cles.some(m => m.toLowerCase().includes(recherche))
-      );
-    }
-
-    if (!niveau && !domaine && !recherche) {
-      conteneur.innerHTML = `<p class="muted" style="padding:0.5rem 0.75rem;">Choisissez un niveau, un domaine ou tapez une recherche pour afficher des compétences (${REFERENTIEL_COMPETENCES.length} au total).</p>`;
-      return;
-    }
-
-    const LIMITE = 100;
-    const tronque = resultats.length > LIMITE;
-    const aAfficher = resultats.slice(0, LIMITE);
-
-    if (aAfficher.length === 0) {
-      conteneur.innerHTML = `<p class="muted" style="padding:0.5rem 0.75rem;">Aucune compétence ne correspond à ces critères.</p>`;
-      return;
-    }
-
-    conteneur.innerHTML = aAfficher.map(c => `
-      <div class="suggestion-item" style="cursor:pointer;" onclick="UI.choisirCompetence('${c.id}')">
-        <strong>${c.niveau ? "[" + c.niveau + "] " : ""}${c.domaine}</strong><br>
-        <span>${c.intitule}</span>
-      </div>
-    `).join("") + (tronque ? `<p class="muted" style="padding:0.5rem 0.75rem;">… et ${resultats.length - LIMITE} autres résultats. Affinez la recherche.</p>` : "");
-  }
-
-  function choisirCompetence(id) {
-    const competence = REFERENTIEL_COMPETENCES.find(c => c.id === id);
-    if (!competence) return;
-    document.getElementById("select-competence").value = id;
-
-    const bloc = document.getElementById("competence-choisie");
-    bloc.style.display = "block";
-    bloc.innerHTML = `
-      <strong>Compétence sélectionnée</strong><br>
-      ${competence.niveau ? "[" + competence.niveau + "] " : ""}<em>${competence.domaine}</em><br>
-      ${competence.intitule}
-    `;
-
-    document.getElementById("resultats-competences").innerHTML = "";
-  }
-
-  function genererSequenceClassiqueUI() {
-    const id = document.getElementById("select-competence").value;
-    const competence = REFERENTIEL_COMPETENCES.find(c => c.id === id);
-    const titre = document.getElementById("input-titre-seq").value;
-    const sequence = GenerateurClassique.genererSequence(competence, titre);
-    afficherSequenceClassique(sequence);
-  }
-
-  function afficherSequenceClassique(sequence) {
-    sequenceCouranteClassique = sequence;
-    document.getElementById("resultat-classique").style.display = "block";
-    document.getElementById("titre-resultat-classique").textContent = sequence.titre;
-
-    const cont = document.getElementById("seances-classique");
-    cont.innerHTML = "";
-    sequence.seances.forEach(s => {
-      const div = document.createElement("div");
-      div.className = "seance-item" + (s.origine === "ia" ? " ai-made" : "");
-      div.innerHTML = `<strong>${s.intitule}</strong><br>
-        <span class="tag">${s.type}</span>
-        <span class="tag">${s.duree_estimee_min} min</span>
-        <span class="tag">${(s.competences_mobilisees || []).join(", ")}</span>
-        ${s.origine === "ia" ? '<span class="tag ai">✨ IA</span>' : ""}`;
-      cont.appendChild(div);
-    });
-  }
-
-  async function genererSequenceIA() {
-    const id = document.getElementById("select-competence").value;
-    const competence = REFERENTIEL_COMPETENCES.find(c => c.id === id);
-    const titreSaisi = document.getElementById("input-titre-seq").value;
-    const bouton = document.getElementById("btn-ia-classique");
-    bouton.disabled = true;
-    bouton.textContent = "✨ Rédaction en cours…";
-    try {
-      const promptSysteme = "Tu es un conseiller pédagogique. Tu réponds UNIQUEMENT en JSON valide, sans texte autour.";
-      const promptUtilisateur = `Propose une séquence de 7 séances pour la compétence suivante :
-Domaine : ${competence.domaine}
-Intitulé : ${competence.intitule}
-Réponds avec ce format JSON exact :
-{"titre": "titre de la séquence", "seances": [{"type": "diagnostique|exploration|structuration|systematisation|approfondissement|evaluation", "intitule": "intitulé concret et concis de la séance", "duree_estimee_min": 45}]}`;
-      const reponse = await MoteurIA.demander(promptSysteme, promptUtilisateur);
-      const objet = MoteurIA.extraireJSON(reponse);
-      const sequence = {
-        id: `SEQ-IA-${competence.id}`,
-        competence_principale: competence.id,
-        domaine: competence.domaine,
-        titre: titreSaisi || objet.titre || `Séquence (IA) : ${competence.intitule}`,
-        prerequis: competence.prerequis,
-        seances: (objet.seances || []).map((s, i) => ({
-          id: `${competence.id}-IA-${i + 1}`,
-          type: s.type || "seance",
-          intitule: s.intitule,
-          competences_mobilisees: [competence.id],
-          duree_estimee_min: s.duree_estimee_min || 45,
-          origine: "ia"
-        }))
-      };
-      afficherSequenceClassique(sequence);
-    } catch (err) {
-      alert("La suggestion IA a échoué : " + err.message + "\nVous pouvez toujours générer la séquence par règles.");
-    } finally {
-      bouton.disabled = !MoteurIA.estActif();
-      bouton.textContent = "✨ Rédiger les séances avec l'IA";
-    }
-  }
-
-  function creerProjet() {
-    const titre = document.getElementById("projet-titre").value || "Projet sans titre";
-    const production = document.getElementById("projet-production").value || "Production non précisée";
-    projetCourant = ModeProjet.creerProjet(titre, production);
-    document.getElementById("bloc-taches").style.display = "block";
-    renderTaches();
-  }
-
-  function ajouterTache() {
-    if (!projetCourant) return;
-    const nom = document.getElementById("tache-nom").value;
-    const motsCles = document.getElementById("tache-motscles").value;
-    if (!nom || !motsCles) return;
-
-    ModeProjet.ajouterTache(projetCourant, nom, motsCles);
-    document.getElementById("tache-nom").value = "";
-    document.getElementById("tache-motscles").value = "";
-    renderTaches();
-  }
-
-  function renderTaches() {
-    const cont = document.getElementById("liste-taches");
-    cont.innerHTML = "";
-    projetCourant.taches.forEach(tache => {
-      const suggestions = ModeProjet.suggererCompetences(tache, REFERENTIEL_COMPETENCES);
-      const block = document.createElement("div");
-      block.className = "tache-block";
-
-      let html = `<strong>${tache.nom}</strong> `;
-      tache.motsCles.forEach(m => html += `<span class="tag">${m}</span>`);
-      html += `<div class="muted" style="margin-top:0.5rem;">Compétences suggérées par mots-clés (à valider) :</div>`;
-
-      if (suggestions.length === 0) {
-        html += `<p class="muted">Aucune correspondance trouvée avec les mots-clés fournis.</p>`;
-      } else {
-        suggestions.forEach(comp => {
-          const dejaValidee = tache.competences_retenues.some(c => c.id === comp.id);
-          html += `<div class="suggestion-item">
-            <span>[${comp.domaine}] ${comp.intitule}</span>
-            <button class="ghost" ${dejaValidee ? "disabled" : ""}
-              onclick="UI.validerCompetence('${tache.id}', '${comp.id}')">
-              ${dejaValidee ? "Retenue ✓" : "Retenir"}
-            </button>
-          </div>`;
-        });
-      }
-
-      if (tache.suggestions_ia && tache.suggestions_ia.length > 0) {
-        html += `<div class="muted" style="margin-top:0.6rem;">Compétences suggérées par l'IA :</div>`;
-        tache.suggestions_ia.forEach(comp => {
-          const dejaValidee = tache.competences_retenues.some(c => c.id === comp.id);
-          html += `<div class="suggestion-item">
-            <span>[${comp.domaine}] ${comp.intitule} <span class="tag ai">✨ IA</span></span>
-            <button class="ghost" ${dejaValidee ? "disabled" : ""}
-              onclick="UI.validerCompetence('${tache.id}', '${comp.id}')">
-              ${dejaValidee ? "Retenue ✓" : "Retenir"}
-            </button>
-          </div>`;
-        });
-      }
-
-      if (tache.competences_retenues.length > 0) {
-        html += `<button class="action" onclick="UI.genererSeance('${tache.id}')">Générer la séance de projet</button>`;
-      }
-      html += `<button class="ai-btn" ${MoteurIA.estActif() ? "" : "disabled title='Activez l\\'IA dans Paramètres IA'"} onclick="UI.suggererCompetencesIA('${tache.id}')">✨ Suggestions IA</button>`;
-
-      html += `<div class="dropzone" ondragover="event.preventDefault(); this.classList.add('dragover')"
-           ondragleave="this.classList.remove('dragover')"
-           ondrop="UI.deposerSeanceTache(event, '${tache.id}')">
-        ✨ Déposer ici une proposition de l'Atelier IA pour créer une séance liée à cette tâche
-      </div>`;
-
-      block.innerHTML = html;
-      cont.appendChild(block);
-    });
-  }
-
-  async function suggererCompetencesIA(tacheId) {
-    const tache = projetCourant.taches.find(t => t.id === tacheId);
-    try {
-      const promptSysteme = "Tu es un conseiller pédagogique. Tu réponds UNIQUEMENT en JSON valide, sans texte autour : une liste d'identifiants de compétences.";
-      const listeReferentiel = REFERENTIEL_COMPETENCES.map(c => `${c.id} :: [${c.domaine}] ${c.intitule}`).join("\n");
-      const promptUtilisateur = `Voici une tâche de projet :
-Nom : ${tache.nom}
-Mots-clés : ${tache.motsCles.join(", ")}
-
-Voici le référentiel de compétences disponible (id :: intitulé) :
-${listeReferentiel}
-
-Renvoie UNIQUEMENT un tableau JSON des identifiants de compétences pertinentes pour cette tâche, par exemple : ["FR-ECRIRE-CP-02", "SOCIAL-COOP-01"]`;
-      const reponse = await MoteurIA.demander(promptSysteme, promptUtilisateur);
-      const ids = MoteurIA.extraireJSON(reponse);
-      tache.suggestions_ia = REFERENTIEL_COMPETENCES.filter(c => ids.includes(c.id));
-      renderTaches();
-    } catch (err) {
-      alert("La suggestion IA a échoué : " + err.message);
-    }
-  }
-
-  function validerCompetence(tacheId, competenceId) {
-    const tache = projetCourant.taches.find(t => t.id === tacheId);
-    const competence = REFERENTIEL_COMPETENCES.find(c => c.id === competenceId);
-    ModeProjet.validerCompetencePourTache(tache, competence);
-    renderTaches();
-  }
-
-  function genererSeance(tacheId) {
-    const tache = projetCourant.taches.find(t => t.id === tacheId);
-    const seance = ModeProjet.genererSeancePourTache(projetCourant, tache);
-    alert(`Séance générée : "${seance.intitule}"\nCompétences mobilisées : ${seance.competences_mobilisees.join(", ")}`);
-  }
-
-  function renderMatrice() {
-    const cont = document.getElementById("matrice-couverture");
-    const btnIA = document.getElementById("btn-ia-complements");
-    if (!projetCourant) {
-      cont.innerHTML = `<p class="muted">Aucun projet en cours. Créez d'abord un projet dans l'onglet « Mode projet ».</p>`;
-      btnIA.disabled = true;
-      return;
-    }
-    const matrice = ModeProjet.construireMatriceCouverture(projetCourant, REFERENTIEL_COMPETENCES);
-
-    let html = `<table><thead><tr>
-      <th>Compétence</th><th>Domaine</th><th>Tâche associée</th><th>Statut</th>
-    </tr></thead><tbody>`;
-    matrice.forEach(ligne => {
-      html += `<tr>
-        <td>${ligne.competence.intitule}</td>
-        <td>${ligne.competence.domaine}</td>
-        <td>${ligne.tache || "—"}</td>
-        <td class="${ligne.couverte ? "statut-couverte" : "statut-non-couverte"}">
-          ${ligne.couverte ? "Couverte" : "Non couverte"}
-        </td>
-      </tr>`;
-    });
-    html += `</tbody></table>`;
-    cont.innerHTML = html;
-    btnIA.disabled = !MoteurIA.estActif();
-
-    window._derniereMatrice = matrice;
-  }
-
-  function genererComplements() {
-    if (!window._derniereMatrice) return;
-    const sequences = ModeProjet.genererComplementsPourNonCouvertes(window._derniereMatrice, GenerateurClassique);
-    afficherComplements(sequences);
-  }
-
-  function afficherComplements(sequences) {
-    const cont = document.getElementById("complements");
-    if (sequences.length === 0) {
-      cont.innerHTML = `<p class="muted">Toutes les compétences mobilisables en projet sont déjà couvertes.</p>`;
-      return;
-    }
-    let html = "";
-    sequences.forEach(seq => {
-      html += `<div class="card"><h3>${seq.titre}</h3>`;
-      seq.seances.forEach(s => {
-        html += `<div class="seance-item${s.origine === "ia" ? " ai-made" : ""}"><strong>${s.intitule}</strong> <span class="tag">${s.type}</span>${s.origine === "ia" ? ' <span class="tag ai">✨ IA</span>' : ""}</div>`;
-      });
-      html += `</div>`;
-    });
-    cont.innerHTML = html;
-  }
-
-  async function genererComplementsIA() {
-    if (!window._derniereMatrice) return;
-    const nonCouvertes = window._derniereMatrice.filter(l => !l.couverte);
-    if (nonCouvertes.length === 0) {
-      afficherComplements([]);
-      return;
-    }
-    const bouton = document.getElementById("btn-ia-complements");
-    bouton.disabled = true;
-    bouton.textContent = "✨ Génération en cours…";
-    try {
-      const promptSysteme = "Tu es un conseiller pédagogique. Tu réponds UNIQUEMENT en JSON valide, sans texte autour.";
-      const listeCompetences = nonCouvertes.map(l => `${l.competence.id} :: [${l.competence.domaine}] ${l.competence.intitule}`).join("\n");
-      const promptUtilisateur = `Pour chacune de ces compétences non couvertes par le projet en cours, propose une courte séquence complémentaire de 2 à 3 séances (mini-format, pas 7 séances).
-Compétences :
-${listeCompetences}
-Réponds avec ce format JSON exact :
-{"sequences": [{"competence_id": "id", "titre": "titre court", "seances": [{"type": "type de séance", "intitule": "intitulé concret"}]}]}`;
-      const reponse = await MoteurIA.demander(promptSysteme, promptUtilisateur);
-      const objet = MoteurIA.extraireJSON(reponse);
-      const sequences = (objet.sequences || []).map(seq => ({
-        titre: seq.titre,
-        seances: (seq.seances || []).map((s, i) => ({
-          id: `${seq.competence_id}-IA-C${i + 1}`,
-          type: s.type || "seance",
-          intitule: s.intitule,
-          origine: "ia"
-        }))
-      }));
-      afficherComplements(sequences);
-    } catch (err) {
-      alert("La génération IA a échoué : " + err.message + "\nVous pouvez utiliser la proposition par règles.");
-    } finally {
-      bouton.disabled = !MoteurIA.estActif();
-      bouton.textContent = "✨ Proposer des compléments avec l'IA";
-    }
-  }
-
-  /* ---------- Paramètres IA ---------- */
-  function chargerFormulaireIA() {
-    const c = MoteurIA.chargerConfig();
-    document.getElementById("ia-active").value = c.actif ? "on" : "off";
-    document.getElementById("ia-provider").value = c.provider || "openai-compatible";
-    document.getElementById("ia-url").value = c.url || "";
-    document.getElementById("ia-modele").value = c.modele || "";
-    document.getElementById("ia-clef").value = c.clef || "";
-    majStatutIA();
-  }
-
-  function enregistrerParametresIA() {
-    const config = {
-      actif: document.getElementById("ia-active").value === "on",
-      provider: document.getElementById("ia-provider").value,
-      url: document.getElementById("ia-url").value.trim(),
-      modele: document.getElementById("ia-modele").value.trim(),
-      clef: document.getElementById("ia-clef").value.trim()
-    };
-    MoteurIA.sauvegarderConfig(config);
-    majStatutIA();
-    document.getElementById("ia-statut-message").textContent = "Paramètres enregistrés localement dans ce navigateur.";
-  }
-
-  async function testerConnexionIA() {
-    enregistrerParametresIA();
-    const msg = document.getElementById("ia-statut-message");
-    if (!MoteurIA.estActif()) {
-      msg.textContent = "Configuration incomplète ou IA désactivée : impossible de tester.";
-      return;
-    }
-    msg.textContent = "Test de connexion en cours…";
-    try {
-      const reponse = await MoteurIA.demander(
-        "Réponds uniquement par le mot OK.",
-        "Réponds uniquement par le mot OK."
-      );
-      msg.textContent = "Connexion réussie. Réponse reçue : « " + reponse.trim().slice(0, 80) + " »";
-    } catch (err) {
-      msg.textContent = "Échec de la connexion : " + err.message;
-    }
-  }
-
-  function majStatutIA() {
-    const actif = MoteurIA.estActif();
-    const pill = document.getElementById("pill-ai-status");
-    pill.textContent = actif ? "✨ IA : activée" : "✨ IA : désactivée";
-    pill.classList.toggle("on", actif);
-    document.getElementById("btn-ia-classique").disabled = !actif;
-    const btnComplements = document.getElementById("btn-ia-complements");
-    if (btnComplements) btnComplements.disabled = !actif || !window._derniereMatrice;
-    if (projetCourant) renderTaches();
-  }
-
-  /* ---------- Export / Import de l'état ---------- */
-  function exporterEtat() {
-    const etat = {
-      referentiel: REFERENTIEL_COMPETENCES,
-      projet: projetCourant
-    };
-    const blob = new Blob([JSON.stringify(etat, null, 2)], { type: "application/json" });
-    const url = URL.createObjectURL(blob);
-    const a = document.createElement("a");
-    a.href = url;
-    a.download = "etat-programmation.json";
-    a.click();
-    URL.revokeObjectURL(url);
-  }
-
-  function importerEtat(event) {
-    const fichier = event.target.files[0];
-    if (!fichier) return;
-    const lecteur = new FileReader();
-    lecteur.onload = () => {
-      try {
-        const etat = JSON.parse(lecteur.result);
-        if (etat.projet) {
-          projetCourant = etat.projet;
-          document.getElementById("bloc-taches").style.display = "block";
-          document.getElementById("projet-titre").value = projetCourant.titre || "";
-          document.getElementById("projet-production").value = projetCourant.production_finale || "";
-          renderTaches();
-          switchTab("projet");
-        }
-      } catch (e) {
-        alert("Fichier JSON invalide.");
-      }
-    };
-    lecteur.readAsText(fichier);
-  }
-
-  /* ---------- Dépôt (drag & drop) des propositions de l'Atelier IA ---------- */
-  function construireSeanceDepuisProposition(sequenceOuTache, s, prefixeId) {
-    return {
-      id: `${prefixeId}-ATELIER-${Date.now()}`,
-      type: s.type || "seance",
-      intitule: s.intitule,
-      numero: s.numero || "",
-      competence_cible: s.competence_cible || "",
-      competences_periph: s.competences_periph || "",
-      modalites: s.modalites || "",
-      niveaux: s.niveaux || [],
-      objectif: s.objectif || "",
-      problematique: s.problematique || "",
-      deroule: s.deroule || [],
-      vigilance: s.vigilance || "",
-      duree_estimee_min: s.duree_estimee_min || 45,
-      statut: "a_planifier",
-      origine: "ia"
-    };
-  }
-
-  function ajouterPropositionASequenceClassique(s) {
-    if (!sequenceCouranteClassique) {
-      alert("Générez d'abord une séquence dans l'onglet « Générateur classique » avant d'y ajouter une proposition.");
-      return;
-    }
-    const seance = construireSeanceDepuisProposition(sequenceCouranteClassique, s, sequenceCouranteClassique.id);
-    seance.competences_mobilisees = [sequenceCouranteClassique.competence_principale];
-    sequenceCouranteClassique.seances.push(seance);
-    afficherSequenceClassique(sequenceCouranteClassique);
-    alert(`Séance ajoutée à la séquence : « ${seance.intitule} »`);
-  }
-
-  function ajouterPropositionATache(s, tacheId) {
-    if (!projetCourant) return;
-    const tache = projetCourant.taches.find(t => t.id === tacheId);
-    if (!tache) return;
-    const seance = construireSeanceDepuisProposition(tache, s, `${projetCourant.id}-${tache.id}`);
-    seance.tache_projet_associee = tache.id;
-    seance.competences_mobilisees = tache.competences_retenues.map(c => c.id);
-    projetCourant.seances.push(seance);
-    alert(`Séance ajoutée au projet : « ${seance.intitule} »`);
-  }
-
-  function deposerSeanceClassique(evt) {
-    evt.preventDefault();
-    evt.currentTarget.classList.remove("dragover");
-    const brut = evt.dataTransfer.getData("application/json");
-    if (!brut) return;
-    ajouterPropositionASequenceClassique(JSON.parse(brut));
-  }
-
-  function deposerSeanceTache(evt, tacheId) {
-    evt.preventDefault();
-    evt.currentTarget.classList.remove("dragover");
-    const brut = evt.dataTransfer.getData("application/json");
-    if (!brut || !projetCourant) return;
-    ajouterPropositionATache(JSON.parse(brut), tacheId);
-  }
-
-  function getProjetCourant() { return projetCourant; }
-  function getSequenceCouranteClassique() { return sequenceCouranteClassique; }
-
-  return {
-    initTabs, initSelectCompetences, switchTab,
-    filtrerCompetences, choisirCompetence,
-    genererSequenceClassiqueUI, genererSequenceIA,
-    creerProjet, ajouterTache, validerCompetence, genererSeance, suggererCompetencesIA,
-    renderMatrice, genererComplements, genererComplementsIA,
-    enregistrerParametresIA, testerConnexionIA, exporterEtat, importerEtat,
-    deposerSeanceClassique, deposerSeanceTache,
-    ajouterPropositionASequenceClassique, ajouterPropositionATache,
-    getProjetCourant, getSequenceCouranteClassique
-  };
-})();
-
-/* ==================================================================
-   FICHIER 5 (à extraire) : Programmation/atelier-ia.js
-   Atelier IA "sans clé" : prépare un prompt avec le contexte courant,
-   à copier vers un chat gratuit (ChatGPT, Claude.ai, Le Chat, Gemini...).
-   La réponse collée est analysée (JSON attendu, repli en liste à puces)
-   puis affichée sous forme de cartes glissables (drag & drop) vers le
-   générateur classique ou une tâche de mode projet.
-   ================================================================== */
-const Atelier = (function () {
-  let propositions = [];
-
-  function majContexte() {
-    const mode = document.getElementById("atelier-contexte").value;
-    document.getElementById("atelier-contexte-tache").style.display = mode === "tache" ? "block" : "none";
-    if (mode === "tache") remplirSelectTaches();
-    genererPrompt();
-  }
-
-  function remplirSelectTaches() {
-    const select = document.getElementById("atelier-select-tache");
-    select.innerHTML = "";
-    const projet = UI.getProjetCourant();
-    if (!projet || projet.taches.length === 0) {
-      const opt = document.createElement("option");
-      opt.textContent = "Aucune tâche disponible";
-      select.appendChild(opt);
-      return;
-    }
-    projet.taches.forEach(t => {
-      const opt = document.createElement("option");
-      opt.value = t.id;
-      opt.textContent = t.nom;
-      select.appendChild(opt);
-    });
-  }
-
-  const MODELE_SEANCE_SEQUENCES_HTML = `{"phase": "Présentation|Activité|Restitution|Institutionnalisation|Métacognition", "temps": "Ex. : 10 min", "modalite_materiel": "Ex. : Travail en groupe de 4, fiches A4", "deroulement": "Ce qui se passe concrètement pendant la phase", "analyse_tache": "Ce que l'élève doit mobiliser", "amenagement": "Différenciation / adaptation", "posture": "Posture de l'enseignant durant la phase"}`;
-
-  function genererPrompt() {
-    const mode = document.getElementById("atelier-contexte").value;
-    let prompt = "";
-
-    const formatSeanceComplet = `Réponds avec ce format JSON exact (respecte la structure du modèle de séance utilisé dans Programmation/sequences.html) :
-{"seances": [{
-  "numero": "1",
-  "type": "diagnostique|exploration|references|structuration|systematisation|approfondissement|evaluation",
-  "titre": "titre concret et concis de la séance",
-  "competence_cible": "intitulé de la compétence visée",
-  "competences_periph": "compétences périphériques éventuelles",
-  "modalites": "Ex. : travail en groupe de 4",
-  "niveaux": ["CP", "CE1"],
-  "objectif": "Je veux que les élèves soient capables de…",
-  "problematique": "question ou défi posé aux élèves en amont",
-  "deroule": [${MODELE_SEANCE_SEQUENCES_HTML}],
-  "vigilance": "points de vigilance",
-  "duree_estimee_min": 45
-}]}`;
-
-    if (mode === "competence") {
-      const selectCompetence = document.getElementById("select-competence");
-      const competence = selectCompetence ? REFERENTIEL_COMPETENCES.find(c => c.id === selectCompetence.value) : null;
-      if (!competence) {
-        prompt = "Choisissez d'abord une compétence dans l'onglet « Générateur classique ».";
-      } else {
-        prompt = `Tu es un conseiller pédagogique. Réponds UNIQUEMENT en JSON valide, sans texte ni explication autour.
-Propose une séquence de 7 séances pour la compétence suivante :
-Domaine : ${competence.domaine}
-Intitulé : ${competence.intitule}
-${formatSeanceComplet}`;
-      }
-    } else {
-      const projet = UI.getProjetCourant();
-      const selectTache = document.getElementById("atelier-select-tache");
-      const tache = projet && selectTache ? projet.taches.find(t => t.id === selectTache.value) : null;
-      if (!tache) {
-        prompt = "Créez un projet et une tâche dans l'onglet « Mode projet » avant de générer ce prompt.";
-      } else {
-        prompt = `Tu es un conseiller pédagogique. Réponds UNIQUEMENT en JSON valide, sans texte ni explication autour.
-Voici une tâche de projet :
-Nom : ${tache.nom}
-Mots-clés : ${tache.motsCles.join(", ")}
-Propose 1 à 3 séances de projet concrètes permettant de réaliser cette tâche avec des élèves.
-${formatSeanceComplet}`;
-      }
-    }
-    document.getElementById("atelier-prompt").value = prompt;
-  }
-
-  function copierPrompt() {
-    const zone = document.getElementById("atelier-prompt");
-    zone.select();
-    if (navigator.clipboard) {
-      navigator.clipboard.writeText(zone.value).catch(() => {});
-    } else {
-      document.execCommand("copy");
-    }
-  }
-
-  function analyserReponse() {
-    const texte = document.getElementById("atelier-reponse").value.trim();
-    if (!texte) return;
-    let seances = [];
-    try {
-      const objet = MoteurIA.extraireJSON(texte);
-      seances = (objet.seances || []).map(s => ({
-        numero: s.numero || "",
-        type: s.type || "seance",
-        intitule: s.titre || s.intitule,
-        competence_cible: s.competence_cible || "",
-        competences_periph: s.competences_periph || "",
-        modalites: s.modalites || "",
-        niveaux: s.niveaux || [],
-        objectif: s.objectif || "",
-        problematique: s.problematique || "",
-        deroule: s.deroule || [],
-        vigilance: s.vigilance || "",
-        duree_estimee_min: s.duree_estimee_min || 45
-      })).filter(s => s.intitule);
-    } catch (e) {
-      // repli : la réponse n'est pas un JSON exploitable, on tente une liste à puces
-      seances = texte.split("\n")
-        .map(l => l.replace(/^[-*\d.\)\s]+/, "").trim())
-        .filter(l => l.length > 3)
-        .map(l => ({ type: "seance", intitule: l, duree_estimee_min: 45, deroule: [], niveaux: [] }));
-    }
-    propositions = seances;
-    renderPropositions();
-  }
-
-  function renderPropositions() {
-    const cont = document.getElementById("atelier-propositions");
-    if (propositions.length === 0) {
-      cont.innerHTML = `<p class="muted">Aucune proposition détectée. Vérifiez le format de la réponse collée.</p>`;
-      return;
-    }
-    const mode = document.getElementById("atelier-contexte").value;
-    const libelleAjout = mode === "competence"
-      ? "➕ Ajouter à la séquence en cours"
-      : "➕ Ajouter à la tâche sélectionnée";
-    let html = `<div class="muted" style="margin-top:0.9rem;">Cliquez sur « Ajouter » pour chaque séance à intégrer (le glisser-déposer ne fonctionne que si la cible est visible dans le même onglet) :</div>`;
-    propositions.forEach((s, i) => {
-      html += `<div class="proposition-card" draggable="true" ondragstart="Atelier.dragStart(event, ${i})">
-        <strong>${s.intitule}</strong><br>
-        <span class="tag ai">${s.type}</span> <span class="tag">${s.duree_estimee_min} min</span>${(s.niveaux && s.niveaux.length) ? ` <span class="tag">${s.niveaux.join(", ")}</span>` : ""}
-        <div style="margin-top:0.5rem;">
-          <button type="button" class="pill-outline" onclick="Atelier.ajouterProposition(${i})">${libelleAjout}</button>
+  function typeOptions(current){return TYPES.map(x=>`<option value="${x[0]}" ${x[0]===current?"selected":""}>${x[1]}</option>`).join("")}
+
+  function renderSessions(){
+    const box=document.getElementById("session-list");if(!sequence){box.innerHTML="";return}
+    document.getElementById("session-count").textContent=sequence.seances.length+" séance"+(sequence.seances.length>1?"s":"");
+    box.innerHTML=sequence.seances.map((s,i)=>`<article class="session" id="session-card-${i}">
+      <div class="session-head">
+        <div class="session-num">${i+1}</div>
+        <div class="session-main"><strong>${esc(s.titre||"Séance sans titre")}</strong><small>${esc(s.type)} · ${s.duree_estimee_min||45} min</small></div>
+        <div class="session-actions">
+          <button class="icon-btn" onclick="App.moveSession(${i},-1)" title="Monter">↑</button>
+          <button class="icon-btn" onclick="App.moveSession(${i},1)" title="Descendre">↓</button>
+          <button class="icon-btn" onclick="App.toggleSession(${i})">✎</button>
+          <button class="icon-btn" onclick="App.removeSession(${i})">×</button>
         </div>
-      </div>`;
+      </div>
+      <div class="session-body">
+        <div class="session-fields">
+          <div><label>Type</label><select onchange="App.sessionField(${i},'type',this.value);App.renderSessions()">${typeOptions(s.type)}</select></div>
+          <div><label>Durée (min)</label><input type="number" value="${s.duree_estimee_min||45}" onchange="App.sessionField(${i},'duree_estimee_min',Number(this.value))"></div>
+          <div class="full"><label>Titre</label><input value="${esc(s.titre)}" oninput="App.sessionField(${i},'titre',this.value)"></div>
+        </div>
+      </div>
+    </article>`).join("");
+  }
+
+  function toggleSession(i){document.getElementById("session-card-"+i)?.classList.toggle("open")}
+  function sessionField(i,k,v){if(sequence?.seances[i])sequence.seances[i][k]=v}
+  function moveSession(i,dir){
+    const j=i+dir;if(!sequence||j<0||j>=sequence.seances.length)return;
+    [sequence.seances[i],sequence.seances[j]]=[sequence.seances[j],sequence.seances[i]];
+    sequence.seances.forEach((s,k)=>s.numero=k+1);renderSessions();renderDetails();
+  }
+  function removeSession(i){
+    if(!sequence)return;
+    if(sequence.seances.length<=1){alert("Une séquence doit conserver au moins une séance.");return}
+    sequence.seances.splice(i,1);sequence.seances.forEach((s,k)=>s.numero=k+1);
+    document.getElementById("nb-seances").value=sequence.seances.length;renderSessions();renderDetails();
+  }
+
+  function renderDetails(){
+    const box=document.getElementById("detail-list");if(!sequence){box.innerHTML="";return}
+    box.innerHTML=sequence.seances.map((s,i)=>renderDetail(s,i)).join("");
+  }
+
+  function renderDetail(s,i){
+    const phases=s.deroule||[];
+    const phaseRows=phases.map((p,j)=>`<div class="phase-grid">
+      <div><strong>${esc(p.phase)}</strong></div>
+      <div><textarea placeholder="Temps" oninput="App.phaseField(${i},${j},'temps',this.value)">${esc(p.temps)}</textarea></div>
+      <div><textarea placeholder="Modalité + matériel" oninput="App.phaseField(${i},${j},'modalite_materiel',this.value)">${esc(p.modalite_materiel)}</textarea></div>
+      <div><textarea placeholder="Déroulement concret" oninput="App.phaseField(${i},${j},'deroulement',this.value)">${esc(p.deroulement)}</textarea></div>
+      <div><textarea placeholder="Analyse de la tâche : ce que l’élève doit mobiliser" oninput="App.phaseField(${i},${j},'analyse_tache',this.value)">${esc(p.analyse_tache)}</textarea></div>
+      <div><textarea placeholder="Aménagement / différenciation" oninput="App.phaseField(${i},${j},'amenagement',this.value)">${esc(p.amenagement)}</textarea></div>
+      <div><textarea placeholder="Posture de l’enseignant" oninput="App.phaseField(${i},${j},'posture',this.value)">${esc(p.posture)}</textarea></div>
+    </div>`).join("");
+    return `<details class="card" open>
+      <summary><span class="tag accent">${i+1}</span> <strong>${esc(s.titre)}</strong> <span class="tag">${esc(s.type)}</span> <span class="tag">${s.duree_estimee_min||45} min</span></summary>
+      <div style="margin-top:12px">
+        <div class="session-fields">
+          <div><label>Type</label><select onchange="App.sessionField(${i},'type',this.value)">${typeOptions(s.type)}</select></div>
+          <div><label>Durée estimée (min)</label><input type="number" value="${s.duree_estimee_min||45}" onchange="App.sessionField(${i},'duree_estimee_min',Number(this.value))"></div>
+          <div class="full"><label>Titre de la séance</label><input value="${esc(s.titre)}" oninput="App.sessionField(${i},'titre',this.value)"></div>
+          <div><label>Compétence cible</label><textarea oninput="App.sessionField(${i},'competence_cible',this.value)">${esc(s.competence_cible)}</textarea></div>
+          <div><label>Compétences périphériques</label><textarea placeholder="Une par ligne" oninput="App.sessionField(${i},'competences_periph',arr(this.value))">${esc(arr(s.competences_periph).join("\\n"))}</textarea></div>
+          <div><label>Modalités générales</label><textarea placeholder="Travail individuel, groupe, collectif…" oninput="App.sessionField(${i},'modalites_generales',this.value)">${esc(s.modalites_generales)}</textarea></div>
+          <div><label>Niveaux / classe</label><input value="${esc(arr(s.niveaux).join(", "))}" oninput="App.sessionField(${i},'niveaux',this.value.split(',').map(x=>x.trim()).filter(Boolean))"></div>
+          <div class="full"><label>Objectif</label><textarea placeholder="Je veux que les élèves soient capables de…" oninput="App.sessionField(${i},'objectif',this.value)">${esc(s.objectif)}</textarea></div>
+          <div class="full"><label>Problématique pour les élèves</label><textarea placeholder="Est-ce que je peux… ? / Comment… ?" oninput="App.sessionField(${i},'problematique',this.value)">${esc(s.problematique)}</textarea></div>
+          <div><label>Consigne</label><textarea oninput="App.sessionField(${i},'consigne',this.value)">${esc(s.consigne)}</textarea></div>
+          <div><label>Tâche</label><textarea oninput="App.sessionField(${i},'tache',this.value)">${esc(s.tache)}</textarea></div>
+          <div><label>Critères de réussite</label><textarea oninput="App.sessionField(${i},'criteres_reussite',this.value)">${esc(s.criteres_reussite)}</textarea></div>
+          <div><label>Matériel</label><textarea placeholder="Un élément par ligne" oninput="App.sessionField(${i},'materiel',arr(this.value))">${esc(arr(s.materiel).join("\\n"))}</textarea></div>
+          <div class="full"><label>Points de vigilance</label><textarea oninput="App.sessionField(${i},'vigilance',this.value)">${esc(s.vigilance)}</textarea></div>
+        </div>
+        <h4>Déroulé détaillé</h4>
+        <div class="phase-grid header"><div>Phase</div><div>Temps</div><div>Modalité + matériel</div><div>Déroulement</div><div>Analyse de la tâche</div><div>Aménagement</div><div>Posture enseignant</div></div>
+        ${phaseRows}
+        <div class="toolbar"><button class="btn secondary small" onclick="App.addPhase(${i})">+ Ajouter une phase</button><button class="btn small" onclick="App.go(5)">Voir l’aperçu</button></div>
+      </div>
+    </details>`;
+  }
+
+  function phaseField(si,pi,k,v){if(sequence?.seances[si]?.deroule?.[pi])sequence.seances[si].deroule[pi][k]=v}
+  function addPhase(si){sequence.seances[si].deroule.push({phase:"Nouvelle phase",temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""});renderDetails()}
+
+  function go(n){
+    if(n>1&&!sequence){alert("Sélectionnez d’abord une compétence.");return}
+    step=n;
+    document.querySelectorAll(".step-panel").forEach(p=>p.style.display=Number(p.dataset.panel)===n?"block":"none");
+    document.querySelectorAll(".step").forEach(b=>{const x=Number(b.dataset.step);b.classList.toggle("active",x===n);b.classList.toggle("done",x<n)});
+    if(n===2){renderStudents()}
+    if(n===3){renderSessions()}
+    if(n===4){renderDetails()}
+    if(n===5){renderPreview();updatePrompt();updateJson()}
+    window.scrollTo({top:0,behavior:"smooth"});
+  }
+
+  function renderPreview(){
+    const box=document.getElementById("preview");if(!sequence){box.innerHTML="";return}
+    box.innerHTML=`<h3>${esc(sequence.titre)}</h3>
+      <p><span class="tag accent">${esc(sequence.domaine)}</span> ${sequence.classe?`<span class="tag">${esc(sequence.classe)}</span>`:""}</p>
+      <div class="meta-box"><strong>Domaine du socle</strong>${esc(sequence.domaine_socle||"—")}</div>
+      <h4>Compétences travaillées</h4><ul>${arr(sequence.competences_travaillees).map(x=>`<li>${esc(x)}</li>`).join("")||"<li>—</li>"}</ul>
+      <div class="meta-box"><strong>Objectif cœur de cible</strong>${esc(sequence.objectif_coeur_de_cible||"—")}</div>
+      <div class="meta-box" style="margin-top:8px"><strong>Objectif commun</strong>${esc(sequence.objectif_commun||"—")}</div>
+      <h4>Objectifs individuels prioritaires</h4>
+      ${sequence.objectifs_individuels.length?sequence.objectifs_individuels.map(s=>`<p><strong>${esc(s.nom||"Élève")}</strong> — ${esc(s.objectif)}<br><span class="help">Critère : ${esc(s.criteres_reussite)}</span></p>`).join(""):"<p class='help'>Aucun objectif individuel.</p>"}
+      <h4>Progression</h4>
+      ${sequence.seances.map((s,i)=>`<div class="meta-box" style="margin:7px 0"><strong>Séance ${i+1} · ${esc(s.type)} · ${s.duree_estimee_min||45} min</strong>${esc(s.titre)}<br><span class="help">${esc(s.objectif||"Objectif à préciser")}</span></div>`).join("")}`;
+  }
+
+  function tab(which){
+    ["preview","atelier","json"].forEach(x=>{
+      document.getElementById("view-"+x).style.display=x===which?"block":"none";
+      document.getElementById("tab-"+x).classList.toggle("active",x===which);
     });
-    cont.innerHTML = html;
+    if(which==="preview")renderPreview();
+    if(which==="atelier")updatePrompt();
+    if(which==="json")updateJson();
   }
 
-  function ajouterProposition(index) {
-    const mode = document.getElementById("atelier-contexte").value;
-    const s = propositions[index];
-    if (!s) return;
-    if (mode === "competence") {
-      UI.ajouterPropositionASequenceClassique(s);
-    } else {
-      const projet = UI.getProjetCourant();
-      const selectTache = document.getElementById("atelier-select-tache");
-      const tacheId = selectTache ? selectTache.value : null;
-      if (!projet || !tacheId) {
-        alert("Créez d'abord un projet et une tâche dans l'onglet « Mode projet ».");
-        return;
-      }
-      UI.ajouterPropositionATache(s, tacheId);
+  function openAtelier(action){
+    tab("atelier");
+    if(action)document.getElementById("atelier-action").value=action;
+    updatePrompt();
+  }
+
+  function updateSessionSelect(){
+    const s=document.getElementById("atelier-session");
+    s.innerHTML=(sequence?.seances||[]).map((x,i)=>`<option value="${i}">Séance ${i+1} — ${esc(x.titre)}</option>`).join("");
+  }
+
+  function schemaPrompt(){
+    return `{
+  "titre": "…",
+  "domaine_socle": "…",
+  "classe": "…",
+  "competences_travaillees": ["…"],
+  "objectif_coeur_de_cible": "…",
+  "objectif_commun": "…",
+  "references_theoriques": "…",
+  "objectifs_individuels": [
+    {"nom":"…","objectif":"…","criteres_reussite":"…"}
+  ],
+  "seances": [{
+    "numero": 1,
+    "type": "diagnostique|exploration|references|structuration|systematisation|approfondissement|evaluation",
+    "titre": "…",
+    "competence_cible": "…",
+    "competences_periph": ["…"],
+    "modalites_generales": "…",
+    "niveaux": ["…"],
+    "objectif": "Je veux que les élèves soient capables de…",
+    "problematique": "…",
+    "consigne": "…",
+    "tache": "…",
+    "criteres_reussite": "…",
+    "materiel": ["…"],
+    "duree_estimee_min": 45,
+    "deroule": [{
+      "phase":"Présentation",
+      "temps":"5 min",
+      "modalite_materiel":"…",
+      "deroulement":"…",
+      "analyse_tache":"…",
+      "amenagement":"…",
+      "posture":"…"
+    }],
+    "vigilance":"…"
+  }]
+}`;
+  }
+
+  function updatePrompt(){
+    if(!sequence)return;
+    const action=document.getElementById("atelier-action").value;
+    const wrap=document.getElementById("atelier-session-wrap");
+    wrap.style.display=action==="seance"?"block":"none";
+    if(action==="seance")updateSessionSelect();
+    let context=`Compétence principale : ${selected?.intitule||sequence.competence_principale}
+Domaine : ${selected?.domaine||sequence.domaine}
+Niveau/classe : ${sequence.classe||selected?.niveau||"à préciser"}
+Objectif cœur de cible : ${sequence.objectif_coeur_de_cible||"à définir"}
+`;
+    let task="";
+    if(action==="seance"){
+      const i=Number(document.getElementById("atelier-session").value||0),s=sequence.seances[i];
+      task=`\\nSéance à travailler : ${JSON.stringify(s,null,2)}`;
+    }else if(action==="ameliorer"){
+      task=`\\nProgression actuelle : ${JSON.stringify(sequence.seances,null,2)}`;
     }
+    document.getElementById("atelier-prompt").textContent=`Tu es un conseiller pédagogique. Tu produis une proposition directement exploitable par un enseignant.
+
+RÈGLES :
+- Respecte exactement la structure JSON ci-dessous.
+- Ne mets aucun texte avant ou après le JSON.
+- Construis une progression cohérente : diagnostique → exploration → références → structuration → entraînement/systématisation → approfondissement → évaluation lorsque le nombre de séances le permet.
+- Pour chaque séance, rédige des informations concrètes, pas des intitulés génériques.
+- Le déroulé doit expliciter ce que font les élèves et l'enseignant.
+- Chaque ligne du déroulé renseigne : temps, modalité + matériel, déroulement, analyse de la tâche, aménagement/différenciation, posture de l'enseignant.
+- Prends en compte la surcharge cognitive, les aides visuelles, la manipulation, la verbalisation et la progressivité lorsqu'elles sont pertinentes.
+- N'invente pas de référence institutionnelle précise si elle n'est pas fournie.
+- L'objectif et les critères doivent être observables.
+
+CONTEXTE :
+${context}${task}
+
+FORMAT JSON EXACT :
+${schemaPrompt()}`;
   }
 
-  function dragStart(evt, index) {
-    evt.dataTransfer.setData("application/json", JSON.stringify(propositions[index]));
-    evt.dataTransfer.effectAllowed = "copy";
+  function copyPrompt(){
+    navigator.clipboard?.writeText(document.getElementById("atelier-prompt").textContent).then(()=>alert("Prompt copié."));
   }
 
-  return { majContexte, genererPrompt, copierPrompt, analyserReponse, ajouterProposition, dragStart };
+  function extraireJSON(t){
+    let x=t.trim().replace(/```json/gi,"").replace(/```/g,"").trim();
+    const a=x.indexOf("{"),b=x.lastIndexOf("}");
+    if(a<0||b<0)throw new Error("Aucun objet JSON trouvé.");
+    return JSON.parse(x.slice(a,b+1));
+  }
+
+  function normaliserSeance(s,i){
+    const phases=Array.isArray(s.deroule)?s.deroule.map(p=>({
+      phase:p.phase||"Phase",temps:p.temps||"",modalite_materiel:p.modalite_materiel||"",
+      deroulement:p.deroulement||"",analyse_tache:p.analyse_tache||"",
+      amenagement:p.amenagement||"",posture:p.posture||""
+    })):[];
+    return {
+      id:s.id||uid("SEANCE"),numero:i+1,type:s.type||"exploration",titre:s.titre||s.intitule||`Séance ${i+1}`,
+      competence_cible:s.competence_cible||selected?.intitule||"",competences_periph:s.competences_periph||[],
+      modalites_generales:s.modalites_generales||s.modalites||"",niveaux:s.niveaux||[],
+      objectif:s.objectif||"",problematique:s.problematique||"",consigne:s.consigne||"",tache:s.tache||"",
+      criteres_reussite:s.criteres_reussite||"",materiel:s.materiel||[],duree_estimee_min:Number(s.duree_estimee_min)||45,
+      deroule:phases.length?phases:DEFAULT_PHASES.map(p=>({phase:p,temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""})),
+      vigilance:s.vigilance||"",remarques:s.remarques||""
+    };
+  }
+
+  function integrate(obj){
+    if(obj.seances){
+      sequence.titre=obj.titre||sequence.titre;
+      ["domaine_socle","classe","objectif_coeur_de_cible","objectif_commun","references_theoriques"].forEach(k=>{if(obj[k]!==undefined)sequence[k]=obj[k]});
+      if(obj.competences_travaillees)sequence.competences_travaillees=obj.competences_travaillees;
+      if(obj.objectifs_individuels)sequence.objectifs_individuels=obj.objectifs_individuels;
+      sequence.seances=obj.seances.map(normaliserSeance);
+      document.getElementById("nb-seances").value=Math.min(10,sequence.seances.length);
+      setFields();renderSessions();renderDetails();
+      return "Séquence intégrée : "+sequence.seances.length+" séances.";
+    }
+    throw new Error("Le JSON doit contenir une propriété « seances ».");
+  }
+
+  function importAI(){
+    try{
+      const obj=extraireJSON(document.getElementById("atelier-response").value);
+      const msg=integrate(obj);
+      document.getElementById("atelier-result").innerHTML='<div class="status ok">'+esc(msg)+' Vous pouvez maintenant relire et modifier chaque champ.</div>';
+      go(3);
+    }catch(e){document.getElementById("atelier-result").innerHTML='<div class="status" style="color:var(--danger)">Erreur : '+esc(e.message)+'</div>'}
+  }
+
+  function updateJson(){
+    document.getElementById("json-view").textContent=JSON.stringify(sequence||{},null,2);
+  }
+
+  function exporter(){
+    if(!sequence){alert("Aucune séquence à exporter.");return}
+    const blob=new Blob([JSON.stringify(sequence,null,2)],{type:"application/json"});
+    const a=document.createElement("a");a.href=URL.createObjectURL(blob);a.download=(sequence.titre||"sequence").replace(/[^a-z0-9àâçéèêëîïôûùüÿñ -]/gi,"").replace(/\\s+/g,"-")+".json";a.click();setTimeout(()=>URL.revokeObjectURL(a.href),500);
+  }
+
+  function importer(event){
+    const file=event.target.files?.[0];if(!file)return;
+    const r=new FileReader();
+    r.onload=()=>{
+      try{
+        const obj=JSON.parse(r.result);
+        if(!obj.seances)throw new Error("Ce fichier ne contient pas de séquence exploitable.");
+        sequence=obj;
+        selected=refs.find(c=>c.id===sequence.competence_principale)||{id:sequence.competence_principale,intitule:sequence.competences_travaillees?.[0]||"",domaine:sequence.domaine||"",niveau:""};
+        sequence.seances=sequence.seances.map(normaliserSeance);
+        setFields();renderSessions();renderDetails();go(5);
+      }catch(e){alert("Import impossible : "+e.message)}
+    };
+    r.readAsText(file);event.target.value="";
+  }
+
+  return {init,go,filterCompetences,selectCompetence,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer};
 })();
 
-UI.initTabs();
-chargerReferentiel();
-document.addEventListener("DOMContentLoaded", () => {
-  const c = MoteurIA.chargerConfig();
-  document.getElementById("pill-ai-status").classList.toggle("on", MoteurIA.estActif());
-  document.getElementById("pill-ai-status").textContent = MoteurIA.estActif() ? "✨ IA : activée" : "✨ IA : désactivée";
-  document.getElementById("btn-ia-classique").disabled = !MoteurIA.estActif();
-});
+App.init();
 </script>
-
 </body>
 </html>
