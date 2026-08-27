@@ -68,7 +68,7 @@ header.site-header{
 .header-top{
   display:flex;align-items:center;justify-content:space-between;
   max-width:1240px;margin:0 auto;padding:14px 24px;
-  gap:20px;flex-wrap:nowrap;
+  gap:20px;flex-wrap:wrap;
 }
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
 .brand-mark{
@@ -81,10 +81,10 @@ header.site-header{
 .brand-text{display:flex;flex-direction:column;line-height:1.15;}
 .brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
 .brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
-nav.main-nav{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;-webkit-overflow-scrolling:touch;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;}
 nav.main-nav a{
   color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;
-  padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;flex-shrink:0;
+  padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;
 }
 nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
 nav.main-nav a.nav-programmation{
@@ -430,10 +430,6 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
       <a href="Programmation/generateur-sequences-projet.html">Générateur de séquences</a>
       <a href="fata-morgana/coffre.html" class="nav-coffre">🔒 Coffre confidentiel</a>
     </nav>
-    <div class="header-actions">
-      <div class="level-pill" id="headerLevelPill" role="group" aria-label="Changer de niveau"></div>
-      <button class="btn-ghost-header" id="headerSearchBtn">Rechercher</button>
-    </div>
   </div>
 </header>
 
@@ -778,27 +774,6 @@ window.addEventListener("error", e=>{
   /* buildFiches conservé uniquement comme repère historique. */
   const state = { niveau: null, domaine: null, sousDomaine: null, query: "", view: "grid" };
 
-  // ---------- Header level pill ----------
-  const headerPill = document.getElementById('headerLevelPill');
-  ["Tous", ...REFERENTIEL.niveaux].forEach(n=>{
-    const b = document.createElement('button');
-    b.textContent = n === "Tous" ? "Tous" : n;
-    b.className = (state.niveau===null && n==="Tous") ? "active" : "";
-    b.addEventListener('click', ()=>{ setNiveau(n==="Tous"?null:n); });
-    headerPill.appendChild(b);
-  });
-  function syncHeaderPill(){
-    [...headerPill.children].forEach(btn=>{
-      const isTous = btn.textContent==="Tous";
-      btn.classList.toggle('active', isTous ? state.niveau===null : btn.textContent===state.niveau);
-    });
-  }
-
-  document.getElementById('headerSearchBtn').addEventListener('click', ()=>{
-    document.getElementById('mainSearch').focus();
-    window.scrollTo({top:0,behavior:'smooth'});
-  });
-
   // ---------- Hero quicklinks ----------
   const quickWrap = document.getElementById('quickDomainLinks');
   REFERENTIEL.domaines.forEach(dom=>{
@@ -1112,7 +1087,6 @@ window.addEventListener("error", e=>{
 
   // ---------- Sync ----------
   function syncAll(){
-    syncHeaderPill();
     renderNiveauFilter();
     renderDomaineFilter();
     renderSousDomaineFilter();
