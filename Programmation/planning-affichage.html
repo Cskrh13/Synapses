@@ -73,6 +73,9 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
 .drawer-manual{margin-top:18px;padding-top:16px;border-top:1px solid var(--line);}
 .drawer-manual select{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px;font-size:13.5px;}
 .drawer-manual .btn{margin-top:8px;border:1px solid var(--accent-sky);background:var(--accent-sky);color:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;}
+.nav-index-link{margin-right:auto;font-weight:700;}
+.usb-card code{font-family:"IBM Plex Mono",monospace;font-size:.9em;}
+
 </style>
 </head>
 <body>
@@ -84,6 +87,7 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
       <div class="brand-text">Synapses</div>
     </a>
     <nav class="pl-nav">
+      <a href="../index.html" class="nav-index-link">Accueil</a>
       <a href="planning-gestion.html">Planning — Gestion</a>
       <a href="planning-affichage.html" class="active">Planning — Affichage</a>
       <a href="sequences.html">Séquences &amp; séances</a>
@@ -92,6 +96,21 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
 </header>
 
 <main>
+
+  <section class="card usb-card" style="margin-bottom:16px;">
+    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
+      <div>
+        <h2 style="margin:0 0 4px;">Clé USB</h2>
+        <p class="hint" style="margin:0;">
+          Le planning peut être lu depuis <code>planning/planning.json</code>.
+        </p>
+      </div>
+      <button class="btn" id="btn-usb-connect">Connecter la clé USB</button>
+      <button class="btn primary" id="btn-usb-load" disabled>Charger le planning</button>
+      <span id="usb-status" class="hint">Aucune clé connectée.</span>
+    </div>
+  </section>
+
   <div class="eyebrow">Dimension temporelle</div>
   <h1 style="font-size:24px;margin:6px 0 18px;">Planning de la semaine</h1>
 
@@ -331,6 +350,37 @@ $("next-week").addEventListener("click", ()=>{ if(semaineIdx<semaines.length-1){
   }catch(e){ /* le planning reste affichable, sans détail de séance */ }
   renderSemaine();
 })();
+
+// ------------------------- Clé USB -------------------------
+const usbConnectBtn = document.getElementById("btn-usb-connect");
+const usbLoadBtn = document.getElementById("btn-usb-load");
+const usbStatus = document.getElementById("usb-status");
+
+if (usbConnectBtn) usbConnectBtn.addEventListener("click", async ()=>{
+  try{
+    await PC.connecterDossierUSB();
+    usbStatus.textContent = "Dossier USB connecté.";
+    usbLoadBtn.disabled = false;
+  }catch(e){
+    usbStatus.textContent = e.name === "AbortError"
+      ? "Sélection annulée."
+      : "Connexion impossible : " + e.message;
+  }
+});
+
+if (usbLoadBtn) usbLoadBtn.addEventListener("click", async ()=>{
+  try{
+    const paquet = await PC.chargerPlanningUSB();
+    if (paquet.config) PC.sauverConfig(paquet.config);
+    if (paquet.grilles) PC.sauverGrilles(paquet.grilles);
+    if (paquet.affectations) PC.sauverAffectations(paquet.affectations);
+    usbStatus.textContent = "Planning chargé depuis la clé USB.";
+    location.reload();
+  }catch(e){
+    usbStatus.textContent = "Chargement impossible : " + e.message;
+  }
+});
+
 </script>
 </body>
 </html>
