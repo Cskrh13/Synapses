@@ -38,7 +38,8 @@ input{width:280px;padding:8px 10px}
 .dashSample{width:24px;height:0;border-top:2px dashed #a97d22;display:inline-block}
 .navrow{margin:6px 0;font-size:11px;color:#58636d}
 .bottom{position:absolute;z-index:12;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid #d8dde2;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(24,40,55,.09);backdrop-filter:blur(8px)}
-.bottom button{font-size:18px;line-height:1;padding:3px 8px;border:0;background:transparent}
+.bottom button{font-size:18px;line-height:1;padding:3px 8px;border:0;background:transparent;border-radius:3px}
+.bottom button.active{background:#f3ead2;color:#755411}
 #zoomRange{width:130px}
 #relationMenu{position:absolute;z-index:13;left:50%;bottom:62px;transform:translateX(-50%);display:none;gap:6px;padding:7px;border:1px solid #d8dde2;background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(24,40,55,.12);backdrop-filter:blur(8px)}
 #relationMenu.open{display:flex}
@@ -113,6 +114,7 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
   <button id="minus" title="Zoom arrière">−</button>
   <input id="zoomRange" type="range" min="0.055" max="2.4" step="0.005" value="0.62" aria-label="Zoom">
   <button id="plus" title="Zoom avant">+</button>
+  <button id="rotateToggle" title="Activer/désactiver la rotation automatique">⟳</button>
   <button id="fullscreen" title="Plein écran">⛶</button>
 </div>
 
@@ -165,8 +167,8 @@ const state = {
   levels:new Set(LEVEL_ORDER), domains:new Set(),
   search:"", selected:null, hover:null,
   yaw:0.28, pitch:-0.12, zoom:.62,
-  minZoom:.055, maxZoom:2.4, openingSpin:true, openingSpinTimer:null,
-  autoRotate:true,
+  minZoom:.055, maxZoom:2.4, openingSpin:false, openingSpinTimer:null,
+  autoRotate:false,
   relationMode:null, relationNodes:new Set(), relationLinks:new Set(),
   panX:0, panY:0,
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
@@ -769,15 +771,26 @@ $("showImmediatePre").onclick=()=>showRelations("immediate");
 $("showAncestors").onclick=()=>showRelations("ancestors");
 $("clearRelations").onclick=()=>showRelations(null);
 window.addEventListener("resize",draw);
+let rotateRAF=null;
 function autoRotateLoop(){
-  if(state.autoRotate && !state.dragging){
+  if(!state.autoRotate){ rotateRAF=null; return; }
+  if(!state.dragging){
     state.yaw+=0.0022;
     draw();
   }
-  requestAnimationFrame(autoRotateLoop);
+  rotateRAF=requestAnimationFrame(autoRotateLoop);
 }
+function setAutoRotate(on){
+  state.autoRotate=on;
+  $("rotateToggle").classList.toggle("active",on);
+  if(on && rotateRAF===null) rotateRAF=requestAnimationFrame(autoRotateLoop);
+}
+$("rotateToggle").onclick=()=>setAutoRotate(!state.autoRotate);
+// La rotation automatique se coupe dès que l'utilisateur interagit avec la scène.
+canvas.addEventListener("pointerdown",()=>{ if(state.autoRotate) setAutoRotate(false); });
+canvas.addEventListener("wheel",()=>{ if(state.autoRotate) setAutoRotate(false); },{passive:true});
 
-loadData().then(()=>autoRotateLoop());
+loadData().then(()=>draw());
 </script>
 </body>
 </html>
