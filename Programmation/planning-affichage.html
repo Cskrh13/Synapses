@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<!-- SYNAPSES-AUTHOR: Cskrh13 / Vincent | © 2026 -->
+<meta name="author" content="Cskrh13 / Vincent">
+<meta name="copyright" content="© 2026 Cskrh13 / Vincent — Synapses">
+<meta name="application-name" content="Synapses">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Planning — Affichage</title>
@@ -76,6 +80,19 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
 .nav-index-link{margin-right:auto;font-weight:700;}
 .usb-card code{font-family:"IBM Plex Mono",monospace;font-size:.9em;}
 
+
+.synapses-footer {
+    margin-top: 40px;
+    padding: 18px 24px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+}
+.synapses-footer div:first-child {
+    font-weight: 600;
+    letter-spacing: .04em;
+}
 </style>
 </head>
 <body>
@@ -137,6 +154,23 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
 
 <script src="planning-core.js"></script>
 <script>
+/* =========================================================
+   SYNAPSES — AUTHOR MARKER
+   Project: Grand Planificateur pédagogique
+   Author: Cskrh13 / Vincent
+   Copyright: © 2026
+   Version: 0.9.0-test
+   Build: 2026-08-27
+   ========================================================= */
+
+const SYNAPSES_BUILD = {
+    project: "Synapses",
+    author: "Cskrh13",
+    year: 2026,
+    version: "0.9.0-test",
+    build: "2026-08-27"
+};
+
 "use strict";
 const PC = window.PlanningCore;
 const $ = id => document.getElementById(id);
@@ -382,5 +416,10 @@ if (usbLoadBtn) usbLoadBtn.addEventListener("click", async ()=>{
 });
 
 </script>
+
+<footer class="synapses-footer">
+    <div>Synapses — Grand Planificateur pédagogique</div>
+    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
+</footer>
 </body>
 </html>
