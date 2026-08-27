@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="fr">
 <head>
+<!-- SYNAPSES-AUTHOR: Cskrh13 / Vincent | © 2026 -->
+<meta name="author" content="Cskrh13 / Vincent">
+<meta name="copyright" content="© 2026 Cskrh13 / Vincent — Synapses">
+<meta name="application-name" content="Synapses">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cartographie des compétences — Synapses</title>
@@ -59,6 +63,19 @@ input{width:280px;padding:8px 10px}
 #error{display:none;position:absolute;z-index:40;left:50%;top:50%;transform:translate(-50%,-50%);width:min(700px,90vw);padding:20px;background:white;border:1px solid #c9d0d6;box-shadow:0 20px 60px rgba(0,0,0,.15)}
 #error h2{margin:0 0 10px}.errorText{white-space:pre-wrap;font:12px/1.5 Consolas,monospace;color:#7a2e2e}
 @media(max-width:900px){header{left:12px}.toolbar{left:12px;right:12px;top:74px}.toolbar input{width:210px}#help{display:none}#legend{right:12px;bottom:70px}.bottom{bottom:7px}#panel{right:10px;top:135px}}
+
+.synapses-footer {
+    margin-top: 40px;
+    padding: 18px 24px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--muted);
+    border-top: 1px solid var(--line);
+}
+.synapses-footer div:first-child {
+    font-weight: 600;
+    letter-spacing: .04em;
+}
 </style>
 </head>
 <body>
@@ -125,6 +142,23 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
 </div>
 
 <script>
+/* =========================================================
+   SYNAPSES — AUTHOR MARKER
+   Project: Grand Planificateur pédagogique
+   Author: Cskrh13 / Vincent
+   Copyright: © 2026
+   Version: 0.9.0-test
+   Build: 2026-08-27
+   ========================================================= */
+
+const SYNAPSES_BUILD = {
+    project: "Synapses",
+    author: "Cskrh13",
+    year: 2026,
+    version: "0.9.0-test",
+    build: "2026-08-27"
+};
+
 "use strict";
 
 /* =========================================================
@@ -905,5 +939,10 @@ canvas.addEventListener("wheel",()=>{ if(state.autoRotate) setAutoRotate(false);
 
 loadData().then(()=>draw());
 </script>
+
+<footer class="synapses-footer">
+    <div>Synapses — Grand Planificateur pédagogique</div>
+    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
+</footer>
 </body>
 </html>
