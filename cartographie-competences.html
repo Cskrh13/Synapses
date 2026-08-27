@@ -172,7 +172,8 @@ const state = {
   relationMode:null, relationNodes:new Set(), relationLinks:new Set(),
   panX:0, panY:0,
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
-  sphereR:340, sphereSpacing:600, spiralRadius:850, spiralRise:190, spiralTurns:1.35,
+  sphereR:340, sphereSpacing:600, spiralRadiusBase:850, spiralRiseBase:190, spiralTurns:1.35,
+  sphereRByLevel:{}, sphereScaleFactor:1,
   projected:[],
   viewMode:"global", // "global" | "niveau" | "competence"
   focusLevel:null
@@ -311,6 +312,9 @@ function fibonacciPoint(i,n,r){
   const a=golden*i;
   return {x:Math.cos(a)*rr*r,y:y*r,z:Math.sin(a)*rr*r};
 }
+function sphereRadiusFor(level){
+  return state.sphereRByLevel[level] || state.sphereR;
+}
 function sphereCenter(level){
   const i=LEVEL_ORDER.indexOf(normalizeLevel(level));
   const count=LEVEL_ORDER.length;
@@ -318,25 +322,51 @@ function sphereCenter(level){
 
   // Spirale ascendante : TPS → 6e.
   // Le rayon augmente légèrement et chaque niveau gagne de la hauteur.
+  // L'ensemble s'agrandit automatiquement si les sphères contiennent
+  // beaucoup d'éléments (state.sphereScaleFactor), pour garder de l'espace entre elles.
   const t=count<=1?0:safe/(count-1);
   const angle=(-Math.PI/2) + t*Math.PI*2*state.spiralTurns;
-  const radius=state.spiralRadius*(0.72+0.28*t);
+  const radius=state.spiralRadiusBase*state.sphereScaleFactor*(0.72+0.28*t);
 
   return {
     x:Math.cos(angle)*radius,
-    y:(0.5-t)*state.spiralRise*count,
+    y:(0.5-t)*state.spiralRiseBase*state.sphereScaleFactor*count,
     z:Math.sin(angle)*radius
   };
+}
+/* ---------- Taille des sphères adaptée à leur contenu ---------- */
+function computeSphereSizing(comps){
+  const counts={};
+  for(const level of LEVEL_ORDER) counts[level]=0;
+  for(const c of comps) counts[normalizeLevel(c.niveau)]=(counts[normalizeLevel(c.niveau)]||0)+1;
+  for(const s of state.sequences){
+    const level=normalizeLevel(s.niveau);
+    counts[level]=(counts[level]||0)+1+(s.seances?.length||0);
+  }
+  const rByLevel={};
+  for(const level of LEVEL_ORDER){
+    const n=counts[level]||0;
+    // Base généreuse + croissance douce avec le nombre d'éléments,
+    // plafonnée pour rester manipulable même avec beaucoup de contenu.
+    rByLevel[level]=Math.max(190,Math.min(820,150+34*Math.sqrt(n)));
+  }
+  state.sphereRByLevel=rByLevel;
+  const maxR=Math.max(...Object.values(rByLevel));
+  // Facteur d'espacement global : plus les plus grosses sphères sont grandes,
+  // plus elles sont éloignées les unes des autres sur la spirale.
+  state.sphereScaleFactor=Math.max(1,maxR/340);
 }
 function buildGraph(){
   state.nodes=[]; state.links=[];
   const comps=state.compData.competences;
+  computeSphereSizing(comps);
 
   for(const level of LEVEL_ORDER){
     const group=comps.filter(c=>normalizeLevel(c.niveau)===level);
     const center=sphereCenter(level);
+    const r=sphereRadiusFor(level);
     group.forEach((c,i)=>{
-      const p=fibonacciPoint(i,group.length,state.sphereR*.76);
+      const p=fibonacciPoint(i,group.length,r*.76);
       state.nodes.push({
         id:"c:"+c.id,type:"competence",ref:c.id,label:c.intitule,
         niveau:normalizeLevel(c.niveau),domaine_id:c.domaine_id,discipline:c.discipline,
@@ -355,6 +385,7 @@ function buildGraph(){
   }
   for(const [level,group] of seqGroups){
     const center=sphereCenter(level);
+    const r=sphereRadiusFor(level);
     group.forEach((s,i)=>{
       const linked=extractExactCompetenceId(s);
       let pos;
@@ -362,7 +393,7 @@ function buildGraph(){
       if(target){
         pos={x:target.x+35+(i%3)*14,y:target.y+30,z:target.z+18};
       }else{
-        const p=fibonacciPoint(i,Math.max(1,group.length),state.sphereR*.9);
+        const p=fibonacciPoint(i,Math.max(1,group.length),r*.9);
         pos={x:center.x+p.x,y:center.y+p.y,z:center.z+p.z};
       }
       state.nodes.push({
@@ -452,8 +483,7 @@ function projectPoint(p){
 }
 function sphereProjection(level){
   const p=projectPoint(sphereCenter(level));
-  const factor=1;
-  return {...p,r:state.sphereR*factor*p.scale};
+  return {...p,r:sphereRadiusFor(level)*p.scale};
 }
 function drawSphere(ctx,s,label){
   const {x,y,r}=s;
