@@ -12036,7 +12036,11 @@
         "Mémoriser progressivement les mots fréquents et réguliers.",
         "Automatiser progressivement le décodage pour accéder à une lecture plus fluide."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_oral_vers_ecrit_habiletes_phonologiques_gs_04",
+        "c1_oral_vers_ecrit_connaitre_le_son_des_lettres_gs_02",
+        "c1_oral_vers_ecrit_connaitre_le_nom_des_lettres_gs_01"
+      ],
       "mots_cles": [
         "décodage",
         "encodage",
@@ -12097,7 +12101,8 @@
         "Appuyer la compréhension sur le vocabulaire, la syntaxe et les connaissances construites à l'oral."
       ],
       "prerequis_competences": [
-        "oral_ecouter"
+        "oral_ecouter",
+        "c1_culture_de_l_ecrit_comprendre_des_textes_lus_gs_02"
       ],
       "mots_cles": [
         "compréhension",
@@ -12156,7 +12161,9 @@
         "Apprendre à les enchaîner avec fluidité dans des syllabes, des mots et des phrases."
       ],
       "prerequis_competences": [
-        "lecture_identifier_mots"
+        "lecture_identifier_mots",
+        "c1_ecriture_apprendre_le_geste_d_ecriture_gs_03",
+        "c1_ecriture_apprendre_le_geste_d_ecriture_gs_04"
       ],
       "mots_cles": [
         "cursive",
@@ -12187,7 +12194,9 @@
       ],
       "prerequis_competences": [
         "lecture_identifier_mots",
-        "ecriture_cursive"
+        "ecriture_cursive",
+        "c1_ecriture_produire_de_premiers_ecrits_gs_04",
+        "c1_ecriture_produire_de_premiers_ecrits_gs_05"
       ],
       "mots_cles": [
         "encodage",
@@ -12216,7 +12225,8 @@
         "Développer progressivement exactitude, mémorisation et efficacité."
       ],
       "prerequis_competences": [
-        "ecriture_cursive"
+        "ecriture_cursive",
+        "c1_ecriture_apprendre_le_geste_d_ecriture_gs_01"
       ],
       "mots_cles": [
         "copie",
@@ -12247,7 +12257,9 @@
       ],
       "prerequis_competences": [
         "oral_dire",
-        "ecriture_encoder_dictee"
+        "ecriture_encoder_dictee",
+        "c1_ecriture_produire_de_premiers_ecrits_gs_06",
+        "c1_ecriture_produire_de_premiers_ecrits_gs_03"
       ],
       "mots_cles": [
         "production d'écrits",
@@ -12305,7 +12317,9 @@
         "Tenir compte de son auditoire pour être compris."
       ],
       "prerequis_competences": [
-        "oral_ecouter"
+        "oral_ecouter",
+        "c1_langage_oral_produire_des_discours_varies_gs_01",
+        "c1_langage_oral_produire_des_discours_varies_gs_02"
       ],
       "mots_cles": [
         "expression orale",
@@ -12336,7 +12350,8 @@
       ],
       "prerequis_competences": [
         "oral_ecouter",
-        "oral_dire"
+        "oral_dire",
+        "c1_langage_oral_produire_des_discours_varies_gs_03"
       ],
       "mots_cles": [
         "échanges",
@@ -12364,7 +12379,10 @@
         "Être sensible à la polysémie et à la différence entre sens propre et sens figuré.",
         "Commencer à mobiliser l'ordre alphabétique pour utiliser un dictionnaire adapté."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_langage_oral_enrichir_son_vocabulaire_gs_01",
+        "c1_langage_oral_enrichir_son_vocabulaire_gs_03"
+      ],
       "mots_cles": [
         "lexique",
         "polysémie",
@@ -12392,7 +12410,8 @@
         "Trouver des synonymes et des antonymes."
       ],
       "prerequis_competences": [
-        "vocabulaire_enrichir"
+        "vocabulaire_enrichir",
+        "c1_langage_oral_enrichir_son_vocabulaire_gs_04"
       ],
       "mots_cles": [
         "catégorisation",
@@ -12451,7 +12470,8 @@
         "Mobiliser les connaissances acquises lors des activités d'écriture et de dictée."
       ],
       "prerequis_competences": [
-        "vocabulaire_enrichir"
+        "vocabulaire_enrichir",
+        "c1_ecriture_produire_de_premiers_ecrits_gs_05"
       ],
       "mots_cles": [
         "orthographe lexicale",
@@ -12481,7 +12501,9 @@
         "Reconnaître les formes négative et exclamative.",
         "Constituer des corpus par classe de mots : noms, verbes, déterminants, adjectifs et pronoms personnels."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_langage_oral_developper_sa_syntaxe_gs_03"
+      ],
       "mots_cles": [
         "phrase",
         "ponctuation",
@@ -12540,7 +12562,11 @@
         "Comprendre les relations entre dizaines et unités.",
         "Utiliser différentes représentations d'un même nombre et décomposer les nombres."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_mathematiques_nombre_quantite_et_cardinalite_gs_09",
+        "c1_mathematiques_nombre_quantite_et_cardinalite_gs_10",
+        "c1_mathematiques_nombre_quantite_et_cardinalite_gs_11"
+      ],
       "mots_cles": [
         "nombres",
         "numération",
@@ -12570,7 +12596,9 @@
         "Découvrir des situations relevant de la multiplication et du partage selon la progression du programme."
       ],
       "prerequis_competences": [
-        "math_nombres_entiers"
+        "math_nombres_entiers",
+        "c1_mathematiques_resoudre_des_problemes_gs_02",
+        "c1_mathematiques_resoudre_des_problemes_gs_05"
       ],
       "mots_cles": [
         "addition",
@@ -12600,7 +12628,9 @@
         "Automatiser progressivement des résultats simples et des relations numériques utiles."
       ],
       "prerequis_competences": [
-        "math_nombres_entiers"
+        "math_nombres_entiers",
+        "c1_mathematiques_nombre_quantite_et_cardinalite_gs_07",
+        "c1_mathematiques_nombre_quantite_et_cardinalite_gs_08"
       ],
       "mots_cles": [
         "calcul mental",
@@ -12630,7 +12660,8 @@
       ],
       "prerequis_competences": [
         "math_nombres_entiers",
-        "math_faits_numeriques"
+        "math_faits_numeriques",
+        "c1_mathematiques_nombre_rang_et_position_gs_03"
       ],
       "mots_cles": [
         "numération",
@@ -12693,7 +12724,8 @@
       ],
       "prerequis_competences": [
         "math_nombres_entiers",
-        "math_operations"
+        "math_operations",
+        "c1_mathematiques_resoudre_des_problemes_gs_01"
       ],
       "mots_cles": [
         "problèmes",
@@ -12723,7 +12755,11 @@
         "Mesurer et reporter des longueurs dans des situations adaptées.",
         "Utiliser progressivement les unités et instruments de mesure étudiés."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_mathematiques_grandeurs_longueur_et_masse_gs_01",
+        "c1_mathematiques_grandeurs_longueur_et_masse_gs_02",
+        "c1_mathematiques_grandeurs_longueur_et_masse_gs_03"
+      ],
       "mots_cles": [
         "longueur",
         "mesure",
@@ -12750,7 +12786,10 @@
         "Estimer et vérifier des masses à l'aide d'outils adaptés.",
         "Donner du sens aux unités de masse étudiées."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_mathematiques_grandeurs_longueur_et_masse_gs_04",
+        "c1_mathematiques_grandeurs_longueur_et_masse_gs_05"
+      ],
       "mots_cles": [
         "masse",
         "pesée",
@@ -12807,7 +12846,11 @@
         "Utiliser des outils de repérage temporel adaptés au CP.",
         "Ordonner des événements et mobiliser le vocabulaire temporel."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_temps_reperes_temporels_gs_03",
+        "c1_temps_chronologie_gs_01",
+        "c1_temps_duree_gs_02"
+      ],
       "mots_cles": [
         "temps",
         "chronologie",
@@ -12834,7 +12877,9 @@
         "Décrire des solides à partir de caractéristiques simples.",
         "Manipuler et représenter des objets de l'espace."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_mathematiques_solides_et_formes_planes_gs_01"
+      ],
       "mots_cles": [
         "solides",
         "cube",
@@ -12862,7 +12907,11 @@
         "Utiliser le vocabulaire géométrique étudié.",
         "Manipuler les instruments et réaliser des tracés ou constructions adaptés au niveau."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_mathematiques_solides_et_formes_planes_gs_02",
+        "c1_mathematiques_solides_et_formes_planes_gs_03",
+        "c1_mathematiques_solides_et_formes_planes_gs_05"
+      ],
       "mots_cles": [
         "géométrie",
         "figures planes",
@@ -12889,7 +12938,11 @@
         "Utiliser un vocabulaire spatial précis.",
         "Décrire des positions et des déplacements dans des situations adaptées."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_espace_representer_l_espace_gs_01",
+        "c1_espace_representer_l_espace_gs_04",
+        "c1_espace_representer_l_espace_gs_06"
+      ],
       "mots_cles": [
         "espace",
         "position",
@@ -12947,7 +13000,9 @@
         "Consolider sa confiance en soi.",
         "Acquérir progressivement une estime de soi."
       ],
-      "prerequis_competences": [],
+      "prerequis_competences": [
+        "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_gs_01"
+      ],
       "mots_cles": [
         "émotions",
         "sentiments",
@@ -12979,7 +13034,9 @@
         "Écouter les autres et poser des questions pertinentes."
       ],
       "prerequis_competences": [
-        "emc_connaissance_maitrise_soi"
+        "emc_connaissance_maitrise_soi",
+        "c1_evar_rencontrer_les_autres_et_construire_des_relations_gs_01",
+        "c1_evar_rencontrer_les_autres_et_construire_des_relations_gs_02"
       ],
       "mots_cles": [
         "empathie",
@@ -13012,7 +13069,8 @@
         "Comprendre le respect dû à l'environnement et au vivant à partir des règles collectives."
       ],
       "prerequis_competences": [
-        "emc_connaissance_maitrise_soi"
+        "emc_connaissance_maitrise_soi",
+        "c1_evar_trouver_sa_place_dans_la_societe_gs_02"
       ],
       "mots_cles": [
         "règles",
@@ -13044,7 +13102,8 @@
         "Respecter l'intégrité et l'intimité des autres."
       ],
       "prerequis_competences": [
-        "emc_connaissance_maitrise_soi"
+        "emc_connaissance_maitrise_soi",
+        "c1_evar_se_connaitre_vivre_et_grandir_avec_son_corps_gs_02"
       ],
       "mots_cles": [
         "intégrité",
