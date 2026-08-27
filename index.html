@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="fr">
 <head>
+<!-- SYNAPSES-AUTHOR: Cskrh13 / Vincent | © 2026 -->
+<meta name="author" content="Cskrh13 / Vincent">
+<meta name="copyright" content="© 2026 Cskrh13 / Vincent — Synapses">
+<meta name="application-name" content="Synapses">
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Référentiel des compétences — Programmes scolaires</title>
@@ -405,6 +409,19 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
   .comp-list-row{grid-template-columns:1fr;gap:4px;}
   .comp-list-row .clr-meta{display:flex;gap:8px;}
 }
+
+.synapses-footer {
+    margin-top: 40px;
+    padding: 18px 24px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+}
+.synapses-footer div:first-child {
+    font-weight: 600;
+    letter-spacing: .04em;
+}
 </style>
 </head>
 <body>
@@ -639,6 +656,23 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 </footer>
 
 <script>
+/* =========================================================
+   SYNAPSES — AUTHOR MARKER
+   Project: Grand Planificateur pédagogique
+   Author: Cskrh13 / Vincent
+   Copyright: © 2026
+   Version: 0.9.0-test
+   Build: 2026-08-27
+   ========================================================= */
+
+const SYNAPSES_BUILD = {
+    project: "Synapses",
+    author: "Cskrh13",
+    year: 2026,
+    version: "0.9.0-test",
+    build: "2026-08-27"
+};
+
 /* ============================================================
    RÉFÉRENTIEL DYNAMIQUE
    Les compétences sont chargées depuis Programmation/data/competences.json.
@@ -1285,5 +1319,10 @@ window.addEventListener("error", e=>{
   handleRoute();
 })();
 </script>
+
+<footer class="synapses-footer">
+    <div>Synapses — Grand Planificateur pédagogique</div>
+    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
+</footer>
 </body>
 </html>
