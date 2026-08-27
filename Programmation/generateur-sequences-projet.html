@@ -1,0 +1,1201 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Générateur de séquences & Mode projet — Portail non institutionnel</title>
+<style>
+  :root {
+    --navy: #182543;
+    --navy-2: #1f2f54;
+    --navy-soft: #2c4160;
+    --blue-pill: #4a6fa8;
+    --blue-pill-dark: #3b5c8f;
+    --bg: #eef0ee;
+    --card: #ffffff;
+    --line: #e2e4e0;
+    --ink: #182543;
+    --ink-soft: #5b6472;
+    --muted: #7a8290;
+    --accent: #c9622f;
+    --accent-soft: #f6e2d2;
+    --ok: #3f7a5c;
+    --warn: #b3542e;
+    --ai: #6a4fc9;
+    --ai-soft: #ece6fb;
+    --font-serif: Georgia, "Times New Roman", serif;
+    --font-sans: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    --font-mono: "Courier New", Consolas, monospace;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: var(--font-sans);
+    line-height: 1.5;
+  }
+
+  /* ---------- HEADER (DA portail) ---------- */
+  header.topbar {
+    background: var(--navy);
+    color: #fff;
+    padding: 1.25rem 2rem 1.5rem 2rem;
+    border-bottom: 3px solid var(--blue-pill);
+  }
+  .brand-row {
+    display: flex;
+    align-items: center;
+    gap: 0.9rem;
+    margin-bottom: 1.1rem;
+  }
+  .brand-badge {
+    background: var(--blue-pill);
+    color: #fff;
+    font-family: var(--font-serif);
+    font-weight: 700;
+    font-size: 1.1rem;
+    width: 42px;
+    height: 42px;
+    border-radius: 9px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    letter-spacing: 0.02em;
+  }
+  .brand-text .eyebrow {
+    font-family: var(--font-mono);
+    font-size: 0.7rem;
+    letter-spacing: 0.12em;
+    color: #a9b6cc;
+    text-transform: uppercase;
+  }
+  .brand-text h1 {
+    margin: 0.15rem 0 0 0;
+    font-size: 1.25rem;
+    font-weight: 700;
+  }
+  .pillbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 0.6rem;
+  }
+  .pill {
+    border: 1px solid rgba(255,255,255,0.35);
+    background: transparent;
+    color: #fff;
+    padding: 0.45rem 1rem;
+    border-radius: 999px;
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    white-space: nowrap;
+  }
+  .pill:hover { background: rgba(255,255,255,0.08); }
+  .pill.filled {
+    background: #fff;
+    color: var(--navy);
+    border-color: #fff;
+  }
+  .pill.accent {
+    background: var(--blue-pill);
+    border-color: var(--blue-pill);
+    color: #fff;
+  }
+  .pill.accent:hover { background: var(--blue-pill-dark); }
+  .pill.disabled {
+    opacity: 0.55;
+    cursor: default;
+  }
+  .pill.ai-status {
+    border-color: var(--ai);
+  }
+  .pill.ai-status.on {
+    background: var(--ai);
+    border-color: var(--ai);
+  }
+
+  /* ---------- MAIN LAYOUT ---------- */
+  main {
+    padding: 2rem;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .breadcrumb {
+    font-family: var(--font-mono);
+    font-size: 0.78rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 0.6rem;
+  }
+  h2.page-title {
+    font-family: var(--font-serif);
+    font-size: 2.1rem;
+    margin: 0 0 0.5rem 0;
+    color: var(--ink);
+  }
+  p.page-lede {
+    color: var(--ink-soft);
+    max-width: 640px;
+    margin: 0 0 1.5rem 0;
+  }
+
+  nav.tabs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    margin-bottom: 1.75rem;
+  }
+  nav.tabs button {
+    background: var(--bg);
+    border: 1px solid var(--navy);
+    color: var(--navy);
+    padding: 0.55rem 1.1rem;
+    border-radius: 999px;
+    font-weight: 700;
+    font-size: 0.85rem;
+    cursor: pointer;
+  }
+  nav.tabs button.active {
+    background: var(--navy);
+    color: #fff;
+  }
+  nav.tabs button.tab-ai {
+    border-color: var(--ai);
+    color: var(--ai);
+  }
+  nav.tabs button.tab-ai.active {
+    background: var(--ai);
+    color: #fff;
+  }
+
+  section.panel { display: none; }
+  section.panel.active { display: block; }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 1.4rem 1.6rem;
+    margin-bottom: 1.4rem;
+    box-shadow: 0 1px 2px rgba(20,30,50,0.04);
+  }
+  .card.accented { border-left: 5px solid var(--accent); }
+  .card.ai-accented { border-left: 5px solid var(--ai); }
+
+  .card h3 {
+    font-family: var(--font-serif);
+    margin-top: 0;
+    font-size: 1.15rem;
+    border-bottom: 1px solid var(--line);
+    padding-bottom: 0.6rem;
+  }
+  label {
+    display: block;
+    font-weight: 700;
+    font-size: 0.8rem;
+    margin: 0.8rem 0 0.3rem 0;
+    color: var(--ink-soft);
+  }
+  input[type=text], input[type=password], select, textarea {
+    width: 100%;
+    padding: 0.55rem 0.7rem;
+    border: 1px solid var(--line);
+    border-radius: 6px;
+    font-family: var(--font-sans);
+    font-size: 0.9rem;
+    background: #fbfbfa;
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--blue-pill);
+  }
+
+  button.action {
+    background: var(--navy);
+    color: #fff;
+    border: none;
+    padding: 0.65rem 1.2rem;
+    border-radius: 999px;
+    font-weight: 700;
+    cursor: pointer;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+    font-size: 0.88rem;
+  }
+  button.action:hover { background: var(--navy-soft); }
+  button.ghost {
+    background: transparent;
+    border: 1px solid var(--navy-soft);
+    color: var(--navy-soft);
+    padding: 0.45rem 0.9rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.85rem;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  button.ai-btn {
+    background: var(--ai);
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 999px;
+    cursor: pointer;
+    font-size: 0.82rem;
+    font-weight: 700;
+    margin-top: 1rem;
+    margin-right: 0.5rem;
+  }
+  button.ai-btn:hover { background: #5a3fb0; }
+  button.ai-btn:disabled { background: #b9aee0; cursor: not-allowed; }
+  button[disabled] { opacity: 0.55; cursor: default; }
+
+  .tag {
+    display: inline-block;
+    background: var(--bg);
+    color: var(--ink-soft);
+    font-size: 0.72rem;
+    font-weight: 700;
+    padding: 0.2rem 0.65rem;
+    border-radius: 999px;
+    margin: 0.1rem 0.25rem 0.1rem 0;
+    font-family: var(--font-mono);
+  }
+  .tag.domaine   { background: var(--accent-soft); color: var(--accent); }
+  .tag.ai        { background: var(--ai-soft); color: var(--ai); }
+  .tag.period    { background: #fff; border: 1px solid var(--line); }
+
+  .seance-item {
+    border-left: 4px solid var(--accent);
+    padding: 0.6rem 0.85rem;
+    margin: 0.6rem 0;
+    background: var(--bg);
+    border-radius: 0 6px 6px 0;
+  }
+  .seance-item.ai-made { border-left-color: var(--ai); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+  th, td { text-align: left; padding: 0.6rem 0.5rem; border-bottom: 1px solid var(--line); }
+  th { color: var(--ink-soft); font-size: 0.72rem; text-transform: uppercase; letter-spacing: 0.05em; }
+  .statut-couverte { color: var(--ok); font-weight: 700; }
+  .statut-non-couverte { color: var(--warn); font-weight: 700; }
+
+  .tache-block {
+    border: 1px dashed var(--line);
+    padding: 0.9rem 1rem;
+    border-radius: 8px;
+    margin-bottom: 0.9rem;
+    background: #fcfcfb;
+  }
+  .suggestion-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    padding: 0.4rem 0;
+    border-bottom: 1px solid var(--line);
+    font-size: 0.85rem;
+  }
+  .muted { color: var(--muted); font-size: 0.82rem; }
+  .flex-row { display: flex; gap: 1.2rem; flex-wrap: wrap; }
+  .flex-row > div { flex: 1; min-width: 220px; }
+
+  .ai-callout {
+    background: var(--ai-soft);
+    color: #46348f;
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-size: 0.82rem;
+    margin: 0.7rem 0;
+  }
+  .ai-callout code { background: rgba(255,255,255,0.6); padding: 0.05rem 0.3rem; border-radius: 3px; }
+
+  footer.foot {
+    text-align: center;
+    color: var(--muted);
+    font-size: 0.82rem;
+    padding: 2rem 0 3rem 0;
+  }
+</style>
+</head>
+<body>
+
+<header class="topbar">
+  <div class="brand-row">
+    <div class="brand-badge">RÉ</div>
+    <div class="brand-text">
+      <div class="eyebrow">Portail non institutionnel</div>
+      <h1>Générateur de séquences &amp; Mode projet</h1>
+    </div>
+  </div>
+  <div class="pillbar">
+    <button class="pill disabled" disabled>Référentiel de démonstration</button>
+    <button class="pill filled" onclick="UI.switchTab('classique')">Ouvrir le générateur</button>
+    <button class="pill" onclick="UI.switchTab('couverture')">🧭 Cartographie de couverture</button>
+    <button class="pill" onclick="UI.exporterEtat()">Exporter l'état (JSON)</button>
+  </div>
+  <div class="pillbar">
+    <button class="pill" onclick="document.getElementById('import-json-input').click()">Importer un JSON</button>
+    <input type="file" id="import-json-input" accept="application/json" style="display:none" onchange="UI.importerEtat(event)">
+    <button class="pill ai-status" id="pill-ai-status" onclick="UI.switchTab('ia')">✨ IA : désactivée</button>
+    <button class="pill accent" onclick="UI.switchTab('ia')">⚙ Paramètres IA</button>
+  </div>
+</header>
+
+<main>
+
+  <div class="breadcrumb">Cycle 2 · Référentiel démo · Programmation</div>
+  <h2 class="page-title">Séquences &amp; mode projet</h2>
+  <p class="page-lede">Composez vos séquences depuis une compétence, ou partez d'une tâche de projet concrète et laissez le moteur suggérer des compétences à valider. Tout reste enregistré localement ; l'IA, si vous l'activez, ne fait que proposer.</p>
+
+  <nav class="tabs">
+    <button class="active" data-tab="classique">Générateur classique</button>
+    <button data-tab="projet">Mode projet</button>
+    <button data-tab="couverture">Matrice de couverture</button>
+    <button class="tab-ai" data-tab="ia">✨ Paramètres IA</button>
+  </nav>
+
+  <!-- ============================================================ -->
+  <!-- PANEL 1 : GÉNÉRATEUR CLASSIQUE                                 -->
+  <!-- ============================================================ -->
+  <section class="panel active" id="panel-classique">
+    <div class="card accented">
+      <h3>1. Générer une séquence à partir d'une compétence</h3>
+      <p class="muted">Logique linéaire : compétence → séquence → 7 séances types. C'est le mode « référentiel classique ».</p>
+
+      <label for="select-competence">Compétence du référentiel</label>
+      <select id="select-competence"></select>
+
+      <label for="input-titre-seq">Titre de la séquence (modifiable)</label>
+      <input type="text" id="input-titre-seq">
+
+      <button class="action" onclick="UI.genererSequenceClassiqueUI()">Générer la séquence</button>
+      <button class="ai-btn" id="btn-ia-classique" onclick="UI.genererSequenceIA()" disabled title="Activez l'IA dans Paramètres IA">✨ Rédiger les séances avec l'IA</button>
+    </div>
+
+    <div class="card" id="resultat-classique" style="display:none;">
+      <h3 id="titre-resultat-classique"></h3>
+      <div id="seances-classique"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANEL 2 : MODE PROJET                                          -->
+  <!-- ============================================================ -->
+  <section class="panel" id="panel-projet">
+    <div class="card accented">
+      <h3>2. Déclarer un projet</h3>
+      <div class="flex-row">
+        <div>
+          <label for="projet-titre">Titre du projet</label>
+          <input type="text" id="projet-titre" placeholder="Ex. Créer un jeu de société sur les animaux">
+        </div>
+        <div>
+          <label for="projet-production">Production finale</label>
+          <input type="text" id="projet-production" placeholder="Ex. Plateau de jeu + règles + boîte">
+        </div>
+      </div>
+      <button class="action" onclick="UI.creerProjet()">Créer le projet</button>
+    </div>
+
+    <div class="card" id="bloc-taches" style="display:none;">
+      <h3>3. Ajouter une tâche du projet</h3>
+      <p class="muted">On part de l'action concrète, jamais de la compétence en premier lieu.</p>
+
+      <label for="tache-nom">Nom de la tâche</label>
+      <input type="text" id="tache-nom" placeholder="Ex. Fabriquer le plateau et les pions">
+
+      <label for="tache-motscles">Mots-clés de la tâche (séparés par des virgules)</label>
+      <input type="text" id="tache-motscles" placeholder="Ex. mesure, decoupage, fabrication">
+
+      <button class="action" onclick="UI.ajouterTache()">Ajouter la tâche et voir les suggestions</button>
+
+      <div id="liste-taches"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANEL 3 : MATRICE DE COUVERTURE                                -->
+  <!-- ============================================================ -->
+  <section class="panel" id="panel-couverture">
+    <div class="card accented">
+      <h3>4. Couverture du référentiel par le projet en cours</h3>
+      <p class="muted">Permet de repérer les compétences non travaillées par le projet, pour compléter par une mini-séance classique si besoin.</p>
+      <div id="matrice-couverture"></div>
+      <button class="ghost" onclick="UI.genererComplements()">Proposer des séances complémentaires (règles)</button>
+      <button class="ai-btn" id="btn-ia-complements" onclick="UI.genererComplementsIA()" disabled title="Activez l'IA dans Paramètres IA">✨ Proposer des compléments avec l'IA</button>
+      <div id="complements"></div>
+    </div>
+  </section>
+
+  <!-- ============================================================ -->
+  <!-- PANEL 4 : PARAMÈTRES IA                                        -->
+  <!-- ============================================================ -->
+  <section class="panel" id="panel-ia">
+    <div class="card ai-accented">
+      <h3>✨ Moteur IA — facultatif</h3>
+      <p class="muted">Le moteur IA n'est jamais obligatoire : le générateur fonctionne entièrement par règles sans lui. Si vous l'activez, il ne fait que <strong>proposer</strong> — vous validez toujours vous-même. Votre clé API n'est envoyée qu'au fournisseur choisi et reste stockée uniquement dans ce navigateur (localStorage), jamais sur un serveur tiers de ce portail.</p>
+
+      <label for="ia-active">Activer les suggestions IA</label>
+      <select id="ia-active">
+        <option value="off">Désactivé</option>
+        <option value="on">Activé</option>
+      </select>
+
+      <label for="ia-provider">Fournisseur</label>
+      <select id="ia-provider">
+        <option value="openai-compatible">Compatible OpenAI (OpenAI, Mistral, Groq, Ollama local, etc.)</option>
+        <option value="anthropic">Anthropic (Claude)</option>
+      </select>
+
+      <div class="flex-row">
+        <div>
+          <label for="ia-url">URL de l'endpoint</label>
+          <input type="text" id="ia-url" placeholder="Ex. https://api.openai.com/v1/chat/completions">
+        </div>
+        <div>
+          <label for="ia-modele">Modèle</label>
+          <input type="text" id="ia-modele" placeholder="Ex. gpt-4o-mini ou claude-sonnet-4-6">
+        </div>
+      </div>
+
+      <label for="ia-clef">Clé API</label>
+      <input type="password" id="ia-clef" placeholder="Collez votre clé API personnelle">
+
+      <button class="action" onclick="UI.enregistrerParametresIA()">Enregistrer les paramètres</button>
+      <button class="ghost" onclick="UI.testerConnexionIA()">Tester la connexion</button>
+
+      <div class="ai-callout" id="ia-statut-message">Aucune configuration enregistrée pour le moment.</div>
+
+      <p class="muted">Une fois activé, des boutons <span class="tag ai">✨ IA</span> apparaissent dans le générateur classique, le mode projet et la matrice de couverture pour obtenir des propositions à valider.</p>
+    </div>
+  </section>
+
+</main>
+
+<footer class="foot">Portail de consultation non institutionnel · Données stockées localement en JSON dans votre navigateur.</footer>
+
+<script>
+/* ==================================================================
+   FICHIER 1 (à extraire) : Programmation/data/competences.json
+   ================================================================== */
+const REFERENTIEL_COMPETENCES = [
+  {
+    id: "MATH-NUM-CP-03",
+    domaine: "mathematiques",
+    intitule: "Comparer deux collections organisées et verbaliser laquelle contient le plus d'éléments",
+    prerequis: ["MATH-NUM-CP-01"],
+    modalites_projet: {
+      mobilisable_en_projet: true,
+      types_de_taches: ["mesure", "denombrement", "comparaison", "classement", "fabrication"]
+    }
+  },
+  {
+    id: "MATH-GEO-CP-01",
+    domaine: "mathematiques",
+    intitule: "Reconnaître, nommer et reproduire quelques formes planes",
+    prerequis: [],
+    modalites_projet: {
+      mobilisable_en_projet: true,
+      types_de_taches: ["fabrication", "decoupage", "construction"]
+    }
+  },
+  {
+    id: "FR-ECRIRE-CP-02",
+    domaine: "francais",
+    intitule: "Rédiger un texte court en mobilisant les connaissances acquises",
+    prerequis: [],
+    modalites_projet: {
+      mobilisable_en_projet: true,
+      types_de_taches: ["ecriture", "redaction", "consigne"]
+    }
+  },
+  {
+    id: "FR-ORAL-CP-01",
+    domaine: "francais",
+    intitule: "Présenter un travail à un groupe en formulant des phrases correctes",
+    prerequis: [],
+    modalites_projet: {
+      mobilisable_en_projet: true,
+      types_de_taches: ["presentation", "oral", "restitution"]
+    }
+  },
+  {
+    id: "SOCIAL-COOP-01",
+    domaine: "social",
+    intitule: "Coopérer dans un groupe pour atteindre un objectif commun",
+    prerequis: [],
+    modalites_projet: {
+      mobilisable_en_projet: true,
+      types_de_taches: ["fabrication", "jeu", "presentation", "test"]
+    }
+  },
+  {
+    id: "COGNITIF-ATTENTION-01",
+    domaine: "cognitif",
+    intitule: "Maintenir une attention soutenue sur une tâche de plusieurs étapes",
+    prerequis: [],
+    modalites_projet: {
+      mobilisable_en_projet: true,
+      types_de_taches: ["fabrication", "construction", "ecriture"]
+    }
+  },
+  {
+    id: "MATH-GRANDEURS-CP-01",
+    domaine: "mathematiques",
+    intitule: "Utiliser des instruments de mesure simples (règle, gabarit)",
+    prerequis: [],
+    modalites_projet: {
+      mobilisable_en_projet: false,
+      types_de_taches: []
+    }
+  }
+];
+
+
+/* ==================================================================
+   FICHIER 2 (à extraire) : Programmation/generateur-classique.js
+   ================================================================== */
+const GenerateurClassique = (function () {
+
+  const TYPES_SEANCES_PAR_DEFAUT = [
+    { type: "diagnostique",     intitule: "Évaluation diagnostique" },
+    { type: "exploration",      intitule: "Exploration de la notion" },
+    { type: "references",       intitule: "Apport de références" },
+    { type: "structuration",    intitule: "Structuration des connaissances" },
+    { type: "systematisation",  intitule: "Systématisation (1)" },
+    { type: "systematisation",  intitule: "Systématisation (2)" },
+    { type: "approfondissement",intitule: "Approfondissement / différenciation" },
+    { type: "evaluation",       intitule: "Évaluation finale" }
+  ];
+
+  function genererSequence(competence, titrePersonnalise) {
+    const seances = TYPES_SEANCES_PAR_DEFAUT.map((modele, index) => ({
+      id: `${competence.id}-S${index + 1}`,
+      type: modele.type,
+      intitule: `${modele.intitule} — ${competence.intitule}`,
+      competences_mobilisees: [competence.id],
+      tache_projet_associee: null,
+      duree_estimee_min: 45,
+      statut: "a_planifier",
+      origine: "regle"
+    }));
+
+    return {
+      id: `SEQ-${competence.id}`,
+      competence_principale: competence.id,
+      domaine: competence.domaine,
+      titre: titrePersonnalise || `Séquence : ${competence.intitule}`,
+      prerequis: competence.prerequis,
+      seances: seances
+    };
+  }
+
+  return { genererSequence, TYPES_SEANCES_PAR_DEFAUT };
+})();
+
+
+/* ==================================================================
+   FICHIER 3 (à extraire) : Programmation/mode-projet.js
+   ================================================================== */
+const ModeProjet = (function () {
+
+  function creerProjet(titre, production) {
+    return {
+      id: `PROJ-${Date.now()}`,
+      titre: titre,
+      production_finale: production,
+      taches: [],
+      seances: []
+    };
+  }
+
+  function ajouterTache(projet, nom, motsClesTexte) {
+    const motsCles = motsClesTexte
+      .split(",")
+      .map(m => m.trim().toLowerCase())
+      .filter(Boolean);
+
+    const tache = {
+      id: `TACHE-${Date.now()}`,
+      nom: nom,
+      motsCles: motsCles,
+      competences_retenues: [],
+      suggestions_ia: []
+    };
+    projet.taches.push(tache);
+    return tache;
+  }
+
+  function suggererCompetences(tache, referentiel) {
+    return referentiel.filter(c => {
+      if (!c.modalites_projet || !c.modalites_projet.mobilisable_en_projet) return false;
+      return c.modalites_projet.types_de_taches.some(type =>
+        tache.motsCles.includes(type)
+      );
+    });
+  }
+
+  function validerCompetencePourTache(tache, competence) {
+    if (!tache.competences_retenues.some(c => c.id === competence.id)) {
+      tache.competences_retenues.push(competence);
+    }
+  }
+
+  function genererSeancePourTache(projet, tache) {
+    const seance = {
+      id: `${projet.id}-${tache.id}`,
+      intitule: `Séance projet : ${tache.nom}`,
+      tache_projet_associee: tache.id,
+      competences_mobilisees: tache.competences_retenues.map(c => c.id),
+      duree_estimee_min: 45,
+      statut: "a_planifier"
+    };
+    projet.seances.push(seance);
+    return seance;
+  }
+
+  function construireMatriceCouverture(projet, referentiel) {
+    const competencesMobilisables = referentiel.filter(
+      c => c.modalites_projet && c.modalites_projet.mobilisable_en_projet
+    );
+
+    return competencesMobilisables.map(competence => {
+      const tacheAssociee = projet.taches.find(t =>
+        t.competences_retenues.some(c => c.id === competence.id)
+      );
+      return {
+        competence: competence,
+        couverte: Boolean(tacheAssociee),
+        tache: tacheAssociee ? tacheAssociee.nom : null
+      };
+    });
+  }
+
+  function genererComplementsPourNonCouvertes(matriceCouverture, generateurClassique) {
+    return matriceCouverture
+      .filter(ligne => !ligne.couverte)
+      .map(ligne => generateurClassique.genererSequence(ligne.competence));
+  }
+
+  return {
+    creerProjet,
+    ajouterTache,
+    suggererCompetences,
+    validerCompetencePourTache,
+    genererSeancePourTache,
+    construireMatriceCouverture,
+    genererComplementsPourNonCouvertes
+  };
+})();
+
+
+/* ==================================================================
+   FICHIER 4 (à extraire) : Programmation/moteur-ia.js
+   Moteur IA générique — brancheur, pas de dépendance à un fournisseur.
+   Deux formats supportés : "openai-compatible" (chat completions,
+   couvre OpenAI, Mistral, Groq, Ollama, etc.) et "anthropic".
+   Le moteur ne fait QUE proposer du texte/JSON ; c'est toujours l'UI
+   qui décide comment l'exploiter, et l'enseignant qui valide.
+   ================================================================== */
+const MoteurIA = (function () {
+
+  const CLE_STOCKAGE = "synapses_ia_config_v1";
+
+  function chargerConfig() {
+    try {
+      const brut = localStorage.getItem(CLE_STOCKAGE);
+      return brut ? JSON.parse(brut) : { actif: false, provider: "openai-compatible", url: "", modele: "", clef: "" };
+    } catch (e) {
+      return { actif: false, provider: "openai-compatible", url: "", modele: "", clef: "" };
+    }
+  }
+
+  function sauvegarderConfig(config) {
+    localStorage.setItem(CLE_STOCKAGE, JSON.stringify(config));
+  }
+
+  function estActif() {
+    const c = chargerConfig();
+    return Boolean(c.actif && c.clef && c.modele && (c.provider === "anthropic" || c.url));
+  }
+
+  /**
+   * Envoie un prompt système + utilisateur au fournisseur configuré et
+   * renvoie le texte brut de la réponse. Lève une erreur explicite en
+   * cas de configuration incomplète ou d'échec réseau/API.
+   */
+  async function demander(promptSysteme, promptUtilisateur) {
+    const config = chargerConfig();
+    if (!config.actif) throw new Error("Le moteur IA est désactivé.");
+    if (!config.clef) throw new Error("Aucune clé API renseignée.");
+    if (!config.modele) throw new Error("Aucun modèle renseigné.");
+
+    if (config.provider === "anthropic") {
+      const url = config.url || "https://api.anthropic.com/v1/messages";
+      const reponse = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "x-api-key": config.clef,
+          "anthropic-version": "2023-06-01",
+          "anthropic-dangerous-direct-browser-access": "true"
+        },
+        body: JSON.stringify({
+          model: config.modele,
+          max_tokens: 1200,
+          system: promptSysteme,
+          messages: [{ role: "user", content: promptUtilisateur }]
+        })
+      });
+      if (!reponse.ok) throw new Error(`Erreur API Anthropic (${reponse.status})`);
+      const data = await reponse.json();
+      return (data.content || []).map(b => b.text || "").join("\n");
+    }
+
+    // Par défaut : format "openai-compatible" (chat completions)
+    if (!config.url) throw new Error("Aucune URL d'endpoint renseignée.");
+    const reponse = await fetch(config.url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Authorization": `Bearer ${config.clef}`
+      },
+      body: JSON.stringify({
+        model: config.modele,
+        messages: [
+          { role: "system", content: promptSysteme },
+          { role: "user", content: promptUtilisateur }
+        ],
+        temperature: 0.4
+      })
+    });
+    if (!reponse.ok) throw new Error(`Erreur API (${reponse.status})`);
+    const data = await reponse.json();
+    return data.choices && data.choices[0] && data.choices[0].message
+      ? data.choices[0].message.content
+      : "";
+  }
+
+  /** Extrait le premier bloc JSON valide d'une réponse texte libre. */
+  function extraireJSON(texte) {
+    const nettoye = texte.replace(/```json/gi, "").replace(/```/g, "").trim();
+    const debut = nettoye.indexOf("[") === -1
+      ? nettoye.indexOf("{")
+      : (nettoye.indexOf("{") === -1 ? nettoye.indexOf("[") : Math.min(nettoye.indexOf("{"), nettoye.indexOf("[")));
+    const fin = Math.max(nettoye.lastIndexOf("}"), nettoye.lastIndexOf("]"));
+    const segment = debut >= 0 && fin >= 0 ? nettoye.slice(debut, fin + 1) : nettoye;
+    return JSON.parse(segment);
+  }
+
+  return { chargerConfig, sauvegarderConfig, estActif, demander, extraireJSON };
+})();
+
+
+/* ==================================================================
+   COUCHE UI DE DÉMONSTRATION
+   ================================================================== */
+const UI = (function () {
+  let projetCourant = null;
+
+  function initTabs() {
+    document.querySelectorAll("nav.tabs button").forEach(btn => {
+      btn.addEventListener("click", () => switchTab(btn.dataset.tab));
+    });
+  }
+
+  function switchTab(tab) {
+    document.querySelectorAll("nav.tabs button").forEach(b => b.classList.toggle("active", b.dataset.tab === tab));
+    document.querySelectorAll("section.panel").forEach(p => p.classList.remove("active"));
+    document.getElementById("panel-" + tab).classList.add("active");
+    if (tab === "couverture") renderMatrice();
+    if (tab === "ia") chargerFormulaireIA();
+  }
+
+  function initSelectCompetences() {
+    const select = document.getElementById("select-competence");
+    REFERENTIEL_COMPETENCES.forEach(c => {
+      const opt = document.createElement("option");
+      opt.value = c.id;
+      opt.textContent = `[${c.domaine}] ${c.intitule}`;
+      select.appendChild(opt);
+    });
+  }
+
+  function genererSequenceClassiqueUI() {
+    const id = document.getElementById("select-competence").value;
+    const competence = REFERENTIEL_COMPETENCES.find(c => c.id === id);
+    const titre = document.getElementById("input-titre-seq").value;
+    const sequence = GenerateurClassique.genererSequence(competence, titre);
+    afficherSequenceClassique(sequence);
+  }
+
+  function afficherSequenceClassique(sequence) {
+    document.getElementById("resultat-classique").style.display = "block";
+    document.getElementById("titre-resultat-classique").textContent = sequence.titre;
+
+    const cont = document.getElementById("seances-classique");
+    cont.innerHTML = "";
+    sequence.seances.forEach(s => {
+      const div = document.createElement("div");
+      div.className = "seance-item" + (s.origine === "ia" ? " ai-made" : "");
+      div.innerHTML = `<strong>${s.intitule}</strong><br>
+        <span class="tag">${s.type}</span>
+        <span class="tag">${s.duree_estimee_min} min</span>
+        <span class="tag">${(s.competences_mobilisees || []).join(", ")}</span>
+        ${s.origine === "ia" ? '<span class="tag ai">✨ IA</span>' : ""}`;
+      cont.appendChild(div);
+    });
+  }
+
+  async function genererSequenceIA() {
+    const id = document.getElementById("select-competence").value;
+    const competence = REFERENTIEL_COMPETENCES.find(c => c.id === id);
+    const titreSaisi = document.getElementById("input-titre-seq").value;
+    const bouton = document.getElementById("btn-ia-classique");
+    bouton.disabled = true;
+    bouton.textContent = "✨ Rédaction en cours…";
+    try {
+      const promptSysteme = "Tu es un conseiller pédagogique. Tu réponds UNIQUEMENT en JSON valide, sans texte autour.";
+      const promptUtilisateur = `Propose une séquence de 7 séances pour la compétence suivante :
+Domaine : ${competence.domaine}
+Intitulé : ${competence.intitule}
+Réponds avec ce format JSON exact :
+{"titre": "titre de la séquence", "seances": [{"type": "diagnostique|exploration|structuration|systematisation|approfondissement|evaluation", "intitule": "intitulé concret et concis de la séance", "duree_estimee_min": 45}]}`;
+      const reponse = await MoteurIA.demander(promptSysteme, promptUtilisateur);
+      const objet = MoteurIA.extraireJSON(reponse);
+      const sequence = {
+        id: `SEQ-IA-${competence.id}`,
+        competence_principale: competence.id,
+        domaine: competence.domaine,
+        titre: titreSaisi || objet.titre || `Séquence (IA) : ${competence.intitule}`,
+        prerequis: competence.prerequis,
+        seances: (objet.seances || []).map((s, i) => ({
+          id: `${competence.id}-IA-${i + 1}`,
+          type: s.type || "seance",
+          intitule: s.intitule,
+          competences_mobilisees: [competence.id],
+          duree_estimee_min: s.duree_estimee_min || 45,
+          origine: "ia"
+        }))
+      };
+      afficherSequenceClassique(sequence);
+    } catch (err) {
+      alert("La suggestion IA a échoué : " + err.message + "\nVous pouvez toujours générer la séquence par règles.");
+    } finally {
+      bouton.disabled = !MoteurIA.estActif();
+      bouton.textContent = "✨ Rédiger les séances avec l'IA";
+    }
+  }
+
+  function creerProjet() {
+    const titre = document.getElementById("projet-titre").value || "Projet sans titre";
+    const production = document.getElementById("projet-production").value || "Production non précisée";
+    projetCourant = ModeProjet.creerProjet(titre, production);
+    document.getElementById("bloc-taches").style.display = "block";
+    renderTaches();
+  }
+
+  function ajouterTache() {
+    if (!projetCourant) return;
+    const nom = document.getElementById("tache-nom").value;
+    const motsCles = document.getElementById("tache-motscles").value;
+    if (!nom || !motsCles) return;
+
+    ModeProjet.ajouterTache(projetCourant, nom, motsCles);
+    document.getElementById("tache-nom").value = "";
+    document.getElementById("tache-motscles").value = "";
+    renderTaches();
+  }
+
+  function renderTaches() {
+    const cont = document.getElementById("liste-taches");
+    cont.innerHTML = "";
+    projetCourant.taches.forEach(tache => {
+      const suggestions = ModeProjet.suggererCompetences(tache, REFERENTIEL_COMPETENCES);
+      const block = document.createElement("div");
+      block.className = "tache-block";
+
+      let html = `<strong>${tache.nom}</strong> `;
+      tache.motsCles.forEach(m => html += `<span class="tag">${m}</span>`);
+      html += `<div class="muted" style="margin-top:0.5rem;">Compétences suggérées par mots-clés (à valider) :</div>`;
+
+      if (suggestions.length === 0) {
+        html += `<p class="muted">Aucune correspondance trouvée avec les mots-clés fournis.</p>`;
+      } else {
+        suggestions.forEach(comp => {
+          const dejaValidee = tache.competences_retenues.some(c => c.id === comp.id);
+          html += `<div class="suggestion-item">
+            <span>[${comp.domaine}] ${comp.intitule}</span>
+            <button class="ghost" ${dejaValidee ? "disabled" : ""}
+              onclick="UI.validerCompetence('${tache.id}', '${comp.id}')">
+              ${dejaValidee ? "Retenue ✓" : "Retenir"}
+            </button>
+          </div>`;
+        });
+      }
+
+      if (tache.suggestions_ia && tache.suggestions_ia.length > 0) {
+        html += `<div class="muted" style="margin-top:0.6rem;">Compétences suggérées par l'IA :</div>`;
+        tache.suggestions_ia.forEach(comp => {
+          const dejaValidee = tache.competences_retenues.some(c => c.id === comp.id);
+          html += `<div class="suggestion-item">
+            <span>[${comp.domaine}] ${comp.intitule} <span class="tag ai">✨ IA</span></span>
+            <button class="ghost" ${dejaValidee ? "disabled" : ""}
+              onclick="UI.validerCompetence('${tache.id}', '${comp.id}')">
+              ${dejaValidee ? "Retenue ✓" : "Retenir"}
+            </button>
+          </div>`;
+        });
+      }
+
+      if (tache.competences_retenues.length > 0) {
+        html += `<button class="action" onclick="UI.genererSeance('${tache.id}')">Générer la séance de projet</button>`;
+      }
+      html += `<button class="ai-btn" ${MoteurIA.estActif() ? "" : "disabled title='Activez l\\'IA dans Paramètres IA'"} onclick="UI.suggererCompetencesIA('${tache.id}')">✨ Suggestions IA</button>`;
+
+      block.innerHTML = html;
+      cont.appendChild(block);
+    });
+  }
+
+  async function suggererCompetencesIA(tacheId) {
+    const tache = projetCourant.taches.find(t => t.id === tacheId);
+    try {
+      const promptSysteme = "Tu es un conseiller pédagogique. Tu réponds UNIQUEMENT en JSON valide, sans texte autour : une liste d'identifiants de compétences.";
+      const listeReferentiel = REFERENTIEL_COMPETENCES.map(c => `${c.id} :: [${c.domaine}] ${c.intitule}`).join("\n");
+      const promptUtilisateur = `Voici une tâche de projet :
+Nom : ${tache.nom}
+Mots-clés : ${tache.motsCles.join(", ")}
+
+Voici le référentiel de compétences disponible (id :: intitulé) :
+${listeReferentiel}
+
+Renvoie UNIQUEMENT un tableau JSON des identifiants de compétences pertinentes pour cette tâche, par exemple : ["FR-ECRIRE-CP-02", "SOCIAL-COOP-01"]`;
+      const reponse = await MoteurIA.demander(promptSysteme, promptUtilisateur);
+      const ids = MoteurIA.extraireJSON(reponse);
+      tache.suggestions_ia = REFERENTIEL_COMPETENCES.filter(c => ids.includes(c.id));
+      renderTaches();
+    } catch (err) {
+      alert("La suggestion IA a échoué : " + err.message);
+    }
+  }
+
+  function validerCompetence(tacheId, competenceId) {
+    const tache = projetCourant.taches.find(t => t.id === tacheId);
+    const competence = REFERENTIEL_COMPETENCES.find(c => c.id === competenceId);
+    ModeProjet.validerCompetencePourTache(tache, competence);
+    renderTaches();
+  }
+
+  function genererSeance(tacheId) {
+    const tache = projetCourant.taches.find(t => t.id === tacheId);
+    const seance = ModeProjet.genererSeancePourTache(projetCourant, tache);
+    alert(`Séance générée : "${seance.intitule}"\nCompétences mobilisées : ${seance.competences_mobilisees.join(", ")}`);
+  }
+
+  function renderMatrice() {
+    const cont = document.getElementById("matrice-couverture");
+    const btnIA = document.getElementById("btn-ia-complements");
+    if (!projetCourant) {
+      cont.innerHTML = `<p class="muted">Aucun projet en cours. Créez d'abord un projet dans l'onglet « Mode projet ».</p>`;
+      btnIA.disabled = true;
+      return;
+    }
+    const matrice = ModeProjet.construireMatriceCouverture(projetCourant, REFERENTIEL_COMPETENCES);
+
+    let html = `<table><thead><tr>
+      <th>Compétence</th><th>Domaine</th><th>Tâche associée</th><th>Statut</th>
+    </tr></thead><tbody>`;
+    matrice.forEach(ligne => {
+      html += `<tr>
+        <td>${ligne.competence.intitule}</td>
+        <td>${ligne.competence.domaine}</td>
+        <td>${ligne.tache || "—"}</td>
+        <td class="${ligne.couverte ? "statut-couverte" : "statut-non-couverte"}">
+          ${ligne.couverte ? "Couverte" : "Non couverte"}
+        </td>
+      </tr>`;
+    });
+    html += `</tbody></table>`;
+    cont.innerHTML = html;
+    btnIA.disabled = !MoteurIA.estActif();
+
+    window._derniereMatrice = matrice;
+  }
+
+  function genererComplements() {
+    if (!window._derniereMatrice) return;
+    const sequences = ModeProjet.genererComplementsPourNonCouvertes(window._derniereMatrice, GenerateurClassique);
+    afficherComplements(sequences);
+  }
+
+  function afficherComplements(sequences) {
+    const cont = document.getElementById("complements");
+    if (sequences.length === 0) {
+      cont.innerHTML = `<p class="muted">Toutes les compétences mobilisables en projet sont déjà couvertes.</p>`;
+      return;
+    }
+    let html = "";
+    sequences.forEach(seq => {
+      html += `<div class="card"><h3>${seq.titre}</h3>`;
+      seq.seances.forEach(s => {
+        html += `<div class="seance-item${s.origine === "ia" ? " ai-made" : ""}"><strong>${s.intitule}</strong> <span class="tag">${s.type}</span>${s.origine === "ia" ? ' <span class="tag ai">✨ IA</span>' : ""}</div>`;
+      });
+      html += `</div>`;
+    });
+    cont.innerHTML = html;
+  }
+
+  async function genererComplementsIA() {
+    if (!window._derniereMatrice) return;
+    const nonCouvertes = window._derniereMatrice.filter(l => !l.couverte);
+    if (nonCouvertes.length === 0) {
+      afficherComplements([]);
+      return;
+    }
+    const bouton = document.getElementById("btn-ia-complements");
+    bouton.disabled = true;
+    bouton.textContent = "✨ Génération en cours…";
+    try {
+      const promptSysteme = "Tu es un conseiller pédagogique. Tu réponds UNIQUEMENT en JSON valide, sans texte autour.";
+      const listeCompetences = nonCouvertes.map(l => `${l.competence.id} :: [${l.competence.domaine}] ${l.competence.intitule}`).join("\n");
+      const promptUtilisateur = `Pour chacune de ces compétences non couvertes par le projet en cours, propose une courte séquence complémentaire de 2 à 3 séances (mini-format, pas 7 séances).
+Compétences :
+${listeCompetences}
+Réponds avec ce format JSON exact :
+{"sequences": [{"competence_id": "id", "titre": "titre court", "seances": [{"type": "type de séance", "intitule": "intitulé concret"}]}]}`;
+      const reponse = await MoteurIA.demander(promptSysteme, promptUtilisateur);
+      const objet = MoteurIA.extraireJSON(reponse);
+      const sequences = (objet.sequences || []).map(seq => ({
+        titre: seq.titre,
+        seances: (seq.seances || []).map((s, i) => ({
+          id: `${seq.competence_id}-IA-C${i + 1}`,
+          type: s.type || "seance",
+          intitule: s.intitule,
+          origine: "ia"
+        }))
+      }));
+      afficherComplements(sequences);
+    } catch (err) {
+      alert("La génération IA a échoué : " + err.message + "\nVous pouvez utiliser la proposition par règles.");
+    } finally {
+      bouton.disabled = !MoteurIA.estActif();
+      bouton.textContent = "✨ Proposer des compléments avec l'IA";
+    }
+  }
+
+  /* ---------- Paramètres IA ---------- */
+  function chargerFormulaireIA() {
+    const c = MoteurIA.chargerConfig();
+    document.getElementById("ia-active").value = c.actif ? "on" : "off";
+    document.getElementById("ia-provider").value = c.provider || "openai-compatible";
+    document.getElementById("ia-url").value = c.url || "";
+    document.getElementById("ia-modele").value = c.modele || "";
+    document.getElementById("ia-clef").value = c.clef || "";
+    majStatutIA();
+  }
+
+  function enregistrerParametresIA() {
+    const config = {
+      actif: document.getElementById("ia-active").value === "on",
+      provider: document.getElementById("ia-provider").value,
+      url: document.getElementById("ia-url").value.trim(),
+      modele: document.getElementById("ia-modele").value.trim(),
+      clef: document.getElementById("ia-clef").value.trim()
+    };
+    MoteurIA.sauvegarderConfig(config);
+    majStatutIA();
+    document.getElementById("ia-statut-message").textContent = "Paramètres enregistrés localement dans ce navigateur.";
+  }
+
+  async function testerConnexionIA() {
+    enregistrerParametresIA();
+    const msg = document.getElementById("ia-statut-message");
+    if (!MoteurIA.estActif()) {
+      msg.textContent = "Configuration incomplète ou IA désactivée : impossible de tester.";
+      return;
+    }
+    msg.textContent = "Test de connexion en cours…";
+    try {
+      const reponse = await MoteurIA.demander(
+        "Réponds uniquement par le mot OK.",
+        "Réponds uniquement par le mot OK."
+      );
+      msg.textContent = "Connexion réussie. Réponse reçue : « " + reponse.trim().slice(0, 80) + " »";
+    } catch (err) {
+      msg.textContent = "Échec de la connexion : " + err.message;
+    }
+  }
+
+  function majStatutIA() {
+    const actif = MoteurIA.estActif();
+    const pill = document.getElementById("pill-ai-status");
+    pill.textContent = actif ? "✨ IA : activée" : "✨ IA : désactivée";
+    pill.classList.toggle("on", actif);
+    document.getElementById("btn-ia-classique").disabled = !actif;
+    const btnComplements = document.getElementById("btn-ia-complements");
+    if (btnComplements) btnComplements.disabled = !actif || !window._derniereMatrice;
+    if (projetCourant) renderTaches();
+  }
+
+  /* ---------- Export / Import de l'état ---------- */
+  function exporterEtat() {
+    const etat = {
+      referentiel: REFERENTIEL_COMPETENCES,
+      projet: projetCourant
+    };
+    const blob = new Blob([JSON.stringify(etat, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "etat-programmation.json";
+    a.click();
+    URL.revokeObjectURL(url);
+  }
+
+  function importerEtat(event) {
+    const fichier = event.target.files[0];
+    if (!fichier) return;
+    const lecteur = new FileReader();
+    lecteur.onload = () => {
+      try {
+        const etat = JSON.parse(lecteur.result);
+        if (etat.projet) {
+          projetCourant = etat.projet;
+          document.getElementById("bloc-taches").style.display = "block";
+          document.getElementById("projet-titre").value = projetCourant.titre || "";
+          document.getElementById("projet-production").value = projetCourant.production_finale || "";
+          renderTaches();
+          switchTab("projet");
+        }
+      } catch (e) {
+        alert("Fichier JSON invalide.");
+      }
+    };
+    lecteur.readAsText(fichier);
+  }
+
+  return {
+    initTabs, initSelectCompetences, switchTab,
+    genererSequenceClassiqueUI, genererSequenceIA,
+    creerProjet, ajouterTache, validerCompetence, genererSeance, suggererCompetencesIA,
+    renderMatrice, genererComplements, genererComplementsIA,
+    enregistrerParametresIA, testerConnexionIA, exporterEtat, importerEtat
+  };
+})();
+
+UI.initTabs();
+UI.initSelectCompetences();
+document.addEventListener("DOMContentLoaded", () => {
+  const c = MoteurIA.chargerConfig();
+  document.getElementById("pill-ai-status").classList.toggle("on", MoteurIA.estActif());
+  document.getElementById("pill-ai-status").textContent = MoteurIA.estActif() ? "✨ IA : activée" : "✨ IA : désactivée";
+  document.getElementById("btn-ia-classique").disabled = !MoteurIA.estActif();
+});
+</script>
+
+</body>
+</html>
