@@ -114,7 +114,7 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
 <div class="bottom">
   <button id="home" title="Recentrer">⌂</button>
   <button id="minus" title="Zoom arrière">−</button>
-  <input id="zoomRange" type="range" min="0.055" max="2.4" step="0.005" value="0.62" aria-label="Zoom">
+  <input id="zoomRange" type="range" min="0.015" max="2.4" step="0.005" value="0.015" aria-label="Zoom">
   <button id="plus" title="Zoom avant">+</button>
   <button id="rotateToggle" title="Activer/désactiver la rotation automatique">⟳</button>
   <button id="fullscreen" title="Plein écran">⛶</button>
@@ -168,8 +168,8 @@ const state = {
   sequences:[], seances:[], nodes:[], links:[],
   levels:new Set(LEVEL_ORDER), domains:new Set(),
   search:"", selected:null, hover:null,
-  yaw:0.28, pitch:-0.12, zoom:.62,
-  minZoom:.055, maxZoom:2.4, openingSpin:false, openingSpinTimer:null,
+  yaw:0.28, pitch:-0.12, zoom:.015,
+  minZoom:.015, maxZoom:2.4, openingSpin:false, openingSpinTimer:null,
   autoRotate:false,
   relationMode:null, relationNodes:new Set(), relationLinks:new Set(),
   panX:0, panY:0,
@@ -779,9 +779,9 @@ $("viewCompetence").onclick=()=>setViewMode("competence");
 
 /* ---------- Navigation ---------- */
 function resetView(){
-  state.yaw=0.42;state.pitch=-0.24;state.zoom=.62;state.panX=0;state.panY=0;
+  state.yaw=0.42;state.pitch=-0.24;state.zoom=state.minZoom;state.panX=0;state.panY=0;
   state.relationNodes=new Set();state.relationLinks=new Set();$("relationMenu").classList.remove("open");
-  $("zoomRange").value=1;draw();
+  $("zoomRange").value=state.zoom;draw();
 }
 $("search").addEventListener("input",e=>{state.search=e.target.value;update();});
 $("reset").onclick=()=>{
