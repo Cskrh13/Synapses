@@ -78,10 +78,11 @@
     "version": "2026-08-26-compatible-cartographie",
     "fichiers_sources": [
       "competences_cycle1_enrichi_avec_mode_emploi(1).json",
-      "competences (1).json"
+      "competences (1).json",
+      "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf"
     ],
     "fusion": {
-      "competences_finales": 601,
+      "competences_finales": 848,
       "doublons_evites": "Détection par identifiant puis par clé pédagogique normalisée",
       "references_prerequis_non_resolues_supprimees": {},
       "statut": "valide"
@@ -99,8 +100,8 @@
         "CM2",
         "6e"
       ],
-      "nombre_competences": 717,
-      "nombre_domaines": 25,
+      "nombre_competences": 848,
+      "nombre_domaines": 30,
       "ids_uniques": true,
       "prerequis_valides": true
     }
@@ -230,6 +231,31 @@
       "id": "ecriture",
       "nom": "Écriture",
       "discipline": "Écriture"
+    },
+    {
+      "id": "langues_vivantes",
+      "nom": "Langues vivantes étrangères et régionales",
+      "discipline": "Langues vivantes étrangères et régionales"
+    },
+    {
+      "id": "matiere_mesures_electricite",
+      "nom": "La matière, les mesures, l'électricité",
+      "discipline": "Sciences et technologie"
+    },
+    {
+      "id": "etres_vivants_environnement",
+      "nom": "Les êtres vivants dans leur environnement",
+      "discipline": "Sciences et technologie"
+    },
+    {
+      "id": "corps_humain_sante",
+      "nom": "Le corps humain et la santé",
+      "discipline": "Sciences et technologie"
+    },
+    {
+      "id": "objets_techniques_societe",
+      "nom": "Les objets techniques au cœur de la société",
+      "discipline": "Sciences et technologie"
     }
   ],
   "competences": [
@@ -17406,6 +17432,3862 @@
       "source": {
         "document": "Annexe 3 – Programme de français du cycle 2",
         "fichier": "Annexe 3 – Programme de français du cycle 2-403818.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_alterite_sociabilite_ce1",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Reconnaître et accepter l'altérité",
+      "objectifs": [
+        "Reconnaître et prendre en compte les émotions et les sentiments d'autrui.",
+        "Développer sa capacité d'empathie en écoutant l'autre et en se rendant disponible à l'autre.",
+        "S'entraider et partager avec les autres.",
+        "Reconnaître la diversité comme richesse et ne pas faire des différences un motif de violence.",
+        "Reconnaître les situations de violence physique et/ou verbale et les situations de harcèlement.",
+        "Comprendre que la solidarité et l'entraide renforcent la notion d'égalité entre les personnes."
+      ],
+      "prerequis_competences": [
+        "emc_empathie_relations"
+      ],
+      "mots_cles": [
+        "altérité",
+        "empathie",
+        "solidarité",
+        "harcèlement",
+        "stéréotype",
+        "fraternité"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_regles_collectives_initiative_ce1",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Appliquer les règles collectives et prendre des initiatives",
+      "objectifs": [
+        "Connaître et appliquer les règles élémentaires de vie, de communication et d'échange en collectivité.",
+        "Adapter sa posture, son langage et son comportement au contexte scolaire.",
+        "Respecter les biens personnels et collectifs dans la classe et dans l'école.",
+        "Identifier les dangers au sein des situations dans lesquelles on se trouve.",
+        "Prendre des initiatives, faire des choix et les justifier."
+      ],
+      "prerequis_competences": [
+        "emc_regles_collectives_autonomie"
+      ],
+      "mots_cles": [
+        "règles collectives",
+        "civilité",
+        "responsabilité",
+        "initiative",
+        "sécurité"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_principes_symboles_republique_ce1",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Identifier les principes et les symboles de la République",
+      "objectifs": [
+        "Identifier les symboles républicains.",
+        "Apprendre à chanter le premier couplet et le refrain de La Marseillaise.",
+        "Comprendre la devise « Liberté, Égalité, Fraternité ».",
+        "Aborder le principe de la liberté de conscience.",
+        "Savoir que le français est la langue de la République."
+      ],
+      "prerequis_competences": [
+        "emc_etre_eleve_republique"
+      ],
+      "mots_cles": [
+        "symboles républicains",
+        "Marseillaise",
+        "devise",
+        "laïcité",
+        "langue française"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_engagement_bien_commun_ce2",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "S'engager pour le bien commun",
+      "objectifs": [
+        "Se sensibiliser à la notion de bien commun et prendre conscience que les actions individuelles doivent tenir compte de l'intérêt collectif.",
+        "Différencier progressivement l'intérêt particulier de l'intérêt général dans des situations concrètes.",
+        "Savoir qu'il existe des institutions et des associations au service du bien commun.",
+        "Aborder des enjeux d'intérêt collectif : l'éducation pour tous, l'environnement, la sécurité, l'information.",
+        "S'approprier les règles collectives (droits et devoirs) pour apprendre ensemble."
+      ],
+      "prerequis_competences": [
+        "emc_alterite_sociabilite_ce1",
+        "emc_regles_collectives_initiative_ce1"
+      ],
+      "mots_cles": [
+        "bien commun",
+        "intérêt général",
+        "responsabilité",
+        "service public",
+        "environnement"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_republique_fonctionnement_ce2",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Découvrir le fonctionnement de la République",
+      "objectifs": [
+        "Savoir qu'en France le chef de l'État est le président de la République et qu'il est élu.",
+        "Savoir que le maire est un élu local et le représentant de l'État dans la commune, et connaître son rôle à la tête de la collectivité.",
+        "Approfondir la compréhension de la devise « Liberté, Égalité, Fraternité »."
+      ],
+      "prerequis_competences": [
+        "emc_principes_symboles_republique_ce1",
+        "emc_engagement_bien_commun_ce2"
+      ],
+      "mots_cles": [
+        "président de la République",
+        "maire",
+        "élection",
+        "devise républicaine"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_civisme_citoyennete_cm1",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Définir le civisme et la citoyenneté",
+      "objectifs": [
+        "Définir le civisme comme l'action d'un individu en fonction du bien public et dans le respect des règles.",
+        "Aborder des exemples de comportement civique dans la classe, l'école, la vie quotidienne, en ligne, et en faveur de l'environnement.",
+        "Connaître et appliquer les règles de civilité en société, identifier les incivilités et comprendre pourquoi elles nuisent à la vie en commun.",
+        "Apprendre la signification du terme « démocratie » et le fonctionnement du suffrage direct."
+      ],
+      "prerequis_competences": [
+        "emc_engagement_bien_commun_ce2"
+      ],
+      "mots_cles": [
+        "civisme",
+        "citoyenneté",
+        "incivilités",
+        "démocratie",
+        "suffrage"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours moyen première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_egalite_dignite_cm1",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Comprendre l'égalité dans la dignité",
+      "objectifs": [
+        "Comprendre la notion d'égalité en droit.",
+        "Comprendre ce qu'implique le principe de dignité de la personne humaine.",
+        "Identifier des situations dans lesquelles l'égalité n'est pas respectée et des situations de discrimination.",
+        "Développer le respect de son intégrité personnelle et de celle des autres, dans leur diversité."
+      ],
+      "prerequis_competences": [
+        "emc_civisme_citoyennete_cm1"
+      ],
+      "mots_cles": [
+        "égalité",
+        "dignité",
+        "discrimination",
+        "tolérance"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours moyen première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_faire_societe_cm1",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "CM1",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Comprendre la fraternité et l'empathie pour faire société",
+      "objectifs": [
+        "Comprendre la notion de fraternité, valeur et principe de la République.",
+        "Comprendre ce qu'implique et permet l'empathie.",
+        "Exprimer ses opinions personnelles tout en tenant compte de la sensibilité des autres, lors d'un débat réglé.",
+        "Développer l'empathie comme moteur pour lutter contre les discriminations, la violence et le harcèlement."
+      ],
+      "prerequis_competences": [
+        "emc_egalite_dignite_cm1"
+      ],
+      "mots_cles": [
+        "fraternité",
+        "empathie",
+        "débat réglé",
+        "harcèlement"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours moyen première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_citoyennete_nationalite_cm2",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Découvrir la citoyenneté et la nationalité",
+      "objectifs": [
+        "Connaître les conditions d'acquisition de la nationalité française et le lien entre citoyenneté et nationalité.",
+        "Connaître le rôle politique des citoyennes et des citoyens.",
+        "Connaître les devoirs du citoyen et de toute personne résidant sur le territoire national.",
+        "Connaître et comprendre les symboles républicains mentionnés par la Constitution, et savoir que la France est membre de l'Union européenne."
+      ],
+      "prerequis_competences": [
+        "emc_faire_societe_cm1"
+      ],
+      "mots_cles": [
+        "nationalité",
+        "citoyenneté",
+        "devoirs",
+        "symboles républicains",
+        "Union européenne"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours moyen deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_libertes_droits_fondamentaux_cm2",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Connaître les libertés et droits fondamentaux",
+      "objectifs": [
+        "Connaître les droits et libertés fondamentaux institués par la DDHC, la DUDH et la Charte des droits fondamentaux de l'Union européenne.",
+        "Mettre en avant certains droits politiques, économiques et sociaux : suffrage universel, droit à l'emploi, droit à la protection de la santé.",
+        "Montrer que les droits fondamentaux s'exercent dans le cadre de la loi.",
+        "Approfondir avec les droits dits « de troisième génération », liés au droit à un environnement équilibré."
+      ],
+      "prerequis_competences": [
+        "emc_citoyennete_nationalite_cm2"
+      ],
+      "mots_cles": [
+        "libertés fondamentales",
+        "droits de l'homme",
+        "DDHC",
+        "environnement"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours moyen deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_respecter_droits_tous_cm2",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Respecter les droits de tous",
+      "objectifs": [
+        "Montrer que la lutte contre les discriminations suppose la déconstruction des préjugés et des stéréotypes.",
+        "Faire reconnaître les atteintes aux personnes : racisme, antisémitisme, sexisme, xénophobie, homophobie, harcèlement.",
+        "Savoir que l'expression des discriminations est sanctionnée par la loi.",
+        "Comprendre le rôle du témoin de situations de discrimination ou de harcèlement et l'importance de les signaler."
+      ],
+      "prerequis_competences": [
+        "emc_libertes_droits_fondamentaux_cm2"
+      ],
+      "mots_cles": [
+        "discriminations",
+        "stéréotypes",
+        "racisme",
+        "harcèlement",
+        "loi"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours moyen deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_ecole_laique_cm2",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "CM2",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Comprendre l'école laïque",
+      "objectifs": [
+        "Comprendre que le respect des croyances est assuré mais que leur expression est limitée par la loi.",
+        "Comprendre que nul ne peut être discriminé pour sa croyance ou ses convictions, ni imposer ses croyances aux autres.",
+        "Expliquer pourquoi l'école est laïque et discerner les comportements remettant en cause la laïcité.",
+        "Situer la laïcité dans son ancrage historique (lois scolaires de 1881-1882, loi de 1905)."
+      ],
+      "prerequis_competences": [
+        "emc_respecter_droits_tous_cm2"
+      ],
+      "mots_cles": [
+        "laïcité",
+        "liberté de conscience",
+        "loi de 1905",
+        "école"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Cours moyen deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_representer_interet_general_6e",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Représenter les autres et servir l'intérêt général",
+      "objectifs": [
+        "Comprendre que les représentantes et représentants, choisis par un vote, portent la parole des autres et participent à des délibérations collectives.",
+        "Comprendre que l'intérêt général est l'intérêt commun de tous les membres de la société et prend en compte les générations futures.",
+        "Comprendre que les représentants élus sont responsables devant les électeurs et suivent les règles des assemblées."
+      ],
+      "prerequis_competences": [
+        "emc_citoyennete_nationalite_cm2",
+        "emc_faire_societe_cm1"
+      ],
+      "mots_cles": [
+        "représentation",
+        "vote",
+        "intérêt général",
+        "délégué"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Sixième"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_regles_laicite_ecole_6e",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Respecter des règles et en comprendre la finalité : la laïcité à l'École",
+      "objectifs": [
+        "Comprendre que la laïcité garantit la liberté de conscience et l'égalité de toutes les citoyennes et tous les citoyens.",
+        "Comprendre que la laïcité est un principe juridique et non une opinion, qui diffère de l'athéisme ou de l'agnosticisme.",
+        "Comprendre que la laïcité à l'école protège la liberté de choix de chaque enfant et crée un espace neutre.",
+        "Comprendre que la laïcité impose des règles à tous les membres de la communauté scolaire."
+      ],
+      "prerequis_competences": [
+        "emc_ecole_laique_cm2"
+      ],
+      "mots_cles": [
+        "laïcité",
+        "liberté de conscience",
+        "neutralité",
+        "règlement intérieur"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Sixième"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "emc_droits_vie_privee_6e",
+      "discipline": "Enseignement moral et civique",
+      "cycle": "Cycle 3",
+      "niveau": "6e",
+      "domaine_id": "enseignement_moral_civique",
+      "domaine": "Enseignement moral et civique",
+      "couleur": "#4F6D7A",
+      "intitule": "Avoir des droits en tant que personne et respecter ceux des autres : le droit à la vie privée",
+      "objectifs": [
+        "Comprendre que l'enfant comme l'adulte a droit au respect de sa vie privée (CIDE, DDHC, Charte des droits fondamentaux de l'UE).",
+        "Comprendre que le droit au respect de la vie privée comprend le droit à l'intimité et la protection du droit à l'image.",
+        "Comprendre que ce droit doit être également respecté dans l'univers numérique et les réseaux sociaux.",
+        "Identifier les risques liés aux usages numériques et comprendre le principe de majorité numérique."
+      ],
+      "prerequis_competences": [
+        "emc_regles_laicite_ecole_6e"
+      ],
+      "mots_cles": [
+        "vie privée",
+        "intimité",
+        "droit à l'image",
+        "numérique",
+        "réseaux sociaux"
+      ],
+      "source": {
+        "document": "Programme d’enseignement moral et civique du cours préparatoire à la classe terminale",
+        "fichier": "Annexe — Programme d’enseignement moral et civique du cours préparatoire à la classe terminale des voies générale, technologique et professionnelle et des classes préparant au CAP-402159.pdf",
+        "niveau_source": "Sixième"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_deplacer_espace_duree_cp",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Se déplacer pour agir dans l'espace et sur une durée",
+      "objectifs": [
+        "Découvrir une diversité de signaux de départ et courir vite de façon équilibrée.",
+        "Courir et franchir sans ralentir des obstacles horizontaux.",
+        "Courir longtemps en limitant les arrêts.",
+        "Varier les impulsions pour sauter loin ou haut.",
+        "Lancer loin et de manière variée différents objets.",
+        "Repérer des éléments visibles pour se situer dans un espace connu.",
+        "Explorer et utiliser des outils de mesure concrets."
+      ],
+      "prerequis_competences": [
+        "c1_eps_se_deplacer_gs_05"
+      ],
+      "mots_cles": [
+        "course",
+        "saut",
+        "lancer",
+        "orientation",
+        "mesure de résultats"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_deplacer_espace_duree_ce1",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Se déplacer pour agir dans l'espace et sur une durée",
+      "objectifs": [
+        "Se préparer au signal de départ et courir vite de façon coordonnée.",
+        "Courir et franchir sans ralentir des obstacles verticaux.",
+        "Courir longtemps sans s'arrêter.",
+        "Construire une impulsion avec un pied d'appel pour sauter loin ou haut.",
+        "Lancer loin et dans l'axe différents objets.",
+        "Repérer des éléments visibles pour s'orienter dans un espace connu.",
+        "Identifier la mesure d'un résultat pour progresser."
+      ],
+      "prerequis_competences": [
+        "eps_deplacer_espace_duree_cp"
+      ],
+      "mots_cles": [
+        "course",
+        "saut",
+        "lancer",
+        "orientation",
+        "mesure de résultats"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_deplacer_espace_duree_ce2",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Se déplacer pour agir dans l'espace et sur une durée",
+      "objectifs": [
+        "Réagir vite au signal de départ et courir vite de façon coordonnée.",
+        "Courir et franchir sans ralentir des obstacles verticaux.",
+        "Courir longtemps sans s'arrêter sur une durée de plus en plus longue.",
+        "Construire une impulsion avec un pied d'appel pour sauter loin ou haut.",
+        "Lancer loin et dans l'axe différents objets.",
+        "Repérer des éléments visibles pour s'orienter dans un espace connu, à distance croissante.",
+        "Identifier la mesure d'un résultat pour progresser et modifier son action."
+      ],
+      "prerequis_competences": [
+        "eps_deplacer_espace_duree_ce1"
+      ],
+      "mots_cles": [
+        "course",
+        "saut",
+        "lancer",
+        "orientation",
+        "mesure de résultats"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_construire_equilibres_cp",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Construire des équilibres pour s'adapter à des environnements inhabituels",
+      "objectifs": [
+        "Explorer un nouvel équilibre avec le corps qui roule vers l'avant, se suspend, se renverse ou se déplace sur une surface réduite.",
+        "Explorer un nouvel équilibre vertical en se déplaçant sur un support vertical.",
+        "Rouler et glisser, avec un moyen de locomotion, en ligne droite.",
+        "Explorer le milieu aquatique et découvrir une nouvelle locomotion.",
+        "Respecter les règles pour ne pas se mettre en danger."
+      ],
+      "prerequis_competences": [
+        "c1_eps_construire_des_equilibres_gs_03"
+      ],
+      "mots_cles": [
+        "équilibre",
+        "gymnique",
+        "roule et glisse",
+        "aquatique",
+        "sécurité"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_construire_equilibres_ce1",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Construire des équilibres pour s'adapter à des environnements inhabituels",
+      "objectifs": [
+        "Construire un nouvel équilibre avec le corps qui roule vers l'avant, se suspend, se renverse ou se déplace sur une surface réduite.",
+        "Construire un nouvel équilibre vertical en se déplaçant sur un support vertical.",
+        "Rouler et glisser, avec un moyen de locomotion, dans des situations variées.",
+        "Accepter l'action de l'eau sur son corps et construire un nouvel équilibre horizontal.",
+        "Identifier les dangers propres à l'activité et adapter son comportement."
+      ],
+      "prerequis_competences": [
+        "eps_construire_equilibres_cp"
+      ],
+      "mots_cles": [
+        "équilibre",
+        "gymnique",
+        "roule et glisse",
+        "aquatique",
+        "sécurité"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_construire_equilibres_ce2",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Construire des équilibres pour s'adapter à des environnements inhabituels",
+      "objectifs": [
+        "Construire un nouvel équilibre avec le corps qui roule vers l'avant, se suspend, se renverse ou se déplace sur une surface réduite, en variant les positions.",
+        "Construire un nouvel équilibre vertical en se déplaçant sur un support vertical avec des prises plus petites et espacées.",
+        "Rouler et glisser, avec un moyen de locomotion, dans des situations variées et en contournant des obstacles.",
+        "Accepter l'action de l'eau sur son corps et construire un nouvel équilibre horizontal en se déplaçant.",
+        "Identifier les dangers propres à l'activité, renoncer si besoin et s'engager en toute sécurité."
+      ],
+      "prerequis_competences": [
+        "eps_construire_equilibres_ce1"
+      ],
+      "mots_cles": [
+        "équilibre",
+        "gymnique",
+        "roule et glisse",
+        "aquatique",
+        "sécurité"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_exprimer_corps_emotions_cp",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "S'exprimer avec son corps pour éprouver et partager des émotions",
+      "objectifs": [
+        "Explorer des actions à visée artistique et l'espace scénique.",
+        "Reproduire un enchainement artistique simple et mémorisé.",
+        "Explorer la posture d'artiste et accepter d'être regardé.",
+        "Apprécier et décrire une prestation à l'aide d'un vocabulaire approprié."
+      ],
+      "prerequis_competences": [
+        "c1_eps_s_exprimer_avec_son_corps_gs_04"
+      ],
+      "mots_cles": [
+        "danse",
+        "arts du cirque",
+        "gymnique",
+        "émotion",
+        "posture d'artiste"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_exprimer_corps_emotions_ce1",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "S'exprimer avec son corps pour éprouver et partager des émotions",
+      "objectifs": [
+        "Reproduire des actions à visée artistique et varier ses actions dans l'espace scénique.",
+        "S'approprier un enchainement artistique de deux à trois mouvements.",
+        "Construire une posture d'artiste devant un public.",
+        "Apprécier une prestation selon deux ou trois critères."
+      ],
+      "prerequis_competences": [
+        "eps_exprimer_corps_emotions_cp"
+      ],
+      "mots_cles": [
+        "danse",
+        "arts du cirque",
+        "gymnique",
+        "émotion",
+        "posture d'artiste"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_exprimer_corps_emotions_ce2",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "S'exprimer avec son corps pour éprouver et partager des émotions",
+      "objectifs": [
+        "Reproduire des actions à visée artistique en s'adaptant à un partenaire et varier ses actions dans l'espace scénique.",
+        "S'approprier un enchainement artistique structuré (début, milieu, fin).",
+        "Construire une posture d'artiste en prenant en compte le public.",
+        "Apprécier une prestation selon deux ou trois critères et proposer une amélioration."
+      ],
+      "prerequis_competences": [
+        "eps_exprimer_corps_emotions_ce1"
+      ],
+      "mots_cles": [
+        "danse",
+        "arts du cirque",
+        "gymnique",
+        "émotion",
+        "posture d'artiste"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_cooperer_opposer_cp",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Coopérer et s'opposer pour apprendre à jouer en respectant les règles et les autres",
+      "objectifs": [
+        "Maitriser des actions d'opposition simples et explorer la zone de jeu dans toutes ses dimensions.",
+        "Se situer pour agir seul ou à plusieurs afin de marquer.",
+        "Explorer les règles du jeu et les interactions dans le jeu."
+      ],
+      "prerequis_competences": [
+        "c1_eps_cooperer_et_s_opposer_gs_03"
+      ],
+      "mots_cles": [
+        "jeux collectifs",
+        "jeux d'opposition",
+        "règles du jeu",
+        "fair-play",
+        "arbitrage"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_cooperer_opposer_ce1",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Coopérer et s'opposer pour apprendre à jouer en respectant les règles et les autres",
+      "objectifs": [
+        "Maitriser et contrôler des actions d'opposition simples et s'adapter à la zone de jeu.",
+        "Prendre des repères au service d'un projet d'action individuel ou collectif pour marquer.",
+        "Comprendre et respecter les règles du jeu, accepter l'opposition tout en respectant l'autre."
+      ],
+      "prerequis_competences": [
+        "eps_cooperer_opposer_cp"
+      ],
+      "mots_cles": [
+        "jeux collectifs",
+        "jeux d'opposition",
+        "règles du jeu",
+        "fair-play",
+        "arbitrage"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "eps_cooperer_opposer_ce2",
+      "discipline": "EPS",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "eps",
+      "domaine": "EPS",
+      "couleur": "#C4622D",
+      "intitule": "Coopérer et s'opposer pour apprendre à jouer en respectant les règles et les autres",
+      "objectifs": [
+        "Maitriser et contrôler des actions d'opposition simples et s'adapter à la zone de jeu de façon plus fine.",
+        "Prendre des repères au service d'un projet d'action individuel ou collectif pour marquer, notamment en se démarquant.",
+        "Comprendre et respecter les règles du jeu, y compris en arbitrant, et accepter l'opposition tout en respectant l'autre."
+      ],
+      "prerequis_competences": [
+        "eps_cooperer_opposer_ce1"
+      ],
+      "mots_cles": [
+        "jeux collectifs",
+        "jeux d'opposition",
+        "règles du jeu",
+        "fair-play",
+        "arbitrage"
+      ],
+      "source": {
+        "document": "Programme d’éducation physique et sportive du cycle 2",
+        "fichier": "annexe-1-programme-d-education-physique-et-sportive-cycle-2-516770.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_cp_manifestations_naturelles_temps",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Les manifestations naturelles du temps",
+      "objectifs": [
+        "Observer des manifestations naturelles du temps.",
+        "Expliquer l'alternance du jour et de la nuit en manipulant un globe terrestre.",
+        "Nommer les saisons et donner leurs caractéristiques."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "globe terrestre",
+        "jour",
+        "nuit",
+        "rotation de la terre",
+        "saisons"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_cp_representations_humaines_temps",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Les représentations humaines du temps",
+      "objectifs": [
+        "Connaitre la structure du calendrier grégorien.",
+        "Découvrir différentes représentations du temps : linéaire et cyclique.",
+        "Connaitre des outils de mesure du temps (sablier, pendule, montre, réveil).",
+        "Savoir que l'année est divisée en mois, le mois en semaines, la semaine en jours, la journée en heures."
+      ],
+      "prerequis_competences": [
+        "hist_cp_manifestations_naturelles_temps"
+      ],
+      "mots_cles": [
+        "année",
+        "calendrier",
+        "frise",
+        "heure",
+        "mois",
+        "semaine"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_cp_situer_evenements_temps",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Situer des évènements dans le temps",
+      "objectifs": [
+        "Connaitre les notions d'antériorité, de simultanéité, de postériorité.",
+        "Comprendre la représentation du temps passé et son irréversibilité.",
+        "Situer et planifier sur un calendrier des évènements en utilisant les temps verbaux et marqueurs temporels adaptés.",
+        "Se repérer au travers des différentes générations à partir d'exemples d'arbres généalogiques.",
+        "Compléter une frise chronologique de la journée, de la vie de l'élève, voire générationnelle."
+      ],
+      "prerequis_competences": [
+        "hist_cp_representations_humaines_temps"
+      ],
+      "mots_cles": [
+        "arbre généalogique",
+        "frise chronologique",
+        "futur",
+        "génération",
+        "passé",
+        "présent"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_ce1_passe_proche_passe_lointain",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Du passé proche au passé lointain",
+      "objectifs": [
+        "Comprendre la différence entre le passé proche et le passé lointain.",
+        "Employer le lexique relatif au temps (hier, autrefois, il y a dix jours, dix ans, cent ans, etc.).",
+        "Identifier et positionner sur une frise chronologique des évènements récents et des évènements plus anciens."
+      ],
+      "prerequis_competences": [
+        "hist_cp_situer_evenements_temps"
+      ],
+      "mots_cles": [
+        "année",
+        "décennie",
+        "millénaire",
+        "siècle"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_ce1_grandes_periodes_histoire",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Les grandes périodes de l'histoire",
+      "objectifs": [
+        "Construire une première représentation du temps long et savoir distinguer de grandes périodes historiques.",
+        "Connaitre des figures de chaque période historique.",
+        "Situer sur une frise chronologique des figures de chaque période historique.",
+        "Repérer et mémoriser sur une frise les grandes périodes de l'histoire (Préhistoire, Antiquité, Moyen Âge, Temps modernes, époque contemporaine)."
+      ],
+      "prerequis_competences": [
+        "hist_ce1_passe_proche_passe_lointain"
+      ],
+      "mots_cles": [
+        "évènement historique",
+        "figure historique",
+        "période de l'histoire"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_ce1_traces_du_passe",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Les traces du passé",
+      "objectifs": [
+        "Comprendre que le passé laisse des traces.",
+        "Utiliser les traces du passé pour le comprendre.",
+        "Connaitre les métiers d'archéologue, d'historien et d'historienne.",
+        "Identifier et situer dans le temps les traces du passé issues de l'environnement proche ou de documents variés."
+      ],
+      "prerequis_competences": [
+        "hist_ce1_grandes_periodes_histoire"
+      ],
+      "mots_cles": [
+        "archéologue",
+        "archiviste",
+        "historien",
+        "historienne",
+        "trace du passé"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_ce2_paleolithique_neolithique",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "La vie des femmes et des hommes au Paléolithique et au Néolithique",
+      "objectifs": [
+        "Connaitre le mode de vie nomade au Paléolithique.",
+        "Comprendre le mode de vie sédentaire au Néolithique : agriculture, utilisation des premiers métaux.",
+        "Décrire le mode de vie des chasseurs-cueilleurs au Paléolithique et une peinture pariétale ou une gravure rupestre.",
+        "Expliquer les différences de mode de vie des femmes et des hommes entre le Paléolithique et le Néolithique."
+      ],
+      "prerequis_competences": [
+        "hist_ce1_traces_du_passe"
+      ],
+      "mots_cles": [
+        "agriculture",
+        "art pariétal",
+        "Néolithique",
+        "nomadisme",
+        "Paléolithique",
+        "sédentarité"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_ce2_rome_gaule_romaine",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "Vivre à Rome et en Gaule romaine",
+      "objectifs": [
+        "Connaitre la vie quotidienne des habitantes et des habitants de Rome et comprendre que la société antique est hiérarchisée.",
+        "Connaitre l'étendue de l'empire romain au IIe siècle après J.-C. et la vie quotidienne en Gaule romaine.",
+        "Définir l'usage d'un monument ou d'un aménagement caractéristique de la ville de Rome.",
+        "Repérer sur une carte l'étendue de l'empire romain et localiser la Gaule dans l'empire.",
+        "Expliquer que le monde gallo-romain mêle les cultures gauloise et romaine."
+      ],
+      "prerequis_competences": [
+        "hist_ce2_paleolithique_neolithique"
+      ],
+      "mots_cles": [
+        "amphithéâtre",
+        "aqueduc",
+        "forum",
+        "gallo-romain",
+        "Rome",
+        "villa"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "hist_ce2_construction_royaume_france",
+      "discipline": "Histoire",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "histoire",
+      "domaine": "Histoire",
+      "couleur": "#8A5A44",
+      "intitule": "La construction du royaume de France (Xe – XVe siècles)",
+      "objectifs": [
+        "Connaitre les grandes étapes de la construction du royaume de France et les moyens d'affirmation de l'autorité du roi.",
+        "Repérer les grandes étapes de la construction du royaume de France à partir de cartes.",
+        "Décrire la cérémonie du sacre et citer les moyens utilisés par les rois de France pour affirmer leur autorité.",
+        "Nommer et situer sur une frise chronologique les dynasties royales (Capétiens, Valois) et quelques grandes figures, dont féminines."
+      ],
+      "prerequis_competences": [
+        "hist_ce2_rome_gaule_romaine"
+      ],
+      "mots_cles": [
+        "dynastie",
+        "guerre",
+        "monarchie",
+        "royaume",
+        "sacre"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "geo_cp_autour_de_l_ecole",
+      "discipline": "Géographie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Autour de l'école",
+      "objectifs": [
+        "Connaitre les éléments d'organisation de la classe et de l'école.",
+        "Comprendre que l'espace se représente.",
+        "Explorer les locaux de l'école pour s'y repérer et identifier les repères autour de l'école, du quartier ou de la commune.",
+        "Faire le plan de la classe et le comparer à celui d'une autre classe.",
+        "Se déplacer dans l'école en s'orientant et en utilisant un plan.",
+        "Décrire et/ou représenter un trajet entre un lieu de l'espace proche et l'école."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "plan",
+        "quartier",
+        "rue",
+        "trajet",
+        "village"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "geo_cp_representations_du_monde",
+      "discipline": "Géographie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Des représentations du monde",
+      "objectifs": [
+        "Identifier la différence entre continents et océans.",
+        "Comprendre comment et pourquoi passer du globe au planisphère.",
+        "Comprendre que le monde est peuplé.",
+        "Reconnaitre et localiser les continents et les océans sur un planisphère.",
+        "Situer la France et localiser les grands foyers de peuplement."
+      ],
+      "prerequis_competences": [
+        "geo_cp_autour_de_l_ecole"
+      ],
+      "mots_cles": [
+        "continent",
+        "océan",
+        "pays",
+        "planisphère"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "geo_ce1_terre_peuplee",
+      "discipline": "Géographie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "La Terre est peuplée",
+      "objectifs": [
+        "Connaitre les grands foyers de peuplement (fortes densités) en remobilisant les repères acquis depuis le CP.",
+        "Connaitre les principales villes dans le monde.",
+        "Comprendre la différence entre ville et campagne à partir d'une approche paysagère.",
+        "Localiser les grands foyers de peuplement sur un planisphère."
+      ],
+      "prerequis_competences": [
+        "geo_cp_representations_du_monde"
+      ],
+      "mots_cles": [
+        "campagne",
+        "village",
+        "ville"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "geo_ce1_lieux_de_vie_etres_humains",
+      "discipline": "Géographie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Découvrir les lieux où vivent les êtres humains",
+      "objectifs": [
+        "Connaitre les trois grandes zones climatiques (tropicale, tempérée, froide).",
+        "Connaitre les principaux types de végétation (forêt, prairie, désert) et les différents types de relief.",
+        "Connaitre la différence entre un fleuve et une rivière.",
+        "Comprendre que les êtres humains vivent dans des milieux différents.",
+        "Localiser et nommer sur un planisphère les zones climatiques, les grandes chaines de montagne, les principaux déserts et quelques grands fleuves.",
+        "Décrire un paysage à partir d'une photographie ou d'une observation directe."
+      ],
+      "prerequis_competences": [
+        "geo_ce1_terre_peuplee"
+      ],
+      "mots_cles": [
+        "climat",
+        "désert",
+        "fleuve",
+        "forêt",
+        "montagne",
+        "plaine",
+        "plateau"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "geo_ce2_repartition_population_france",
+      "discipline": "Géographie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "L'inégale répartition de la population en France",
+      "objectifs": [
+        "Connaitre la répartition de la population en France.",
+        "Localiser sur une carte de France les espaces de fortes et de faibles densités.",
+        "Localiser et nommer les cinq principales agglomérations à l'échelle nationale.",
+        "Localiser et nommer les grandes chaines de montagne et quelques grands fleuves français."
+      ],
+      "prerequis_competences": [
+        "geo_ce1_lieux_de_vie_etres_humains"
+      ],
+      "mots_cles": [
+        "densité",
+        "peuplement",
+        "population"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "geo_ce2_se_loger_en_france",
+      "discipline": "Géographie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Se loger en France",
+      "objectifs": [
+        "Connaitre et comprendre la diversité des paysages résidentiels en France.",
+        "Reconnaitre et décrire les éléments constitutifs des espaces résidentiels (centre-ville historique, quartier récent, grand ensemble, lotissement pavillonnaire, village)."
+      ],
+      "prerequis_competences": [
+        "geo_ce2_repartition_population_france"
+      ],
+      "mots_cles": [
+        "centre-ville",
+        "grand ensemble",
+        "lotissement pavillonnaire"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "geo_ce2_travailler_en_france",
+      "discipline": "Géographie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "geographie",
+      "domaine": "Géographie",
+      "couleur": "#3F7D5A",
+      "intitule": "Travailler en France",
+      "objectifs": [
+        "Connaitre et comprendre la diversité paysagère des activités en France.",
+        "Reconnaitre et décrire un paysage industriel, agricole, d'activité commerciale, de quartier d'affaires ou de station touristique."
+      ],
+      "prerequis_competences": [
+        "geo_ce2_se_loger_en_france"
+      ],
+      "mots_cles": [
+        "exploitation agricole",
+        "station touristique",
+        "usine"
+      ],
+      "source": {
+        "document": "Programme d’histoire-géographie pour le cycle 2",
+        "fichier": "annexe-3-programme-d-histoire-geographie-cycle-2-516776.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_mots_familiers_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Comprendre quelques mots familiers et expressions très courantes",
+      "objectifs": [
+        "Repérer quelques mots du champ lexical de la prise de contact ou des salutations.",
+        "Reconnaitre les pronoms interrogatifs usuels.",
+        "Reconnaitre les pronoms personnels sujets, compléments et les déterminants possessifs accompagnés de gestes.",
+        "Identifier les verbes exprimant le gout et le dégout ainsi que quelques adjectifs, avec support visuel.",
+        "Identifier l'humeur d'un interlocuteur à l'aide de l'intonation, des gestes et des expressions du visage.",
+        "Repérer des mots simples et familiers accompagnés de visuels (famille, environnement immédiat)."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "salutations",
+        "pronoms interrogatifs",
+        "gouts",
+        "émotions",
+        "vocabulaire familier"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_mots_familiers_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Comprendre quelques mots familiers et expressions très courantes",
+      "objectifs": [
+        "Repérer le champ lexical de la prise de contact et reconnaitre les formules d'encouragement et de félicitations.",
+        "Reconnaitre les pronoms interrogatifs usuels (qui, que, où, comment).",
+        "Reconnaitre les pronoms personnels et déterminants possessifs pour déterminer qui parle et de qui l'on parle.",
+        "Identifier les verbes exprimant le gout et le dégout et quelques adjectifs associés.",
+        "Identifier l'humeur des interlocuteurs à l'aide de l'intonation, des gestes et des expressions du visage.",
+        "Repérer des mots simples et familiers liés à la famille et à l'environnement immédiat."
+      ],
+      "prerequis_competences": [
+        "lve_co_mots_familiers_cp"
+      ],
+      "mots_cles": [
+        "salutations",
+        "encouragements",
+        "pronoms interrogatifs",
+        "gouts",
+        "émotions"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_mots_familiers_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Comprendre quelques mots familiers et expressions très courantes",
+      "objectifs": [
+        "Repérer le champ lexical de la prise de contact et reconnaitre les formules d'encouragement et de félicitations.",
+        "Reconnaitre les pronoms interrogatifs usuels, y compris « quand ».",
+        "Reconnaitre les pronoms personnels et déterminants possessifs pour déterminer qui parle et de qui l'on parle.",
+        "Identifier les verbes exprimant le gout, la préférence et le dégout et quelques adjectifs associés.",
+        "Identifier l'humeur des interlocuteurs à l'aide de l'intonation, des gestes et des expressions du visage.",
+        "Repérer des mots simples et familiers liés à la famille et à l'environnement immédiat."
+      ],
+      "prerequis_competences": [
+        "lve_co_mots_familiers_ce1"
+      ],
+      "mots_cles": [
+        "salutations",
+        "préférences",
+        "pronoms interrogatifs",
+        "émotions",
+        "vocabulaire familier"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_suivre_histoire_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Suivre le fil d'une histoire adaptée à l'âge des élèves et suffisamment étayée",
+      "objectifs": [
+        "Reconnaitre certaines lettres de l'alphabet et les chiffres.",
+        "Reconnaitre des mots simples en s'appuyant sur des indices visuels et sonores.",
+        "Reconnaitre les mots familiers pour parler de soi, de sa sphère immédiate et des thématiques travaillées en classe."
+      ],
+      "prerequis_competences": [
+        "lve_co_mots_familiers_cp"
+      ],
+      "mots_cles": [
+        "alphabet",
+        "chiffres",
+        "indices visuels",
+        "album de jeunesse"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_suivre_histoire_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Suivre le fil d'une histoire adaptée à l'âge des élèves et suffisamment étayée",
+      "objectifs": [
+        "Reconnaitre certaines lettres de l'alphabet et les nombres jusqu'à environ 31.",
+        "Reconnaitre quelques structures et formes grammaticales simples appartenant à un répertoire mémorisé.",
+        "Reconnaitre les mots familiers ou les champs lexicaux permettant de parler de soi, de sa sphère immédiate et des thématiques étudiées.",
+        "Reconnaitre des intonations de phrase propres à la langue pour identifier question, affirmation, exclamation et sentiments."
+      ],
+      "prerequis_competences": [
+        "lve_co_suivre_histoire_cp"
+      ],
+      "mots_cles": [
+        "alphabet",
+        "nombres",
+        "structures grammaticales",
+        "intonation"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_suivre_histoire_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Suivre le fil d'une histoire adaptée à l'âge des élèves et suffisamment étayée",
+      "objectifs": [
+        "Reconnaitre toutes les lettres de l'alphabet et les nombres jusqu'à environ 100.",
+        "Reconnaitre quelques structures et formes grammaticales simples appartenant à un répertoire mémorisé.",
+        "Reconnaitre les mots familiers ou les champs lexicaux permettant de parler de soi, de sa sphère immédiate et des thématiques étudiées.",
+        "Reconnaitre des intonations de phrase propres à la langue pour identifier question, affirmation, exclamation et sentiments."
+      ],
+      "prerequis_competences": [
+        "lve_co_suivre_histoire_ce1"
+      ],
+      "mots_cles": [
+        "alphabet",
+        "nombres",
+        "structures grammaticales",
+        "intonation"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_comprendre_agir_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Comprendre et agir",
+      "objectifs": [
+        "Reconnaitre quelques formes courantes de l'impératif pour réagir à des consignes et instructions simples accompagnées de gestes ou de supports visuels.",
+        "Agir en suivant des indications données par des verbes d'action associés à des prépositions spatiales."
+      ],
+      "prerequis_competences": [
+        "lve_co_mots_familiers_cp"
+      ],
+      "mots_cles": [
+        "impératif",
+        "consignes",
+        "prépositions spatiales"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_comprendre_agir_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Comprendre et agir",
+      "objectifs": [
+        "Reconnaitre quelques formes courantes de l'impératif pour réagir à des consignes et instructions simples.",
+        "Agir en suivant des indications données par quelques prépositions spatiales et les verbes d'action associés.",
+        "Identifier les modaux pour exprimer la capacité ou l'incapacité au présent."
+      ],
+      "prerequis_competences": [
+        "lve_co_comprendre_agir_cp"
+      ],
+      "mots_cles": [
+        "impératif",
+        "consignes",
+        "prépositions spatiales",
+        "modaux"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_co_comprendre_agir_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Comprendre et agir",
+      "objectifs": [
+        "Reconnaitre quelques formes courantes de l'impératif pour réagir à des consignes.",
+        "Agir en suivant des indications données par quelques prépositions spatiales et les verbes d'action associés.",
+        "Identifier les modaux pour exprimer la capacité ou l'incapacité au présent."
+      ],
+      "prerequis_competences": [
+        "lve_co_comprendre_agir_ce1"
+      ],
+      "mots_cles": [
+        "impératif",
+        "consignes",
+        "prépositions spatiales",
+        "modaux"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_reperes_phonologiques_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Repères phonologiques",
+      "objectifs": [
+        "Réaliser les spécificités phonologiques essentielles de la langue apprise.",
+        "Prononcer correctement des mots isolés et mémorisés dans plusieurs champs lexicaux connus en respectant l'accentuation."
+      ],
+      "prerequis_competences": [
+        "lve_co_mots_familiers_cp"
+      ],
+      "mots_cles": [
+        "phonologie",
+        "accentuation",
+        "prononciation"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_reperes_phonologiques_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Repères phonologiques",
+      "objectifs": [
+        "Réaliser les spécificités phonologiques essentielles de la langue étudiée.",
+        "Prononcer correctement des mots isolés et mémorisés dans certains champs lexicaux connus en respectant le schéma phonétique."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_reperes_phonologiques_cp"
+      ],
+      "mots_cles": [
+        "phonologie",
+        "schéma phonétique",
+        "prononciation"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_reperes_phonologiques_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Repères phonologiques",
+      "objectifs": [
+        "Réaliser les spécificités phonologiques essentielles de la langue étudiée.",
+        "Prononcer correctement des mots isolés et mémorisés dans certains champs lexicaux connus en respectant l'accentuation."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_reperes_phonologiques_ce1"
+      ],
+      "mots_cles": [
+        "phonologie",
+        "accentuation",
+        "prononciation"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_reproduire_modele_oral_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Reproduire un modèle oral",
+      "objectifs": [
+        "Parler de soi ou de son environnement familier en s'appuyant sur des supports visuels et en prononçant correctement des formules brèves, ritualisées et mémorisées."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_reperes_phonologiques_cp",
+        "lve_co_mots_familiers_cp"
+      ],
+      "mots_cles": [
+        "répétition",
+        "modèle oral",
+        "formules ritualisées"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_reproduire_modele_oral_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Reproduire un modèle oral",
+      "objectifs": [
+        "Parler de soi ou de son environnement familier en s'appuyant sur des supports visuels et en prononçant correctement des formulations brèves, ritualisées et mémorisées.",
+        "Dire à voix haute une expression ou phrase courte déjà connue à l'oral ou chanter collectivement une courte comptine."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_reproduire_modele_oral_cp"
+      ],
+      "mots_cles": [
+        "répétition",
+        "modèle oral",
+        "comptine"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_reproduire_modele_oral_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Reproduire un modèle oral",
+      "objectifs": [
+        "Prononcer correctement des formulations brèves ritualisées et mémorisées pour parler de soi ou de son environnement familier.",
+        "Lire à voix haute une expression ou une phrase courte déjà connue à l'oral ou mémorisée."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_reproduire_modele_oral_ce1"
+      ],
+      "mots_cles": [
+        "répétition",
+        "modèle oral",
+        "lecture à voix haute"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_raconter_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Raconter",
+      "objectifs": [
+        "Nommer, caractériser, dénombrer très simplement des personnes, des objets, des lieux.",
+        "Situer dans l'espace, à l'aide de prépositions et d'expressions lexicalisées, les personnes, les objets et les lieux.",
+        "Situer dans le temps : exprimer le jour et des repères temporels très simples."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_reproduire_modele_oral_cp"
+      ],
+      "mots_cles": [
+        "description",
+        "prépositions spatiales",
+        "repères temporels"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_raconter_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Raconter",
+      "objectifs": [
+        "Nommer, caractériser, dénombrer très simplement des personnes, des objets, des lieux en mobilisant un lexique élargi.",
+        "Situer dans l'espace les personnes, les objets et les lieux, à l'aide de prépositions et d'expressions lexicalisées.",
+        "Situer dans le temps : exprimer le jour, la date et des repères temporels simples.",
+        "Reproduire un modèle oral court en suivant la trame d'une histoire répétitive."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_raconter_cp"
+      ],
+      "mots_cles": [
+        "description",
+        "prépositions spatiales",
+        "date",
+        "histoire répétitive"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_raconter_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Raconter",
+      "objectifs": [
+        "Nommer, caractériser, dénombrer des personnes, des objets, des lieux en mobilisant un lexique élargi et en appliquant les règles élémentaires de l'accord.",
+        "Situer dans l'espace les personnes, les objets et les lieux, à l'aide de prépositions et d'expressions lexicalisées.",
+        "Situer dans le temps : exprimer la date et raconter des évènements dans un ordre chronologique simple.",
+        "Reproduire un modèle oral court en suivant la trame d'une histoire répétitive."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_raconter_ce1"
+      ],
+      "mots_cles": [
+        "description",
+        "chronologie",
+        "accords",
+        "histoire répétitive"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_se_decrire_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Se décrire en utilisant des expressions courtes ou proches des modèles rencontrés",
+      "objectifs": [
+        "Exprimer simplement des informations sur soi et sur les autres en utilisant le présent des verbes les plus courants.",
+        "Donner des informations simples sur des activités quotidiennes et des habitudes."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_raconter_cp"
+      ],
+      "mots_cles": [
+        "présentation de soi",
+        "activités quotidiennes"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_se_decrire_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Se décrire en utilisant des expressions courtes ou proches des modèles rencontrés",
+      "objectifs": [
+        "Exprimer simplement des informations sur soi et sur les autres, y compris à la troisième personne du singulier.",
+        "Donner des informations simples sur des activités quotidiennes et des habitudes en mobilisant des champs lexicaux plus étendus."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_se_decrire_cp"
+      ],
+      "mots_cles": [
+        "présentation de soi",
+        "troisième personne",
+        "habitudes"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoc_decrire_se_decrire_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Décrire ou se décrire en utilisant des expressions courtes ou proches des modèles rencontrés",
+      "objectifs": [
+        "Exprimer simplement des informations sur soi et sur les autres en maitrisant le présent des verbes les plus courants.",
+        "Donner des informations simples sur des activités quotidiennes et des habitudes."
+      ],
+      "prerequis_competences": [
+        "lve_eoc_se_decrire_ce1"
+      ],
+      "mots_cles": [
+        "description",
+        "présentation de soi",
+        "habitudes"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_echanger_informations_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Échanger des informations simples",
+      "objectifs": [
+        "Poser quelques questions simples à l'aide des pronoms interrogatifs.",
+        "Donner quelques consignes ou ordres simples ritualisés à l'aide de verbes fréquemment utilisés à l'impératif.",
+        "Utiliser des réponses courtes."
+      ],
+      "prerequis_competences": [
+        "lve_co_comprendre_agir_cp"
+      ],
+      "mots_cles": [
+        "questions simples",
+        "consignes",
+        "réponses courtes"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_echanger_informations_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Échanger des informations simples",
+      "objectifs": [
+        "Poser quelques questions simples à l'aide d'une gamme réduite de pronoms interrogatifs.",
+        "Donner quelques consignes ou ordres simples ritualisés à l'aide de verbes fréquemment utilisés à l'impératif.",
+        "Utiliser des réponses courtes et mobiliser une expression simple d'autorisation."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_echanger_informations_cp"
+      ],
+      "mots_cles": [
+        "questions simples",
+        "consignes",
+        "autorisation"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_echanger_informations_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Échanger des informations simples",
+      "objectifs": [
+        "Poser quelques questions simples à l'aide d'une gamme réduite de pronoms interrogatifs.",
+        "Donner quelques consignes ou ordres simples ritualisés à l'aide de verbes fréquemment utilisés à l'impératif.",
+        "Utiliser des réponses courtes et mobiliser une expression simple d'autorisation."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_echanger_informations_ce1"
+      ],
+      "mots_cles": [
+        "questions simples",
+        "consignes",
+        "autorisation"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_exprimer_emotions_souhaits_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Exprimer des émotions et formuler des souhaits élémentaires",
+      "objectifs": [
+        "Exprimer son ressenti et ses souhaits de manière très simple en utilisant une gestuelle ou des expressions du visage.",
+        "Exprimer des sentiments ou des émotions dans le cadre de situations ritualisées en utilisant des mots isolés ou des expressions très simples."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_echanger_informations_cp"
+      ],
+      "mots_cles": [
+        "émotions",
+        "souhaits",
+        "gestuelle"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_exprimer_emotions_souhaits_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Exprimer des émotions et formuler des souhaits élémentaires",
+      "objectifs": [
+        "Exprimer son ressenti et ses souhaits en utilisant des blocs lexicalisés, une gestuelle ou les expressions du visage.",
+        "Mobiliser l'expression de sentiments ou d'émotions dans le cadre de situations ritualisées.",
+        "Connaitre et mobiliser quelques onomatopées typiques."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_exprimer_emotions_souhaits_cp"
+      ],
+      "mots_cles": [
+        "émotions",
+        "blocs lexicalisés",
+        "onomatopées"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_exprimer_emotions_souhaits_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Exprimer des émotions et formuler des souhaits élémentaires",
+      "objectifs": [
+        "Exprimer son ressenti et ses souhaits en utilisant des blocs lexicalisés, une gestuelle ou les expressions du visage.",
+        "Exprimer des sentiments ou des émotions dans le cadre de situations ritualisées en utilisant des mots isolés ou des expressions très simples.",
+        "Connaitre et mobiliser quelques onomatopées typiques."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_exprimer_emotions_souhaits_ce1"
+      ],
+      "mots_cles": [
+        "émotions",
+        "blocs lexicalisés",
+        "onomatopées"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_clarifier_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Clarifier ou faire clarifier un point",
+      "objectifs": [
+        "Indiquer très simplement à un interlocuteur que l'on n'a pas compris en utilisant au besoin une gestuelle ou des expressions du visage.",
+        "Connaitre et prononcer de manière compréhensible quelques lettres de l'alphabet pour épeler un mot très simple ou le reconnaitre."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_echanger_informations_cp"
+      ],
+      "mots_cles": [
+        "incompréhension",
+        "épeler",
+        "alphabet"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_clarifier_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Clarifier ou faire clarifier un point",
+      "objectifs": [
+        "Indiquer très simplement qu'il n'a pas compris en utilisant au besoin la gestuelle ou les expressions du visage.",
+        "Connaitre et prononcer de manière compréhensible quelques lettres de l'alphabet afin d'épeler un mot très simple ou le reconnaitre.",
+        "Mobiliser des formules toutes faites pour demander le sens d'un mot.",
+        "Donner quelques consignes simples mémorisées en lien avec le lexique de la communication de classe."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_clarifier_cp"
+      ],
+      "mots_cles": [
+        "incompréhension",
+        "épeler",
+        "sens d'un mot",
+        "consignes de classe"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_clarifier_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Clarifier ou faire clarifier un point",
+      "objectifs": [
+        "Indiquer très simplement qu'il n'a pas compris en utilisant au besoin la gestuelle ou les expressions du visage.",
+        "Connaitre et prononcer de manière compréhensible toutes les lettres de l'alphabet pour épeler un mot très simple ou le reconnaitre.",
+        "Mobiliser des formules toutes faites pour demander le sens d'un mot.",
+        "Clarifier quelques consignes simples mémorisées en lien avec le lexique de la communication de classe."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_clarifier_ce1"
+      ],
+      "mots_cles": [
+        "incompréhension",
+        "épeler",
+        "sens d'un mot",
+        "consignes de classe"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_conversation_breve_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Utiliser des procédés très simples pour commencer, poursuivre et terminer une conversation brève",
+      "objectifs": [
+        "Utiliser des formules de salutation très simples et adaptées à son interlocuteur pour ouvrir ou clore un échange.",
+        "Utiliser des formules de politesse variées.",
+        "Relancer une conversation ou un bref échange par des questions élémentaires.",
+        "Utiliser des expressions très courantes pour clore une conversation."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_echanger_informations_cp"
+      ],
+      "mots_cles": [
+        "salutations",
+        "politesse",
+        "clore une conversation"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_conversation_breve_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Utiliser des procédés très simples pour commencer, poursuivre et terminer une conversation brève",
+      "objectifs": [
+        "Utiliser des formules de salutation très simples et adaptées à son interlocuteur pour ouvrir ou clore un échange.",
+        "Utiliser des formules de politesse variées, dont demander et donner de ses nouvelles.",
+        "Relancer par des questions élémentaires.",
+        "Utiliser des expressions très courantes pour clore une conversation."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_conversation_breve_cp"
+      ],
+      "mots_cles": [
+        "salutations",
+        "politesse",
+        "prise de congé"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_eoi_conversation_breve_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Utiliser des procédés très simples pour commencer, poursuivre et terminer une conversation brève",
+      "objectifs": [
+        "Utiliser des formules de salutation très simples et adaptées à son interlocuteur pour ouvrir ou clore un échange.",
+        "Utiliser des formules de politesse variées, dont demander des informations complémentaires très simples.",
+        "Relancer par des questions élémentaires.",
+        "Utiliser des expressions courantes pour clore une conversation."
+      ],
+      "prerequis_competences": [
+        "lve_eoi_conversation_breve_ce1"
+      ],
+      "mots_cles": [
+        "salutations",
+        "politesse",
+        "questions élémentaires"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_ce_reconnaitre_mots_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Reconnaitre des mots ou des messages écrits familiers",
+      "objectifs": [
+        "S'appuyer sur les mots familiers dès lors qu'ils ont fait l'objet d'un travail d'appropriation des correspondances graphophonémiques.",
+        "Repérer les chiffres et les nombres en écriture littérale lorsqu'ils sont accompagnés d'une écriture chiffrée ou de visuels.",
+        "Reconnaitre quelques mots des champs lexicaux permettant de parler de soi et de sa sphère immédiate.",
+        "Reconnaitre quelques mots du champ lexical des activités quotidiennes."
+      ],
+      "prerequis_competences": [
+        "lve_co_mots_familiers_ce2"
+      ],
+      "mots_cles": [
+        "graphophonémie",
+        "lecture",
+        "vocabulaire familier"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_ce_trouver_informations_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Trouver des informations dans des écrits très simples",
+      "objectifs": [
+        "Trouver des informations simples et familières en s'appuyant sur des indices visuels, des mots familiers et le titre du texte.",
+        "Reconnaitre quelques mots des champs lexicaux permettant de parler de soi et de sa sphère immédiate.",
+        "Repérer les chiffres et les nombres en écriture littérale dès lors qu'ils sont accompagnés d'une écriture chiffrée ou de visuels.",
+        "Identifier quelques types de textes écrits grâce à leur mise en forme (invitation, carte postale, carte de vœux, publicité, etc.)."
+      ],
+      "prerequis_competences": [
+        "lve_ce_reconnaitre_mots_ce2"
+      ],
+      "mots_cles": [
+        "information",
+        "types de textes",
+        "indices visuels"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_ee_epeler_recopier_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Épeler, recopier ou écrire des éléments connus",
+      "objectifs": [
+        "Recopier dans son cahier la date du jour, des étiquettes-mots et des éléments écrits au tableau.",
+        "Retranscrire un mot connu puis une série de mots entendus et mémorisés dès lors qu'ils ont fait l'objet d'une appropriation à l'oral.",
+        "Exprimer simplement d'où l'on vient et où l'on vit, se présenter brièvement à l'écrit à l'aide d'expressions lexicalisées.",
+        "Exprimer simplement ses gouts à l'aide des verbes les plus courants.",
+        "Utiliser quelques blocs lexicalisés très simples pour écrire un courrier à un proche ou décrire son environnement immédiat."
+      ],
+      "prerequis_competences": [
+        "lve_ce_reconnaitre_mots_ce2"
+      ],
+      "mots_cles": [
+        "copie",
+        "dictée",
+        "présentation écrite",
+        "correspondance"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_m_reperes_culturels_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Identifier les repères culturels",
+      "objectifs": [
+        "Mobiliser le champ lexical des besoins élémentaires à l'aide de mots isolés, si nécessaire accompagnés de gestes.",
+        "Utiliser quelques expressions indiquant ce que l'on veut montrer à l'aide de gestes."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "besoins élémentaires",
+        "repères culturels",
+        "gestes"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_m_reperes_culturels_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Identifier les repères culturels",
+      "objectifs": [
+        "Repérer quelques différences ou similitudes culturelles dans des domaines familiers (fêtes calendaires, nourriture, jeux, sports, etc.).",
+        "Informer ou prévenir d'une situation culturelle non comprise par un geste ou des formules élémentaires."
+      ],
+      "prerequis_competences": [
+        "lve_m_reperes_culturels_cp"
+      ],
+      "mots_cles": [
+        "différences culturelles",
+        "similitudes culturelles"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_m_reperes_culturels_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Identifier les repères culturels",
+      "objectifs": [
+        "Repérer quelques différences ou similitudes culturelles dans des domaines familiers (fêtes calendaires, nourriture, jeux, sports, etc.).",
+        "Informer ou prévenir d'une situation culturelle non comprise par un geste ou des formules élémentaires."
+      ],
+      "prerequis_competences": [
+        "lve_m_reperes_culturels_ce1"
+      ],
+      "mots_cles": [
+        "différences culturelles",
+        "similitudes culturelles"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_m_expliciter_message_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Expliciter un message, une situation, un document pour autrui",
+      "objectifs": [
+        "Mobiliser le champ lexical des besoins élémentaires à l'aide de mots isolés, accompagnés de gestes ou insérés dans des structures très simples.",
+        "Utiliser quelques expressions et termes permettant de situer une information à l'aide de gestes.",
+        "Utiliser quelques verbes de perception."
+      ],
+      "prerequis_competences": [
+        "lve_m_reperes_culturels_ce1"
+      ],
+      "mots_cles": [
+        "besoins élémentaires",
+        "situer une information",
+        "verbes de perception"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_m_expliciter_message_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Expliciter un message, une situation, un document pour autrui",
+      "objectifs": [
+        "Mobiliser le champ lexical des besoins élémentaires à l'aide de mots isolés, accompagnés de gestes ou insérés dans des structures très simples.",
+        "Utiliser quelques expressions et verbes de perception permettant de situer une information à l'aide de gestes."
+      ],
+      "prerequis_competences": [
+        "lve_m_expliciter_message_ce1"
+      ],
+      "mots_cles": [
+        "besoins élémentaires",
+        "situer une information",
+        "verbes de perception"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_m_animer_travail_collectif_cp",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Animer un travail collectif, coopérer et contribuer à des échanges interculturels",
+      "objectifs": [
+        "Utiliser des consignes élémentaires accompagnées de gestes.",
+        "Exprimer sa compréhension ou son accord par des expressions simples accompagnées de gestes.",
+        "Utiliser des expressions simples accompagnées de gestes pour demander à des personnes si elles sont d'accord."
+      ],
+      "prerequis_competences": [
+        "lve_co_comprendre_agir_cp"
+      ],
+      "mots_cles": [
+        "consignes",
+        "accord",
+        "coopération"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_m_animer_travail_collectif_ce1",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Animer un travail collectif, coopérer et contribuer à des échanges interculturels",
+      "objectifs": [
+        "Utiliser des consignes élémentaires accompagnées de gestes.",
+        "Exprimer sa compréhension ou son accord par des expressions simples accompagnées de gestes.",
+        "Utiliser des formules de politesse ou d'accueil élémentaires.",
+        "Dire ou demander si l'on a compris."
+      ],
+      "prerequis_competences": [
+        "lve_m_animer_travail_collectif_cp"
+      ],
+      "mots_cles": [
+        "consignes",
+        "accord",
+        "politesse",
+        "coopération"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "lve_m_animer_travail_collectif_ce2",
+      "discipline": "Langues vivantes étrangères et régionales",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "langues_vivantes",
+      "domaine": "Langues vivantes étrangères et régionales",
+      "couleur": "#5A7D9A",
+      "intitule": "Animer un travail collectif, coopérer et contribuer à des échanges interculturels",
+      "objectifs": [
+        "Utiliser des formules d'accueil ou de salutation très simples.",
+        "Utiliser des expressions simples accompagnées de gestes pour demander à des personnes si elles sont d'accord et manifester ou demander l'adhésion.",
+        "Dire ou demander si l'on a compris en utilisant des gestes si besoin.",
+        "Utiliser quelques verbes d'action familiers pour animer un jeu ou une activité et donner quelques consignes ritualisées.",
+        "Joindre le geste à la parole pour identifier, situer ou souligner une information."
+      ],
+      "prerequis_competences": [
+        "lve_m_animer_travail_collectif_ce1"
+      ],
+      "mots_cles": [
+        "accueil",
+        "adhésion",
+        "consignes",
+        "coopération interculturelle"
+      ],
+      "source": {
+        "document": "Programme de langues vivantes étrangères et régionales pour le cycle 2",
+        "fichier": "Annexe 1 – Programme de langues vivantes étrangères et régionales pour le cycle 2-481187.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_masse_vocabulaire_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Comparer les masses de différents objets",
+      "objectifs": [
+        "Comparer les masses de différents objets.",
+        "Utiliser le vocabulaire associé aux masses."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "masse",
+        "comparer",
+        "vocabulaire scientifique"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_temperature_thermometre_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Lire la valeur de la température avec un thermomètre à liquide",
+      "objectifs": [
+        "Lire la valeur de la température avec un thermomètre à liquide."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "température",
+        "thermomètre",
+        "degré Celsius"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_etats_physiques_matiere_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Reconnaitre et identifier les états solides et liquides de l'eau",
+      "objectifs": [
+        "Reconnaitre et identifier les états solides et liquides de l'eau."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "états de la matière",
+        "solide",
+        "liquide",
+        "eau"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_masse_volumes_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Mesurer les masses des objets avec une balance",
+      "objectifs": [
+        "Mesurer les masses des objets avec une balance, comparer et classer les masses grâce à la mesure."
+      ],
+      "prerequis_competences": [
+        "st_masse_vocabulaire_cp"
+      ],
+      "mots_cles": [
+        "masse",
+        "balance",
+        "mesure"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_etats_physiques_matiere_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Observer et nommer les changements d'état de l'eau",
+      "objectifs": [
+        "Observer le changement d'état physique de l'eau (solide et liquide) et sa réversibilité.",
+        "Nommer le changement d'état (solidification et fusion).",
+        "Constater la conservation de la masse lors d'un changement d'état.",
+        "Constater que le volume de l'eau ne se conserve pas lors de sa solidification.",
+        "Réaliser des expériences mettant en évidence la matérialité de l'air."
+      ],
+      "prerequis_competences": [
+        "st_etats_physiques_matiere_cp"
+      ],
+      "mots_cles": [
+        "état de la matière",
+        "solidification",
+        "fusion",
+        "conservation de la masse",
+        "air"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_electricite_circuit_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Réaliser un circuit électrique à une boucle",
+      "objectifs": [
+        "Réaliser un circuit électrique à une boucle associant un générateur (pile), un interrupteur, un récepteur (ampoule) pour mettre en évidence la circulation du courant électrique.",
+        "Tester des matériaux pour déterminer leur caractère isolant ou conducteur."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "électricité",
+        "circuit électrique",
+        "conducteur",
+        "isolant"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_masse_volumes_mesure_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Convertir des unités de masse et comparer des volumes",
+      "objectifs": [
+        "Convertir des unités de masse.",
+        "Comparer les contenances de différents objets.",
+        "Comparer des volumes de liquide en utilisant un verre gradué ou en utilisant un récipient de contenance connue comme une bouteille d'un litre ou d'un demi-litre."
+      ],
+      "prerequis_competences": [
+        "st_masse_volumes_ce1"
+      ],
+      "mots_cles": [
+        "masse",
+        "volume",
+        "conversion d'unités",
+        "verre gradué"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_mesure_durees_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Comparer, estimer et mesurer des durées",
+      "objectifs": [
+        "Comparer, estimer, mesurer des durées."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "durée",
+        "mesure du temps",
+        "sablier"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_etats_physiques_matiere_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "matiere_mesures_electricite",
+      "domaine": "La matière, les mesures, l'électricité",
+      "couleur": "#B5502E",
+      "intitule": "Différencier les états physiques solide et liquide",
+      "objectifs": [
+        "Différencier les états physiques solide (forme et volume propre) et liquide (volume propre, absence de forme propre et surface horizontale)."
+      ],
+      "prerequis_competences": [
+        "st_etats_physiques_matiere_ce1"
+      ],
+      "mots_cles": [
+        "état de la matière",
+        "solide",
+        "liquide"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_unite_diversite_vivant_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Caractériser ce qui est vivant, non vivant ou élaboré par des êtres vivants",
+      "objectifs": [
+        "Caractériser et justifier à l'aide de critères simples ce qui est vivant, non vivant ou élaboré par des êtres vivants."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "vivant",
+        "non vivant",
+        "classification"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_observer_environnement_proche_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Observer et décrire son environnement proche",
+      "objectifs": [
+        "Observer son environnement proche : décrire les êtres vivants qui y vivent et les caractéristiques du milieu de vie.",
+        "Se repérer dans son environnement proche."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "environnement proche",
+        "milieu de vie",
+        "repérage"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_agir_proteger_environnement_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Agir pour protéger l'environnement proche",
+      "objectifs": [
+        "Constater quelques modifications de l'environnement proche par des activités humaines.",
+        "Identifier et mettre en œuvre quelques gestes simples favorables à la protection de l'environnement proche de l'école.",
+        "Développer un rapport sensible à la nature.",
+        "Prendre conscience des possibilités d'agir, tant individuellement que collectivement, pour protéger l'environnement."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "environnement",
+        "protection",
+        "gestes écoresponsables"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_nutrition_etres_vivants_plantes_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Déterminer les besoins essentiels à la croissance d'une plante",
+      "objectifs": [
+        "Déterminer des besoins essentiels pour la croissance d'une plante (eau et lumière) par une démarche expérimentale.",
+        "Décrire les différents organes végétatifs d'une plante (racine, tige, feuille)."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "nutrition",
+        "plante",
+        "croissance",
+        "organes végétatifs"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_regime_alimentaire_animaux_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Identifier le régime alimentaire d'animaux",
+      "objectifs": [
+        "Identifier le régime alimentaire d'animaux."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "régime alimentaire",
+        "herbivore",
+        "carnivore",
+        "omnivore"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_sens_perception_animaux_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Associer des organes sensoriels et la perception du milieu chez les animaux",
+      "objectifs": [
+        "Associer des organes sensoriels et la perception du milieu chez les animaux (vision, audition, odorat, gout, équilibre, toucher)."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "organes sensoriels",
+        "perception",
+        "sens"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_observer_environnement_proche_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Observer le changement de peuplement de l'environnement au cours des saisons",
+      "objectifs": [
+        "Observer le changement de peuplement de l'environnement proche au cours des saisons.",
+        "Relier la présence d'espèces avec les caractéristiques de l'environnement.",
+        "Catégoriser différentes relations entre les êtres vivants."
+      ],
+      "prerequis_competences": [
+        "st_observer_environnement_proche_cp"
+      ],
+      "mots_cles": [
+        "saisons",
+        "peuplement",
+        "relations entre êtres vivants"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_agir_proteger_environnement_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "S'impliquer dans une action de préservation de l'environnement",
+      "objectifs": [
+        "S'impliquer dans une action de préservation de l'environnement proche de l'école.",
+        "Développer un rapport sensible à la nature.",
+        "Prendre conscience de la nécessité et des possibilités d'agir, tant individuellement que collectivement, pour protéger l'environnement."
+      ],
+      "prerequis_competences": [
+        "st_agir_proteger_environnement_cp"
+      ],
+      "mots_cles": [
+        "environnement",
+        "biodiversité",
+        "protection"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_unite_diversite_vivant_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Décrire les caractéristiques des êtres vivants",
+      "objectifs": [
+        "Décrire les caractéristiques des êtres vivants (biologie, écologie, classification)."
+      ],
+      "prerequis_competences": [
+        "st_unite_diversite_vivant_cp"
+      ],
+      "mots_cles": [
+        "biologie",
+        "écologie",
+        "classification du vivant"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_reproduction_croissance_developpement_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Ordonner les étapes de la vie d'un être vivant",
+      "objectifs": [
+        "Ordonner les étapes de la vie d'une plante à fleurs : de la graine à la plante, de la fleur au fruit (germination de la graine, croissance, formation de la fleur, formation du fruit contenant des graines, dispersion des graines).",
+        "Mesurer la croissance d'un être vivant (plante ou animal) au cours du temps.",
+        "Distinguer chez les animaux les formes juvénile, larvaire et adulte, à partir d'exemples. Distinguer les modalités de croissance continue (sans mue) et discontinue (avec des mues)."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "reproduction",
+        "croissance",
+        "développement",
+        "métamorphose"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_locomotion_animaux_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Décrire les organes locomoteurs et les modes de locomotion",
+      "objectifs": [
+        "Décrire les organes locomoteurs et les associer à un mode de locomotion.",
+        "Décrire les similitudes de forme entre les structures locomotrices et les relier au mode de déplacement dans un milieu de vie donné."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "locomotion",
+        "organes locomoteurs",
+        "déplacement"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_observer_environnement_proche_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Observer des environnements variés et élaborer une chaine alimentaire",
+      "objectifs": [
+        "Observer des environnements variés pour élargir la connaissance des êtres vivants, de leurs interactions et de leurs milieux de vie.",
+        "Élaborer une courte chaine alimentaire.",
+        "Envisager le sol comme un milieu vivant et observer la diversité des êtres vivants qui le composent (dont les animaux et les champignons)."
+      ],
+      "prerequis_competences": [
+        "st_observer_environnement_proche_ce1"
+      ],
+      "mots_cles": [
+        "chaine alimentaire",
+        "milieu de vie",
+        "sol"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_agir_proteger_environnement_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "etres_vivants_environnement",
+      "domaine": "Les êtres vivants dans leur environnement",
+      "couleur": "#2A7F72",
+      "intitule": "Évaluer l'impact des activités humaines sur l'environnement et agir",
+      "objectifs": [
+        "Identifier les conséquences positives et négatives de certaines activités humaines sur un environnement.",
+        "S'impliquer dans un projet collectif de préservation de l'environnement en lien avec la transition écologique.",
+        "Développer un rapport sensible à la nature.",
+        "Prendre conscience de la nécessité et des possibilités d'agir, tant individuellement que collectivement, pour protéger l'environnement."
+      ],
+      "prerequis_competences": [
+        "st_agir_proteger_environnement_ce1"
+      ],
+      "mots_cles": [
+        "transition écologique",
+        "biodiversité",
+        "projet collectif"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_alimentation_categories_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Découvrir et nommer les catégories d'aliments et leur origine",
+      "objectifs": [
+        "Découvrir et nommer les catégories d'aliments et leur origine, en utilisant le vocabulaire associé."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "alimentation",
+        "catégories d'aliments",
+        "origine des aliments"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_croissance_mouvement_squelette_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Décrire le schéma corporel et les principales articulations",
+      "objectifs": [
+        "Décrire le schéma corporel et nommer les principales articulations et quelques os associés du squelette, en enrichissant le vocabulaire anatomique.",
+        "Repérer sur soi et sur une maquette simple les éléments permettant la réalisation d'un mouvement corporel."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "squelette",
+        "articulations",
+        "schéma corporel"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_sante_hygiene_vie_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Observer son rythme d'activité et identifier des règles d'hygiène de vie",
+      "objectifs": [
+        "Observer son rythme d'activité quotidien (sommeil, activité physique, activité intellectuelle, repos et relaxation).",
+        "Identifier quelques règles d'hygiène de vie au quotidien et les relier à sa santé (sommeil, variété alimentaire, activité physique régulière, repos, lavage des mains et du corps, brossage des dents, limitation des temps d'écran)."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "hygiène de vie",
+        "sommeil",
+        "rythme quotidien"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_alimentation_apports_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Identifier les apports spécifiques des aliments et l'équilibre alimentaire",
+      "objectifs": [
+        "Identifier les apports spécifiques des aliments : sources d'énergie, d'eau, de minéraux, de matière.",
+        "Établir la notion d'équilibre alimentaire."
+      ],
+      "prerequis_competences": [
+        "st_alimentation_categories_cp"
+      ],
+      "mots_cles": [
+        "équilibre alimentaire",
+        "apports nutritionnels"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_croissance_mouvement_corps_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Suivre la croissance du corps et observer la dentition",
+      "objectifs": [
+        "Utiliser des instruments de mesure pour suivre la croissance du corps, en particulier du squelette (os).",
+        "Comparer la croissance de différentes personnes (taille, masse, pointure) pour prendre conscience de la diversité morphologique humaine et respecter les différences.",
+        "Observer les modifications de la dentition au cours de la croissance."
+      ],
+      "prerequis_competences": [
+        "st_croissance_mouvement_squelette_cp"
+      ],
+      "mots_cles": [
+        "croissance",
+        "dentition",
+        "diversité morphologique"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_hygiene_bucco_dentaire_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Identifier les règles d'hygiène de vie au quotidien",
+      "objectifs": [
+        "Identifier quelques règles d'hygiène de vie au quotidien et les relier à sa santé."
+      ],
+      "prerequis_competences": [
+        "st_sante_hygiene_vie_cp"
+      ],
+      "mots_cles": [
+        "hygiène bucco-dentaire",
+        "brossage des dents"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_attention_cognitive_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Prendre conscience du rôle de l'attention dans les apprentissages",
+      "objectifs": [
+        "Prendre conscience du rôle que joue l'attention cognitive dans les apprentissages."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "attention",
+        "concentration",
+        "apprentissage"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_croissance_mouvement_muscles_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Modéliser un mouvement et observer les effets de l'activité physique",
+      "objectifs": [
+        "Modéliser un mouvement de flexion/extension pour identifier le rôle des muscles et des articulations.",
+        "Observer les changements corporels pendant l'activité physique, en lien avec l'enseignement physique et sportif.",
+        "Relier l'activité physique avec la variation du rythme respiratoire (inspiration, expiration) et du rythme cardiaque par la mesure du pouls."
+      ],
+      "prerequis_competences": [
+        "st_croissance_mouvement_corps_ce1"
+      ],
+      "mots_cles": [
+        "muscles",
+        "articulations",
+        "rythme cardiaque",
+        "rythme respiratoire"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_bienfaits_activite_physique_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Constater le lien entre pratique physique régulière et bien-être",
+      "objectifs": [
+        "Constater le lien entre la pratique physique régulière et le bien-être."
+      ],
+      "prerequis_competences": [
+        "st_sante_hygiene_vie_cp"
+      ],
+      "mots_cles": [
+        "activité physique",
+        "bien-être"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_fonctionnement_cerveau_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "corps_humain_sante",
+      "domaine": "Le corps humain et la santé",
+      "couleur": "#6B4E8E",
+      "intitule": "Se familiariser avec le fonctionnement du cerveau pour mieux apprendre",
+      "objectifs": [
+        "Se familiariser avec quelques notions sur le fonctionnement du cerveau pour mieux apprendre."
+      ],
+      "prerequis_competences": [
+        "st_attention_cognitive_ce1"
+      ],
+      "mots_cles": [
+        "cerveau",
+        "méthodes d'apprentissage",
+        "concentration"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_intervention_humaine_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Identifier qu'un objet technique est obtenu par intervention humaine",
+      "objectifs": [
+        "Identifier qu'un objet technique est obtenu par intervention des êtres humains."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "objet technique",
+        "transformation",
+        "matériau brut"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_besoin_quotidien_cp",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CP",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Identifier des activités quotidiennes faisant appel à des objets techniques",
+      "objectifs": [
+        "Identifier des activités de la vie quotidienne faisant appel à des objets techniques répondant à un besoin."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "objet technique",
+        "besoin",
+        "vie quotidienne"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours préparatoire"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_parties_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Identifier les différentes parties d'un objet technique",
+      "objectifs": [
+        "Identifier les différentes parties d'un objet technique en les caractérisant par leur forme, leur matériau et leur fonction."
+      ],
+      "prerequis_competences": [
+        "st_objet_technique_intervention_humaine_cp"
+      ],
+      "mots_cles": [
+        "objet technique",
+        "forme",
+        "matériau",
+        "fonction"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_energie_electrique_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Différencier les objets selon l'utilisation d'une source d'énergie électrique",
+      "objectifs": [
+        "Différencier les objets selon qu'ils utilisent ou non une source d'énergie électrique. Identifier le cas échéant l'intérêt de l'utilisation de l'énergie électrique."
+      ],
+      "prerequis_competences": [
+        "st_electricite_circuit_ce1"
+      ],
+      "mots_cles": [
+        "énergie électrique",
+        "objet technique"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_maquette_circuit_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Réaliser une maquette avec un circuit électrique",
+      "objectifs": [
+        "Réaliser une maquette simple avec un circuit électrique. Identifier les composants et leurs fonctions."
+      ],
+      "prerequis_competences": [
+        "st_electricite_circuit_ce1"
+      ],
+      "mots_cles": [
+        "maquette",
+        "circuit électrique",
+        "composants"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_programmation_robot_ce1",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE1",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Commander un robot en programmant un déplacement",
+      "objectifs": [
+        "Commander un robot avec des consignes simples en programmant un déplacement."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "robot",
+        "programmation",
+        "algorithme"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire première année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_dispositifs_numeriques_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Identifier les dispositifs de saisie, traitement et restitution d'informations",
+      "objectifs": [
+        "Identifier les dispositifs permettant la saisie, le traitement et la restitution d'informations (clavier, processeur, écran, etc.)."
+      ],
+      "prerequis_competences": [],
+      "mots_cles": [
+        "ordinateur",
+        "numérique",
+        "dispositifs"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_traitement_texte_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Utiliser un ordinateur ou une tablette pour saisir un texte",
+      "objectifs": [
+        "Utiliser un ordinateur ou tablette numérique, pour saisir un texte."
+      ],
+      "prerequis_competences": [
+        "st_objet_technique_dispositifs_numeriques_ce2"
+      ],
+      "mots_cles": [
+        "traitement de texte",
+        "numérique"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_moteur_recherche_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Utiliser un moteur de recherche",
+      "objectifs": [
+        "Utiliser un moteur de recherche."
+      ],
+      "prerequis_competences": [
+        "st_objet_technique_dispositifs_numeriques_ce2"
+      ],
+      "mots_cles": [
+        "moteur de recherche",
+        "numérique",
+        "information"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_assemblage_pieces_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Comprendre qu'un objet technique est un assemblage de pièces",
+      "objectifs": [
+        "Comprendre qu'un objet technique peut être un assemblage de pièces.",
+        "Identifier les différentes pièces d'un objet technique en réalisant des assemblages simples."
+      ],
+      "prerequis_competences": [
+        "st_objet_technique_parties_ce1"
+      ],
+      "mots_cles": [
+        "assemblage",
+        "pièces",
+        "objet technique"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_diversite_reponses_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Comprendre qu'un besoin identifié peut être satisfait par une diversité d'objets",
+      "objectifs": [
+        "Comprendre que, pour un besoin identifié, il existe une diversité d'objets y répondant."
+      ],
+      "prerequis_competences": [
+        "st_objet_technique_besoin_quotidien_cp"
+      ],
+      "mots_cles": [
+        "besoin",
+        "diversité",
+        "objet technique"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
+        "niveau_source": "Cours élémentaire deuxième année"
+      },
+      "statut": "actif"
+    },
+    {
+      "id": "st_objet_technique_programmation_algorithmes_ce2",
+      "discipline": "Sciences et technologie",
+      "cycle": "Cycle 2",
+      "niveau": "CE2",
+      "domaine_id": "objets_techniques_societe",
+      "domaine": "Les objets techniques au cœur de la société",
+      "couleur": "#B5871E",
+      "intitule": "Initier à la programmation d'objets techniques par des algorithmes",
+      "objectifs": [
+        "Initier à la programmation d'objets techniques par des algorithmes simples."
+      ],
+      "prerequis_competences": [
+        "st_objet_technique_programmation_robot_ce1"
+      ],
+      "mots_cles": [
+        "programmation",
+        "algorithme",
+        "robot"
+      ],
+      "source": {
+        "document": "Annexe 1 – Programme de sciences et technologie du cycle 2",
+        "fichier": "annexe-1-programme-de-sciences-et-technologie-du-cycle-2-517289.pdf",
         "niveau_source": "Cours élémentaire deuxième année"
       },
       "statut": "actif"
