@@ -480,18 +480,7 @@ function drawNode(ctx,p,n){
   if(state.hover===n.id || state.selected===n.id){ctx.strokeStyle="#152333";ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,r+4,0,Math.PI*2);ctx.stroke();}
   ctx.restore();
 }
-function focusOpacityFor(n){
-  // Mode focus (item 2) : en vue globale, cliquer une compétence estompe le reste.
-  if(state.viewMode==="global" && state.selected && state.selected.startsWith("c:")){
-    const set=getCompetenceFocusSet(state.selected);
-    if(set && !set.has(n.id)) return 0.18;
-  }
-  // Vue niveau : les sphères hors focus (et leur contenu) deviennent discrètes.
-  if(state.viewMode==="niveau" && state.focusLevel && normalizeLevel(n.niveau)!==state.focusLevel){
-    return 0.15;
-  }
-  return 1;
-}
+
 function draw(){
   const canvas=$("graph"),ctx=canvas.getContext("2d");
   const dpr=Math.min(devicePixelRatio||1,2);
