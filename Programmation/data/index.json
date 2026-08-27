@@ -1,1309 +1,1328 @@
-{
-  "_MODE_EMPLOI": {
-    "version": "1.1",
-    "role": "Ce fichier organise la structure administrative et chronologique de la programmation pédagogique de Synapses.",
-    "source_primaire": "Les documents PDF et autres documents de référence fournis pour construire ou corriger la programmation.",
-    "hierarchie": "niveau > discipline > domaine > sequence > seances",
-    "regles": [
-      "Ne jamais inventer une séquence ou une séance absente des sources fournies.",
-      "Conserver les identifiants existants lorsque la donnée existe déjà.",
-      "Créer un nouvel identifiant stable uniquement lorsqu'une nouvelle donnée doit être ajoutée.",
-      "Ne pas supprimer une donnée existante sans justification explicite.",
-      "Une séquence doit toujours être placée sous le niveau, la discipline et le domaine auxquels elle appartient dans les sources.",
-      "Une séance doit toujours appartenir à une séquence existante.",
-      "Les chemins de fichiers doivent être relatifs à la racine du dossier Programmation.",
-      "Le champ competence_id sert à relier une séquence à une compétence ; il ne détermine pas son niveau spatial. Le niveau de index.json reste prioritaire.",
-      "Ne pas utiliser ce fichier pour déduire ou inventer des prérequis pédagogiques."
-    ],
-    "procedure_avec_un_pdf": [
-      "Lire le document fourni dans son intégralité avant de modifier les données.",
-      "Identifier le niveau, la discipline et le domaine concernés.",
-      "Comparer les informations du document avec les entrées déjà présentes dans index.json.",
-      "Réutiliser les identifiants existants lorsqu'une donnée correspond déjà.",
-      "Ajouter uniquement les séquences et séances réellement justifiées par le document.",
-      "Vérifier que chaque séquence possède son niveau, sa discipline et son domaine par sa position dans l'arborescence.",
-      "Vérifier que chaque séance possède un sequence_id cohérent et un fichier déclaré si le fichier existe.",
-      "Vérifier les doublons et les chemins.",
-      "Valider le JSON final avant de le retourner.",
-      "Fournir séparément un résumé des ajouts, corrections et ambiguïtés."
-    ],
-    "index_pedagogique": {
-      "optionnel": true,
-      "fichier": "data/index-pedagogie.json",
-      "regle": "Ce fichier sert de référence analytique pour établir les relations pédagogiques. Son absence ne doit empêcher ni la lecture ni la cartographie de index.json.",
-      "role": "Il permet à une IA d'analyser les références pédagogiques et de proposer des relations entre compétences. Les prérequis retenus sont enregistrés dans competences.json.",
-      "important": "Ne pas créer un prerequis_competences à partir du seul ordre d'apparition dans index.json."
-    }
-  },
-  "meta": {
-    "titre": "Index central de la programmation pédagogique",
-    "version": "1.4",
-    "description": "Structure administrative et chronologique de la programmation. Le niveau, la discipline et le domaine déterminent la localisation spatiale. Le référentiel complet des compétences est chargé depuis data/competences.json.",
-    "competences": "data/competences.json",
-    "index_pedagogique": "data/index-pedagogie.json",
-    "regle_cartographie": "Le niveau déclaré ici est prioritaire pour le placement d'une séquence et de ses séances. competence_id sert uniquement à créer le lien pédagogique avec une compétence.",
-    "regle_prerequis": "Les prérequis pédagogiques sont définis dans competences.json. index-pedagogie.json sert de référence analytique. index.json conserve uniquement les éventuels prérequis explicitement nécessaires à la contextualisation d'une séquence ou d'une séance.",
-    "niveaux_reconnus": [
-      "TPS",
-      "PS",
-      "MS",
-      "GS",
-      "CP",
-      "CE1",
-      "CE2",
-      "CM1",
-      "CM2",
-      "6e"
-    ],
-    "cycles_reconnus": {
-      "TPS": "Cycle 1",
-      "PS": "Cycle 1",
-      "MS": "Cycle 1",
-      "GS": "Cycle 1",
-      "CP": "Cycle 2",
-      "CE1": "Cycle 2",
-      "CE2": "Cycle 2",
-      "CM1": "Cycle 3",
-      "CM2": "Cycle 3",
-      "6e": "Cycle 3"
-    },
-    "regle_affichage_competences": "La page index.html charge toutes les entrées de data/competences.json. Les niveaux CM1 et CM2 incluent également les compétences dont la source indique CM1-CM2."
-  },
-  "niveaux": [
-    {
-      "id": "TPS",
-      "nom": "TPS",
-      "cycle": "Cycle 1",
-      "disciplines": [
-        {
-          "id": "langage_oral",
-          "nom": "Langage oral",
-          "domaines": [
-            {
-              "id": "langage_oral",
-              "nom": "Langage oral",
-              "chemin": "data/TPS/langage_oral/langage_oral/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "oral_vers_crit",
-          "nom": "Oral vers écrit",
-          "domaines": [
-            {
-              "id": "oral_vers_ecrit",
-              "nom": "Oral vers écrit",
-              "chemin": "data/TPS/oral_vers_crit/oral_vers_ecrit/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "culture_de_l_crit",
-          "nom": "Culture de l’écrit",
-          "domaines": [
-            {
-              "id": "culture_de_l'ecrit",
-              "nom": "Culture de l’écrit",
-              "chemin": "data/TPS/culture_de_l_crit/culture_de_l'ecrit/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "criture",
-          "nom": "Écriture",
-          "domaines": [
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/TPS/criture/ecriture/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "eps",
-          "nom": "EPS",
-          "domaines": [
-            {
-              "id": "eps",
-              "nom": "EPS",
-              "chemin": "data/TPS/eps/eps/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "arts_visuels",
-          "nom": "Arts visuels",
-          "domaines": [
-            {
-              "id": "arts_visuels",
-              "nom": "Arts visuels",
-              "chemin": "data/TPS/arts_visuels/arts_visuels/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "univers_sonores",
-          "nom": "Univers sonores",
-          "domaines": [
-            {
-              "id": "univers_sonores",
-              "nom": "Univers sonores",
-              "chemin": "data/TPS/univers_sonores/univers_sonores/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "spectacle_vivant",
-          "nom": "Spectacle vivant",
-          "domaines": [
-            {
-              "id": "spectacle_vivant",
-              "nom": "Spectacle vivant",
-              "chemin": "data/TPS/spectacle_vivant/spectacle_vivant/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "math_matiques",
-          "nom": "Mathématiques",
-          "domaines": [
-            {
-              "id": "mathematiques",
-              "nom": "Mathématiques",
-              "chemin": "data/TPS/math_matiques/mathematiques/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "temps",
-          "nom": "Temps",
-          "domaines": [
-            {
-              "id": "temps",
-              "nom": "Temps",
-              "chemin": "data/TPS/temps/temps/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "espace",
-          "nom": "Espace",
-          "domaines": [
-            {
-              "id": "espace",
-              "nom": "Espace",
-              "chemin": "data/TPS/espace/espace/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "vivant",
-          "nom": "Vivant",
-          "domaines": [
-            {
-              "id": "vivant",
-              "nom": "Vivant",
-              "chemin": "data/TPS/vivant/vivant/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "mati_re_et_objets",
-          "nom": "Matière et objets",
-          "domaines": [
-            {
-              "id": "matiere_et_objets",
-              "nom": "Matière et objets",
-              "chemin": "data/TPS/mati_re_et_objets/matiere_et_objets/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "evar",
-          "nom": "EVAR",
-          "domaines": [
-            {
-              "id": "evar",
-              "nom": "EVAR",
-              "chemin": "data/TPS/evar/evar/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "PS",
-      "nom": "PS",
-      "cycle": "Cycle 1",
-      "disciplines": [
-        {
-          "id": "langage_oral",
-          "nom": "Langage oral",
-          "domaines": [
-            {
-              "id": "langage_oral",
-              "nom": "Langage oral",
-              "chemin": "data/PS/langage_oral/langage_oral/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "oral_vers_crit",
-          "nom": "Oral vers écrit",
-          "domaines": [
-            {
-              "id": "oral_vers_ecrit",
-              "nom": "Oral vers écrit",
-              "chemin": "data/PS/oral_vers_crit/oral_vers_ecrit/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "culture_de_l_crit",
-          "nom": "Culture de l’écrit",
-          "domaines": [
-            {
-              "id": "culture_de_l'ecrit",
-              "nom": "Culture de l’écrit",
-              "chemin": "data/PS/culture_de_l_crit/culture_de_l'ecrit/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "criture",
-          "nom": "Écriture",
-          "domaines": [
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/PS/criture/ecriture/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "eps",
-          "nom": "EPS",
-          "domaines": [
-            {
-              "id": "eps",
-              "nom": "EPS",
-              "chemin": "data/PS/eps/eps/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "arts_visuels",
-          "nom": "Arts visuels",
-          "domaines": [
-            {
-              "id": "arts_visuels",
-              "nom": "Arts visuels",
-              "chemin": "data/PS/arts_visuels/arts_visuels/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "univers_sonores",
-          "nom": "Univers sonores",
-          "domaines": [
-            {
-              "id": "univers_sonores",
-              "nom": "Univers sonores",
-              "chemin": "data/PS/univers_sonores/univers_sonores/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "spectacle_vivant",
-          "nom": "Spectacle vivant",
-          "domaines": [
-            {
-              "id": "spectacle_vivant",
-              "nom": "Spectacle vivant",
-              "chemin": "data/PS/spectacle_vivant/spectacle_vivant/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "math_matiques",
-          "nom": "Mathématiques",
-          "domaines": [
-            {
-              "id": "mathematiques",
-              "nom": "Mathématiques",
-              "chemin": "data/PS/math_matiques/mathematiques/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "temps",
-          "nom": "Temps",
-          "domaines": [
-            {
-              "id": "temps",
-              "nom": "Temps",
-              "chemin": "data/PS/temps/temps/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "espace",
-          "nom": "Espace",
-          "domaines": [
-            {
-              "id": "espace",
-              "nom": "Espace",
-              "chemin": "data/PS/espace/espace/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "vivant",
-          "nom": "Vivant",
-          "domaines": [
-            {
-              "id": "vivant",
-              "nom": "Vivant",
-              "chemin": "data/PS/vivant/vivant/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "mati_re_et_objets",
-          "nom": "Matière et objets",
-          "domaines": [
-            {
-              "id": "matiere_et_objets",
-              "nom": "Matière et objets",
-              "chemin": "data/PS/mati_re_et_objets/matiere_et_objets/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "evar",
-          "nom": "EVAR",
-          "domaines": [
-            {
-              "id": "evar",
-              "nom": "EVAR",
-              "chemin": "data/PS/evar/evar/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "MS",
-      "nom": "MS",
-      "cycle": "Cycle 1",
-      "disciplines": [
-        {
-          "id": "langage_oral",
-          "nom": "Langage oral",
-          "domaines": [
-            {
-              "id": "langage_oral",
-              "nom": "Langage oral",
-              "chemin": "data/MS/langage_oral/langage_oral/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "oral_vers_crit",
-          "nom": "Oral vers écrit",
-          "domaines": [
-            {
-              "id": "oral_vers_ecrit",
-              "nom": "Oral vers écrit",
-              "chemin": "data/MS/oral_vers_crit/oral_vers_ecrit/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "culture_de_l_crit",
-          "nom": "Culture de l’écrit",
-          "domaines": [
-            {
-              "id": "culture_de_l'ecrit",
-              "nom": "Culture de l’écrit",
-              "chemin": "data/MS/culture_de_l_crit/culture_de_l'ecrit/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "criture",
-          "nom": "Écriture",
-          "domaines": [
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/MS/criture/ecriture/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "eps",
-          "nom": "EPS",
-          "domaines": [
-            {
-              "id": "eps",
-              "nom": "EPS",
-              "chemin": "data/MS/eps/eps/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "arts_visuels",
-          "nom": "Arts visuels",
-          "domaines": [
-            {
-              "id": "arts_visuels",
-              "nom": "Arts visuels",
-              "chemin": "data/MS/arts_visuels/arts_visuels/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "univers_sonores",
-          "nom": "Univers sonores",
-          "domaines": [
-            {
-              "id": "univers_sonores",
-              "nom": "Univers sonores",
-              "chemin": "data/MS/univers_sonores/univers_sonores/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "spectacle_vivant",
-          "nom": "Spectacle vivant",
-          "domaines": [
-            {
-              "id": "spectacle_vivant",
-              "nom": "Spectacle vivant",
-              "chemin": "data/MS/spectacle_vivant/spectacle_vivant/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "math_matiques",
-          "nom": "Mathématiques",
-          "domaines": [
-            {
-              "id": "mathematiques",
-              "nom": "Mathématiques",
-              "chemin": "data/MS/math_matiques/mathematiques/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "temps",
-          "nom": "Temps",
-          "domaines": [
-            {
-              "id": "temps",
-              "nom": "Temps",
-              "chemin": "data/MS/temps/temps/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "espace",
-          "nom": "Espace",
-          "domaines": [
-            {
-              "id": "espace",
-              "nom": "Espace",
-              "chemin": "data/MS/espace/espace/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "vivant",
-          "nom": "Vivant",
-          "domaines": [
-            {
-              "id": "vivant",
-              "nom": "Vivant",
-              "chemin": "data/MS/vivant/vivant/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "mati_re_et_objets",
-          "nom": "Matière et objets",
-          "domaines": [
-            {
-              "id": "matiere_et_objets",
-              "nom": "Matière et objets",
-              "chemin": "data/MS/mati_re_et_objets/matiere_et_objets/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "evar",
-          "nom": "EVAR",
-          "domaines": [
-            {
-              "id": "evar",
-              "nom": "EVAR",
-              "chemin": "data/MS/evar/evar/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "GS",
-      "nom": "GS",
-      "cycle": "Cycle 1",
-      "disciplines": [
-        {
-          "id": "langage_oral",
-          "nom": "Langage oral",
-          "domaines": [
-            {
-              "id": "langage_oral",
-              "nom": "Langage oral",
-              "chemin": "data/GS/langage_oral/langage_oral/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "oral_vers_crit",
-          "nom": "Oral vers écrit",
-          "domaines": [
-            {
-              "id": "oral_vers_ecrit",
-              "nom": "Oral vers écrit",
-              "chemin": "data/GS/oral_vers_crit/oral_vers_ecrit/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "culture_de_l_crit",
-          "nom": "Culture de l’écrit",
-          "domaines": [
-            {
-              "id": "culture_de_l'ecrit",
-              "nom": "Culture de l’écrit",
-              "chemin": "data/GS/culture_de_l_crit/culture_de_l'ecrit/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "criture",
-          "nom": "Écriture",
-          "domaines": [
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/GS/criture/ecriture/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "eps",
-          "nom": "EPS",
-          "domaines": [
-            {
-              "id": "eps",
-              "nom": "EPS",
-              "chemin": "data/GS/eps/eps/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "arts_visuels",
-          "nom": "Arts visuels",
-          "domaines": [
-            {
-              "id": "arts_visuels",
-              "nom": "Arts visuels",
-              "chemin": "data/GS/arts_visuels/arts_visuels/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "univers_sonores",
-          "nom": "Univers sonores",
-          "domaines": [
-            {
-              "id": "univers_sonores",
-              "nom": "Univers sonores",
-              "chemin": "data/GS/univers_sonores/univers_sonores/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "spectacle_vivant",
-          "nom": "Spectacle vivant",
-          "domaines": [
-            {
-              "id": "spectacle_vivant",
-              "nom": "Spectacle vivant",
-              "chemin": "data/GS/spectacle_vivant/spectacle_vivant/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "math_matiques",
-          "nom": "Mathématiques",
-          "domaines": [
-            {
-              "id": "mathematiques",
-              "nom": "Mathématiques",
-              "chemin": "data/GS/math_matiques/mathematiques/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "temps",
-          "nom": "Temps",
-          "domaines": [
-            {
-              "id": "temps",
-              "nom": "Temps",
-              "chemin": "data/GS/temps/temps/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "espace",
-          "nom": "Espace",
-          "domaines": [
-            {
-              "id": "espace",
-              "nom": "Espace",
-              "chemin": "data/GS/espace/espace/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "vivant",
-          "nom": "Vivant",
-          "domaines": [
-            {
-              "id": "vivant",
-              "nom": "Vivant",
-              "chemin": "data/GS/vivant/vivant/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "mati_re_et_objets",
-          "nom": "Matière et objets",
-          "domaines": [
-            {
-              "id": "matiere_et_objets",
-              "nom": "Matière et objets",
-              "chemin": "data/GS/mati_re_et_objets/matiere_et_objets/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "evar",
-          "nom": "EVAR",
-          "domaines": [
-            {
-              "id": "evar",
-              "nom": "EVAR",
-              "chemin": "data/GS/evar/evar/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "CP",
-      "nom": "CP",
-      "disciplines": [
-        {
-          "id": "francais",
-          "nom": "Français",
-          "domaines": [
-            {
-              "id": "lecture",
-              "nom": "Lecture",
-              "chemin": "data/CP/francais/lecture/",
-              "sequences": [
-                {
-                  "id": "seq_son_a_cp_01",
-                  "titre": "Découvrir et maîtriser le son [a]",
-                  "competence_id": "lecture_identifier_mots",
-                  "prerequis_competences": [],
-                  "dossier": "data/CP/francais/lecture/sequence_son_a_CP/",
-                  "fichier_sequence": "data/CP/francais/lecture/sequence_son_a_CP/sequence_son_a_CP.json",
-                  "seances": [
-                    {
-                      "numero": 1,
-                      "id": "sea_son_a_cp_01",
-                      "type": "Diagnostique",
-                      "titre": "Que savons-nous déjà du son [a] ?",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_01_diagnostique.json",
-                      "prerequis_competences": []
-                    },
-                    {
-                      "numero": 2,
-                      "id": "sea_son_a_cp_02",
-                      "type": "Exploration",
-                      "titre": "J'entends le son [a]",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_02_exploration.json",
-                      "prerequis_competences": []
-                    },
-                    {
-                      "numero": 3,
-                      "id": "sea_son_a_cp_03",
-                      "type": "Références",
-                      "titre": "Quelle lettre écrit le son [a] ?",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_03_references.json",
-                      "prerequis_competences": []
-                    },
-                    {
-                      "numero": 4,
-                      "id": "sea_son_a_cp_04",
-                      "type": "Structuration",
-                      "titre": "Lire et écrire avec a",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_04_structuration.json",
-                      "prerequis_competences": []
-                    },
-                    {
-                      "numero": 5,
-                      "id": "sea_son_a_cp_05",
-                      "type": "Systématisation",
-                      "titre": "Je m'entraîne avec le son [a]",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_05_systematisation.json",
-                      "prerequis_competences": []
-                    },
-                    {
-                      "numero": 6,
-                      "id": "sea_son_a_cp_06",
-                      "type": "Approfondissement",
-                      "titre": "Lire des mots et une phrase avec le son [a]",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_06_approfondissement.json",
-                      "prerequis_competences": []
-                    },
-                    {
-                      "numero": 7,
-                      "id": "sea_son_a_cp_07",
-                      "type": "Évaluation",
-                      "titre": "Je montre ce que je sais faire avec le son [a]",
-                      "fichier": "data/CP/francais/lecture/sequence_son_a_CP/seance_07_evaluation.json",
-                      "prerequis_competences": []
-                    }
-                  ]
-                }
-              ]
-            },
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/CP/francais/ecriture/",
-              "sequences": []
-            },
-            {
-              "id": "oral",
-              "nom": "Oral",
-              "chemin": "data/CP/francais/oral/",
-              "sequences": []
-            },
-            {
-              "id": "vocabulaire",
-              "nom": "Vocabulaire",
-              "chemin": "data/CP/francais/vocabulaire/",
-              "sequences": []
-            },
-            {
-              "id": "grammaire_orthographe",
-              "nom": "Grammaire et orthographe",
-              "chemin": "data/CP/francais/grammaire_orthographe/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "mathematiques",
-          "nom": "Mathématiques",
-          "domaines": [
-            {
-              "id": "nombres_calculs",
-              "nom": "Nombres et calculs",
-              "chemin": "data/CP/mathematiques/nombres_calculs/",
-              "sequences": []
-            },
-            {
-              "id": "nombres_calcul_problemes",
-              "nom": "Nombres, calcul et résolution de problèmes",
-              "chemin": "data/CP/math_matiques/nombres_calcul_problemes/",
-              "sequences": []
-            },
-            {
-              "id": "grandeurs_mesures",
-              "nom": "Grandeurs et mesures",
-              "chemin": "data/CP/math_matiques/grandeurs_mesures/",
-              "sequences": []
-            },
-            {
-              "id": "espace_geometrie",
-              "nom": "Espace et géométrie",
-              "chemin": "data/CP/math_matiques/espace_geometrie/",
-              "sequences": []
-            },
-            {
-              "id": "organisation_donnees",
-              "nom": "Organisation et gestion de données",
-              "chemin": "data/CP/math_matiques/organisation_donnees/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "enseignement_moral_et_civique",
-          "nom": "Enseignement moral et civique",
-          "domaines": [
-            {
-              "id": "enseignement_moral_civique",
-              "nom": "Enseignement moral et civique",
-              "chemin": "data/CP/enseignement_moral_et_civique/enseignement_moral_civique/",
-              "sequences": []
-            }
-          ]
-        }
-      ],
-      "cycle": "Cycle 2"
-    },
-    {
-      "id": "CE1",
-      "nom": "CE1",
-      "cycle": "Cycle 2",
-      "disciplines": [
-        {
-          "id": "fran_ais",
-          "nom": "Français",
-          "domaines": [
-            {
-              "id": "lecture",
-              "nom": "Lecture",
-              "chemin": "data/CE1/fran_ais/lecture/",
-              "sequences": []
-            },
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/CE1/fran_ais/ecriture/",
-              "sequences": []
-            },
-            {
-              "id": "oral",
-              "nom": "Oral",
-              "chemin": "data/CE1/fran_ais/oral/",
-              "sequences": []
-            },
-            {
-              "id": "vocabulaire",
-              "nom": "Vocabulaire",
-              "chemin": "data/CE1/fran_ais/vocabulaire/",
-              "sequences": []
-            },
-            {
-              "id": "grammaire_orthographe",
-              "nom": "Grammaire et orthographe",
-              "chemin": "data/CE1/fran_ais/grammaire_orthographe/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "CE2",
-      "nom": "CE2",
-      "cycle": "Cycle 2",
-      "disciplines": [
-        {
-          "id": "fran_ais",
-          "nom": "Français",
-          "domaines": [
-            {
-              "id": "lecture",
-              "nom": "Lecture",
-              "chemin": "data/CE2/fran_ais/lecture/",
-              "sequences": []
-            },
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/CE2/fran_ais/ecriture/",
-              "sequences": []
-            },
-            {
-              "id": "oral",
-              "nom": "Oral",
-              "chemin": "data/CE2/fran_ais/oral/",
-              "sequences": []
-            },
-            {
-              "id": "vocabulaire",
-              "nom": "Vocabulaire",
-              "chemin": "data/CE2/fran_ais/vocabulaire/",
-              "sequences": []
-            },
-            {
-              "id": "grammaire_orthographe",
-              "nom": "Grammaire et orthographe",
-              "chemin": "data/CE2/fran_ais/grammaire_orthographe/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "CM1",
-      "nom": "CM1",
-      "cycle": "Cycle 3",
-      "disciplines": [
-        {
-          "id": "fran_ais",
-          "nom": "Français",
-          "domaines": [
-            {
-              "id": "lecture",
-              "nom": "Lecture",
-              "chemin": "data/CM1/fran_ais/lecture/",
-              "sequences": []
-            },
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/CM1/fran_ais/ecriture/",
-              "sequences": []
-            },
-            {
-              "id": "oral",
-              "nom": "Oral",
-              "chemin": "data/CM1/fran_ais/oral/",
-              "sequences": []
-            },
-            {
-              "id": "vocabulaire",
-              "nom": "Vocabulaire",
-              "chemin": "data/CM1/fran_ais/vocabulaire/",
-              "sequences": []
-            },
-            {
-              "id": "grammaire_orthographe",
-              "nom": "Grammaire et orthographe grammaticale",
-              "chemin": "data/CM1/fran_ais/grammaire_orthographe/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "math_matiques",
-          "nom": "Mathématiques",
-          "domaines": [
-            {
-              "id": "nombres_calcul_problemes",
-              "nom": "Nombres, calcul et résolution de problèmes",
-              "chemin": "data/CM1/math_matiques/nombres_calcul_problemes/",
-              "sequences": []
-            },
-            {
-              "id": "grandeurs_mesures",
-              "nom": "Grandeurs et mesures",
-              "chemin": "data/CM1/math_matiques/grandeurs_mesures/",
-              "sequences": []
-            },
-            {
-              "id": "espace_geometrie",
-              "nom": "Espace et géométrie",
-              "chemin": "data/CM1/math_matiques/espace_geometrie/",
-              "sequences": []
-            },
-            {
-              "id": "organisation_donnees",
-              "nom": "Organisation et gestion de données",
-              "chemin": "data/CM1/math_matiques/organisation_donnees/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "histoire",
-          "nom": "Histoire",
-          "domaines": [
-            {
-              "id": "histoire",
-              "nom": "Histoire",
-              "chemin": "data/CM1/histoire/histoire/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "g_ographie",
-          "nom": "Géographie",
-          "domaines": [
-            {
-              "id": "geographie",
-              "nom": "Géographie",
-              "chemin": "data/CM1/g_ographie/geographie/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "CM2",
-      "nom": "CM2",
-      "cycle": "Cycle 3",
-      "disciplines": [
-        {
-          "id": "fran_ais",
-          "nom": "Français",
-          "domaines": [
-            {
-              "id": "lecture",
-              "nom": "Lecture",
-              "chemin": "data/CM2/fran_ais/lecture/",
-              "sequences": []
-            },
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/CM2/fran_ais/ecriture/",
-              "sequences": []
-            },
-            {
-              "id": "oral",
-              "nom": "Oral",
-              "chemin": "data/CM2/fran_ais/oral/",
-              "sequences": []
-            },
-            {
-              "id": "vocabulaire",
-              "nom": "Vocabulaire",
-              "chemin": "data/CM2/fran_ais/vocabulaire/",
-              "sequences": []
-            },
-            {
-              "id": "grammaire_orthographe",
-              "nom": "Grammaire et orthographe grammaticale",
-              "chemin": "data/CM2/fran_ais/grammaire_orthographe/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "math_matiques",
-          "nom": "Mathématiques",
-          "domaines": [
-            {
-              "id": "nombres_calcul_problemes",
-              "nom": "Nombres, calcul et résolution de problèmes",
-              "chemin": "data/CM2/math_matiques/nombres_calcul_problemes/",
-              "sequences": []
-            },
-            {
-              "id": "grandeurs_mesures",
-              "nom": "Grandeurs et mesures",
-              "chemin": "data/CM2/math_matiques/grandeurs_mesures/",
-              "sequences": []
-            },
-            {
-              "id": "espace_geometrie",
-              "nom": "Espace et géométrie",
-              "chemin": "data/CM2/math_matiques/espace_geometrie/",
-              "sequences": []
-            },
-            {
-              "id": "organisation_donnees",
-              "nom": "Organisation et gestion de données",
-              "chemin": "data/CM2/math_matiques/organisation_donnees/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "histoire",
-          "nom": "Histoire",
-          "domaines": [
-            {
-              "id": "histoire",
-              "nom": "Histoire",
-              "chemin": "data/CM2/histoire/histoire/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "g_ographie",
-          "nom": "Géographie",
-          "domaines": [
-            {
-              "id": "geographie",
-              "nom": "Géographie",
-              "chemin": "data/CM2/g_ographie/geographie/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    },
-    {
-      "id": "6e",
-      "nom": "6e",
-      "cycle": "Cycle 3",
-      "disciplines": [
-        {
-          "id": "fran_ais",
-          "nom": "Français",
-          "domaines": [
-            {
-              "id": "lecture",
-              "nom": "Lecture",
-              "chemin": "data/6e/fran_ais/lecture/",
-              "sequences": []
-            },
-            {
-              "id": "ecriture",
-              "nom": "Écriture",
-              "chemin": "data/6e/fran_ais/ecriture/",
-              "sequences": []
-            },
-            {
-              "id": "oral",
-              "nom": "Oral",
-              "chemin": "data/6e/fran_ais/oral/",
-              "sequences": []
-            },
-            {
-              "id": "vocabulaire",
-              "nom": "Vocabulaire",
-              "chemin": "data/6e/fran_ais/vocabulaire/",
-              "sequences": []
-            },
-            {
-              "id": "grammaire_orthographe",
-              "nom": "Grammaire et orthographe grammaticale",
-              "chemin": "data/6e/fran_ais/grammaire_orthographe/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "math_matiques",
-          "nom": "Mathématiques",
-          "domaines": [
-            {
-              "id": "nombres_calcul_problemes",
-              "nom": "Nombres, calcul et résolution de problèmes",
-              "chemin": "data/6e/math_matiques/nombres_calcul_problemes/",
-              "sequences": []
-            },
-            {
-              "id": "grandeurs_mesures",
-              "nom": "Grandeurs et mesures",
-              "chemin": "data/6e/math_matiques/grandeurs_mesures/",
-              "sequences": []
-            },
-            {
-              "id": "espace_geometrie",
-              "nom": "Espace et géométrie",
-              "chemin": "data/6e/math_matiques/espace_geometrie/",
-              "sequences": []
-            },
-            {
-              "id": "organisation_donnees",
-              "nom": "Organisation et gestion de données",
-              "chemin": "data/6e/math_matiques/organisation_donnees/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "histoire",
-          "nom": "Histoire",
-          "domaines": [
-            {
-              "id": "histoire",
-              "nom": "Histoire",
-              "chemin": "data/6e/histoire/histoire/",
-              "sequences": []
-            }
-          ]
-        },
-        {
-          "id": "g_ographie",
-          "nom": "Géographie",
-          "domaines": [
-            {
-              "id": "geographie",
-              "nom": "Géographie",
-              "chemin": "data/6e/g_ographie/geographie/",
-              "sequences": []
-            }
-          ]
-        }
-      ]
-    }
-  ]
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- SYNAPSES-AUTHOR: Cskrh13 / Vincent | © 2026 -->
+<meta name="author" content="Cskrh13 / Vincent">
+<meta name="copyright" content="© 2026 Cskrh13 / Vincent — Synapses">
+<meta name="application-name" content="Synapses">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Référentiel des compétences — Programmes scolaires</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2A4A;
+  --navy-deep:#141d33;
+  --bg:#F6F5F1;
+  --panel:#FFFFFF;
+  --line:#DEDBD2;
+  --ink:#20242E;
+  --ink-soft:#5B5F6B;
+  --accent-sky:#2E5EAA;
+  --ring:#2E5EAA;
+  --lecture:#B5502E;
+  --ecriture:#2A7F72;
+  --oral:#6B4E8E;
+  --vocabulaire:#B5871E;
+  --grammaire:#1E2A4A;
+  --radius:10px;
 }
+*{box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  margin:0;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:'Inter',system-ui,sans-serif;
+  line-height:1.5;
+  -webkit-font-smoothing:antialiased;
+}
+h1,h2,h3,h4{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  margin:0;
+  letter-spacing:-0.01em;
+}
+a{color:inherit;}
+button{font-family:inherit;cursor:pointer;}
+.eyebrow{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:11px;
+  letter-spacing:0.12em;
+  text-transform:uppercase;
+  color:var(--accent-sky);
+  font-weight:500;
+}
+:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
+
+/* ===== Skip link ===== */
+.skip-link{
+  position:absolute;left:-999px;top:0;background:var(--navy);color:#fff;padding:10px 16px;z-index:999;border-radius:0 0 8px 0;
+}
+.skip-link:focus{left:0;}
+
+/* ===== Header ===== */
+header.site-header{
+  background:var(--navy);
+  color:#fff;
+  position:sticky;top:0;z-index:50;
+  border-bottom:3px solid var(--accent-sky);
+}
+.header-top{
+  display:flex;align-items:center;justify-content:space-between;
+  max-width:1240px;margin:0 auto;padding:14px 24px;
+  gap:20px;flex-wrap:wrap;
+}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.brand-mark{
+  width:40px;height:40px;border-radius:8px;
+  background:linear-gradient(160deg,var(--accent-sky),#5486d6);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:#fff;
+  flex-shrink:0;
+}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
+.brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;}
+nav.main-nav a{
+  color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;
+  padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;
+}
+nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
+nav.main-nav a.nav-programmation{
+  background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);
+  margin-left:4px;color:#fff;
+}
+nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
+nav.main-nav a.nav-coffre{
+  background:rgba(181,80,46,.16);border:1px solid rgba(181,80,46,.4);
+  margin-left:4px;color:#fff;
+}
+nav.main-nav a.nav-coffre:hover{background:rgba(181,80,46,.3);}
+.header-actions{display:flex;align-items:center;gap:10px;}
+.btn-ghost-header{
+  background:transparent;border:1px solid rgba(255,255,255,.3);color:#fff;
+  padding:8px 14px;border-radius:6px;font-size:13px;font-weight:500;
+}
+.btn-ghost-header:hover{background:rgba(255,255,255,.1);}
+.level-pill{
+  display:flex;gap:2px;background:rgba(0,0,0,.2);padding:3px;border-radius:8px;
+}
+.level-pill button{
+  background:transparent;border:none;color:#B9C6E5;font-size:12px;font-weight:600;
+  padding:6px 10px;border-radius:6px;font-family:'IBM Plex Mono',monospace;
+}
+.level-pill button.active{background:#fff;color:var(--navy);}
+
+/* ===== Hero ===== */
+.hero{
+  background:
+    radial-gradient(1200px 480px at 15% -10%, rgba(46,94,170,.16), transparent 60%),
+    var(--panel);
+  border-bottom:1px solid var(--line);
+  padding:64px 24px 48px;
+}
+.hero-inner{max-width:900px;margin:0 auto;text-align:center;}
+.hero h1{font-size:clamp(32px,4.6vw,52px);line-height:1.05;color:var(--navy);}
+.hero p.lead{
+  max-width:620px;margin:18px auto 0;color:var(--ink-soft);font-size:16.5px;
+}
+.search-wrap{
+  margin:34px auto 0;max-width:620px;position:relative;
+}
+.search-box{
+  display:flex;align-items:center;gap:10px;
+  background:#fff;border:1.5px solid var(--line);border-radius:12px;
+  padding:6px 6px 6px 18px;
+  box-shadow:0 10px 30px -14px rgba(30,42,74,.25);
+}
+.search-box:focus-within{border-color:var(--accent-sky);}
+.search-box svg{flex-shrink:0;color:var(--ink-soft);}
+.search-box input{
+  border:none;outline:none;flex:1;font-size:15.5px;padding:12px 0;font-family:'Inter',sans-serif;background:transparent;color:var(--ink);
+}
+.search-box button{
+  background:var(--navy);color:#fff;border:none;border-radius:8px;
+  padding:11px 18px;font-size:14px;font-weight:600;flex-shrink:0;
+}
+.search-box button:hover{background:var(--navy-deep);}
+.hero-quicklinks{
+  display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px;
+}
+.quicklink{
+  font-size:13px;font-weight:500;color:var(--navy);background:#EFEDE5;
+  border:1px solid var(--line);padding:7px 13px;border-radius:20px;text-decoration:none;
+}
+.quicklink:hover{background:#E4E1D6;}
+
+/* ===== Section shell ===== */
+.section{max-width:1240px;margin:0 auto;padding:56px 24px;}
+.section-head{display:flex;justify-content:space-between;align-items:flex-end;gap:20px;margin-bottom:26px;flex-wrap:wrap;}
+.section-head h2{font-size:26px;color:var(--navy);}
+.section-head p{color:var(--ink-soft);font-size:14.5px;margin-top:6px;max-width:560px;}
+
+/* ===== Navigation cards (cycle/niveau/discipline) ===== */
+.crumb-strip{
+  display:flex;align-items:center;gap:8px;flex-wrap:wrap;
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin-bottom:8px;
+}
+.crumb-strip .dot{width:4px;height:4px;border-radius:50%;background:var(--ink-soft);}
+.level-cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;}
+.level-card{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:22px;text-align:left;transition:transform .15s,box-shadow .15s,border-color .15s;
+}
+.level-card:hover{transform:translateY(-2px);box-shadow:0 14px 28px -18px rgba(30,42,74,.35);border-color:#c7c2b3;}
+.level-card.active{border-color:var(--accent-sky);box-shadow:0 0 0 2px rgba(46,94,170,.18);}
+.level-card .lc-code{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;color:var(--accent-sky);font-weight:600;
+}
+.level-card h3{font-size:18px;margin-top:6px;color:var(--navy);}
+.level-card p{font-size:13px;color:var(--ink-soft);margin-top:6px;}
+.level-card .lc-count{margin-top:14px;font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);}
+
+/* Domain cards */
+.domain-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;}
+.domain-card{
+  border-radius:var(--radius);padding:20px;border:1px solid var(--line);background:var(--panel);
+  position:relative;overflow:hidden;text-align:left;
+}
+.domain-card::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:4px;background:var(--dcolor,var(--accent-sky));
+}
+.domain-card h3{font-size:17px;color:var(--navy);padding-left:10px;}
+.domain-card p{font-size:12.5px;color:var(--ink-soft);margin-top:8px;padding-left:10px;}
+.domain-card .dc-tag{
+  display:inline-block;margin-left:10px;margin-top:12px;font-family:'IBM Plex Mono',monospace;font-size:11px;
+  padding:3px 8px;border-radius:20px;background:color-mix(in srgb, var(--dcolor) 12%, white);color:var(--dcolor);font-weight:600;
+}
+.domain-card.active{box-shadow:0 0 0 2px var(--dcolor);}
+
+/* ===== Filters + directory layout ===== */
+.directory-shell{display:grid;grid-template-columns:260px 1fr;gap:26px;align-items:start;}
+@media (max-width:880px){.directory-shell{grid-template-columns:1fr;}}
+.filters{
+  background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:20px;position:sticky;top:92px;
+}
+.filters h3{font-size:14px;color:var(--navy);margin-bottom:14px;}
+.filter-group{margin-bottom:18px;}
+.filter-group label{
+  display:block;font-size:11.5px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;
+  color:var(--ink-soft);margin-bottom:8px;
+}
+.chip-row{display:flex;flex-wrap:wrap;gap:6px;}
+.chip{
+  border:1px solid var(--line);background:#fff;color:var(--ink);font-size:12.5px;font-weight:500;
+  padding:6px 11px;border-radius:20px;
+}
+.chip[aria-pressed="true"]{background:var(--navy);color:#fff;border-color:var(--navy);}
+.filter-reset{
+  width:100%;margin-top:4px;background:transparent;border:1px solid var(--line);color:var(--navy);
+  padding:9px;border-radius:8px;font-size:13px;font-weight:600;
+}
+.filter-reset:hover{background:#F0EEE7;}
+.result-count{
+  font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);margin-top:16px;padding-top:14px;border-top:1px dashed var(--line);
+}
+.result-count strong{color:var(--navy);}
+
+/* Directory toolbar */
+.dir-toolbar{display:flex;justify-content:space-between;align-items:center;gap:14px;margin-bottom:16px;flex-wrap:wrap;}
+.dir-search{
+  display:flex;align-items:center;gap:8px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:8px 12px;flex:1;min-width:220px;max-width:380px;
+}
+.dir-search input{border:none;outline:none;font-size:13.5px;flex:1;background:transparent;}
+.view-toggle{display:flex;gap:2px;background:#EDEAE1;padding:3px;border-radius:8px;}
+.view-toggle button{background:transparent;border:none;font-size:12px;font-weight:600;padding:6px 12px;border-radius:6px;color:var(--ink-soft);}
+.view-toggle button.active{background:#fff;color:var(--navy);box-shadow:0 1px 2px rgba(0,0,0,.08);}
+
+/* Competency cards */
+.comp-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:14px;}
+.comp-card{
+  text-align:left;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+  padding:18px;position:relative;transition:box-shadow .15s,border-color .15s;
+}
+.comp-card:hover{border-color:#c7c2b3;box-shadow:0 12px 26px -18px rgba(30,42,74,.3);}
+.comp-card .cc-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;margin-bottom:10px;}
+.badge{
+  font-family:'IBM Plex Mono',monospace;font-size:10.5px;font-weight:600;padding:3px 8px;border-radius:20px;
+  background:color-mix(in srgb, var(--dcolor) 14%, white);color:var(--dcolor);white-space:nowrap;
+}
+.badge.niveau{background:#EEECE3;color:var(--ink-soft);}
+.comp-card h4{font-size:15px;line-height:1.35;color:var(--navy);}
+.comp-card .cc-domain{font-size:12px;color:var(--ink-soft);margin-top:6px;}
+.comp-card .cc-preview{font-size:12.5px;color:var(--ink-soft);margin-top:10px;line-height:1.5;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.comp-card .cc-arrow{position:absolute;right:16px;bottom:16px;font-size:12px;color:var(--accent-sky);font-weight:600;}
+
+/* List view */
+.comp-list{display:flex;flex-direction:column;gap:0;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;background:var(--panel);}
+.comp-list-row{
+  display:grid;grid-template-columns:110px 1fr 160px 24px;gap:14px;align-items:center;
+  padding:14px 18px;border-bottom:1px solid var(--line);text-align:left;width:100%;background:transparent;border-left:none;border-right:none;border-top:none;
+}
+.comp-list-row:last-child{border-bottom:none;}
+.comp-list-row:hover{background:#FAF9F5;}
+.comp-list-row .clr-title{font-size:13.5px;color:var(--ink);font-weight:500;}
+.comp-list-row .clr-sub{font-size:12px;color:var(--ink-soft);}
+
+/* Empty state */
+.empty-state{
+  grid-column:1/-1;text-align:center;padding:56px 20px;color:var(--ink-soft);
+  border:1px dashed var(--line);border-radius:var(--radius);background:var(--panel);
+}
+.empty-state h4{color:var(--navy);margin-bottom:8px;font-size:16px;}
+
+/* ===== Detail drawer ===== */
+.drawer-overlay{
+  position:fixed;inset:0;background:rgba(20,29,51,.42);backdrop-filter:blur(1px);
+  opacity:0;pointer-events:none;transition:opacity .2s;z-index:100;
+}
+.drawer-overlay.open{opacity:1;pointer-events:auto;}
+.drawer{
+  position:fixed;top:0;right:0;height:100%;width:min(560px,100%);
+  background:#fff;box-shadow:-16px 0 40px rgba(0,0,0,.18);
+  transform:translateX(100%);transition:transform .25s ease;z-index:101;
+  display:flex;flex-direction:column;
+}
+.drawer.open{transform:translateX(0);}
+.drawer-head{padding:20px 24px;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:flex-start;gap:12px;}
+.drawer-crumb{font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);margin-bottom:10px;}
+.drawer-crumb button{background:none;border:none;color:var(--accent-sky);font-family:inherit;font-size:inherit;padding:0;text-decoration:underline;}
+.drawer-close{background:#F0EEE7;border:none;width:32px;height:32px;border-radius:8px;font-size:16px;color:var(--ink-soft);flex-shrink:0;}
+.drawer-close:hover{background:#E4E1D6;}
+.drawer-body{padding:24px;overflow-y:auto;flex:1;}
+.drawer-body h2{font-size:22px;color:var(--navy);line-height:1.3;}
+.drawer-tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px;}
+.drawer-section{margin-top:26px;}
+.drawer-section h5{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-sky);margin-bottom:10px;
+}
+.drawer-section ul{margin:0;padding-left:18px;}
+.drawer-section li{font-size:14px;line-height:1.6;margin-bottom:8px;color:var(--ink);}
+.reussite-box{background:#F6F5F1;border:1px solid var(--line);border-radius:8px;padding:16px;}
+.reussite-box ul{padding-left:18px;margin:0;}
+.reussite-box li{font-size:13.5px;color:var(--ink-soft);margin-bottom:7px;}
+.related-chip{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;background:#EFEDE5;border:1px solid var(--line);border-radius:20px;padding:6px 12px;margin:4px 4px 0 0;}
+
+/* ===== Overview ===== */
+.stats-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin-bottom:30px;}
+.stat-card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:20px;}
+.stat-card .num{font-family:'Fraunces',serif;font-size:34px;color:var(--navy);font-weight:600;}
+.stat-card .label{font-size:12.5px;color:var(--ink-soft);margin-top:4px;}
+.bar-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px;}
+.bar-row{display:grid;grid-template-columns:170px 1fr 46px;align-items:center;gap:12px;margin-bottom:14px;}
+.bar-row .bl-label{font-size:13px;font-weight:500;color:var(--navy);}
+.bar-track{height:10px;background:#EEECE3;border-radius:6px;overflow:hidden;}
+.bar-fill{height:100%;border-radius:6px;}
+.bar-row .bl-num{font-family:'IBM Plex Mono',monospace;font-size:12px;color:var(--ink-soft);text-align:right;}
+
+/* ===== Footer ===== */
+footer{background:var(--navy);color:#B9C6E5;padding:44px 24px 30px;margin-top:40px;}
+.footer-inner{max-width:1240px;margin:0 auto;display:flex;justify-content:space-between;gap:24px;flex-wrap:wrap;font-size:13px;}
+footer h5{color:#fff;font-size:13px;margin-bottom:10px;font-family:'Inter',sans-serif;font-weight:600;}
+footer a{color:#B9C6E5;text-decoration:none;}
+footer a:hover{text-decoration:underline;}
+.footer-cols{display:flex;gap:60px;flex-wrap:wrap;}
+.footer-note{max-width:280px;color:#8FA0C7;font-size:12.5px;line-height:1.6;}
+
+/* ===== Competency page (page dédiée + programmation 36 semaines) ===== */
+.comp-page{display:none;}
+.comp-page.open{display:block;}
+body.view-fiche .home-only{display:none;}
+.cp-shell{max-width:980px;margin:0 auto;padding:40px 24px 80px;}
+.cp-back{
+  display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:600;color:var(--accent-sky);
+  background:none;border:none;padding:0;margin-bottom:18px;
+}
+.cp-back:hover{text-decoration:underline;}
+.cp-head{border-bottom:1px solid var(--line);padding-bottom:26px;margin-bottom:30px;}
+.cp-head h1{font-size:clamp(24px,3.4vw,34px);color:var(--navy);line-height:1.25;margin-top:10px;}
+.cp-head .drawer-tags{margin-top:14px;}
+.cp-block{margin-bottom:34px;}
+.cp-block h5{
+  font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;
+  color:var(--accent-sky);margin-bottom:12px;
+}
+.cp-block ul{margin:0;padding-left:18px;}
+.cp-block li{font-size:14.5px;line-height:1.65;margin-bottom:8px;}
+
+/* Planner */
+.planner-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:24px;}
+.planner-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:6px;flex-wrap:wrap;}
+.planner-head h4{font-size:16px;color:var(--navy);}
+.planner-sub{font-size:12.5px;color:var(--ink-soft);margin-bottom:20px;}
+.period-row{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;margin-bottom:6px;}
+.period-label{
+  grid-column:span var(--span);font-family:'IBM Plex Mono',monospace;font-size:10px;color:var(--ink-soft);
+  text-align:center;padding-bottom:4px;border-bottom:2px solid var(--line);
+}
+.week-grid{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;margin-bottom:22px;}
+.week-cell{
+  aspect-ratio:1/1.15;background:#EEECE3;border-radius:4px;display:flex;align-items:center;justify-content:center;
+  font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--ink-soft);position:relative;cursor:pointer;border:1px solid transparent;
+}
+.week-cell:hover{border-color:var(--accent-sky);}
+.week-cell.in-range{color:#fff;}
+.week-cell.range-start,.week-cell.range-end{font-weight:700;}
+@media (max-width:720px){ .week-grid,.period-row{grid-template-columns:repeat(18,minmax(0,1fr));} .week-cell:nth-child(n+19){grid-row:2;} }
+
+.seq-form{
+  display:grid;grid-template-columns:1.4fr repeat(2,110px);gap:10px;align-items:end;margin-bottom:16px;
+  padding-top:18px;border-top:1px dashed var(--line);
+}
+.seq-form .fld{display:flex;flex-direction:column;gap:5px;}
+.seq-form label{font-size:11px;font-weight:600;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.04em;}
+.seq-form input,.seq-form select,.seq-form textarea{
+  border:1px solid var(--line);border-radius:6px;padding:8px 10px;font-size:13px;font-family:'Inter',sans-serif;background:#fff;color:var(--ink);
+}
+.seq-form textarea{grid-column:1/-1;resize:vertical;min-height:52px;}
+.seq-form .btn-add{
+  grid-column:1/-1;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:11px;font-size:13.5px;font-weight:600;
+}
+.seq-form .btn-add:hover{background:var(--navy-deep);}
+
+.seq-list{display:flex;flex-direction:column;gap:10px;}
+.seq-row{border:1px solid var(--line);border-radius:8px;padding:14px 16px;background:#FAF9F5;}
+.seq-row-top{display:flex;justify-content:space-between;align-items:flex-start;gap:10px;}
+.seq-row-top strong{font-size:14px;color:var(--navy);}
+.seq-meta{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);margin-top:3px;}
+.seq-note{font-size:13px;color:var(--ink-soft);margin-top:8px;line-height:1.5;}
+.seq-del{background:none;border:none;color:#B5502E;font-size:12px;font-weight:600;flex-shrink:0;}
+.seq-del:hover{text-decoration:underline;}
+.seq-empty{font-size:13px;color:var(--ink-soft);padding:14px 0;}
+.cp-open-full{
+  margin-top:18px;width:100%;background:var(--navy);color:#fff;border:none;border-radius:8px;padding:12px;font-size:13.5px;font-weight:600;
+  display:block;text-align:center;text-decoration:none;box-sizing:border-box;
+}
+.cp-open-full:hover{background:var(--navy-deep);}
+
+/* Utility */
+.sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0;}
+mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
+
+@media (max-width:720px){
+  .comp-list-row{grid-template-columns:1fr;gap:4px;}
+  .comp-list-row .clr-meta{display:flex;gap:8px;}
+}
+
+.synapses-footer {
+    margin-top: 40px;
+    padding: 18px 24px;
+    text-align: center;
+    font-size: 11px;
+    color: var(--ink-soft);
+    border-top: 1px solid var(--line);
+}
+.synapses-footer div:first-child {
+    font-weight: 600;
+    letter-spacing: .04em;
+}
+</style>
+</head>
+<body>
+<a href="#main" class="skip-link">Aller au contenu principal</a>
+
+<!-- ===================== HEADER ===================== -->
+<header class="site-header">
+  <div class="header-top">
+    <a href="#top" class="brand">
+      <span class="brand-mark" aria-hidden="true">RÉ</span>
+      <span class="brand-text">
+        <span class="top">Portail non institutionnel</span>
+        <span class="bottom">Référentiel des programmes</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="#niveaux">Niveaux</a>
+      <a href="#disciplines">Disciplines</a>
+      <a href="#repertoire">Répertoire</a>
+      <a href="#vue-ensemble">Vue d'ensemble</a>
+      <a href="Programmation/sequences.html" class="nav-programmation">Programmation →</a>
+      <a href="Programmation/planning-affichage.html" class="nav-programmation">Planning →</a>
+      <a href="Programmation/generateur-sequences-projet.html">Générateur de séquences</a>
+      <a href="fata-morgana/coffre.html" class="nav-coffre">🔒 Coffre confidentiel</a>
+    </nav>
+  </div>
+</header>
+
+<main id="main">
+<div id="dataError" role="alert" style="max-width:900px;margin:16px auto;padding:0 24px;color:#B5502E;"></div>
+
+<!-- ===================== HERO ===================== -->
+<section class="hero home-only" id="top">
+  <div class="hero-inner">
+    <p class="eyebrow">Tous les cycles · Toutes les disciplines · Sources conservées</p>
+    <h1>Référentiel des compétences des programmes scolaires</h1>
+    <p class="lead">Un espace de consultation clair et structuré, construit à partir du texte officiel du programme, pour naviguer entre cycles, niveaux, domaines et compétences sans reformulation approximative.</p>
+    <div class="search-wrap">
+      <label for="mainSearch" class="sr-only">Rechercher une compétence, un mot-clé, une discipline ou un niveau</label>
+      <div class="search-box">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+        <input type="text" id="mainSearch" placeholder="Rechercher : « chaine d'accords », « lecture à voix haute », CE1…" autocomplete="off">
+        <button id="mainSearchBtn">Rechercher</button>
+      </div>
+    </div>
+    <div class="hero-quicklinks" id="quickDomainLinks"></div>
+  </div>
+</section>
+
+<!-- ===================== NIVEAUX ===================== -->
+<section class="section home-only" id="niveaux">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Cycle des apprentissages fondamentaux</p>
+      <h2>Naviguer par niveau</h2>
+      <p>Les niveaux TPS à 6e sont disponibles. Sélectionnez un niveau pour filtrer l’ensemble du répertoire.</p>
+    </div>
+  </div>
+  <div class="level-cards" id="levelCards"></div>
+</section>
+
+<!-- ===================== DISCIPLINES / DOMAINES ===================== -->
+<section class="section home-only" id="disciplines">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Cycles 1 à 3 — domaines du référentiel</p>
+      <h2>Naviguer par domaine</h2>
+      <p>Les domaines sont construits directement à partir des compétences présentes dans competences.json.</p>
+    </div>
+  </div>
+  <div class="domain-grid" id="domainCards"></div>
+</section>
+
+<!-- ===================== REPERTOIRE ===================== -->
+<section class="section home-only" id="repertoire">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Répertoire structuré</p>
+      <h2>Compétences du programme</h2>
+      <p>Chaque fiche indique la discipline, le cycle, le niveau, le domaine, le sous-domaine et les objectifs d'apprentissage tels que rédigés dans le programme.</p>
+    </div>
+  </div>
+
+  <div class="directory-shell">
+    <aside class="filters" aria-label="Filtres de recherche">
+      <h3>Filtrer le répertoire</h3>
+
+      <div class="filter-group">
+        <label id="lbl-niveau">Niveau</label>
+        <div class="chip-row" id="filterNiveau" role="group" aria-labelledby="lbl-niveau"></div>
+      </div>
+
+      <div class="filter-group">
+        <label id="lbl-domaine">Domaine</label>
+        <div class="chip-row" id="filterDomaine" role="group" aria-labelledby="lbl-domaine"></div>
+      </div>
+
+      <div class="filter-group">
+        <label id="lbl-sous">Sous-domaine</label>
+        <div class="chip-row" id="filterSousDomaine" role="group" aria-labelledby="lbl-sous"></div>
+      </div>
+
+      <button class="filter-reset" id="resetFilters">Réinitialiser les filtres</button>
+      <div class="result-count" id="resultCount"></div>
+    </aside>
+
+    <div>
+      <div class="dir-toolbar">
+        <div class="dir-search">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+          <input type="text" id="dirSearch" placeholder="Recherche instantanée…" aria-label="Recherche instantanée dans le répertoire">
+        </div>
+        <div class="view-toggle" role="group" aria-label="Mode d'affichage">
+          <button id="viewGridBtn" class="active" aria-pressed="true">Cartes</button>
+          <button id="viewListBtn" aria-pressed="false">Liste</button>
+        </div>
+      </div>
+      <div id="compContainer" class="comp-grid" aria-live="polite"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== VUE D'ENSEMBLE ===================== -->
+<section class="section home-only" id="vue-ensemble">
+  <div class="section-head">
+    <div>
+      <p class="eyebrow">Synthèse</p>
+      <h2>Vue d'ensemble du référentiel</h2>
+      <p>Répartition des fiches de compétences par niveau et par domaine, sur l'ensemble des compétences des cycles 1 à 3.</p>
+    </div>
+  </div>
+  <div class="stats-grid" id="statsGrid"></div>
+  <div class="bar-panel">
+    <h4 style="font-size:15px;color:var(--navy);margin-bottom:18px;">Compétences par domaine</h4>
+    <div id="barsByDomain"></div>
+  </div>
+</section>
+
+
+<!-- ===================== PAGE COMPÉTENCE (programmation 36 semaines) ===================== -->
+<section class="comp-page" id="compPage">
+  <div class="cp-shell">
+    <button class="cp-back" id="cpBack">← Retour au répertoire</button>
+    <div class="cp-head">
+      <p class="eyebrow" id="cpEyebrow"></p>
+      <h1 id="cpTitle"></h1>
+      <div class="drawer-tags" id="cpTags"></div>
+    </div>
+
+    <div class="cp-block">
+      <h5>Objectifs d'apprentissage</h5>
+      <ul id="cpObjectifs"></ul>
+    </div>
+
+    <div class="cp-block" id="cpExemplesBlock">
+      <h5>Exemples de réussite</h5>
+      <ul id="cpExemples"></ul>
+    </div>
+
+    <div class="cp-block">
+      <div class="planner-panel">
+        <div class="planner-head">
+          <h4>Programmation annuelle — 36 semaines</h4>
+        </div>
+        <p class="planner-sub">Positionnez les séquences de travail consacrées à cette compétence sur l'année scolaire, répartie en 5 périodes.</p>
+
+        <div class="period-row" id="periodRow"></div>
+        <div class="week-grid" id="weekGrid"></div>
+
+        <form class="seq-form" id="seqForm">
+          <div class="fld" style="grid-column:1/-1;">
+            <label for="seqTitre">Intitulé de la séquence de travail</label>
+            <input type="text" id="seqTitre" placeholder="Ex. : Étude des CGP simples — période 1" required>
+          </div>
+          <div class="fld">
+            <label for="seqDebut">Semaine de début</label>
+            <select id="seqDebut"></select>
+          </div>
+          <div class="fld">
+            <label for="seqFin">Semaine de fin</label>
+            <select id="seqFin"></select>
+          </div>
+          <div class="fld" style="grid-column:1/-1;">
+            <label for="seqNote">Notes / contenu prévu (facultatif)</label>
+            <textarea id="seqNote" placeholder="Supports, modalités, évaluation prévue…"></textarea>
+          </div>
+          <button type="submit" class="btn-add">Ajouter la séquence</button>
+        </form>
+
+        <div id="seqListWrap">
+          <h5 style="font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--accent-sky);margin-bottom:12px;">Séquences programmées</h5>
+          <div class="seq-list" id="seqList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== DRAWER (fiche détaillée) ===================== -->
+<div class="drawer-overlay" id="drawerOverlay"></div>
+<aside class="drawer" id="drawer" aria-hidden="true" aria-label="Fiche détaillée de la compétence">
+  <div class="drawer-head">
+    <div>
+      <div class="drawer-crumb" id="drawerCrumb"></div>
+    </div>
+    <button class="drawer-close" id="drawerClose" aria-label="Fermer la fiche">✕</button>
+  </div>
+  <div class="drawer-body" id="drawerBody"></div>
+</aside>
+
+<!-- ===================== FOOTER ===================== -->
+<footer>
+  <div class="footer-inner">
+    <div class="footer-note">
+      Portail de consultation non institutionnel. Les compétences sont chargées depuis le référentiel Programmation/data/competences.json, avec leurs sources conservées dans les données. Ce site n'est ni édité ni approuvé par le ministère de l'Éducation nationale.
+    </div>
+    <div class="footer-cols">
+      <div>
+        <h5>Navigation</h5>
+        <a href="#niveaux">Niveaux</a><br><br>
+        <a href="#disciplines">Disciplines</a><br><br>
+        <a href="#repertoire">Répertoire</a>
+      </div>
+      <div>
+        <h5>Tous les cycles</h5>
+        <a href="#" data-niveau="TPS">TPS</a> · <a href="#" data-niveau="PS">PS</a> · <a href="#" data-niveau="MS">MS</a> · <a href="#" data-niveau="GS">GS</a><br><br>
+        <a href="#" data-niveau="CP">CP</a> · <a href="#" data-niveau="CE1">CE1</a> · <a href="#" data-niveau="CE2">CE2</a><br><br>
+        <a href="#" data-niveau="CM1">CM1</a> · <a href="#" data-niveau="CM2">CM2</a> · <a href="#" data-niveau="6e">6e</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<script>
+/* =========================================================
+   SYNAPSES — AUTHOR MARKER
+   Project: Grand Planificateur pédagogique
+   Author: Cskrh13 / Vincent
+   Copyright: © 2026
+   Version: 0.9.0-test
+   Build: 2026-08-27
+   ========================================================= */
+
+const SYNAPSES_BUILD = {
+    project: "Synapses",
+    author: "Cskrh13",
+    year: 2026,
+    version: "0.9.0-test",
+    build: "2026-08-27"
+};
+
+/* ============================================================
+   RÉFÉRENTIEL DYNAMIQUE
+   Les compétences sont chargées depuis Programmation/data/competences.json.
+   index.json reste la source de la structure de programmation.
+   ============================================================ */
+window.__DATA_READY = (async function(){
+  const [compRes, indexRes] = await Promise.all([
+    fetch("Programmation/data/competences.json", {cache:"no-store"}),
+    fetch("Programmation/data/index.json", {cache:"no-store"})
+  ]);
+  if(!compRes.ok) throw new Error("Impossible de charger Programmation/data/competences.json");
+  if(!indexRes.ok) throw new Error("Impossible de charger Programmation/data/index.json");
+
+  const compData = await compRes.json();
+  const indexData = await indexRes.json();
+
+  const LEVELS = ["TPS","PS","MS","GS","CP","CE1","CE2","CM1","CM2","6e"];
+  const LEVEL_LONG = {
+    TPS:"Toute petite section", PS:"Petite section", MS:"Moyenne section",
+    GS:"Grande section", CP:"Cours préparatoire", CE1:"Cours élémentaire 1",
+    CE2:"Cours élémentaire 2", CM1:"Cours moyen 1", CM2:"Cours moyen 2",
+    "6e":"Sixième"
+  };
+  const CYCLES = ["Cycle 1","Cycle 2","Cycle 3"];
+  const DOMAIN_COLORS = [
+    "#2E5EAA","#B5502E","#2A7F72","#6B4E8E","#B5871E",
+    "#1E2A4A","#7A5C3E","#557A62","#8A4F70","#4D6875"
+  ];
+
+  const domainMap = new Map();
+  (compData.domaines || []).forEach((d,i)=>{
+    domainMap.set(d.id, {
+      id:d.id,
+      nom:d.nom || d.id,
+      discipline:d.discipline || "",
+      couleur:d.couleur || DOMAIN_COLORS[i % DOMAIN_COLORS.length]
+    });
+  });
+  (compData.competences || []).forEach((c,i)=>{
+    if(!domainMap.has(c.domaine_id)){
+      domainMap.set(c.domaine_id,{
+        id:c.domaine_id,
+        nom:c.domaine || c.domaine_id || "Domaine",
+        discipline:c.discipline || "",
+        couleur:c.couleur || DOMAIN_COLORS[i % DOMAIN_COLORS.length]
+      });
+    } else if(c.couleur && !domainMap.get(c.domaine_id).couleur){
+      domainMap.get(c.domaine_id).couleur=c.couleur;
+    }
+  });
+
+  const domaines = [...domainMap.values()].map(d=>{
+    const items=(compData.competences||[]).filter(c=>c.domaine_id===d.id);
+    const themes=[...new Map(items.map(c=>[
+      c.theme || c.question || c.intitule || c.id,
+      c.theme || c.question || c.intitule || c.id
+    ])).entries()];
+    return {
+      ...d,
+      intro:`${d.discipline ? d.discipline+" · " : ""}${items.length} compétence${items.length>1?"s":""} du référentiel.`,
+      sousDomaines:themes.map(([id,nom])=>({id,nom}))
+    };
+  });
+
+  const niveauxPresent = LEVELS.filter(n=>(compData.competences||[]).some(c=>c.niveau===n));
+  const REFERENTIEL = {
+    cycle:"Tous les cycles",
+    cycleLong:"Cycles 1, 2 et 3",
+    discipline:"Toutes les disciplines",
+    niveaux:LEVELS,
+    niveauxLongs:LEVEL_LONG,
+    cycles:CYCLES,
+    domaines,
+    sources:compData.metadata?.fichiers_sources || [],
+    index:indexData,
+    chapo:"Référentiel transversal regroupant les compétences disponibles du cycle 1 au cycle 3."
+  };
+
+  /* Chaque entrée du référentiel devient une fiche indépendante. */
+  const FICHES = (compData.competences||[]).map(c=>{
+    const d=domainMap.get(c.domaine_id) || {
+      id:c.domaine_id || "autre", nom:c.domaine || "Domaine",
+      discipline:c.discipline || "", couleur:c.couleur || "#2E5EAA"
+    };
+    const objectifs=Array.isArray(c.objectifs) && c.objectifs.length
+      ? c.objectifs
+      : [c.intitule || c.nom || "Compétence"];
+    const theme=c.theme || c.question || c.intitule || c.nom || c.id;
+    const source=typeof c.source==="string" ? c.source : [
+      c.source?.document, c.source?.fichier, c.source?.section
+    ].filter(Boolean).join(" · ");
+    return {
+      id:c.id,
+      cycle:c.cycle || "",
+      niveau:c.niveau || "",
+      niveauSource:c.niveau_source || "",
+      niveauTags:(c.niveau==="CM1-CM2" ? ["CM1","CM2"] : [c.niveau]).filter(Boolean),
+      discipline:c.discipline || d.discipline || "",
+      domaineId:d.id,
+      domaineNom:d.nom,
+      domaineCouleur:c.couleur || d.couleur,
+      sousDomaineId:theme,
+      sousDomaineNom:theme,
+      objectifs,
+      exemples:Array.isArray(c.exemples) ? c.exemples : [],
+      prerequis:Array.isArray(c.prerequis_competences) ? c.prerequis_competences : [],
+      motsCles:Array.isArray(c.mots_cles) ? c.mots_cles : [],
+      source:source || "Source non précisée",
+      sourceRaw:c.source || null,
+      intitule:c.intitule || c.nom || theme
+    };
+  });
+
+  window.REFERENTIEL=REFERENTIEL;
+  window.FICHES=FICHES;
+  return {REFERENTIEL,FICHES,indexData,compData,niveauxPresent};
+})();
+
+window.addEventListener("error", e=>{
+  if(e.target && e.target.tagName==="SCRIPT") return;
+  const box=document.getElementById("dataError");
+  if(box) box.textContent="Erreur de chargement du référentiel : "+e.message;
+});
+</script>
+<script>
+(async function(){
+  "use strict";
+  await window.__DATA_READY;
+  const REFERENTIEL = window.REFERENTIEL;
+  const FICHES = window.FICHES;
+
+  // Les fiches sont chargées une à une depuis competences.json.
+  /* buildFiches conservé uniquement comme repère historique. */
+  const state = { niveau: null, domaine: null, sousDomaine: null, query: "", view: "grid" };
+
+  // ---------- Hero quicklinks ----------
+  const quickWrap = document.getElementById('quickDomainLinks');
+  REFERENTIEL.domaines.forEach(dom=>{
+    const a = document.createElement('a');
+    a.href = "#repertoire";
+    a.className = "quicklink";
+    a.textContent = dom.nom;
+    a.addEventListener('click', ()=> setDomaine(dom.id));
+    quickWrap.appendChild(a);
+  });
+
+  // ---------- Level cards ----------
+  const niveauLabelsLong = REFERENTIEL.niveauxLongs;
+  const levelCardsWrap = document.getElementById('levelCards');
+  REFERENTIEL.niveaux.forEach(n=>{
+    const count = FICHES.filter(f=>f.niveau===n || (n==="CM1" || n==="CM2") && f.niveau==="CM1-CM2").length;
+    const card = document.createElement('button');
+    card.className = "level-card";
+    card.innerHTML = `
+      <div class="lc-code">${(n==="TPS"||n==="PS"||n==="MS"||n==="GS" ? "CYCLE 1" : (n==="CP"||n==="CE1"||n==="CE2" ? "CYCLE 2" : "CYCLE 3"))} · NIVEAU</div>
+      <h3>${n}</h3>
+      <p>${niveauLabelsLong[n]}</p>
+      <div class="lc-count">${count} fiches de compétences</div>
+    `;
+    card.addEventListener('click', ()=>{ setNiveau(state.niveau===n?null:n); document.getElementById('repertoire').scrollIntoView({behavior:'smooth'}); });
+    levelCardsWrap.appendChild(card);
+  });
+
+  // ---------- Domain cards ----------
+  const domainCardsWrap = document.getElementById('domainCards');
+  REFERENTIEL.domaines.forEach(dom=>{
+    const count = FICHES.filter(f=>f.domaineId===dom.id).length;
+    const card = document.createElement('button');
+    card.className = "domain-card";
+    card.style.setProperty('--dcolor', dom.couleur);
+    card.innerHTML = `
+      <h3>${dom.nom}</h3>
+      <p>${dom.intro}</p>
+      <span class="dc-tag">${count} compétences</span>
+    `;
+    card.addEventListener('click', ()=>{ setDomaine(state.domaine===dom.id?null:dom.id); document.getElementById('repertoire').scrollIntoView({behavior:'smooth'}); });
+    domainCardsWrap.appendChild(card);
+  });
+
+  // ---------- Filters ----------
+  function chip(label, active, onClick){
+    const b = document.createElement('button');
+    b.className = "chip";
+    b.textContent = label;
+    b.setAttribute('aria-pressed', active ? "true":"false");
+    b.addEventListener('click', onClick);
+    return b;
+  }
+
+  function renderNiveauFilter(){
+    const wrap = document.getElementById('filterNiveau');
+    wrap.innerHTML = "";
+    wrap.appendChild(chip("Tous", state.niveau===null, ()=>setNiveau(null)));
+    REFERENTIEL.niveaux.forEach(n=>{
+      wrap.appendChild(chip(n, state.niveau===n, ()=>setNiveau(state.niveau===n?null:n)));
+    });
+  }
+
+  function renderDomaineFilter(){
+    const wrap = document.getElementById('filterDomaine');
+    wrap.innerHTML = "";
+    wrap.appendChild(chip("Tous", state.domaine===null, ()=>setDomaine(null)));
+    REFERENTIEL.domaines.forEach(dom=>{
+      wrap.appendChild(chip(dom.nom, state.domaine===dom.id, ()=>setDomaine(state.domaine===dom.id?null:dom.id)));
+    });
+  }
+
+  function renderSousDomaineFilter(){
+    const wrap = document.getElementById('filterSousDomaine');
+    wrap.innerHTML = "";
+    if(!state.domaine){
+      wrap.innerHTML = '<span style="font-size:12px;color:var(--ink-soft);">Sélectionnez un domaine</span>';
+      return;
+    }
+    const dom = REFERENTIEL.domaines.find(d=>d.id===state.domaine);
+    wrap.appendChild(chip("Tous", state.sousDomaine===null, ()=>setSousDomaine(null)));
+    dom.sousDomaines.forEach(sd=>{
+      wrap.appendChild(chip(sd.nom, state.sousDomaine===sd.id, ()=>setSousDomaine(state.sousDomaine===sd.id?null:sd.id)));
+    });
+  }
+
+  function setNiveau(n){ state.niveau = n; syncAll(); }
+  function setDomaine(d){ state.domaine = d; state.sousDomaine = null; syncAll(); }
+  function setSousDomaine(s){ state.sousDomaine = s; syncAll(); }
+
+  document.getElementById('resetFilters').addEventListener('click', ()=>{
+    state.niveau=null; state.domaine=null; state.sousDomaine=null; state.query="";
+    document.getElementById('dirSearch').value=""; document.getElementById('mainSearch').value="";
+    syncAll();
+  });
+
+  // ---------- Search ----------
+  function runSearch(q){
+    state.query = q.trim().toLowerCase();
+    syncAll();
+    document.getElementById('repertoire').scrollIntoView({behavior:'smooth'});
+  }
+  document.getElementById('mainSearchBtn').addEventListener('click', ()=> runSearch(document.getElementById('mainSearch').value));
+  document.getElementById('mainSearch').addEventListener('keydown', e=>{ if(e.key==="Enter"){ runSearch(e.target.value); }});
+  document.getElementById('dirSearch').addEventListener('input', e=>{ state.query = e.target.value.trim().toLowerCase(); renderDirectory(); updateResultCount(); });
+
+  // ---------- View toggle ----------
+  document.getElementById('viewGridBtn').addEventListener('click', ()=> setView('grid'));
+  document.getElementById('viewListBtn').addEventListener('click', ()=> setView('list'));
+  function setView(v){
+    state.view = v;
+    document.getElementById('viewGridBtn').classList.toggle('active', v==='grid');
+    document.getElementById('viewGridBtn').setAttribute('aria-pressed', v==='grid');
+    document.getElementById('viewListBtn').classList.toggle('active', v==='list');
+    document.getElementById('viewListBtn').setAttribute('aria-pressed', v==='list');
+    renderDirectory();
+  }
+
+  // ---------- Filtering logic ----------
+  function filteredFiches(){
+    return FICHES.filter(f=>{
+      if(state.niveau && f.niveau!==state.niveau && !((state.niveau==="CM1" || state.niveau==="CM2") && f.niveau==="CM1-CM2")) return false;
+      if(state.domaine && f.domaineId!==state.domaine) return false;
+      if(state.sousDomaine && f.sousDomaineId!==state.sousDomaine) return false;
+      if(state.query){
+        const hay = (f.intitule+" "+f.sousDomaineNom+" "+f.domaineNom+" "+f.discipline+" "+f.cycle+" "+f.niveau+" "+f.niveauSource+" "+f.motsCles.join(" ")+" "+f.objectifs.join(" ")+" "+f.exemples.join(" ")+" "+f.source).toLowerCase();
+        if(!hay.includes(state.query)) return false;
+      }
+      return true;
+    });
+  }
+
+  function highlight(text){
+    if(!state.query) return text;
+    const idx = text.toLowerCase().indexOf(state.query);
+    if(idx===-1) return text;
+    return text.slice(0,idx) + "<mark>" + text.slice(idx, idx+state.query.length) + "</mark>" + text.slice(idx+state.query.length);
+  }
+
+  // ---------- Directory rendering ----------
+  function renderDirectory(){
+    const container = document.getElementById('compContainer');
+    container.className = state.view==='grid' ? 'comp-grid' : 'comp-list';
+    const list = filteredFiches();
+    container.innerHTML = "";
+
+    if(list.length===0){
+      container.innerHTML = `<div class="empty-state"><h4>Aucune compétence trouvée</h4><p>Essayez de modifier ou réinitialiser vos filtres.</p></div>`;
+      return;
+    }
+
+    if(state.view==='grid'){
+      list.forEach(f=>{
+        const card = document.createElement('button');
+        card.className = "comp-card";
+        card.style.setProperty('--dcolor', f.domaineCouleur);
+        card.innerHTML = `
+          <div class="cc-top">
+            <span class="badge">${f.domaineNom}</span>
+            <span class="badge niveau">${f.niveau}</span>
+          </div>
+          <h4>${highlight(f.sousDomaineNom)}</h4>
+          <div class="cc-domain">${f.cycle} · ${f.discipline}</div>
+          <p class="cc-preview">${highlight(f.objectifs[0])}</p>
+          <span class="cc-arrow">Voir la fiche →</span>
+        `;
+        card.addEventListener('click', ()=> openDrawer(f));
+        container.appendChild(card);
+      });
+    } else {
+      list.forEach(f=>{
+        const row = document.createElement('button');
+        row.className = "comp-list-row";
+        row.innerHTML = `
+          <span class="badge niveau" style="justify-self:start;">${f.niveau}</span>
+          <span class="clr-title">${highlight(f.sousDomaineNom)}</span>
+          <span class="clr-sub">${f.domaineNom}</span>
+          <span aria-hidden="true" style="color:var(--accent-sky);">→</span>
+        `;
+        row.addEventListener('click', ()=> openDrawer(f));
+        container.appendChild(row);
+      });
+    }
+  }
+
+  function updateResultCount(){
+    const n = filteredFiches().length;
+    document.getElementById('resultCount').innerHTML = `<strong>${n}</strong> compétence${n>1?'s':''} affichée${n>1?'s':''} sur <strong>${FICHES.length}</strong>`;
+  }
+
+  // ---------- Drawer ----------
+  const overlay = document.getElementById('drawerOverlay');
+  const drawer = document.getElementById('drawer');
+  let lastFocused = null;
+
+  function openDrawer(f){
+    lastFocused = document.activeElement;
+    const dom = REFERENTIEL.domaines.find(d=>d.id===f.domaineId);
+    document.getElementById('drawerCrumb').innerHTML = `
+      <button data-jump="repertoire">Répertoire</button> ›
+      <button data-jump-domaine="${dom.id}">${dom.nom}</button> ›
+      ${f.niveau}
+    `;
+    document.getElementById('drawerBody').innerHTML = `
+      <h2>${f.intitule}</h2>
+      <div class="drawer-tags">
+        <span class="badge" style="--dcolor:${f.domaineCouleur}">${f.domaineNom}</span>
+        <span class="badge niveau">${f.niveau}${f.niveauSource ? " · "+f.niveauSource : ""}</span>
+        <span class="badge niveau">${f.cycle}</span>
+        <span class="badge niveau">${f.discipline}</span>
+      </div>
+
+      <div class="drawer-section">
+        <h5>Objectifs d'apprentissage</h5>
+        <ul>${f.objectifs.map(o=>`<li>${o}</li>`).join('')}</ul>
+      </div>
+
+      ${f.exemples.length? `
+      <div class="drawer-section">
+        <h5>Exemples de réussite</h5>
+        <div class="reussite-box"><ul>${f.exemples.map(e=>`<li>${e}</li>`).join('')}</ul></div>
+      </div>` : ''}
+
+      ${f.prerequis.length ? `
+      <div class="drawer-section">
+        <h5>Prérequis</h5>
+        <div>${f.prerequis.map(id=>{
+          const p=ficheById(id);
+          return p ? `<span class="related-chip">${p.niveau} · ${p.intitule}</span>` : `<span class="related-chip">${id}</span>`;
+        }).join('')}</div>
+      </div>` : ''}
+
+      <div class="drawer-section">
+        <h5>Source</h5>
+        <div class="reussite-box">${f.source}</div>
+      </div>
+
+      <div class="drawer-section">
+        <h5>Compétences connexes du même domaine</h5>
+        <div>${dom.sousDomaines.filter(sd=>sd.id!==f.sousDomaineId).map(sd=>`<span class="related-chip" data-jump-sd="${dom.id}|${sd.id}">${sd.nom}</span>`).join('')}</div>
+      </div>
+
+      <a class="cp-open-full" id="drawerOpenFull" href="Programmation/sequences.html?domaine=${encodeURIComponent(f.domaineId)}">Voir dans la programmation de l'année →</a>
+    `;
+    drawer.classList.add('open');
+    overlay.classList.add('open');
+    drawer.setAttribute('aria-hidden','false');
+    document.getElementById('drawerClose').focus();
+    document.body.style.overflow = 'hidden';
+
+    drawer.querySelectorAll('[data-jump-sd]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        const [domId, sdId] = el.getAttribute('data-jump-sd').split('|');
+        closeDrawer();
+        setDomaine(domId); setSousDomaine(sdId);
+      });
+    });
+    drawer.querySelectorAll('[data-jump-domaine]').forEach(el=>{
+      el.addEventListener('click', ()=>{
+        closeDrawer(); setDomaine(el.getAttribute('data-jump-domaine'));
+      });
+    });
+    drawer.querySelectorAll('[data-jump]').forEach(el=>{
+      el.addEventListener('click', ()=>{ closeDrawer(); document.getElementById('repertoire').scrollIntoView({behavior:'smooth'}); });
+    });
+  }
+
+  function closeDrawer(){
+    drawer.classList.remove('open');
+    overlay.classList.remove('open');
+    drawer.setAttribute('aria-hidden','true');
+    document.body.style.overflow = '';
+    if(lastFocused) lastFocused.focus();
+  }
+  document.getElementById('drawerClose').addEventListener('click', closeDrawer);
+  overlay.addEventListener('click', closeDrawer);
+  document.addEventListener('keydown', e=>{ if(e.key==="Escape" && drawer.classList.contains('open')) closeDrawer(); });
+
+  // ---------- Overview ----------
+  function renderOverview(){
+    const statsWrap = document.getElementById('statsGrid');
+    statsWrap.innerHTML = "";
+    const stats = [
+      {num: FICHES.length, label:"Compétences répertoriées"},
+      {num: REFERENTIEL.domaines.length, label:"Domaines"},
+      {num: REFERENTIEL.domaines.reduce((s,d)=>s+d.sousDomaines.length,0), label:"Sous-domaines"},
+      {num: REFERENTIEL.niveaux.length, label:"Niveaux"}
+    ];
+    stats.forEach(s=>{
+      const c = document.createElement('div');
+      c.className = "stat-card";
+      c.innerHTML = `<div class="num">${s.num}</div><div class="label">${s.label}</div>`;
+      statsWrap.appendChild(c);
+    });
+
+    const barsWrap = document.getElementById('barsByDomain');
+    barsWrap.innerHTML = "";
+    const max = Math.max(...REFERENTIEL.domaines.map(d=>FICHES.filter(f=>f.domaineId===d.id).length));
+    REFERENTIEL.domaines.forEach(d=>{
+      const count = FICHES.filter(f=>f.domaineId===d.id).length;
+      const row = document.createElement('div');
+      row.className = "bar-row";
+      row.innerHTML = `
+        <span class="bl-label">${d.nom}</span>
+        <span class="bar-track"><span class="bar-fill" style="width:${(count/max*100)}%;background:${d.couleur};"></span></span>
+        <span class="bl-num">${count}</span>
+      `;
+      barsWrap.appendChild(row);
+    });
+  }
+
+  // ---------- Sync ----------
+  function syncAll(){
+    renderNiveauFilter();
+    renderDomaineFilter();
+    renderSousDomaineFilter();
+    // highlight active domain/level cards
+    [...levelCardsWrap.children].forEach((c,i)=> c.classList.toggle('active', REFERENTIEL.niveaux[i]===state.niveau));
+    [...domainCardsWrap.children].forEach((c,i)=> c.classList.toggle('active', REFERENTIEL.domaines[i].id===state.domaine));
+    renderDirectory();
+    updateResultCount();
+  }
+
+  // Arrivée depuis la page Programmation (lien "?domaine=") : pré-filtrer et défiler jusqu'au répertoire
+  (function applyIncomingParams(){
+    const params = new URLSearchParams(location.search);
+    const domaine = params.get('domaine');
+    if(domaine && REFERENTIEL.domaines.some(d=>d.id===domaine)){
+      state.domaine = domaine;
+      setTimeout(()=>{
+        document.getElementById('repertoire').scrollIntoView({behavior:'smooth'});
+      }, 50);
+    }
+  })();
+
+  syncAll();
+  renderOverview();
+
+  // ================= PAGE COMPÉTENCE — programmation 36 semaines =================
+  const PERIODES = [
+    {label:"Période 1", span:7},
+    {label:"Période 2", span:7},
+    {label:"Période 3", span:7},
+    {label:"Période 4", span:8},
+    {label:"Période 5", span:7}
+  ];
+
+  function ficheById(id){ return FICHES.find(f=>f.id===id); }
+
+  function seqStorageKey(ficheId){ return "sequences_" + ficheId; }
+  function loadSequences(ficheId){
+    try{
+      const raw = localStorage.getItem(seqStorageKey(ficheId));
+      return raw ? JSON.parse(raw) : [];
+    }catch(e){ return []; }
+  }
+  function saveSequences(ficheId, seqs){
+    try{ localStorage.setItem(seqStorageKey(ficheId), JSON.stringify(seqs)); }catch(e){}
+  }
+
+  let currentFicheId = null;
+
+  function renderCompPage(ficheId){
+    const f = ficheById(ficheId);
+    if(!f){ location.hash = ""; return; }
+    currentFicheId = ficheId;
+    const dom = REFERENTIEL.domaines.find(d=>d.id===f.domaineId);
+
+    document.getElementById('cpEyebrow').textContent = `${f.cycle} · ${f.discipline} · ${f.niveau}`;
+    document.getElementById('cpTitle').textContent = f.intitule;
+    document.getElementById('cpTags').innerHTML = `
+      <span class="badge" style="--dcolor:${f.domaineCouleur}">${f.domaineNom}</span>
+      <span class="badge niveau">${f.niveau}${f.niveauSource ? " · "+f.niveauSource : ""}</span>
+      <span class="badge niveau">${f.cycle}</span>
+      <span class="badge niveau">${f.discipline}</span>
+    `;
+    document.getElementById('cpObjectifs').innerHTML = f.objectifs.map(o=>`<li>${o}</li>`).join('');
+    const exBlock = document.getElementById('cpExemplesBlock');
+    if(f.exemples.length){
+      exBlock.style.display = "";
+      document.getElementById('cpExemples').innerHTML = f.exemples.map(e=>`<li>${e}</li>`).join('');
+    } else {
+      exBlock.style.display = "none";
+    }
+
+    renderPeriodRow();
+    renderSeqOptions();
+    renderWeekGrid();
+    renderSeqList();
+
+    document.body.classList.add('view-fiche');
+    document.getElementById('compPage').classList.add('open');
+    window.scrollTo({top:0});
+  }
+
+  function closeCompPage(){
+    document.body.classList.remove('view-fiche');
+    document.getElementById('compPage').classList.remove('open');
+    currentFicheId = null;
+  }
+
+  function renderPeriodRow(){
+    const wrap = document.getElementById('periodRow');
+    wrap.innerHTML = "";
+    PERIODES.forEach(p=>{
+      const el = document.createElement('div');
+      el.className = "period-label";
+      el.style.setProperty('--span', p.span);
+      el.textContent = p.label;
+      wrap.appendChild(el);
+    });
+  }
+
+  function renderSeqOptions(){
+    const debut = document.getElementById('seqDebut');
+    const fin = document.getElementById('seqFin');
+    debut.innerHTML = ""; fin.innerHTML = "";
+    for(let i=1;i<=36;i++){
+      const o1 = document.createElement('option'); o1.value=i; o1.textContent="Semaine "+i; debut.appendChild(o1);
+      const o2 = document.createElement('option'); o2.value=i; o2.textContent="Semaine "+i; fin.appendChild(o2);
+    }
+    fin.value = 4;
+  }
+
+  function renderWeekGrid(){
+    const grid = document.getElementById('weekGrid');
+    grid.innerHTML = "";
+    const seqs = loadSequences(currentFicheId);
+    const f = ficheById(currentFicheId);
+    for(let w=1; w<=36; w++){
+      const cell = document.createElement('div');
+      cell.className = "week-cell";
+      cell.textContent = w;
+      const covering = seqs.filter(s=> w>=s.debut && w<=s.fin);
+      if(covering.length){
+        cell.classList.add('in-range');
+        cell.style.background = f.domaineCouleur;
+        cell.title = covering.map(s=>s.titre).join(" · ");
+      }
+      grid.appendChild(cell);
+    }
+  }
+
+  function renderSeqList(){
+    const wrap = document.getElementById('seqList');
+    const seqs = loadSequences(currentFicheId).slice().sort((a,b)=>a.debut-b.debut);
+    if(seqs.length===0){
+      wrap.innerHTML = `<div class="seq-empty">Aucune séquence programmée pour l'instant. Utilisez le formulaire ci-dessus pour en ajouter une.</div>`;
+      return;
+    }
+    wrap.innerHTML = seqs.map(s=>`
+      <div class="seq-row">
+        <div class="seq-row-top">
+          <div>
+            <strong>${s.titre}</strong>
+            <div class="seq-meta">Semaine ${s.debut} → Semaine ${s.fin} · ${s.fin-s.debut+1} semaine${s.fin-s.debut+1>1?'s':''}</div>
+          </div>
+          <button class="seq-del" data-del="${s.id}">Supprimer</button>
+        </div>
+        ${s.note ? `<div class="seq-note">${s.note}</div>` : ''}
+      </div>
+    `).join('');
+    wrap.querySelectorAll('[data-del]').forEach(btn=>{
+      btn.addEventListener('click', ()=>{
+        const id = btn.getAttribute('data-del');
+        const remaining = loadSequences(currentFicheId).filter(s=>s.id!==id);
+        saveSequences(currentFicheId, remaining);
+        renderWeekGrid(); renderSeqList();
+      });
+    });
+  }
+
+  document.getElementById('seqForm').addEventListener('submit', e=>{
+    e.preventDefault();
+    const titre = document.getElementById('seqTitre').value.trim();
+    let debut = parseInt(document.getElementById('seqDebut').value,10);
+    let fin = parseInt(document.getElementById('seqFin').value,10);
+    const note = document.getElementById('seqNote').value.trim();
+    if(!titre) return;
+    if(fin < debut){ const t=debut; debut=fin; fin=t; }
+    const seqs = loadSequences(currentFicheId);
+    seqs.push({ id: 'seq_'+Date.now()+'_'+Math.random().toString(36).slice(2,7), titre, debut, fin, note });
+    saveSequences(currentFicheId, seqs);
+    document.getElementById('seqTitre').value = "";
+    document.getElementById('seqNote').value = "";
+    renderWeekGrid(); renderSeqList();
+  });
+
+  // Clicking a week cell prefills the start-week select for convenience
+  document.getElementById('weekGrid').addEventListener('click', e=>{
+    const cell = e.target.closest('.week-cell');
+    if(!cell) return;
+    document.getElementById('seqDebut').value = cell.textContent.trim();
+    document.getElementById('seqTitre').focus();
+  });
+
+  document.getElementById('cpBack').addEventListener('click', ()=>{ location.hash = ""; });
+
+  function handleRoute(){
+    const hash = location.hash;
+    const m = hash.match(/^#\/competence\/(.+)$/);
+    if(m){
+      renderCompPage(decodeURIComponent(m[1]));
+    } else {
+      closeCompPage();
+    }
+  }
+  window.addEventListener('hashchange', handleRoute);
+  handleRoute();
+})();
+</script>
+
+<footer class="synapses-footer">
+    <div>Synapses — Grand Planificateur pédagogique</div>
+    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
+</footer>
+</body>
+</html>
