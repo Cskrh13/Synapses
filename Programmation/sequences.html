@@ -325,10 +325,17 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 .print-page-break{page-break-before:always;}
 
 @media print{
+  @page{size:A4;margin:14mm 13mm;}
   body *{visibility:hidden;}
   #print-area, #print-area *{visibility:visible;}
-  #print-area{display:block;position:absolute;left:0;top:0;width:100%;}
+  #print-area{display:block;position:absolute;left:0;top:0;width:100%;background:#fff;}
   header.site-header, footer, .drawer-overlay, .modal-overlay, .toast{display:none !important;}
+  .print-doc{font-family:Arial,sans-serif;color:#20242E;max-width:none;}
+  .print-doc h1{font-family:Georgia,serif;color:#1E2A4A;font-size:24px;border-left:5px solid #2E5EAA;padding-left:10px;}
+  .print-doc h5{font-family:Arial,sans-serif;color:#2E5EAA;border-bottom:1px solid #DEDBD2;padding-bottom:4px;}
+  .print-seance-block{break-inside:avoid;page-break-inside:avoid;border-left:4px solid #B5502E;background:#FAF9F5;}
+  .print-seance-block table{font-size:9px;}
+  .print-seance-block th{background:#EEECE3;}
 }
 
 /* ---- Réseau de compétences ---- */
@@ -461,7 +468,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
         <div class="drawer-tags" id="seq-tags"></div>
       </div>
       <div class="cp-head-actions">
-        <button class="btn on-panel small" id="btn-print-seq">Imprimer</button>
+        <button class="btn on-panel small" id="btn-print-seq">Télécharger le PDF</button>
         <button class="btn on-panel small" id="btn-edit-seq">Modifier</button>
         <button class="btn on-panel small" id="btn-download-seq">Télécharger le JSON</button>
         <button class="btn danger small" id="btn-delete-seq">Supprimer</button>
@@ -1727,7 +1734,7 @@ function openSeaDrawer(seaId){
     ${sea.vigilance? `<div class="drawer-section"><h5>Points de vigilance</h5><div class="vigilance-box">${escapeHTML(sea.vigilance)}</div></div>`:""}
 
     <div class="drawer-actions">
-      <button class="btn on-panel small" id="drawer-print-sea">Imprimer</button>
+      <button class="btn on-panel small" id="drawer-print-sea">Télécharger le PDF</button>
       <button class="btn on-panel small" id="drawer-edit-sea">Modifier</button>
       <button class="btn on-panel small" id="drawer-download-sea">Télécharger le JSON</button>
       <button class="btn danger small" id="drawer-delete-sea">Supprimer</button>
