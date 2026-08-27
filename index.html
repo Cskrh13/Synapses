@@ -68,7 +68,7 @@ header.site-header{
 .header-top{
   display:flex;align-items:center;justify-content:space-between;
   max-width:1240px;margin:0 auto;padding:14px 24px;
-  gap:20px;
+  gap:20px;flex-wrap:nowrap;
 }
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
 .brand-mark{
@@ -81,10 +81,10 @@ header.site-header{
 .brand-text{display:flex;flex-direction:column;line-height:1.15;}
 .brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
 .brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
-nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:thin;-webkit-overflow-scrolling:touch;}
 nav.main-nav a{
   color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;
-  padding:8px 12px;border-radius:6px;transition:background .15s;
+  padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;flex-shrink:0;
 }
 nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
 nav.main-nav a.nav-programmation{
@@ -402,8 +402,6 @@ body.view-fiche .home-only{display:none;}
 mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 
 @media (max-width:720px){
-  .header-top{flex-wrap:wrap;}
-  nav.main-nav{order:3;width:100%;justify-content:flex-start;overflow-x:auto;}
   .comp-list-row{grid-template-columns:1fr;gap:4px;}
   .comp-list-row .clr-meta{display:flex;gap:8px;}
 }
@@ -428,6 +426,7 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
       <a href="#repertoire">Répertoire</a>
       <a href="#vue-ensemble">Vue d'ensemble</a>
       <a href="Programmation/sequences.html" class="nav-programmation">Programmation →</a>
+      <a href="Programmation/generateur-sequences-projet.html">Générateur de séquences</a>
       <a href="fata-morgana/coffre.html" class="nav-coffre">🔒 Coffre confidentiel</a>
     </nav>
     <div class="header-actions">
