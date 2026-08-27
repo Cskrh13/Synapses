@@ -73,6 +73,11 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
 </header>
 
 <div class="toolbar">
+  <div class="group"><span class="label">Vue</span>
+    <button id="viewGlobal" class="active">Vue globale</button>
+    <button id="viewNiveau">Vue niveau</button>
+    <button id="viewCompetence">Vue compétence</button>
+  </div>
   <div class="group"><span class="label">Niveaux</span><span id="levels"></span></div>
   <div class="group"><span class="label">Domaines</span><span id="domains"></span></div>
   <input id="search" autocomplete="off" placeholder="Rechercher compétence, séquence, séance…">
@@ -164,8 +169,10 @@ const state = {
   relationMode:null, relationNodes:new Set(), relationLinks:new Set(),
   panX:0, panY:0,
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
-  sphereR:170, sphereSpacing:470, spiralRadius:620, spiralRise:150, spiralTurns:1.35,
-  projected:[]
+  sphereR:245, sphereSpacing:600, spiralRadius:850, spiralRise:190, spiralTurns:1.35,
+  projected:[],
+  viewMode:"global", // "global" | "niveau" | "competence"
+  focusLevel:null
 };
 
 /* ---------- Chargement robuste des chemins ---------- */
@@ -395,6 +402,11 @@ function buildGraph(){
 
 /* ---------- Filtres ---------- */
 function visible(n){
+  if(state.viewMode==="competence"){
+    const set=getCompetenceFocusSet(state.selected);
+    if(!set || !set.has(n.id)) return false;
+    return true;
+  }
   if(n.type==="competence"){
     if(!state.levels.has(normalizeLevel(n.niveau))) return false;
     if(state.domains.size && !state.domains.has(n.domaine_id)) return false;
@@ -437,8 +449,7 @@ function projectPoint(p){
 }
 function sphereProjection(level){
   const p=projectPoint(sphereCenter(level));
-  const i=LEVEL_ORDER.indexOf(level);
-  const factor=i<4 ? 0.82 : 1;
+  const factor=1;
   return {...p,r:state.sphereR*factor*p.scale};
 }
 function drawSphere(ctx,s,label){
@@ -469,6 +480,18 @@ function drawNode(ctx,p,n){
   if(state.hover===n.id || state.selected===n.id){ctx.strokeStyle="#152333";ctx.lineWidth=2;ctx.beginPath();ctx.arc(p.x,p.y,r+4,0,Math.PI*2);ctx.stroke();}
   ctx.restore();
 }
+function focusOpacityFor(n){
+  // Mode focus (item 2) : en vue globale, cliquer une compétence estompe le reste.
+  if(state.viewMode==="global" && state.selected && state.selected.startsWith("c:")){
+    const set=getCompetenceFocusSet(state.selected);
+    if(set && !set.has(n.id)) return 0.18;
+  }
+  // Vue niveau : les sphères hors focus (et leur contenu) deviennent discrètes.
+  if(state.viewMode==="niveau" && state.focusLevel && normalizeLevel(n.niveau)!==state.focusLevel){
+    return 0.15;
+  }
+  return 1;
+}
 function draw(){
   const canvas=$("graph"),ctx=canvas.getContext("2d");
   const dpr=Math.min(devicePixelRatio||1,2);
@@ -479,11 +502,17 @@ function draw(){
   bg.addColorStop(0,"#fff");bg.addColorStop(.7,"#f5f7f8");bg.addColorStop(1,"#e7ebee");
   ctx.fillStyle=bg;ctx.fillRect(0,0,innerWidth,innerHeight);
 
-  const spheres=LEVEL_ORDER
-    .filter(l=>state.levels.has(l))
-    .map(l=>({level:l,...sphereProjection(l)}))
-    .sort((a,b)=>b.z-a.z);
-  for(const s of spheres) drawSphere(ctx,s,s.level);
+  // En vue compétence, les sphères n'apportent rien : on les masque pour l'épure.
+  if(state.viewMode!=="competence"){
+    const spheres=LEVEL_ORDER
+      .filter(l=>state.levels.has(l))
+      .map(l=>({level:l,...sphereProjection(l)}))
+      .sort((a,b)=>b.z-a.z);
+    for(const s of spheres){
+      const alpha=(state.viewMode==="niveau" && state.focusLevel && s.level!==state.focusLevel)?0.15:1;
+      ctx.save();ctx.globalAlpha=alpha;drawSphere(ctx,s,s.level);ctx.restore();
+    }
+  }
 
   const projected=new Map();
   for(const n of state.nodes.filter(visible)) projected.set(n.id,{...projectPoint(n),node:n});
@@ -494,6 +523,7 @@ function draw(){
     const a=projected.get(l.source),b=projected.get(l.target);
     if(!a||!b) continue;
     ctx.save();
+    ctx.globalAlpha=Math.min(focusOpacityFor(a.node),focusOpacityFor(b.node));
     if(l.type==="prerequis"){
       ctx.strokeStyle="rgba(169,125,34,.76)";ctx.lineWidth=1.5;ctx.setLineDash([5,6]);
     }else if(l.type==="sequence"){
@@ -506,7 +536,9 @@ function draw(){
   }
 
   const ordered=[...projected.values()].sort((a,b)=>a.z-b.z);
-  for(const p of ordered) drawNode(ctx,p,p.node);
+  for(const p of ordered){
+    ctx.save();ctx.globalAlpha=focusOpacityFor(p.node);drawNode(ctx,p,p.node);ctx.restore();
+  }
 }
 function update(){
   draw();
@@ -515,7 +547,25 @@ function update(){
   const sea=state.nodes.filter(n=>n.type==="seance"&&visible(n)).length;
   const pre=state.links.filter(l=>l.type==="prerequis"&&state.nodes.find(n=>n.id===l.source&&visible(n))&&state.nodes.find(n=>n.id===l.target&&visible(n))).length;
   $("status").textContent=`${comps} compétences · ${seq} séquences · ${sea} séances · ${pre} prérequis`;
-  $("subtitle").textContent=`${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cartographie fondée sur les données déclarées`;
+  if(state.viewMode==="niveau"){
+    if(state.focusLevel){
+      const lc=state.nodes.filter(n=>n.type==="competence"&&normalizeLevel(n.niveau)===state.focusLevel).length;
+      const ls=state.nodes.filter(n=>n.type==="sequence"&&normalizeLevel(n.niveau)===state.focusLevel).length;
+      const lx=state.nodes.filter(n=>n.type==="seance"&&normalizeLevel(n.niveau)===state.focusLevel).length;
+      $("subtitle").textContent=`${state.focusLevel} · ${lc} compétences · ${ls} séquences · ${lx} séances`;
+    }else{
+      $("subtitle").textContent="Vue niveau : cliquez sur une sphère pour l'explorer";
+    }
+  }else if(state.viewMode==="competence"){
+    if(state.selected&&state.selected.startsWith("c:")){
+      const c=compById(state.selected.slice(2));
+      $("subtitle").textContent=`Vue compétence · ${c?.intitule||""} — prérequis, séquences et séances liées`;
+    }else{
+      $("subtitle").textContent="Vue compétence : sélectionnez une compétence pour l'activer";
+    }
+  }else{
+    $("subtitle").textContent=`${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cartographie fondée sur les données déclarées`;
+  }
 }
 function hit(clientX,clientY){
   const rect=$("graph").getBoundingClientRect();
@@ -537,6 +587,24 @@ function relationData(id){
   const pre=(byId.get(id)?.prerequis_competences||[]).filter(x=>byId.has(x));
   const after=state.compData.competences.filter(c=>(c.prerequis_competences||[]).includes(id));
   return {byId,pre,after};
+}
+/* ---------- Mode focus / Vue compétence ----------
+   Pour une compétence donnée : elle-même, ses prérequis déclarés,
+   les compétences qui en dépendent, ses séquences liées (competence_id exact)
+   et les séances de ces séquences. */
+function getCompetenceFocusSet(selId){
+  if(!selId||!selId.startsWith("c:")) return null;
+  const id=selId.slice(2);
+  const {pre,after}=relationData(id);
+  const set=new Set(["c:"+id]);
+  pre.forEach(x=>set.add("c:"+x));
+  after.forEach(c=>set.add("c:"+c.id));
+  const seqIds=state.sequences.filter(s=>extractExactCompetenceId(s)===id).map(s=>s.id);
+  seqIds.forEach(sid=>set.add("s:"+sid));
+  for(const se of state.seances){
+    if(seqIds.includes(se.sequence_id)) set.add("x:"+se.id);
+  }
+  return set;
 }
 function showRelations(mode){
   state.relationNodes=new Set(); state.relationLinks=new Set();
@@ -580,9 +648,55 @@ function showPanel(node){
   if(node.type==="competence"){
     $("relationMenu").classList.add("open");
     $("panelContent").querySelectorAll("[data-c]").forEach(e=>e.onclick=()=>showPanel(state.nodes.find(n=>n.id==="c:"+e.dataset.c)));
+    if(state.viewMode==="competence") focusOnCompetenceNode(node);
   }else $("relationMenu").classList.remove("open");
   update();
 }
+
+/* ---------- Vue niveau / Vue compétence : centrage caméra ---------- */
+function hitSphere(clientX,clientY){
+  const rect=$("graph").getBoundingClientRect();
+  const x=clientX-rect.left,y=clientY-rect.top;
+  let best=null,bestD=Infinity;
+  for(const l of LEVEL_ORDER.filter(l=>state.levels.has(l))){
+    const s=sphereProjection(l);
+    const d=Math.hypot(x-s.x,y-s.y);
+    if(d<s.r && d<bestD){best=l;bestD=d;}
+  }
+  return best;
+}
+function centerOn(worldPoint,targetZoom){
+  state.zoom=Math.min(state.maxZoom,Math.max(state.minZoom,targetZoom));
+  const p=projectPoint(worldPoint);
+  state.panX+=innerWidth/2-p.x;
+  state.panY+=innerHeight/2-p.y;
+  $("zoomRange").value=state.zoom;
+}
+function focusOnLevel(level){
+  state.focusLevel=level;
+  centerOn(sphereCenter(level),1.9);
+  update();
+}
+function focusOnCompetenceNode(node){
+  centerOn(node,Math.max(state.zoom,1.7));
+  update();
+}
+function setViewMode(mode){
+  state.viewMode=mode;
+  ["viewGlobal","viewNiveau","viewCompetence"].forEach(id=>$(id).classList.remove("active"));
+  $({global:"viewGlobal",niveau:"viewNiveau",competence:"viewCompetence"}[mode]).classList.add("active");
+  if(mode==="global"){
+    state.focusLevel=null;
+    resetView();
+  }else if(mode==="competence" && state.selected && state.selected.startsWith("c:")){
+    const n=state.nodes.find(x=>x.id===state.selected);
+    if(n) focusOnCompetenceNode(n);
+  }
+  update();
+}
+$("viewGlobal").onclick=()=>setViewMode("global");
+$("viewNiveau").onclick=()=>setViewMode("niveau");
+$("viewCompetence").onclick=()=>setViewMode("competence");
 
 /* ---------- Navigation ---------- */
 function resetView(){
@@ -595,7 +709,8 @@ $("reset").onclick=()=>{
   state.search="";$("search").value="";
   state.levels=new Set(LEVEL_ORDER);
   state.domains=new Set(state.compData.domaines.map(d=>d.id));
-  renderFilters();resetView();update();
+  state.selected=null;$("panel").classList.remove("open");
+  renderFilters();setViewMode("global");update();
 };
 $("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null;update();};
 $("home").onclick=resetView;
@@ -636,14 +751,26 @@ canvas.addEventListener("pointerup",e=>{
   const wasPan=state.panning,moved=state.moved;
   state.dragging=false;state.panning=false;canvas.classList.remove("dragging");
   if(!wasPan&&!moved){
-    const n=hit(e.clientX,e.clientY);if(n)showPanel(n);
+    const n=hit(e.clientX,e.clientY);
+    if(n) showPanel(n);
+    else if(state.viewMode==="niveau"){
+      const lvl=hitSphere(e.clientX,e.clientY);
+      if(lvl) focusOnLevel(lvl);
+    }
   }
 });
 canvas.addEventListener("wheel",e=>{
   state.openingSpin=false;
   e.preventDefault();
-  state.zoom*=e.deltaY<0?1.08:.925;
-  state.zoom=Math.max(state.minZoom,Math.min(state.maxZoom,state.zoom));
+  const rect=canvas.getBoundingClientRect();
+  const mx=e.clientX-rect.left, my=e.clientY-rect.top;
+  const cx=innerWidth/2, cy=innerHeight/2;
+  const newZoom=Math.max(state.minZoom,Math.min(state.maxZoom,state.zoom*(e.deltaY<0?1.08:.925)));
+  const k=newZoom/state.zoom; // ratio réel appliqué (peut être bridé par min/max)
+  // Le point du monde sous le curseur doit rester sous le curseur après le zoom.
+  state.panX=(mx-cx)*(1-k)+k*state.panX;
+  state.panY=(my-cy)*(1-k)+k*state.panY;
+  state.zoom=newZoom;
   $("zoomRange").value=state.zoom;draw();
 },{passive:false});
 $("showImmediatePre").onclick=()=>showRelations("immediate");
