@@ -1,5 +1,19 @@
 {
   "version": "1.0.0",
-  "updatedAt": "",
-  "retours": []
+  "updatedAt": "2026-08-29T09:39:00Z",
+  "retours": [
+    {
+      "id": "web-20260829-002",
+      "fileName": "Programmation/sequences.html",
+      "alias": "",
+      "testerGroup": "Testeur",
+      "page": "Programmation — Séquences & séances",
+      "category": "Affichage / Données",
+      "desc": "La page affiche correctement la structure de la base pédagogique et les commandes disponibles, mais dans l'état observé aucune séquence n'est affichée : la zone de chargement reste sur « Chargement de la base pédagogique… ». Les sections Domaines et Périodes sont également présentes sans contenu visible.",
+      "expected": "Après le chargement automatique de data/index.json et des référentiels déclarés, les séquences disponibles devraient apparaître dans la liste, avec les domaines, périodes et informations associées. La page devrait remplacer l'état de chargement par le contenu effectivement chargé ou afficher clairement une erreur si les données ne peuvent pas être récupérées.",
+      "browser": "Test réalisé depuis la version publique du site",
+      "priority": "Élevée",
+      "status": "Nouveau"
+    }
+  ]
 }

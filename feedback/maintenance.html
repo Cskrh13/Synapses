@@ -68,8 +68,13 @@
   .nav-link:hover{text-decoration:underline;}
   .readonly-pill{font-size:11px;padding:2px 8px;border-radius:99px;background:#f1efe8;color:var(--text2);font-weight:600;}
 </style>
+<style>
+.portal-link{display:inline-block;margin:0 0 16px;color:#185fa5;text-decoration:none;font-size:13px;font-weight:600}
+.portal-link:hover{text-decoration:underline}
+</style>
 </head>
 <body>
+<a href="../index.html" class="portal-link">← Retour au portail Synapses</a>
 <div class="layout">
   <div class="row" style="justify-content:space-between;margin-bottom:6px;">
     <h1>Synapses — Suivi des retours de test <span class="readonly-pill">lecture seule</span></h1>
@@ -182,10 +187,24 @@ async function loadCentral(){
     const res = await fetch("./retours-central.json?t="+Date.now(), {cache:"no-store"});
     if(!res.ok) throw new Error("HTTP "+res.status);
     const parsed = await res.json();
-    data = Array.isArray(parsed) ? parsed : [];
+
+    // retours-central.json peut être :
+    // 1) un tableau direct [...]
+    // 2) l'objet central { version, updatedAt, retours: [...] }
+    // On accepte les deux formats pour éviter qu'un JSON valide soit
+    // interprété comme une base vide.
+    if(Array.isArray(parsed)){
+      data = parsed;
+    }else if(parsed && Array.isArray(parsed.retours)){
+      data = parsed.retours;
+    }else{
+      throw new Error("Structure JSON invalide : le fichier doit contenir un tableau ou une propriété « retours ».");
+    }
+
     setBanner("ok", "Données à jour — "+data.length+" retour(s) chargé(s) depuis retours-central.json.");
   }catch(e){
-    setBanner("warn", "Impossible de charger les retours. Vérifiez que feedback/retours-central.json est publié sur le site.");
+    console.error("Synapses / feedback / retours-central.json :", e);
+    setBanner("warn", "Impossible de charger retours-central.json : "+escapeHtml(e.message || "erreur inconnue")+". Vérifiez que le fichier est bien publié dans feedback/.");
   }
   render();
 }

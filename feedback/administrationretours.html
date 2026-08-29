@@ -68,8 +68,13 @@
   .nav-link:hover{text-decoration:underline;}
   #import-status{font-size:12px;color:var(--text2);}
 </style>
+<style>
+.portal-link{display:inline-block;margin:0 0 16px;color:#185fa5;text-decoration:none;font-size:13px;font-weight:600}
+.portal-link:hover{text-decoration:underline}
+</style>
 </head>
 <body>
+<a href="../index.html" class="portal-link">← Retour au portail Synapses</a>
 <div class="layout">
   <div class="row" style="justify-content:space-between;margin-bottom:6px;">
     <h1>Synapses — Administration des retours</h1>
@@ -81,7 +86,7 @@
     <p style="margin:0 0 8px;font-size:12.5px;color:var(--accent);">
       Importez ici tous les fichiers JSON reçus par e-mail (un ou plusieurs à la fois). Les retours sont fusionnés
       dans la base ci-dessous sans écraser ceux déjà présents ni ceux déjà triés (les doublons sont détectés et ignorés).
-      Une fois le triage effectué, exportez le JSON central mis à jour pour le republier sur le site
+      Une fois le triage effectué, enregistrez le JSON central mis à jour sous le nom
       (fichier attendu par la page de suivi : <code>retours-central.json</code>).
     </p>
     <div class="row">
@@ -90,6 +95,8 @@
         <input type="file" id="importFiles" accept=".json" multiple style="display:none" onchange="importJSON(event)">
       </label>
       <span id="import-status"></span>
+      <button class="primary" onclick="saveCentralJSON()">💾 Écrire / mettre à jour retours-central.json</button>
+      <input type="file" id="centralFile" accept=".json" style="display:none" onchange="loadCentralFile(event)">
     </div>
   </div>
 
@@ -279,6 +286,155 @@ function tagClass(prefix, value){
 
 function escapeHtml(s){
   return (s||"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+
+async function loadCentralFile(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  try{
+    const parsed = JSON.parse(await file.text());
+    data = Array.isArray(parsed.retours) ? parsed.retours : [];
+    render();
+    setImportStatus("JSON central chargé : " + data.length + " retour(s).");
+  }catch(err){
+    alert("Impossible de lire retours-central.json : " + err.message);
+  }finally{
+    event.target.value = "";
+  }
+}
+
+function normalizeContent(value){
+  return String(value || "")
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .toLowerCase()
+    .replace(/\s+/g," ")
+    .trim();
+}
+
+function contentSignature(entry){
+  // Le contenu du retour, et non son identifiant/date, sert à détecter un doublon.
+  return [
+    normalizeContent(entry.testerGroup),
+    normalizeContent(entry.page),
+    normalizeContent(entry.category),
+    normalizeContent(entry.desc),
+    normalizeContent(entry.expected),
+    normalizeContent(entry.browser)
+  ].join("||");
+}
+
+function getEntryIdentifier(entry){
+  return String(
+    entry.fileName ??
+    entry.filename ??
+    entry.nomFichier ??
+    entry.name ??
+    entry.id ??
+    ""
+  ).trim();
+}
+
+function uniqueEntries(entries){
+  const result = [];
+  const byIdentifier = new Map();
+  let duplicates = 0;
+
+  for(const original of entries){
+    const entry = {...original};
+    const identifier = getEntryIdentifier(entry);
+    const sig = contentSignature(entry);
+
+    // Un même identifiant peut correspondre à plusieurs contenus :
+    // dans ce cas, on conserve chaque contenu dans la liste.
+    const sameIdEntries = byIdentifier.get(identifier) || [];
+    const exactSameContent = sameIdEntries.find(x => contentSignature(x) === sig);
+
+    if(!exactSameContent){
+      result.push(entry);
+      sameIdEntries.push(entry);
+      byIdentifier.set(identifier, sameIdEntries);
+      continue;
+    }
+
+    // Même identifiant ET même contenu : véritable doublon.
+    // On conserve l'entrée mais on lui donne un alias +2, +3, etc.
+    duplicates++;
+
+    const baseName = identifier || "retour";
+    let n = sameIdEntries.length + 1;
+    let alias = `${baseName}+${n}`;
+
+    const usedNames = new Set(
+      result.map(x => getEntryIdentifier(x)).filter(Boolean)
+    );
+
+    while(usedNames.has(alias)){
+      n++;
+      alias = `${baseName}+${n}`;
+    }
+
+    if(entry.fileName !== undefined) entry.fileName = alias;
+    else if(entry.filename !== undefined) entry.filename = alias;
+    else if(entry.nomFichier !== undefined) entry.nomFichier = alias;
+    else if(entry.name !== undefined) entry.name = alias;
+    else if(entry.id !== undefined) entry.id = alias;
+    else entry.alias = alias;
+
+    result.push(entry);
+    sameIdEntries.push(entry);
+    byIdentifier.set(identifier, sameIdEntries);
+  }
+
+  return {result, duplicates};
+}
+
+
+async function saveCentralJSON(){
+  const cleaned = uniqueEntries(data);
+  data = cleaned.result;
+  render();
+
+  const payload = {
+    version: "1.0.0",
+    updatedAt: new Date().toISOString(),
+    retours: data
+  };
+  const text = JSON.stringify(payload, null, 2);
+
+  // Si le navigateur permet l'écriture directe, proposer retours-central.json.
+  if(window.showSaveFilePicker){
+    try{
+      const handle = await window.showSaveFilePicker({
+        suggestedName: "retours-central.json",
+        types: [{description:"JSON", accept:{"application/json":[".json"]}}]
+      });
+      const writable = await handle.createWritable();
+      await writable.write(text);
+      await writable.close();
+      setImportStatus("retours-central.json a été mis à jour. Doublons de contenu traités : " + cleaned.duplicates + ".");
+      return;
+    }catch(err){
+      if(err && err.name === "AbortError") return;
+    }
+  }
+
+  // Secours universel : téléchargement sous le nom exact.
+  const blob = new Blob([text], {type:"application/json;charset=utf-8"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "retours-central.json";
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  URL.revokeObjectURL(url);
+  setImportStatus("retours-central.json généré. Doublons de contenu traités : " + cleaned.duplicates + ".");
+}
+
+function setImportStatus(message){
+  const el = document.getElementById("import-status");
+  if(el) el.textContent = message;
 }
 
 function render(){

@@ -37,9 +37,16 @@
   // ==========================================================================
 
   class MoteurAnalyse {
-    /** @param {object} referentielGeneral - contenu de grille-analyse-generale.json */
-    constructor(referentielGeneral) {
+    /**
+     * @param {object} referentielGeneral - contenu de grille-analyse-generale.json (BARRY,
+     *   domaines transversaux : besoins/adaptations/objectifsTypes)
+     * @param {object} [referentielDisciplinaire] - contenu de Programmation/data/competences.json
+     *   (S4C, programmes disciplinaires : { domaines:[...], competences:[{id,discipline,intitule,...}] }).
+     *   Public, non nominatif → peut être consulté par le moteur ET transmis (en extrait) à l'IA.
+     */
+    constructor(referentielGeneral, referentielDisciplinaire) {
       this.referentiel = referentielGeneral;
+      this.referentielDisciplinaire = referentielDisciplinaire || null;
     }
 
     _domaine(domaineId) {
@@ -161,6 +168,43 @@
     }
 
     // ------------------------------------------------------------------
+    // Compétences disciplinaires prioritaires (Programmation/data/competences.json)
+    // ------------------------------------------------------------------
+
+    _competenceParId(id) {
+      return (this.referentielDisciplinaire?.competences || []).find((c) => c.id === id) || null;
+    }
+
+    /**
+     * Compile les compétences disciplinaires (S4C — lecture/écriture/oral,
+     * mathématiques, etc.) à travailler en priorité, à partir des observations
+     * où l'enseignant a explicitement rattaché une compétence du référentiel
+     * public (champ observation.competence, renseigné dans le formulaire pour
+     * les domaines 'mathematiques'/'francais'). Plus une compétence revient
+     * dans les observations, plus elle est jugée prioritaire.
+     * Ne renvoie rien si le référentiel disciplinaire n'a pas été fourni.
+     */
+    competencesPrioritaires(eleve) {
+      if (!this.referentielDisciplinaire) return [];
+      const parId = new Map();
+      (eleve.observations || []).forEach((o) => {
+        if (!o.competence) return;
+        const ref = this._competenceParId(o.competence);
+        if (!ref) return;
+        if (!parId.has(o.competence)) {
+          parId.set(o.competence, {
+            id: o.competence,
+            discipline: ref.discipline || '',
+            intitule: ref.intitule || ref.libelle || o.competence,
+            occurrences: 0
+          });
+        }
+        parId.get(o.competence).occurrences += 1;
+      });
+      return Array.from(parId.values()).sort((a, b) => b.occurrences - a.occurrences);
+    }
+
+    // ------------------------------------------------------------------
     // Suggestion d'objectifs à partir des besoins compilés
     // ------------------------------------------------------------------
 
@@ -202,15 +246,17 @@
      * Construit un parcours ordonné à partir :
      *  - des objectifs déjà actifs de l'élève (statut 'actif'), en premier,
      *    dans leur ordre de création (ce qui est engagé continue) ;
-     *  - puis des suggestions d'objectifs, triées par score décroissant.
+     *  - puis des compétences disciplinaires prioritaires (S4C/competences.json),
+     *    quand le référentiel disciplinaire a été fourni ;
+     *  - puis des suggestions transversales (BARRY), triées par score décroissant.
      * Chaque étape porte les adaptations associées au besoin d'origine,
      * pour que le parcours reste actionnable (pas seulement une liste
-     * d'intitulés).
+     * d'intitulés). C'est cette méthode qui alimente l'onglet "Parcours".
      * @param {object} [options] - { maxEtapes }
      */
     proposerParcours(eleve, options) {
       options = options || {};
-      const maxEtapes = options.maxEtapes || 8;
+      const maxEtapes = options.maxEtapes || 10;
 
       const etapes = [];
 
@@ -226,6 +272,18 @@
             adaptationsAssociees: []
           });
         });
+
+      this.competencesPrioritaires(eleve).forEach((c) => {
+        if (etapes.length >= maxEtapes) return;
+        etapes.push({
+          statut: 'à valider',
+          domaineId: c.discipline === 'Français' ? 'francais' : c.discipline === 'Mathématiques' ? 'mathematiques' : null,
+          domaineNom: c.discipline || 'Discipline',
+          objectif: c.intitule,
+          origine: 'compétence disciplinaire (S4C/competences.json) observée à ' + c.occurrences + ' reprise' + (c.occurrences > 1 ? 's' : ''),
+          adaptationsAssociees: []
+        });
+      });
 
       const suggestions = this.suggererObjectifs(eleve);
       suggestions.forEach((s) => {
@@ -260,6 +318,18 @@
      * coffre. Seules les données d'analyse (domaine, situations, difficultés,
      * besoins, adaptations, objectifs actifs) sont conservées, sans dates
      * précises (juste l'ordre relatif).
+     *
+     * L'ÂGE (eleve.age) est INTENTIONNELLEMENT EXCLU de cet instantané, malgré
+     * sa disponibilité sur l'objet élève. Décision : combiné aux observations
+     * détaillées (données de santé/handicap au sens de l'art. 9 RGPD) et au
+     * contexte d'un dispositif à faible effectif (ULIS, UPE2A, SEGPA...), l'âge
+     * agit comme quasi-identifiant et augmente le risque de ré-identification
+     * par recoupement — d'autant qu'aucun contrat de sous-traitance (art. 28
+     * RGPD) ne lie l'enseignant au service IA externe utilisé. Le principe de
+     * minimisation (art. 5.1.c RGPD) prévaut sur le confort de calibrage que
+     * l'âge apporterait aux suggestions. L'âge reste néanmoins consultable/
+     * modifiable localement dans le coffre (aucun souci RGPD à cet usage),
+     * simplement jamais transmis hors de l'application.
      */
     anonymiser(eleve) {
       const observations = (eleve.observations || []).map((o) => ({
@@ -319,20 +389,33 @@
 
       const dispositifTxt = (dispositif || '').trim();
       const intro = dispositifTxt
-        ? `Tu es un conseiller pédagogique spécialisé dans l'école inclusive, dans le cadre d'un dispositif de type « ${dispositifTxt} ». Tu analyses des observations totalement anonymisées d'un élève (aucun nom, aucune identité, aucun établissement ni classe ne te sont communiqués et tu ne dois en demander aucun).`
-        : `Tu es un conseiller pédagogique spécialisé dans l'école inclusive. Tu analyses des observations totalement anonymisées d'un élève (aucun nom, aucune identité, aucun établissement ni classe ne te sont communiqués et tu ne dois en demander aucun).`;
+        ? `Tu es un conseiller pédagogique spécialisé dans l'école inclusive, dans le cadre d'un dispositif de type « ${dispositifTxt} ». Tu analyses des observations totalement anonymisées d'un élève (aucun nom, aucune identité, aucun âge, aucun établissement ni classe ne te sont communiqués et tu ne dois en demander aucun).`
+        : `Tu es un conseiller pédagogique spécialisé dans l'école inclusive. Tu analyses des observations totalement anonymisées d'un élève (aucun nom, aucune identité, aucun âge, aucun établissement ni classe ne te sont communiqués et tu ne dois en demander aucun).`;
+
+      // Extrait PUBLIC du référentiel de compétences disciplinaires
+      // (Programmation/data/competences.json) : uniquement les compétences déjà
+      // rattachées par l'enseignant à une observation. On ne transmet jamais le
+      // fichier entier (inutilement volumineux), seulement ce qui est pertinent —
+      // et comme il s'agit d'un référentiel public (aucune donnée élève), il n'y
+      // a pas d'enjeu de confidentialité à le transmettre.
+      const competencesPub = this.competencesPrioritaires(eleve).map((c) => ({
+        discipline: c.discipline, competence: c.intitule, occurrencesObservees: c.occurrences
+      }));
+      const blocCompetences = competencesPub.length
+        ? `\n\nEXTRAIT DU RÉFÉRENTIEL PUBLIC DE COMPÉTENCES (Programmation/data/competences.json — non nominatif, tu peux t'en servir librement pour formuler des objectifs alignés sur les intitulés officiels) :\n${JSON.stringify(competencesPub, null, 2)}`
+        : '';
 
       return `${intro}
 
 RÈGLES :
-- Ne cherche jamais à identifier l'élève, son établissement ou sa classe, ni à demander des informations personnelles.
+- Ne cherche jamais à identifier l'élève, son établissement, sa classe ou son âge, ni à demander des informations personnelles.
 - Respecte exactement la structure JSON demandée, sans texte avant ou après.
-- Appuie-toi sur les observations et les besoins/adaptations déjà compilés pour proposer, en complément (pas en remplacement) : des hypothèses de besoins supplémentaires, des adaptations, des objectifs formulés de façon observable, et un parcours de compétences ordonné.
+- Appuie-toi sur les observations et les besoins/adaptations déjà compilés, ainsi que sur l'extrait du référentiel public de compétences ci-dessous s'il est fourni, pour proposer, en complément (pas en remplacement) : des hypothèses de besoins supplémentaires, des adaptations, des objectifs formulés de façon observable (en priorité alignés sur les intitulés du référentiel public quand c'est pertinent), et un parcours de compétences ordonné.
 - Toute proposition reste une suggestion : ne formule rien comme une certitude ou un diagnostic.
 - Reste concret et évite les formulations génériques.
 
 DONNÉES ANONYMISÉES DE L'ÉLÈVE :
-${JSON.stringify(donnees, null, 2)}
+${JSON.stringify(donnees, null, 2)}${blocCompetences}
 
 FORMAT JSON EXACT ATTENDU :
 ${schema}`;
@@ -385,10 +468,13 @@ ${schema}`;
     /**
      * @param {SynapsesCoffre.Coffre} coffre
      * @param {object} referentielGeneral - grille-analyse-generale.json déjà chargé
+     * @param {object} [referentielDisciplinaire] - Programmation/data/competences.json déjà
+     *   chargé (public, S4C) — permet au parcours d'inclure les compétences disciplinaires
+     *   (lecture/écriture/oral, mathématiques...) observées en priorité chez l'élève.
      */
-    constructor(coffre, referentielGeneral) {
+    constructor(coffre, referentielGeneral, referentielDisciplinaire) {
       this.coffre = coffre;
-      this.moteur = new MoteurAnalyse(referentielGeneral);
+      this.moteur = new MoteurAnalyse(referentielGeneral, referentielDisciplinaire);
     }
 
     /** Rend l'onglet "Analyse & IA" pour un élève donné dans un conteneur. */
@@ -397,6 +483,12 @@ ${schema}`;
       container.appendChild(this._sectionBesoinsAdaptations(eleve));
       container.appendChild(this._sectionParcours(eleve));
       container.appendChild(this._sectionAtelierIA(eleve, container));
+    }
+
+    /** Rend uniquement la section "Parcours de compétences proposé", pour être
+     *  réutilisée telle quelle dans l'onglet "Parcours" de suivi-individuel.js. */
+    renderParcours(eleve) {
+      return this._sectionParcours(eleve);
     }
 
     _sectionBesoinsAdaptations(eleve) {
@@ -468,8 +560,8 @@ ${schema}`;
       return el('div', { class: 'ga-section ga-atelier-ia' }, [
         el('h3', {}, ['Mobiliser une IA (anonymisée)']),
         el('p', { class: 'si-hint' }, [
-          'Aucune clé API, aucun envoi automatique. Copiez le prompt ci-dessous (il précise le type de dispositif mais ne contient ni nom, ni identifiant élève, ni établissement, ni classe), ' +
-          'collez-le dans le chat IA gratuit de votre choix, puis collez sa réponse pour l\'examiner — rien n\'est ajouté au coffre sans validation.'
+          'Aucune clé API, aucun envoi automatique. Le prompt ci-dessous précise le type de dispositif et, si disponible, un extrait du référentiel public de compétences ; il ne contient jamais nom, identifiant élève, âge, établissement ou classe (l\'âge, bien que stocké dans le coffre, n\'est jamais transmis à une IA — voir la note dans grille-analyse.js). ' +
+          'Copiez-le dans le chat IA gratuit de votre choix, puis collez sa réponse pour l\'examiner — rien n\'est ajouté au coffre sans validation.'
         ]),
         promptBox,
         el('div', { class: 'ga-toolbar' }, [
