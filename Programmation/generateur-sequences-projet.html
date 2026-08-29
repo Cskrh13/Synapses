@@ -30,11 +30,11 @@ button{cursor:pointer}
 .top-actions button:hover{background:rgba(255,255,255,.1)}
 main{max-width:1250px;margin:auto;padding:26px 20px 50px}
 .hero h2{margin:0;font-family:Georgia,serif;font-size:2rem}.hero p{max-width:800px;color:var(--soft);margin-top:7px}
-.stepper{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin:22px 0}
+.stepper{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:22px 0}
 .step{border:1px solid var(--line);background:#fff;border-radius:12px;padding:10px 12px;text-align:left;color:var(--soft);font-weight:700}
 .step.active{border-color:var(--navy);background:var(--navy);color:#fff}.step.done{border-color:#9fb5a8;background:#f4faf6;color:var(--ok)}
 .step span{display:block;font-size:.72rem;font-weight:600;opacity:.8}
-.workspace{display:grid;grid-template-columns:330px minmax(0,1fr);gap:18px;align-items:start}
+.workspace{display:block}
 .card{background:var(--card);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px;margin-bottom:16px}
 .card h3{font-family:Georgia,serif;margin:0 0 10px;font-size:1.18rem}.card h4{margin:15px 0 8px}
 label{display:block;font-size:.78rem;font-weight:800;color:var(--soft);margin:11px 0 5px}
@@ -107,8 +107,15 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
   .pdf-session th,.pdf-session td{border:1px solid #dfe3e8;padding:5px;vertical-align:top}
   .pdf-session th{background:#f2f4f5;text-align:left}
   .pdf-private{background:#f5faf7;border-left:4px solid #397957;padding:8px;margin:8px 0}
+  .pdf-cadrage{border:1px solid #dfe3e8;border-radius:9px;padding:12px 14px;margin:12px 0 16px;break-inside:avoid}
+  .pdf-cadrage h3:first-child{margin-top:0}
+  .pdf-cadrage p{margin:0 0 6px;font-size:11px}
+  .pdf-cadrage table{width:100%;border-collapse:collapse;font-size:10px;margin-top:4px}
+  .pdf-cadrage th,.pdf-cadrage td{border:1px solid #dfe3e8;padding:5px;vertical-align:top}
+  .pdf-cadrage th{background:#f2f4f5;text-align:left}
+  .pdf-materiel{border:1px dashed #c9622f;border-radius:8px;padding:9px 10px;margin-top:8px;font-size:10px;background:#fff8f3}
 }
-@media(max-width:900px){.workspace{grid-template-columns:1fr}.stepper{grid-template-columns:1fr 1fr}.phase-grid{grid-template-columns:1fr}.phase-grid.header{display:none}.phase-grid>div{border-right:0}.two,.seq-grid,.objectives,.session-fields{grid-template-columns:1fr}.student-row{grid-template-columns:1fr}.topbar{position:static}}
+@media(max-width:900px){.stepper{grid-template-columns:1fr 1fr}.phase-grid{grid-template-columns:1fr}.phase-grid.header{display:none}.phase-grid>div{border-right:0}.two,.seq-grid,.objectives,.session-fields{grid-template-columns:1fr}.student-row{grid-template-columns:1fr}.topbar{position:static}}
 
 .synapses-footer {
     margin-top: 40px;
@@ -192,7 +199,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
         <div class="row">
           <button class="btn secondary small" onclick="App.go(1)">Cadrage</button>
           <button class="btn secondary small" onclick="App.go(3)">Séances</button>
-          <button class="btn ai small" onclick="App.go(5);App.openAtelier()">Atelier IA gratuit</button>
+          <button class="btn ai small" onclick="App.go(6);App.openAtelier()">Atelier IA gratuit</button>
         </div>
         <p class="help">Vous pouvez revenir à une étape à tout moment. Les modifications restent dans cette page jusqu'à l'export.</p>
       </div>
@@ -204,7 +211,8 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
     <button class="step" data-step="2" onclick="App.go(2)">2 · Structurer<span>objectifs et élèves</span></button>
     <button class="step" data-step="3" onclick="App.go(3)">3 · Organiser<span>progression des séances</span></button>
     <button class="step" data-step="4" onclick="App.go(4)">4 · Détailler<span>déroulé de chaque séance</span></button>
-    <button class="step" data-step="5" onclick="App.go(5)">5 · Finaliser<span>aperçu, JSON, IA gratuite</span></button>
+    <button class="step" data-step="5" onclick="App.go(5)">5 · Matériel<span>fichiers ou IA par séance</span></button>
+    <button class="step" data-step="6" onclick="App.go(6)">6 · Finaliser<span>aperçu, JSON, IA gratuite</span></button>
   </div>
 
   <div class="workspace">
@@ -227,7 +235,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
           </div>
 
           <div class="two">
-            <div><label>Niveau</label><select id="niveau" onchange="App.filterCompetences()"><option value="">Tous les niveaux</option></select></div>
+            <div><label>Niveau</label><select id="niveau" onchange="App.updateDomaineOptions();App.filterCompetences()"><option value="">Tous les niveaux</option></select></div>
             <div><label>Domaine</label><select id="domaine" onchange="App.filterCompetences()"><option value="">Tous les domaines</option></select></div>
           </div>
           <label id="search-label">Rechercher une compétence</label>
@@ -254,7 +262,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
             <div><label>Compétences travaillées</label><textarea id="seq-competences" placeholder="Une compétence par ligne" oninput="App.updateSequenceField('competences_travaillees',this.value)"></textarea></div>
             <div><label>Références théoriques</label><textarea id="seq-references" oninput="App.updateSequenceField('references_theoriques',this.value)"></textarea></div>
           </div>
-          <div class="toolbar"><button class="btn" onclick="App.generateSequence()">Préparer la progression</button><button class="btn ai" onclick="App.go(5);App.openAtelier()">✨ Faire proposer la séquence par l’IA gratuite</button></div>
+          <div class="toolbar"><button class="btn" onclick="App.generateSequence()">Préparer la progression</button><button class="btn ai" onclick="App.go(6);App.openAtelier()">✨ Faire proposer la séquence par l’IA gratuite</button></div>
         </div>
       </div>
 
@@ -287,7 +295,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
           <div class="toolbar">
             <span id="session-count" class="status"></span>
             <button class="btn secondary small" onclick="App.addSession()">+ Ajouter une séance</button>
-            <button class="btn ai small" onclick="App.go(5);App.openAtelier('sequence')">✨ Générer une progression avec l’IA</button>
+            <button class="btn ai small" onclick="App.go(6);App.openAtelier('sequence')">✨ Générer une progression avec l’IA</button>
           </div>
           <div id="session-list" class="session-list"></div>
         </div>
@@ -302,8 +310,37 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
         </div>
       </div>
 
-      <!-- STEP 5 -->
+      <!-- STEP 5 : MATÉRIEL -->
       <div class="step-panel" data-panel="5" style="display:none">
+        <div class="card">
+          <h3>5. Générer le matériel des séances</h3>
+          <p class="help">Choisissez une séance, puis ajoutez le matériel imprimable nécessaire : en le chargeant depuis votre ordinateur, ou en le générant via un prompt IA gratuit. Ce matériel est rattaché à la fin de la séance choisie et apparaîtra dans le PDF.</p>
+          <label>Séance concernée</label>
+          <select id="materiel-session" onchange="App.renderMateriel()"></select>
+          <div id="materiel-ressources" style="margin-top:12px"></div>
+        </div>
+
+        <div class="card">
+          <h4>📁 Charger un fichier depuis l'ordinateur</h4>
+          <p class="help">Formats imprimables recommandés : image (PNG/JPG) ou PDF. Le fichier est intégré directement, sans envoi sur un serveur.</p>
+          <input type="file" id="materiel-file" accept="image/*,.pdf">
+          <div class="toolbar"><button class="btn secondary" type="button" onclick="App.ajouterFichierMateriel()">Ajouter ce fichier à la séance</button></div>
+        </div>
+
+        <div class="card ai-panel">
+          <h4>✨ Générer du matériel via l'IA gratuite</h4>
+          <div class="notice">Copiez ce prompt dans votre chat IA gratuit préféré, puis collez sa réponse ci-dessous. Le matériel doit être imprimable (texte structuré, pas de HTML).</div>
+          <label>Prompt prêt à copier</label>
+          <div id="materiel-prompt" class="prompt-box"></div>
+          <div class="toolbar"><button class="btn ai" type="button" onclick="App.copyMaterielPrompt()">📋 Copier le prompt</button></div>
+          <label>Réponse du modèle</label>
+          <textarea id="materiel-ia-response" rows="8" placeholder="Collez ici le matériel généré…"></textarea>
+          <div class="toolbar"><button class="btn" type="button" onclick="App.ajouterMaterielIA()">Ajouter ce matériel à la séance</button></div>
+        </div>
+      </div>
+
+      <!-- STEP 6 -->
+      <div class="step-panel" data-panel="6" style="display:none">
         <div class="tabs">
           <button id="tab-preview" class="active" onclick="App.tab('preview')">Aperçu</button>
           <button id="tab-atelier" onclick="App.tab('atelier')">✨ Atelier IA gratuit</button>
@@ -311,7 +348,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
         </div>
         <div id="view-preview">
           <div class="card">
-            <h3>5. Finaliser</h3>
+            <h3>6. Finaliser</h3>
             <div class="toolbar"><span class="status ok">Structure prête à relire</span><div class="row"><button class="btn secondary" onclick="App.go(4)">← Modifier les séances</button><button class="btn secondary" onclick="App.exporterPDF('sequence')">Télécharger le PDF</button><button class="btn" onclick="App.exporter()">Exporter le JSON</button></div></div>
             <div id="preview" class="preview"></div>
           </div>
@@ -424,9 +461,18 @@ const App = (() => {
   }
 
   function fillFilters(){
-    const n=document.getElementById("niveau"), d=document.getElementById("domaine");
+    const n=document.getElementById("niveau");
     niveaux.forEach(x=>{const o=document.createElement("option");o.value=x;o.textContent=x;n.appendChild(o)});
-    domaines.forEach(x=>{const o=document.createElement("option");o.value=x.id;o.textContent=x.nom;d.appendChild(o)});
+    updateDomaineOptions();
+  }
+
+  function updateDomaineOptions(){
+    const n=document.getElementById("niveau").value;
+    const d=document.getElementById("domaine");
+    const prevValue=d.value;
+    const domainesDisponibles=n?domaines.filter(x=>refs.some(c=>c.domaine_id===x.id&&c.niveau===n)):domaines;
+    d.innerHTML='<option value="">Tous les domaines</option>'+domainesDisponibles.map(x=>`<option value="${esc(x.id)}">${esc(x.nom)}</option>`).join("");
+    d.value=domainesDisponibles.some(x=>x.id===prevValue)?prevValue:"";
   }
 
   function filterCompetences(){
@@ -601,8 +647,121 @@ const App = (() => {
       objectif:"",problematique:"",consigne:"",tache:"",
       criteres_reussite:"",materiel:[],duree_estimee_min:Number(document.getElementById("duree-defaut").value)||45,
       vigilance:"",deroule:DEFAULT_PHASES.map((p,j)=>({phase:p,temps:j===0?5:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""})),
-      remarques:""
+      remarques:"",ressources:[]
     };
+  }
+
+  function currentMaterielIndex(){
+    const sel=document.getElementById("materiel-session");
+    return sel?Number(sel.value||0):0;
+  }
+
+  function renderMateriel(){
+    const sel=document.getElementById("materiel-session");
+    if(!sel)return;
+    if(!sequence){sel.innerHTML="";document.getElementById("materiel-ressources").innerHTML="";return}
+    const prevValue=sel.value;
+    sel.innerHTML=(sequence.seances||[]).map((s,i)=>`<option value="${i}">Séance ${i+1} — ${esc(s.titre)}</option>`).join("");
+    if(prevValue&&sequence.seances[prevValue])sel.value=prevValue;
+    renderMaterielRessources();
+    updateMaterielPrompt();
+  }
+
+  function renderMaterielRessources(){
+    const box=document.getElementById("materiel-ressources");
+    if(!box||!sequence)return;
+    const i=currentMaterielIndex();
+    const s=sequence.seances[i];
+    if(!s){box.innerHTML="";return}
+    const list=s.ressources||[];
+    if(!list.length){box.innerHTML='<p class="help">Aucun matériel ajouté pour cette séance.</p>';return}
+    box.innerHTML='<h4>Matériel déjà ajouté à cette séance</h4>'+list.map((r,j)=>{
+      let preview="";
+      if(r.type==="fichier"&&r.mimeType&&r.mimeType.startsWith("image/")){
+        preview=`<img src="${r.dataUrl}" style="max-width:160px;border-radius:8px;border:1px solid var(--line);display:block;margin-top:6px">`;
+      }else if(r.type==="fichier"){
+        preview=`<div class="help">Fichier : ${esc(r.nom)} (${esc(r.mimeType||"type inconnu")})</div>`;
+      }else if(r.type==="ia"){
+        const apercu=(r.contenuTexte||"").slice(0,400);
+        preview=`<div class="prompt-box" style="max-height:150px">${esc(apercu)}${(r.contenuTexte||"").length>400?"…":""}</div>`;
+      }
+      return `<div class="proposition">
+        <div class="row" style="justify-content:space-between">
+          <strong>${r.type==="fichier"?"📁 ":"✨ "}${esc(r.nom||"Matériel")}</strong>
+          <button class="btn danger small" type="button" onclick="App.removeRessource(${i},${j})">×</button>
+        </div>
+        ${preview}
+      </div>`;
+    }).join("");
+  }
+
+  function ajouterFichierMateriel(){
+    if(!sequence)return;
+    const i=currentMaterielIndex();
+    const s=sequence.seances[i];
+    if(!s){alert("Sélectionnez d'abord une séance.");return}
+    const input=document.getElementById("materiel-file");
+    const file=input.files?.[0];
+    if(!file){alert("Choisissez un fichier.");return}
+    const reader=new FileReader();
+    reader.onload=()=>{
+      s.ressources=s.ressources||[];
+      s.ressources.push({id:uid("materiel"),type:"fichier",nom:file.name,mimeType:file.type,dataUrl:reader.result,dateAjout:new Date().toISOString()});
+      input.value="";
+      renderMaterielRessources();
+    };
+    reader.onerror=()=>alert("Impossible de lire ce fichier.");
+    reader.readAsDataURL(file);
+  }
+
+  function updateMaterielPrompt(){
+    const box=document.getElementById("materiel-prompt");
+    if(!box||!sequence)return;
+    const i=currentMaterielIndex();
+    const s=sequence.seances[i];
+    if(!s){box.textContent="";return}
+    box.textContent=`Tu es un enseignant qui prépare du matériel de classe imprimable.
+
+RÈGLES :
+- Le contenu doit être directement imprimable (fiche A4, cartes à découper, texte structuré).
+- Réponds uniquement avec le contenu du matériel, sans commentaire ni explication autour.
+- Réponds en texte structuré uniquement (pas de HTML) : utilise des lignes, des tirets, des espacements pour organiser la mise en page. Le texte sera inséré tel quel (les sauts de ligne sont conservés).
+- Adapte la mise en page à un usage classe (formulations lisibles, espacement suffisant, pas de surcharge).
+
+CONTEXTE DE LA SÉANCE :
+Titre : ${s.titre||""}
+Type : ${typeLabel(s.type)}
+Niveaux : ${arr(s.niveaux).join(", ")||"à préciser"}
+Objectif : ${s.objectif||"à préciser"}
+Tâche : ${s.tache||"à préciser"}
+Matériel prévu : ${arr(s.materiel).join(", ")||"non précisé"}
+
+DEMANDE :
+Génère le matériel imprimable nécessaire pour cette séance (ex. cartes-nombres, fiche d'exercices, support de manipulation à découper…), prêt à être imprimé tel quel.`;
+  }
+
+  function copyMaterielPrompt(){
+    const text=document.getElementById("materiel-prompt")?.textContent||"";
+    navigator.clipboard?.writeText(text).then(()=>alert("Prompt copié.")).catch(()=>alert("Copie impossible : sélectionnez et copiez manuellement le texte."));
+  }
+
+  function ajouterMaterielIA(){
+    if(!sequence)return;
+    const i=currentMaterielIndex();
+    const s=sequence.seances[i];
+    if(!s){alert("Sélectionnez d'abord une séance.");return}
+    const texte=document.getElementById("materiel-ia-response").value.trim();
+    if(!texte){alert("Collez la réponse de l'IA avant de l'ajouter.");return}
+    s.ressources=s.ressources||[];
+    s.ressources.push({id:uid("materiel"),type:"ia",nom:"Matériel généré — "+(s.titre||"séance"),contenuTexte:texte,dateAjout:new Date().toISOString()});
+    document.getElementById("materiel-ia-response").value="";
+    renderMaterielRessources();
+  }
+
+  function removeRessource(si,ri){
+    if(!sequence?.seances[si]?.ressources)return;
+    sequence.seances[si].ressources.splice(ri,1);
+    renderMaterielRessources();
   }
 
   function recommendedTypes(n){
@@ -643,7 +802,7 @@ const App = (() => {
     box.innerHTML=sequence.seances.map((s,i)=>`<article class="session" id="session-card-${i}">
       <div class="session-head">
         <div class="session-num">${i+1}</div>
-        <div class="session-main"><strong>${esc(s.titre||"Séance sans titre")}</strong><small>${esc(s.type)} · ${s.duree_estimee_min||45} min</small></div>
+        <div class="session-main"><strong id="session-title-${i}">${esc(s.titre||"Séance sans titre")}</strong><small id="session-meta-${i}">${esc(typeLabel(s.type))} · ${s.duree_estimee_min||45} min</small></div>
         <div class="session-actions">
           <button class="icon-btn" onclick="App.moveSession(${i},-1)" title="Monter">↑</button>
           <button class="icon-btn" onclick="App.moveSession(${i},1)" title="Descendre">↓</button>
@@ -653,7 +812,7 @@ const App = (() => {
       </div>
       <div class="session-body">
         <div class="session-fields">
-          <div><label>Type</label><select onchange="App.sessionField(${i},'type',this.value);App.renderSessions()">${typeOptions(s.type)}</select></div>
+          <div><label>Type</label><select onchange="App.sessionField(${i},'type',this.value)">${typeOptions(s.type)}</select></div>
           <div><label>Durée (min)</label><input type="number" value="${s.duree_estimee_min||45}" onchange="App.sessionField(${i},'duree_estimee_min',Number(this.value))"></div>
           <div class="full"><label>Titre</label><input value="${esc(s.titre)}" oninput="App.sessionField(${i},'titre',this.value)"></div>
         </div>
@@ -661,8 +820,20 @@ const App = (() => {
     </article>`).join("");
   }
 
+  function typeLabel(t){return TYPES.find(x=>x[0]===t)?.[1]||t||""}
+
   function toggleSession(i){document.getElementById("session-card-"+i)?.classList.toggle("open")}
-  function sessionField(i,k,v){if(sequence?.seances[i])sequence.seances[i][k]=v}
+  function sessionField(i,k,v){
+    if(!sequence?.seances[i])return;
+    sequence.seances[i][k]=v;
+    if(k==="titre"||k==="type"||k==="duree_estimee_min"){
+      const s=sequence.seances[i];
+      const titleEl=document.getElementById("session-title-"+i);
+      const metaEl=document.getElementById("session-meta-"+i);
+      if(titleEl)titleEl.textContent=s.titre||"Séance sans titre";
+      if(metaEl)metaEl.textContent=typeLabel(s.type)+" · "+(s.duree_estimee_min||45)+" min";
+    }
+  }
   function moveSession(i,dir){
     const j=i+dir;if(!sequence||j<0||j>=sequence.seances.length)return;
     [sequence.seances[i],sequence.seances[j]]=[sequence.seances[j],sequence.seances[i]];
@@ -725,7 +896,7 @@ const App = (() => {
         <h4>Déroulé détaillé</h4>
         <div class="phase-grid header"><div>Phase</div><div>Temps</div><div>Modalité + matériel</div><div>Déroulement</div><div>Analyse de la tâche</div><div>Aménagement</div><div>Posture enseignant</div></div>
         ${phaseRows}
-        <div class="toolbar"><button class="btn secondary small" onclick="App.addPhase(${i})">+ Ajouter une phase</button><button class="btn secondary small" onclick="App.exporterPDF('seance',${i})">Télécharger le PDF</button><button class="btn small" onclick="App.go(5)">Voir l’aperçu</button></div>
+        <div class="toolbar"><button class="btn secondary small" onclick="App.addPhase(${i})">+ Ajouter une phase</button><button class="btn secondary small" onclick="App.exporterPDF('seance',${i})">Télécharger le PDF</button><button class="btn small" onclick="App.go(6)">Voir l’aperçu</button></div>
       </div>
     </details>`;
   }
@@ -814,7 +985,8 @@ const App = (() => {
     if(n===2){renderStudents()}
     if(n===3){renderSessions()}
     if(n===4){renderDetails()}
-    if(n===5){renderPreview();updatePrompt();updateJson()}
+    if(n===5){renderMateriel()}
+    if(n===6){renderPreview();updatePrompt();updateJson()}
     window.scrollTo({top:0,behavior:"smooth"});
   }
 
@@ -998,7 +1170,7 @@ RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances 
       objectif:s.objectif||"",problematique:s.problematique||"",consigne:s.consigne||"",tache:s.tache||"",
       criteres_reussite:s.criteres_reussite||"",materiel:s.materiel||[],duree_estimee_min:Number(s.duree_estimee_min)||45,
       deroule:phases.length?phases:DEFAULT_PHASES.map(p=>({phase:p,temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""})),
-      vigilance:s.vigilance||"",remarques:s.remarques||""
+      vigilance:s.vigilance||"",remarques:s.remarques||"",ressources:Array.isArray(s.ressources)?s.ressources:[]
     };
   }
 
@@ -1030,6 +1202,31 @@ RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances 
   }
 
   function pdfEscape(v){return esc(v||"—")}
+  function pdfCadrageHTML(seq){
+    const rowsEleves=(seq.objectifs_individuels||[]).map(o=>`<tr><td><strong>${pdfEscape(o.nom||"Élève")}</strong></td><td>${pdfEscape(o.objectif)}${o.criteres_reussite?`<br><em>${pdfEscape(o.criteres_reussite)}</em>`:""}</td></tr>`).join("");
+    const tableEleves=rowsEleves?`<table><thead><tr><th>Élève</th><th>Objectifs individuels prioritaires</th></tr></thead><tbody>${rowsEleves}</tbody></table>`:"";
+    return `<section class="pdf-cadrage">
+      <h3>Séquence</h3><p>${pdfEscape(seq.titre)}</p>
+      ${seq.domaine_socle?`<h3>Domaine du socle</h3><p>${pdfEscape(seq.domaine_socle)}</p>`:""}
+      <h3>Compétences travaillées</h3><p>${arr(seq.competences_travaillees).map(pdfEscape).join("<br>")||"—"}</p>
+      ${seq.objectif_coeur_de_cible?`<h3>Objectif cœur de cible</h3><p>${pdfEscape(seq.objectif_coeur_de_cible)}</p>`:""}
+      ${seq.objectif_commun?`<h3>Objectif commun</h3><p>${pdfEscape(seq.objectif_commun)}</p>`:""}
+      ${tableEleves?`<h3>Objectifs individuels prioritaires</h3>${tableEleves}`:""}
+      ${seq.references_theoriques?`<h3>Références théoriques</h3><p>${pdfEscape(seq.references_theoriques)}</p>`:""}
+    </section>`;
+  }
+  function pdfRessources(ressources){
+    if(!(ressources||[]).length) return "";
+    return `<h3>Matériel de la séance</h3>`+ressources.map(r=>{
+      if(r.type==="fichier"&&r.mimeType&&r.mimeType.startsWith("image/")){
+        return `<div class="pdf-materiel"><img src="${r.dataUrl}" style="max-width:100%;border:1px solid #dfe3e8;border-radius:6px"></div>`;
+      }
+      if(r.type==="fichier"){
+        return `<div class="pdf-materiel"><em>Fichier joint : ${pdfEscape(r.nom)}</em> (non intégrable directement à l'impression — voir fichier original)</div>`;
+      }
+      return `<div class="pdf-materiel">${pdfEscape(r.contenuTexte).replace(/\n/g,"<br>")}</div>`;
+    }).join("");
+  }
   function pdfPhaseTable(phases){
     const rows=(phases||[]).map(p=>`<tr><td><strong>${pdfEscape(p.phase)}</strong><br>${pdfEscape(p.temps)}</td><td>${pdfEscape(p.modalite_materiel)}</td><td>${pdfEscape(p.deroulement)}</td><td>${pdfEscape(p.analyse_tache)}</td><td>${pdfEscape(p.amenagement)}</td><td>${pdfEscape(p.posture)}</td></tr>`).join("");
     return rows?`<table><thead><tr><th>Phase / temps</th><th>Modalité & matériel</th><th>Déroulement</th><th>Analyse de la tâche</th><th>Aménagement</th><th>Posture</th></tr></thead><tbody>${rows}</tbody></table>`:"";
@@ -1052,6 +1249,7 @@ RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances 
       <p><strong>Critères de réussite :</strong> ${pdfEscape(s.criteres_reussite)}</p>
       ${pdfPhaseTable(s.deroule)}
       ${s.vigilance?`<p><strong>Points de vigilance :</strong> ${pdfEscape(s.vigilance)}</p>`:""}
+      ${pdfRessources(s.ressources)}
     </section>`;
   }
   function exporterPDF(mode="sequence", index=0){
@@ -1061,8 +1259,7 @@ RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances 
       <div style="font-size:10px;letter-spacing:.08em;text-transform:uppercase;color:#4a6fa8">Programmation · séquence pédagogique</div>
       <h1>${pdfEscape(sequence.titre)}</h1>
       <div class="pdf-meta"><strong>${pdfEscape(sequence.domaine)}</strong> · ${pdfEscape(sequence.classe)}</div>
-      <h2>Objectif commun</h2><p>${pdfEscape(sequence.objectif_commun)}</p>
-      <h2>Compétences travaillées</h2><p>${pdfEscape(arr(sequence.competences_travaillees).join(" · "))}</p>
+      ${mode==="sequence"?pdfCadrageHTML(sequence):`<h2>Objectif commun</h2><p>${pdfEscape(sequence.objectif_commun)}</p><h2>Compétences travaillées</h2><p>${pdfEscape(arr(sequence.competences_travaillees).join(" · "))}</p>`}
       ${sessions.map(pdfSessionHTML).join("")}
     </div>`;
     const area=document.getElementById("print-area"); area.innerHTML=html;
@@ -1126,13 +1323,13 @@ RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances 
         updateSelectionAside();
         document.getElementById("seq-cadrage").style.display="block";
         sequence.seances=sequence.seances.map(normaliserSeance);
-        setFields();renderSessions();renderDetails();go(5);
+        setFields();renderSessions();renderDetails();go(6);
       }catch(e){alert("Import impossible : "+e.message)}
     };
     r.readAsText(file);event.target.value="";
   }
 
-  return {init,go,filterCompetences,selectCompetence,setModeCadrage,toggleProjetCompetence,creerProjet,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents,updateCoffreWidget};
+  return {init,go,filterCompetences,updateDomaineOptions,selectCompetence,setModeCadrage,toggleProjetCompetence,creerProjet,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents,updateCoffreWidget,renderMateriel,ajouterFichierMateriel,copyMaterielPrompt,ajouterMaterielIA,removeRessource};
 })();
 
 App.init();

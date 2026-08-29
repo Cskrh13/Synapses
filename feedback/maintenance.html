@@ -73,7 +73,7 @@
 <div class="layout">
   <div class="row" style="justify-content:space-between;margin-bottom:6px;">
     <h1>Synapses — Suivi des retours de test <span class="readonly-pill">lecture seule</span></h1>
-    <a class="nav-link" href="administrationretours.html">Gérer et trier les retours →</a>
+    <a class="nav-link" href="maintenance.html">Gérer et trier les retours →</a>
   </div>
   <p class="subtitle">v0.9.0-test — vue de consultation, données mises à jour par l'administrateur</p>
 
@@ -140,10 +140,7 @@
       </div>
       <div class="row">
         <button onclick="loadCentral()">↻ Actualiser</button>
-        <label style="display:inline-block;">
-          <button onclick="document.getElementById('manualFile').click()">Charger un fichier manuellement</button>
-          <input type="file" id="manualFile" accept=".json" style="display:none" onchange="loadManual(event)">
-        </label>
+        
       </div>
     </div>
 
@@ -188,27 +185,9 @@ async function loadCentral(){
     data = Array.isArray(parsed) ? parsed : [];
     setBanner("ok", "Données à jour — "+data.length+" retour(s) chargé(s) depuis retours-central.json.");
   }catch(e){
-    setBanner("warn", "Impossible de charger retours-central.json automatiquement (page ouverte localement, ou fichier pas encore publié). Utilisez le chargement manuel ci-dessous.");
+    setBanner("warn", "Impossible de charger les retours. Vérifiez que feedback/retours-central.json est publié sur le site.");
   }
   render();
-}
-
-function loadManual(event){
-  const file = event.target.files && event.target.files[0];
-  if(!file) return;
-  const reader = new FileReader();
-  reader.onload = ()=>{
-    try{
-      const parsed = JSON.parse(reader.result);
-      data = Array.isArray(parsed) ? parsed : [];
-      setBanner("ok", data.length+" retour(s) chargé(s) depuis le fichier « "+file.name+" ».");
-      render();
-    }catch(err){
-      setBanner("warn", "Le fichier sélectionné n'est pas un JSON valide.");
-    }
-  };
-  reader.readAsText(file, "UTF-8");
-  event.target.value = "";
 }
 
 function sortBy(key){
