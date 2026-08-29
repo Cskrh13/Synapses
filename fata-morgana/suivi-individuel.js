@@ -56,14 +56,28 @@
     /**
      * @param {SynapsesCoffre.Coffre} coffre
      * @param {object} [options]
-     * @param {string} [options.urlReferentielGeneral] - chemin vers grille-analyse-generale.json
-     * @param {string} [options.urlReferentielDisciplinaire] - chemin vers competences.json
+     * @param {string|string[]} [options.urlReferentielGeneral] - chemin(s) vers grille-analyse-generale.json.
+     *   Peut être une chaîne unique ou un tableau de chemins candidats essayés dans l'ordre
+     *   (le premier qui répond 200 est retenu) — évite d'avoir à deviner l'arborescence exacte.
+     * @param {string|string[]} [options.urlReferentielDisciplinaire] - idem pour competences.json
      */
     constructor(coffre, options) {
       options = options || {};
       this.coffre = coffre;
-      this.urlReferentielGeneral = options.urlReferentielGeneral || 'Programmation/data/grille-analyse-generale.json';
-      this.urlReferentielDisciplinaire = options.urlReferentielDisciplinaire || 'Programmation/data/competences.json';
+      // Chemins candidats, essayés dans l'ordre : d'abord ceux fournis explicitement (si
+      // présents), puis les emplacements usuels du projet (Programmation/data/ en frère ou en
+      // parent du dossier de la page), puis en dernier recours le même dossier que coffre.html.
+      this.candidatsReferentielGeneral = Array.from(new Set([].concat(
+        options.urlReferentielGeneral || [],
+        ['Programmation/data/grille-analyse-generale.json', '../Programmation/data/grille-analyse-generale.json', 'grille-analyse-generale.json']
+      )));
+      this.candidatsReferentielDisciplinaire = Array.from(new Set([].concat(
+        options.urlReferentielDisciplinaire || [],
+        ['Programmation/data/competences.json', '../Programmation/data/competences.json', 'competences.json']
+      )));
+      // Conservés pour compat/affichage : chemin effectivement retenu après chargement.
+      this.urlReferentielGeneral = null;
+      this.urlReferentielDisciplinaire = null;
       this.referentielGeneral = null;       // { domaines: [...] }  — BARRY
       this.referentielDisciplinaire = null; // { domaines: [...], competences: [...] } — S4C
       this.eleveSelectionneId = null;
@@ -74,20 +88,38 @@
     // Chargement des référentiels PUBLICS (non nominatifs)
     // ------------------------------------------------------------------
 
+    /** Essaie chaque URL candidate dans l'ordre jusqu'à en trouver une qui répond 200.
+     *  Journalise dans la console (succès/échec) pour faciliter le diagnostic. */
+    async _chargerAvecCandidats(candidats, libelle) {
+      const essais = [];
+      for (const url of candidats) {
+        try {
+          const r = await fetch(url, { cache: 'no-store' });
+          if (r.ok) {
+            console.info('[Synapses] ' + libelle + ' chargé depuis : ' + url);
+            return { data: await r.json(), url };
+          }
+          essais.push(url + ' → HTTP ' + r.status);
+        } catch (e) {
+          essais.push(url + ' → ' + e.message);
+        }
+      }
+      console.error('[Synapses] ' + libelle + ' introuvable. Chemins essayés :\n  - ' + essais.join('\n  - '));
+      throw new Error(
+        libelle + ' introuvable après avoir essayé ' + candidats.length + ' emplacement(s) : ' + essais.join(' ; ')
+      );
+    }
+
     async chargerReferentiels() {
-      const [general, disciplinaire] = await Promise.all([
-        fetch(this.urlReferentielGeneral, { cache: 'no-store' }).then((r) => {
-          if (!r.ok) throw new Error('Référentiel grille d\'analyse introuvable : ' + this.urlReferentielGeneral);
-          return r.json();
-        }),
-        fetch(this.urlReferentielDisciplinaire, { cache: 'no-store' }).then((r) => {
-          if (!r.ok) throw new Error('Référentiel de compétences introuvable : ' + this.urlReferentielDisciplinaire);
-          return r.json();
-        })
+      const [g, d] = await Promise.all([
+        this._chargerAvecCandidats(this.candidatsReferentielGeneral, 'Référentiel grille d\'analyse (BARRY)'),
+        this._chargerAvecCandidats(this.candidatsReferentielDisciplinaire, 'Référentiel de compétences (S4C)')
       ]);
-      this.referentielGeneral = general;
-      this.referentielDisciplinaire = disciplinaire;
-      return { general, disciplinaire };
+      this.referentielGeneral = g.data;
+      this.urlReferentielGeneral = g.url;
+      this.referentielDisciplinaire = d.data;
+      this.urlReferentielDisciplinaire = d.url;
+      return { general: g.data, disciplinaire: d.data };
     }
 
     /** Liste unifiée des domaines (transversaux BARRY + disciplinaires S4C) pour l'UI. */
@@ -197,8 +229,10 @@
       if (!id) return;
       const nom = prompt('Nom (optionnel) :') || '';
       const prenom = prompt('Prénom (optionnel) :') || '';
+      const ageStr = prompt('Âge (optionnel — donnée stockée uniquement dans le coffre local, jamais transmise à une IA) :') || '';
+      const age = ageStr.trim() !== '' && !isNaN(Number(ageStr)) ? Number(ageStr) : null;
       try {
-        this.coffre.ajouterEleve(id.trim(), { nom: nom.trim(), prenom: prenom.trim() });
+        this.coffre.ajouterEleve(id.trim(), { nom: nom.trim(), prenom: prenom.trim() }, age);
         this.eleveSelectionneId = id.trim();
         this._render();
       } catch (e) {
@@ -230,10 +264,23 @@
 
     _renderEnTeteEleve(eleve) {
       const identite = [eleve.identite.prenom, eleve.identite.nom].filter(Boolean).join(' ');
+      const btnAge = el('button', {
+        class: 'si-btn si-btn-small',
+        title: 'Modifier l\'âge (donnée stockée uniquement dans le coffre local, jamais transmise à une IA)',
+        onclick: () => {
+          const v = prompt('Âge de l\'élève :', eleve.age != null ? String(eleve.age) : '');
+          if (v === null) return;
+          const age = v.trim() !== '' && !isNaN(Number(v)) ? Number(v) : null;
+          this.coffre.definirAge(eleve.identifiantSynapses, age);
+          this._render();
+        }
+      }, [eleve.age != null ? (eleve.age + ' an' + (eleve.age > 1 ? 's' : '')) : 'Âge non renseigné']);
+
       return el('div', { class: 'si-fiche-entete' }, [
         el('div', {}, [
           el('div', { class: 'si-fiche-id' }, [eleve.identifiantSynapses]),
-          el('h2', { class: 'si-fiche-nom' }, [identite || '(identité non renseignée)'])
+          el('h2', { class: 'si-fiche-nom' }, [identite || '(identité non renseignée)']),
+          btnAge
         ]),
         el('button', {
           class: 'si-btn si-btn-danger-outline',
@@ -270,7 +317,7 @@
       switch (this._ongletActif) {
         case 'observations': contenu = this._renderOngletObservations(eleve); break;
         case 'besoins': contenu = this._renderOngletListeSimple(eleve, 'besoins', ['hypothese', 'priorite']); break;
-        case 'adaptations': contenu = this._renderOngletListeSimple(eleve, 'adaptations', ['libelle', 'utilisee', 'efficacite']); break;
+        case 'adaptations': contenu = this._renderOngletListeSimple(eleve, 'adaptations', ['libelle', 'utilisee', 'efficacite'], { toggleBooleanColumn: 'utilisee' }); break;
         case 'objectifs': contenu = this._renderOngletListeSimple(eleve, 'objectifs', ['libelle', 'statut']); break;
         case 'parcours': contenu = this._renderOngletParcours(eleve); break;
         case 'analyse': contenu = this._renderOngletAnalyse(eleve); break;
@@ -394,22 +441,74 @@
 
     // ---- Onglets Besoins / Adaptations / Objectifs : listes simples ----
 
-    _renderOngletListeSimple(eleve, cle, colonnes) {
+    _renderOngletListeSimple(eleve, cle, colonnes, options) {
+      options = options || {};
+      const toggleCol = options.toggleBooleanColumn || null;
       const wrap = el('div', {});
       const table = el('table', { class: 'si-table' }, [
         el('thead', {}, [el('tr', {}, colonnes.map((c) => el('th', {}, [c])))]),
-        el('tbody', {}, (eleve[cle] || []).map((item) => el('tr', {}, colonnes.map((c) => el('td', {}, [String(item[c] ?? '')])))))
+        el('tbody', {}, (eleve[cle] || []).map((item) => el('tr', {}, colonnes.map((c) => {
+          if (c === toggleCol) {
+            const val = !!item[c];
+            return el('td', {}, [
+              el('button', {
+                class: 'si-btn si-btn-small' + (val ? ' si-btn-primary' : ''),
+                title: 'Cliquer pour basculer',
+                onclick: () => {
+                  this.coffre.toggleAdaptationUtilisee(eleve.identifiantSynapses, item.id);
+                  this._render();
+                }
+              }, [val ? 'Oui' : 'Non'])
+            ]);
+          }
+          return el('td', {}, [String(item[c] ?? '')]);
+        }))))
       ]);
       const vide = (eleve[cle] || []).length === 0;
       wrap.appendChild(vide ? el('p', { class: 'si-empty' }, ['Rien d\'enregistré pour l\'instant.']) : table);
       wrap.appendChild(el('p', { class: 'si-hint' }, [
-        'Les ' + cle + ' se créent le plus souvent depuis une observation (module grille-analyse.js, à venir). ' +
-        'Cet onglet affiche l\'état actuel pour ' + eleve.identifiantSynapses + '.'
+        'Les ' + cle + ' se créent le plus souvent depuis une observation, ou depuis l\'onglet "Analyse & IA". ' +
+        'Cet onglet affiche l\'état actuel pour ' + eleve.identifiantSynapses + '.' +
+        (toggleCol ? ' Cliquez sur "Oui"/"Non" pour indiquer si l\'adaptation a été effectivement utilisée.' : '')
       ]));
       return wrap;
     }
 
+    // ---- Onglet Parcours : parcours de compétences PROPOSÉ (généré à partir
+    // des besoins/objectifs et de competences.json — voir grille-analyse.js)
+    // + journal manuel chronologique en complément. ----
+
+    _obtenirGrilleAnalyseUI() {
+      if (!global.SynapsesGrilleAnalyse) return null;
+      if (!this._grilleAnalyseUI) {
+        this._grilleAnalyseUI = new global.SynapsesGrilleAnalyse.GrilleAnalyseUI(
+          this.coffre, this.referentielGeneral, this.referentielDisciplinaire
+        );
+      }
+      return this._grilleAnalyseUI;
+    }
+
     _renderOngletParcours(eleve) {
+      const wrap = el('div', { class: 'si-parcours' });
+
+      const ui = this._obtenirGrilleAnalyseUI();
+      if (ui) {
+        wrap.appendChild(ui.renderParcours(eleve));
+      } else {
+        wrap.appendChild(el('p', { class: 'si-error' }, [
+          'Le moteur d\'analyse (grille-analyse.js) n\'est pas chargé : le parcours proposé n\'est pas disponible ; seul le journal manuel ci-dessous fonctionne.'
+        ]));
+      }
+
+      wrap.appendChild(el('h3', { style: 'margin-top:28px;' }, ['Journal de parcours (manuel)']));
+      wrap.appendChild(el('p', { class: 'si-hint' }, [
+        'Chronologie libre (séances, observations ponctuelles, progrès, bilans) — à renseigner vous-même, distincte du parcours proposé ci-dessus qui, lui, se met à jour automatiquement.'
+      ]));
+      wrap.appendChild(el('button', {
+        class: 'si-btn',
+        onclick: () => this._ouvrirFormulaireEvenementParcours(eleve)
+      }, ['+ Ajouter un événement']));
+
       const evenements = []
         .concat(eleve.parcours.seances.map((e) => ({ ...e, type: 'Séance' })))
         .concat(eleve.parcours.observations.map((e) => ({ ...e, type: 'Observation' })))
@@ -418,32 +517,45 @@
         .sort((a, b) => new Date(a.date) - new Date(b.date));
 
       if (!evenements.length) {
-        return el('p', { class: 'si-empty' }, ['Aucun événement de parcours enregistré pour l\'instant.']);
+        wrap.appendChild(el('p', { class: 'si-empty' }, ['Aucun événement de parcours manuel enregistré pour l\'instant.']));
+        return wrap;
       }
 
-      return el('div', { class: 'si-frise' }, evenements.map((e) =>
+      wrap.appendChild(el('div', { class: 'si-frise' }, evenements.map((e) =>
         el('div', { class: 'si-frise-item' }, [
           el('div', { class: 'si-frise-date' }, [new Date(e.date).toLocaleDateString('fr-FR')]),
           el('div', { class: 'si-frise-type' }, [e.type]),
           el('div', { class: 'si-frise-detail' }, [e.libelle || e.resume || ''])
         ])
-      ));
+      )));
+      return wrap;
+    }
+
+    _ouvrirFormulaireEvenementParcours(eleve) {
+      const type = (prompt('Type d\'événement : seance / observation / progres / bilan', 'seance') || '').trim();
+      if (!type) return;
+      if (!['seance', 'observation', 'progres', 'bilan'].includes(type)) {
+        alert('Type inconnu. Utilisez : seance, observation, progres ou bilan.');
+        return;
+      }
+      const libelle = prompt('Libellé / résumé de l\'événement :');
+      if (!libelle || !libelle.trim()) return;
+      this.coffre.ajouterEvenementParcours(eleve.identifiantSynapses, type, { libelle: libelle.trim() });
+      this._render();
     }
 
     // ---- Onglet Analyse & IA : compilation, parcours, atelier IA anonymisé ----
     // (voir grille-analyse.js, à charger avant ce script pour activer l'onglet)
 
     _renderOngletAnalyse(eleve) {
-      if (!global.SynapsesGrilleAnalyse) {
+      const ui = this._obtenirGrilleAnalyseUI();
+      if (!ui) {
         return el('p', { class: 'si-error' }, [
           'Le moteur d\'analyse (grille-analyse.js) n\'est pas chargé sur cette page.'
         ]);
       }
-      if (!this._grilleAnalyseUI) {
-        this._grilleAnalyseUI = new global.SynapsesGrilleAnalyse.GrilleAnalyseUI(this.coffre, this.referentielGeneral);
-      }
       const wrap = el('div', { class: 'si-analyse' });
-      this._grilleAnalyseUI.render(wrap, eleve);
+      ui.render(wrap, eleve);
       return wrap;
     }
   }

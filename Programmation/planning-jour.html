@@ -25,14 +25,19 @@ a{color:inherit;}
 code{font-family:"IBM Plex Mono",monospace;font-size:.9em;}
 .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-sky);font-weight:500;}
 
-header.site-header{background:var(--navy);color:#fff;padding:16px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
-.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+header.site-header{background:var(--navy);color:#fff;padding:14px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
+.header-top{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
-.brand-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:#fff;flex-shrink:0;}
-.brand-text{font-family:'Fraunces',serif;font-weight:600;font-size:16px;}
-nav.pl-nav{display:flex;gap:8px;flex-wrap:wrap;}
-nav.pl-nav a{color:#D9E0F2;text-decoration:none;font-size:13.5px;font-weight:500;padding:7px 12px;border-radius:6px;background:rgba(255,255,255,.06);}
-nav.pl-nav a.active{background:var(--accent-sky);color:#fff;}
+.brand-mark{width:40px;height:40px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:#fff;flex-shrink:0;}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
+.brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;align-items:center;}
+nav.main-nav a{color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;}
+nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
+nav.main-nav a.nav-programmation{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);margin-left:4px;color:#fff;}
+nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
+nav.main-nav a.nav-programmation.active{background:var(--accent-sky);border-color:var(--accent-sky);}
 .nav-index-link{margin-right:auto;font-weight:700;}
 
 .coffre-widget{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 12px;border:1px solid rgba(255,255,255,.3);border-radius:20px;}
@@ -132,17 +137,20 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 <body>
 
 <header class="site-header">
-  <div class="header-inner">
-    <a class="brand" href="../index.html">
-      <div class="brand-mark">S</div>
-      <div class="brand-text">Synapses</div>
+  <div class="header-top">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">RÉ</span>
+      <span class="brand-text">
+        <span class="top">Portail non institutionnel</span>
+        <span class="bottom">Planning</span>
+      </span>
     </a>
-    <nav class="pl-nav">
-      <a href="../index.html" class="nav-index-link">Accueil</a>
-      <a href="planning-gestion.html">Planning — Gestion</a>
-      <a href="planning-affichage.html">Planning — Affichage</a>
-      <a href="planning-jour.html" class="active">Cahier journal</a>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="../index.html">Accueil</a>
       <a href="sequences.html">Séquences &amp; séances</a>
+      <a href="planning-gestion.html" class="nav-programmation">Planning — Gestion</a>
+      <a href="planning-affichage.html" class="nav-programmation">Planning — Affichage</a>
+      <a href="planning-jour.html" class="nav-programmation active">Cahier journal</a>
     </nav>
     <div class="coffre-widget">
       <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
@@ -178,14 +186,13 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 </div>
 
 <main>
-  <div class="eyebrow">Dimension temporelle</div>
-  <h1 style="font-size:24px;margin:6px 0 14px;">Cahier journal</h1>
+  <h1 style="font-size:24px;margin:0 0 14px;">Cahier journal</h1>
 
   <div class="onboarding" id="onboarding">
     <button class="close-onboarding" id="btn-close-onboarding">Masquer ✕</button>
     <h3>Comment utiliser cette page ?</h3>
     <ol>
-      <li><strong>Générer</strong> — cliquez sur « Générer depuis la grille » pour créer automatiquement les créneaux et groupes du jour à partir du planning hebdomadaire (Planning — Gestion). Rien n'est écrasé si vous avez déjà modifié ce jour.</li>
+      <li><strong>Synchronisation automatique</strong> — ce jour se met à jour tout seul depuis la grille de « Planning — Gestion » à chaque ouverture de page. Dès que vous modifiez un groupe (titre, adulte, horaire), il devient « figé » et n'est plus jamais écrasé automatiquement.</li>
       <li><strong>Organiser</strong> — pour chaque créneau, ajoutez ou ajustez les groupes de besoin/travail (colonnes), affectez un adulte (enseignant, AESH, ATSEM…) et un titre de séance à chacun.</li>
       <li><strong>Répartir</strong> — ouvrez le coffre élèves puis cliquez sur « Répartir les élèves » : Synapses propose une répartition à partir des besoins/objectifs actifs de chaque élève. <strong>Vous validez toujours</strong> en ajustant les chips élève à la main.</li>
     </ol>
@@ -201,7 +208,7 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     </div>
     <div class="day-title" id="day-title">—</div>
     <div class="day-actions">
-      <button class="btn" id="btn-generer-jour">↺ Générer depuis la grille</button>
+      <button class="btn" id="btn-generer-jour">↺ Resynchroniser avec la grille</button>
       <button class="btn" id="btn-repartir-eleves">🎯 Répartir les élèves</button>
       <button class="btn" id="btn-print">🖨 Imprimer</button>
       <a class="btn" href="planning-affichage.html">← Retour à la semaine</a>
@@ -354,12 +361,12 @@ function renderJour(){
   const content = $("content");
   content.innerHTML = "";
 
-  if(!jour.creneaux.length){
+  if(!jour.groupes.length){
     content.innerHTML = `
       <div class="empty-journal">
         <h3>Aucun cahier journal pour ce jour</h3>
-        <p>Générez-le automatiquement depuis la grille horaire hebdomadaire définie dans « Planning — Gestion », puis ajustez les groupes, les adultes et les élèves. Vous pouvez aussi ajouter un premier créneau à la main.</p>
-        <button class="btn primary" id="btn-generer-jour-vide">↺ Générer depuis la grille</button>
+        <p>Synchronisez-le automatiquement depuis la grille horaire hebdomadaire définie dans « Planning — Gestion », puis ajustez les groupes, les adultes et les élèves. Vous pouvez aussi ajouter un premier créneau à la main.</p>
+        <button class="btn primary" id="btn-generer-jour-vide">↺ Resynchroniser avec la grille</button>
         <button class="btn" id="btn-ajouter-bloc-vide" style="margin-left:8px;">+ Ajouter un créneau</button>
       </div>`;
     $("btn-generer-jour-vide").addEventListener("click", genererDepuisGrille);
@@ -371,39 +378,59 @@ function renderJour(){
   table.className = "journal-table";
   const tbody = document.createElement("tbody");
 
-  jour.creneaux.slice().sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut)).forEach(bloc=>{
+  PC.regrouperParBloc(jour).forEach(bloc=>{
     const tr = document.createElement("tr");
     const td = document.createElement("td");
 
     const head = document.createElement("div");
     head.className = "bloc-row-head";
     head.innerHTML = `
-      <input class="bloc-label" value="${escapeAttr(bloc.label)}" data-role="label">
+      <input class="bloc-label" value="${escapeAttr(PC.libelleBloc(jour, bloc.debut, bloc.fin))}" data-role="label">
       <input class="bloc-heure" value="${escapeAttr(bloc.debut)}" data-role="debut">
       <span class="sep">–</span>
       <input class="bloc-heure" value="${escapeAttr(bloc.fin)}" data-role="fin">
       <span class="spacer"></span>
       <button class="btn small danger" data-role="del-bloc">✕ Supprimer ce créneau</button>`;
-    head.querySelector('[data-role=label]').addEventListener("change", e=>{ bloc.label=e.target.value; sauver(); });
-    head.querySelector('[data-role=debut]').addEventListener("change", e=>{ bloc.debut=e.target.value; sauver(); renderJour(); });
-    head.querySelector('[data-role=fin]').addEventListener("change", e=>{ bloc.fin=e.target.value; sauver(); });
+    head.querySelector('[data-role=label]').addEventListener("change", e=>{
+      jour.libellesBlocs[PC.cleBloc(bloc.debut,bloc.fin)] = e.target.value;
+      sauver();
+    });
+    head.querySelector('[data-role=debut]').addEventListener("change", e=>{
+      const ancienneCle = PC.cleBloc(bloc.debut, bloc.fin);
+      const label = jour.libellesBlocs[ancienneCle];
+      delete jour.libellesBlocs[ancienneCle];
+      bloc.groupes.forEach(g=>{ g.debut = e.target.value; g.modifie = true; });
+      if(label) jour.libellesBlocs[PC.cleBloc(e.target.value, bloc.fin)] = label;
+      sauver(); renderJour();
+    });
+    head.querySelector('[data-role=fin]').addEventListener("change", e=>{
+      const ancienneCle = PC.cleBloc(bloc.debut, bloc.fin);
+      const label = jour.libellesBlocs[ancienneCle];
+      delete jour.libellesBlocs[ancienneCle];
+      bloc.groupes.forEach(g=>{ g.fin = e.target.value; g.modifie = true; });
+      if(label) jour.libellesBlocs[PC.cleBloc(bloc.debut, e.target.value)] = label;
+      sauver(); renderJour();
+    });
     head.querySelector('[data-role=del-bloc]').addEventListener("click", ()=>{
       if(!confirm("Supprimer ce créneau et tous ses groupes ?")) return;
-      jour.creneaux = jour.creneaux.filter(b=>b.id!==bloc.id);
+      bloc.groupes.forEach(g=>{ if(g.origine) jour.exclusions.push(g.origine); });
+      jour.groupes = jour.groupes.filter(g=> !bloc.groupes.includes(g));
+      delete jour.libellesBlocs[PC.cleBloc(bloc.debut,bloc.fin)];
       sauver(); renderJour();
     });
     td.appendChild(head);
 
     const groupesWrap = document.createElement("div");
     groupesWrap.className = "bloc-groupes";
-    bloc.groupes.forEach(g=> groupesWrap.appendChild(renderGroupeCard(bloc, g)));
+    bloc.groupes.forEach(g=> groupesWrap.appendChild(renderGroupeCard(g)));
 
     const addBtn = document.createElement("button");
     addBtn.className = "add-groupe-btn";
     addBtn.title = "Ajouter un groupe en parallèle sur ce créneau";
     addBtn.textContent = "+";
     addBtn.addEventListener("click", ()=>{
-      bloc.groupes.push({ id: PC.uid("grp"), adulte:{type:"enseignant",nom:""}, titre:"Nouveau groupe", domaineCle:"", niveau:"", seanceRef:null, eleves:[], remarque:"", fixe:false });
+      jour.groupes.push({ id: PC.uid("grp"), debut: bloc.debut, fin: bloc.fin, origine: null, modifie: true,
+        adulte:{type:"enseignant",nom:""}, titre:"Nouveau groupe", domaineCle:"", niveau:"", seanceRef:null, eleves:[], remarque:"", fixe:false });
       sauver(); renderJour();
     });
     groupesWrap.appendChild(addBtn);
@@ -427,11 +454,13 @@ function ajouterBloc(){
   const debut = prompt("Heure de début (HH:MM)", "09:00"); if(debut===null) return;
   const fin = prompt("Heure de fin (HH:MM)", "09:30"); if(fin===null) return;
   const label = prompt("Libellé du créneau", "Nouveau créneau") || "Créneau";
-  jour.creneaux.push({ id: PC.uid("bloc"), label, debut, fin, groupes: [] });
+  jour.libellesBlocs[PC.cleBloc(debut,fin)] = label;
+  jour.groupes.push({ id: PC.uid("grp"), debut, fin, origine: null, modifie: true,
+    adulte:{type:"enseignant",nom:""}, titre:"Nouveau groupe", domaineCle:"", niveau:"", seanceRef:null, eleves:[], remarque:"", fixe:false });
   sauver(); renderJour();
 }
 
-function renderGroupeCard(bloc, g){
+function renderGroupeCard(g){
   const card = document.createElement("div");
   card.className = "groupe-card" + (g.fixe ? " fixe" : "");
 
@@ -441,9 +470,11 @@ function renderGroupeCard(bloc, g){
   }
 
   const typesOptions = PC.TYPES_ADULTE.map(t=>`<option value="${t.id}" ${g.adulte && g.adulte.type===t.id?'selected':''}>${t.label}</option>`).join("");
+  const cadenas = g.modifie ? `<span title="Modifié à la main : ne sera plus écrasé par une resynchronisation" style="float:right;font-size:11px;color:var(--ink-soft);">🔒</span>` : "";
 
   card.innerHTML = `
     <input class="groupe-titre" value="${escapeAttr(g.titre)}" placeholder="Titre du groupe / séance">
+    ${cadenas}
     ${g.domaineCle ? `<span class="domaine-tag">${escapeHTML(g.niveau||"")} · ${escapeHTML(g.domaineCle)}</span>` : ""}
     <div class="row1">
       <select class="adulte-type">${typesOptions}</select>
@@ -475,9 +506,9 @@ function renderGroupeCard(bloc, g){
   }
   renderChips();
 
-  card.querySelector(".groupe-titre").addEventListener("change", e=>{ g.titre=e.target.value; sauver(); });
-  card.querySelector(".adulte-type").addEventListener("change", e=>{ g.adulte = g.adulte||{}; g.adulte.type=e.target.value; sauver(); });
-  card.querySelector(".adulte-nom").addEventListener("change", e=>{ g.adulte = g.adulte||{}; g.adulte.nom=e.target.value; sauver(); });
+  card.querySelector(".groupe-titre").addEventListener("change", e=>{ g.titre=e.target.value; g.modifie=true; sauver(); renderJour(); });
+  card.querySelector(".adulte-type").addEventListener("change", e=>{ g.adulte = g.adulte||{}; g.adulte.type=e.target.value; g.modifie=true; sauver(); });
+  card.querySelector(".adulte-nom").addEventListener("change", e=>{ g.adulte = g.adulte||{}; g.adulte.nom=e.target.value; g.modifie=true; sauver(); });
   card.querySelector(".remarque").addEventListener("change", e=>{ g.remarque=e.target.value; sauver(); });
   card.querySelector('[data-role=add-eleve]').addEventListener("change", e=>{
     const id = e.target.value;
@@ -488,7 +519,8 @@ function renderGroupeCard(bloc, g){
     e.target.innerHTML = `<option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
   });
   card.querySelector('[data-role=del-groupe]').addEventListener("click", ()=>{
-    bloc.groupes = bloc.groupes.filter(x=>x.id!==g.id);
+    if(g.origine) jour.exclusions.push(g.origine);
+    jour.groupes = jour.groupes.filter(x=>x.id!==g.id);
     sauver(); renderJour();
   });
 
@@ -496,15 +528,20 @@ function renderGroupeCard(bloc, g){
 }
 
 /* ---------------- Actions globales ---------------- */
-async function genererDepuisGrille(){
+async function genererDepuisGrille(silencieux){
+  // Toujours relire l'état le plus récent (peut avoir changé dans un autre
+  // onglet : Planning — Gestion / Planning — Affichage).
+  config = PC.chargerConfig();
+  grilles = PC.chargerGrilles();
+  affectations = PC.chargerAffectations();
   try{
     if(!Object.keys(banque).length) banque = await PC.chargerBanque();
   }catch(e){ /* on continue sans détail de séance */ }
   PC.genererJournalDepuisGrille(iso, config, grilles, affectations, banque);
-  toast("Cahier journal généré depuis la grille du planning.");
+  if(!silencieux) toast("Cahier journal resynchronisé avec la grille.");
   renderJour();
 }
-$("btn-generer-jour").addEventListener("click", genererDepuisGrille);
+$("btn-generer-jour").addEventListener("click", ()=> genererDepuisGrille(false));
 
 $("btn-repartir-eleves").addEventListener("click", ()=>{
   if(!coffreOuvert()){ toast("Ouvrez le coffre pour répartir les élèves."); openModal('modal-coffre'); return; }
@@ -521,23 +558,31 @@ $("j-remarque").addEventListener("change", e=>{ jour.remarque=e.target.value; sa
 $("j-devoirs").addEventListener("change", e=>{ jour.devoirs=e.target.value; sauver(); });
 
 /* ---------------- Navigation jour ---------------- */
-function allerA(nouvIso){
+async function allerA(nouvIso){
   iso = nouvIso;
   const url = new URL(location.href);
   url.searchParams.set("date", iso);
   history.replaceState(null, "", url);
-  renderJour();
+  await genererDepuisGrille(true); // fluidité : resynchronisation silencieuse à chaque changement de jour
 }
 $("prev-day").addEventListener("click", ()=> allerA(PC.dateISO(PC.addDays(PC.parseISO(iso), -1))));
 $("next-day").addEventListener("click", ()=> allerA(PC.dateISO(PC.addDays(PC.parseISO(iso), 1))));
 $("btn-today").addEventListener("click", ()=> allerA(PC.dateISO(new Date())));
 $("date-picker").addEventListener("change", e=>{ if(e.target.value) allerA(e.target.value); });
 
+// Si la grille/config/affectations changent dans un autre onglet (Planning
+// — Gestion ou Planning — Affichage), on resynchronise silencieusement ici
+// aussi, sans jamais toucher aux groupes déjà modifiés à la main.
+window.addEventListener("storage", (e)=>{
+  if([PC.STORE_CONFIG, PC.STORE_GRILLES, PC.STORE_AFFECT].includes(e.key)){
+    genererDepuisGrille(true);
+  }
+});
+
 /* ---------------- Initialisation ---------------- */
 (async function init(){
   updateCoffreWidget();
-  try{ banque = await PC.chargerBanque(); }catch(e){ /* affichage possible sans détail de séance */ }
-  renderJour();
+  await genererDepuisGrille(true);
 })();
 </script>
 

@@ -24,14 +24,19 @@ button{cursor:pointer;}
 a{color:inherit;}
 :focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
 .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-sky);font-weight:500;}
-header.site-header{background:var(--navy);color:#fff;padding:16px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
-.header-inner{max-width:1240px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+header.site-header{background:var(--navy);color:#fff;padding:14px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
+.header-top{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
-.brand-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:#fff;flex-shrink:0;}
-.brand-text{font-family:'Fraunces',serif;font-weight:600;font-size:16px;}
-nav.pl-nav{display:flex;gap:8px;}
-nav.pl-nav a{color:#D9E0F2;text-decoration:none;font-size:13.5px;font-weight:500;padding:7px 12px;border-radius:6px;background:rgba(255,255,255,.06);}
-nav.pl-nav a.active{background:var(--accent-sky);color:#fff;}
+.brand-mark{width:40px;height:40px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:#fff;flex-shrink:0;}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
+.brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;align-items:center;}
+nav.main-nav a{color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;}
+nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
+nav.main-nav a.nav-programmation{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);margin-left:4px;color:#fff;}
+nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
+nav.main-nav a.nav-programmation.active{background:var(--accent-sky);border-color:var(--accent-sky);}
 main{max-width:1240px;margin:0 auto;padding:28px 24px 90px;}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:22px;}
 .card h2{font-size:19px;margin-bottom:4px;}
@@ -57,7 +62,7 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 .niveau-tabs button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 .jour-block{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;background:var(--panel-raised);}
 .jour-block h4{font-size:14px;margin-bottom:10px;}
-.creneau-row{display:grid;grid-template-columns:90px 90px 150px 1fr auto;gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line);}
+.creneau-row{display:grid;grid-template-columns:90px 90px 150px 1fr 1fr auto;gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line);}
 .creneau-row:first-of-type{border-top:none;}
 .creneau-row input,.creneau-row select{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:13px;}
 .badge-type{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap;}
@@ -87,23 +92,26 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 <body>
 
 <header class="site-header">
-  <div class="header-inner">
-    <a class="brand" href="../index.html">
-      <div class="brand-mark" aria-hidden="true">RÉ</div>
-      <div class="brand-text">Synapses</div>
+  <div class="header-top">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">RÉ</span>
+      <span class="brand-text">
+        <span class="top">Portail non institutionnel</span>
+        <span class="bottom">Planning</span>
+      </span>
     </a>
-    <nav class="pl-nav">
-      <a href="planning-gestion.html" class="active">Planning — Gestion</a>
-      <a href="planning-affichage.html">Planning — Affichage</a>
-      <a href="planning-jour.html">Cahier journal</a>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="../index.html">Accueil</a>
       <a href="sequences.html">Séquences &amp; séances</a>
+      <a href="planning-gestion.html" class="nav-programmation active">Planning — Gestion</a>
+      <a href="planning-affichage.html" class="nav-programmation">Planning — Affichage</a>
+      <a href="planning-jour.html" class="nav-programmation">Cahier journal</a>
     </nav>
   </div>
 </header>
 
 <main>
-  <div class="eyebrow">Dimension temporelle</div>
-  <h1 style="font-size:26px;margin:6px 0 20px;">Gestion du planning annuel</h1>
+  <h1 style="font-size:26px;margin:0 0 20px;">Gestion du planning annuel</h1>
 
   <!-- =============== CONFIGURATION GÉNÉRALE =============== -->
   <section class="card">
@@ -132,6 +140,44 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
       <div class="field"><label>Début</label><input type="date" id="vac-debut"></div>
       <div class="field"><label>Fin</label><input type="date" id="vac-fin"></div>
       <button class="btn" id="btn-add-vac">+ Ajouter une période</button>
+    </div>
+  </section>
+
+  <!-- =============== JOURS TRAVAILLÉS & HORAIRES FIXES =============== -->
+  <section class="card">
+    <h2>Jours travaillés &amp; horaires fixes</h2>
+    <p class="hint">Cochez les jours travaillés, puis définissez les horaires des récréations et de la pause méridienne. Cliquez sur « Appliquer » pour les insérer automatiquement dans la grille de chaque niveau géré, sur chaque jour coché — deux récréations (ou deux services de pause) sont possibles : ajoutez simplement une seconde ligne.</p>
+
+    <h3 style="font-size:14px;margin-bottom:8px;">Jours travaillés</h3>
+    <div class="chip-toggle" id="jours-travailles" style="margin-bottom:18px;"></div>
+
+    <h3 style="font-size:14px;margin-bottom:8px;">Récréations</h3>
+    <table class="vac" id="recre-table">
+      <thead><tr><th>Libellé</th><th>Début</th><th>Fin</th><th></th></tr></thead>
+      <tbody id="recre-body"></tbody>
+    </table>
+    <div class="row" style="margin-top:10px;">
+      <div class="field"><label>Libellé</label><input type="text" id="recre-libelle" placeholder="Récréation après-midi" style="width:200px;"></div>
+      <div class="field"><label>Début</label><input type="time" id="recre-debut"></div>
+      <div class="field"><label>Fin</label><input type="time" id="recre-fin"></div>
+      <button class="btn" id="btn-add-recre">+ Ajouter une récréation</button>
+    </div>
+
+    <h3 style="font-size:14px;margin:22px 0 8px;">Pause méridienne</h3>
+    <table class="vac" id="pause-table">
+      <thead><tr><th>Libellé</th><th>Début</th><th>Fin</th><th></th></tr></thead>
+      <tbody id="pause-body"></tbody>
+    </table>
+    <div class="row" style="margin-top:10px;">
+      <div class="field"><label>Libellé</label><input type="text" id="pause-libelle" placeholder="2ᵉ service" style="width:200px;"></div>
+      <div class="field"><label>Début</label><input type="time" id="pause-debut"></div>
+      <div class="field"><label>Fin</label><input type="time" id="pause-fin"></div>
+      <button class="btn" id="btn-add-pause">+ Ajouter une pause</button>
+    </div>
+
+    <div class="row" style="margin-top:18px;">
+      <button class="btn primary" id="btn-appliquer-fixes">Appliquer aux niveaux gérés</button>
+      <span id="fixes-status" style="color:var(--ink-soft);font-size:13.5px;"></span>
     </div>
   </section>
 
@@ -214,6 +260,9 @@ function renderConfig(){
   $("cfg-rentree").value = config.rentree || "";
   $("cfg-semaines").value = config.semaines || 36;
   renderVacances();
+  renderJoursTravailles();
+  renderRecreations();
+  renderPauses();
 }
 function renderVacances(){
   const body = $("vac-body");
@@ -240,6 +289,76 @@ $("btn-save-config").addEventListener("click", ()=>{
   config.semaines = parseInt($("cfg-semaines").value,10) || 36;
   PC.sauverConfig(config);
   toast(config.rentree ? "Configuration enregistrée." : "Configuration enregistrée (pensez à indiquer la date de rentrée).");
+  renderSummary();
+});
+
+/* ---------------- Jours travaillés & horaires fixes ---------------- */
+function renderJoursTravailles(){
+  const wrap = $("jours-travailles");
+  wrap.innerHTML = "";
+  PC.JOURS.forEach(j=>{
+    const b = document.createElement("button");
+    const actif = (config.joursTravailles||[]).includes(j.n);
+    b.textContent = j.nom; b.className = actif ? "active" : "";
+    b.addEventListener("click", ()=>{
+      config.joursTravailles = config.joursTravailles || [];
+      const idx = config.joursTravailles.indexOf(j.n);
+      if(idx>=0) config.joursTravailles.splice(idx,1); else config.joursTravailles.push(j.n);
+      PC.sauverConfig(config);
+      renderJoursTravailles();
+    });
+    wrap.appendChild(b);
+  });
+}
+
+function renderListeHoraires(cle, corpsId){
+  const body = $(corpsId);
+  body.innerHTML = "";
+  (config[cle]||[]).forEach((h,i)=>{
+    const tr = document.createElement("tr");
+    tr.innerHTML = `<td>${h.label||"—"}</td><td>${h.debut}</td><td>${h.fin}</td><td><button class="btn sm danger" data-i="${i}">Retirer</button></td>`;
+    body.appendChild(tr);
+  });
+  body.querySelectorAll("button[data-i]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      config[cle].splice(+b.dataset.i,1);
+      PC.sauverConfig(config);
+      renderListeHoraires(cle, corpsId);
+    });
+  });
+}
+function renderRecreations(){ renderListeHoraires("recreations","recre-body"); }
+function renderPauses(){ renderListeHoraires("pauses","pause-body"); }
+
+$("btn-add-recre").addEventListener("click", ()=>{
+  const debut = $("recre-debut").value, fin = $("recre-fin").value;
+  if(!debut || !fin){ toast("Indiquez une heure de début et de fin."); return; }
+  config.recreations = config.recreations || [];
+  config.recreations.push({ label: $("recre-libelle").value.trim() || "Récréation", debut, fin });
+  PC.sauverConfig(config);
+  $("recre-libelle").value=""; $("recre-debut").value=""; $("recre-fin").value="";
+  renderRecreations();
+});
+$("btn-add-pause").addEventListener("click", ()=>{
+  const debut = $("pause-debut").value, fin = $("pause-fin").value;
+  if(!debut || !fin){ toast("Indiquez une heure de début et de fin."); return; }
+  config.pauses = config.pauses || [];
+  config.pauses.push({ label: $("pause-libelle").value.trim() || "Pause méridienne", debut, fin });
+  PC.sauverConfig(config);
+  $("pause-libelle").value=""; $("pause-debut").value=""; $("pause-fin").value="";
+  renderPauses();
+});
+
+$("btn-appliquer-fixes").addEventListener("click", ()=>{
+  const actifs = config.niveauxActifs || [];
+  if(!actifs.length){ toast("Sélectionnez au moins un niveau géré avant d'appliquer."); return; }
+  if(!(config.joursTravailles||[]).length){ toast("Cochez au moins un jour travaillé."); return; }
+  PC.sauverConfig(config);
+  PC.appliquerCreneauxFixes(config, grilles, actifs);
+  PC.sauverGrilles(grilles);
+  $("fixes-status").textContent = "Appliqué le " + new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}) + ".";
+  toast("Récréations et pauses appliquées à la grille.");
+  renderGrilleBody();
   renderSummary();
 });
 
@@ -326,13 +445,14 @@ function renderCreneauRow(c, domaines){
     <input type="time" value="${c.debut}" data-f="debut">
     <input type="time" value="${c.fin}" data-f="fin">
     <select data-f="type">${typeOpts}</select>
-    <select data-f="domaineCle" ${c.type!=="seance"?"disabled":""}>${domOpts}</select>
+    <select data-f="domaineCle" style="${c.type==="seance"?"":"display:none;"}">${domOpts}</select>
+    <input type="text" data-f="libelle" placeholder="Préciser (ex. Réunion, RDV, sieste…)" value="${(c.libelle||"").replace(/"/g,"&quot;")}" style="${c.type==="seance"?"display:none;":""}">
     <button class="btn sm danger" data-del="1">✕</button>
   `;
   row.querySelectorAll("[data-f]").forEach(input=>{
     input.addEventListener("change", ()=>{
       c[input.dataset.f] = input.value;
-      if(input.dataset.f==="type") renderGrilleBody(); // active/désactive le select domaine
+      if(input.dataset.f==="type") renderGrilleBody(); // active/désactive le select domaine + champ libellé
       PC.sauverGrilles(grilles);
     });
   });

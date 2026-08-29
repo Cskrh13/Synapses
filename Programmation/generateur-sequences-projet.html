@@ -273,8 +273,12 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
           <p class="help">Cette étape reprend la logique de la séquence spécialisée : objectif commun puis objectifs individuels prioritaires avec critères de réussite.</p>
           <label>Objectif commun</label><textarea id="objectif-commun" oninput="App.updateSequenceField('objectif_commun',this.value)"></textarea>
           <h4>Objectifs individuels prioritaires</h4>
+          <p class="help">Ces objectifs sont valables pour toute la séquence (distincts des adaptations propres à chaque séance, à l'étape 4).</p>
           <div id="students"></div>
-          <button class="btn secondary small" onclick="App.addStudent()">+ Ajouter un élève</button>
+          <div class="row">
+            <button class="btn secondary small" onclick="App.addStudent()">+ Ajouter un élève</button>
+            <button class="btn secondary small" onclick="App.chargerObjectifsCoffre()">↺ Charger les objectifs du coffre</button>
+          </div>
         </div>
         <div class="card">
           <h3>Réglages de la progression</h3>
@@ -384,6 +388,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
 
 <script src="../fata-morgana/synapses-crypto.js"></script>
 <script src="../fata-morgana/synapses-coffre.js"></script>
+<script src="../fata-morgana/grille-analyse.js"></script>
 <script>
 /* =========================================================
    SYNAPSES — AUTHOR MARKER
@@ -415,6 +420,9 @@ const App = (() => {
   let sequence = null;
   let modeCadrage = "competence";
   let projetPanier = [];
+  let referentielGeneral = null;
+  let referentielDisciplinaireBrut = null;
+  let moteurAnalyse = null;
 
   const TYPES = [
     ["diagnostique","Diagnostique"],
@@ -446,6 +454,7 @@ const App = (() => {
       const [a,b]=await Promise.all([fetch("data/competences.json"),fetch("data/index.json")]);
       if(!a.ok||!b.ok) throw new Error("Impossible de charger data/competences.json ou data/index.json");
       const cj=await a.json(), ij=await b.json();
+      referentielDisciplinaireBrut=cj;
       refs=(cj.competences||[]).map(normaliserCompetence);
       const dm=new Map();
       (cj.domaines||[]).forEach(d=>dm.set(d.id,d.nom));
@@ -458,6 +467,38 @@ const App = (() => {
       document.getElementById("ref-status").textContent="Référentiel non chargé";
       document.getElementById("competences").innerHTML='<div class="empty">Erreur : '+esc(e.message)+'<br>Vérifiez que ce fichier est bien placé dans le dossier <code>Programmation/</code>.</div>';
     }
+    chargerReferentielGeneral();
+  }
+
+  /** Référentiel BARRY (domaines transversaux) : chargement indépendant et non
+   *  bloquant — si absent, le coffre reste utilisable mais sans le nommage des
+   *  domaines ("compétences psychosociales") sur les besoins/adaptations compilés. */
+  async function chargerReferentielGeneral(){
+    const candidats=["../fata-morgana/grille-analyse-generale.json","data/grille-analyse-generale.json","../Programmation/data/grille-analyse-generale.json","Programmation/data/grille-analyse-generale.json","grille-analyse-generale.json"];
+    for(const url of candidats){
+      try{
+        const r=await fetch(url,{cache:"no-store"});
+        if(r.ok){ referentielGeneral=await r.json(); return; }
+      }catch(e){ /* on tente le chemin candidat suivant */ }
+    }
+    console.warn("[Synapses] grille-analyse-generale.json introuvable : les domaines BARRY (compétences psychosociales) ne pourront pas être nommés sur les données du coffre.");
+  }
+
+  /** Instancie (une seule fois) le moteur d'analyse partagé avec suivi-individuel.js,
+   *  pour compiler proprement besoins/adaptations/objectifs d'un élève du coffre. */
+  function getMoteurAnalyse(){
+    if(!window.SynapsesGrilleAnalyse) return null;
+    if(!moteurAnalyse) moteurAnalyse=new SynapsesGrilleAnalyse.MoteurAnalyse(referentielGeneral, referentielDisciplinaireBrut);
+    return moteurAnalyse;
+  }
+
+  function nomDomaine(domaineId){
+    if(!domaineId) return "";
+    const d=(referentielGeneral?.domaines||[]).find(x=>x.id===domaineId);
+    if(d) return d.nom;
+    if(domaineId==="mathematiques") return "Mathématiques";
+    if(domaineId==="francais") return "Français";
+    return domaineId;
   }
 
   function fillFilters(){
@@ -919,7 +960,7 @@ Génère le matériel imprimable nécessaire pour cette séance (ex. cartes-nomb
         ${r.identifiant && !coffreOuvert()?`<option value="${esc(r.identifiant)}" selected>${esc(privateStudentLabel(r.identifiant))}</option>`:""}
       </select>
       <textarea placeholder="Adaptation / aide prévue" oninput="App.privateField(${i},${j},'adaptation',this.value)">${esc(r.adaptation)}</textarea>
-      <textarea placeholder="Point de vigilance / modalité individuelle" oninput="App.privateField(${i},${j},'vigilance',this.value)">${esc(r.vigilance)}</textarea>
+      <textarea placeholder="Besoins repérés / point de vigilance" oninput="App.privateField(${i},${j},'vigilance',this.value)">${esc(r.vigilance)}</textarea>
       <button class="btn danger small" type="button" onclick="App.removePrivateStudent(${i},${j})">×</button>
     </div>`).join("");
     rows.forEach((r,j)=>{
@@ -941,38 +982,74 @@ Génère le matériel imprimable nécessaire pour cette séance (ex. cartes-nomb
   function loadPrivateStudents(i){
     if(!coffreOuvert()){alert("Ouvrez d’abord le coffre élèves.");return}
     if(!sequence?.seances[i])return;
+    const moteur=getMoteurAnalyse();
     const eleves=coffre.listerEleves()||[];
     const rows=eleves.map(e=>{
-      const objectifs=(e.objectifs||[])
-        .filter(o=>!o.statut || o.statut==="actif")
-        .map(o=>o.libelle||o.objectif||"")
-        .filter(Boolean);
-      const adaptations=(e.adaptations||[])
-        .map(a=>typeof a==="string"?a:(a.libelle||a.adaptation||""))
-        .filter(Boolean);
-      const obs=e.observations||[];
-      const adaptationsObs=obs.flatMap(o=>[o.adaptationUtilisee,o.adaptationProposee])
-        .map(a=>typeof a==="string"?a:(a?.libelle||a?.adaptation||""))
-        .filter(Boolean);
-      const difficultes=obs.map(o=>o.difficulte||o.difficultes||"").flat()
-        .map(d=>typeof d==="string"?d:(d?.libelle||d?.texte||""))
-        .filter(Boolean);
+      const eleveComplet=coffre.getEleve(e.identifiantSynapses);
 
-      // L'adaptation est renseignée à partir des objectifs actifs et des adaptations connues.
-      const adaptation=[...objectifs,...adaptations,...adaptationsObs]
-        .filter((v,n,a)=>v && a.indexOf(v)===n).join("\n• ");
-      // Le point de vigilance reprend les informations de difficultés observées.
-      const vigilance=[...difficultes].filter((v,n,a)=>v && a.indexOf(v)===n).join("\n• ");
+      if(moteur){
+        // Les adaptations viennent UNIQUEMENT des adaptations compilées (eleve.adaptations
+        // + adaptations mentionnées dans les observations) — jamais mélangées aux objectifs.
+        const adaptationsCompilees=moteur.compilerAdaptations(eleveComplet);
+        const adaptation=adaptationsCompilees
+          .map(a=>`[${a.domaineNom}] ${a.libelle}`+(a.efficaciteMoyenne!=null?` (efficacité ${a.efficaciteMoyenne.toFixed(1)}/5)`:""))
+          .join("\n• ");
 
+        // Les besoins compilés (domaines BARRY affectif/social/cognitif/sensorimoteur =
+        // "compétences psychosociales") servent de point de vigilance pour la séance.
+        const besoinsCompiles=moteur.compilerBesoins(eleveComplet);
+        const vigilance=besoinsCompiles
+          .map(b=>`[${b.domaineNom}] ${b.libelle}`+(b.priorite?` (priorité ${b.priorite})`:""))
+          .join("\n• ");
+
+        return {
+          identifiant:e.identifiantSynapses,
+          adaptation:adaptation?"• "+adaptation:"",
+          vigilance:vigilance?"• "+vigilance:""
+        };
+      }
+
+      // Repli si grille-analyse.js n'est pas chargé sur cette page : adaptations
+      // déclarées uniquement, sans regroupement par domaine.
+      const adaptations=(eleveComplet.adaptations||[]).map(a=>typeof a==="string"?a:(a.libelle||"")).filter(Boolean);
       return {
         identifiant:e.identifiantSynapses||e.id||"",
-        adaptation:adaptation ? "• "+adaptation : "",
-        vigilance:vigilance ? "• "+vigilance : ""
+        adaptation:adaptations.length?"• "+adaptations.join("\n• "):"",
+        vigilance:""
       };
     }).filter(r=>r.identifiant);
 
     sequence.seances[i].adaptations_individuelles=rows;
     renderPrivateStudents(i);
+    if(!moteur){
+      alert("Attention : grille-analyse.js n'est pas chargé — seules les adaptations brutes ont été chargées, sans regroupement par domaine (compétences psychosociales).");
+    }
+  }
+
+  /** Charge les objectifs actifs des élèves du coffre dans l'onglet visible
+   *  "Objectifs individuels prioritaires" (étape 2), distinct des adaptations
+   *  par séance : un objectif est valable pour toute la séquence. */
+  function chargerObjectifsCoffre(){
+    if(!coffreOuvert()){alert("Ouvrez d’abord le coffre élèves.");return}
+    if(!sequence)return;
+    const eleves=coffre.listerEleves()||[];
+    let ajoutes=0;
+    eleves.forEach(e=>{
+      const eleveComplet=coffre.getEleve(e.identifiantSynapses);
+      const objectifsActifs=(eleveComplet.objectifs||[]).filter(o=>!o.statut||o.statut==="actif");
+      objectifsActifs.forEach(o=>{
+        const domaineNom=nomDomaine(o.domaine);
+        const nom=eleveLabel(e)+(domaineNom?` (${domaineNom})`:"");
+        const libelle=o.libelle||"";
+        const dejaPresent=sequence.objectifs_individuels.some(x=>x.nom===nom&&x.objectif===libelle);
+        if(!dejaPresent && libelle){
+          sequence.objectifs_individuels.push({id:uid("eleve"),nom,objectif:libelle,criteres_reussite:""});
+          ajoutes++;
+        }
+      });
+    });
+    renderStudents();
+    alert(ajoutes?ajoutes+" objectif(s) chargé(s) depuis le coffre.":"Aucun nouvel objectif actif trouvé dans le coffre.");
   }
   function phaseField(si,pi,k,v){if(sequence?.seances[si]?.deroule?.[pi])sequence.seances[si].deroule[pi][k]=v}
   function addPhase(si){sequence.seances[si].deroule.push({phase:"Nouvelle phase",temps:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""});renderDetails()}
@@ -1086,6 +1163,12 @@ Objectif cœur de cible : ${sequence.objectif_coeur_de_cible||"à définir"}`;
 
   function contexteIndividuelPrompt(){
     if(!sequence)return "";
+    const objectifs=(sequence.objectifs_individuels||[]).filter(o=>o.objectif);
+    const blocObjectifs=objectifs.length
+      ? "\nOBJECTIFS INDIVIDUELS (valables pour l'ensemble de la séquence) :\n"+
+        objectifs.map(o=>`- ${o.nom||"Élève"} : ${o.objectif}`+(o.criteres_reussite?` (critère : ${o.criteres_reussite})`:"")).join("\n")
+      : "";
+
     const rows=(sequence.seances||[]).flatMap((s,si)=>
       (s.adaptations_individuelles||[]).map(r=>({
         seance:si+1,
@@ -1094,9 +1177,17 @@ Objectif cœur de cible : ${sequence.objectif_coeur_de_cible||"à définir"}`;
         vigilance:r.vigilance||""
       }))
     ).filter(r=>r.adaptation||r.vigilance);
-    if(!rows.length)return "\nDONNÉES INDIVIDUELLES : aucune donnée individuelle chargée pour cette proposition.";
-    return "\nDONNÉES INDIVIDUELLES ANONYMISÉES :\n"+
-      rows.map(r=>`- ${r.identifiant} (séance ${r.seance})\n  Objectifs / adaptations : ${r.adaptation||"non renseigné"}\n  Informations de difficultés / points de vigilance : ${r.vigilance||"non renseigné"}`).join("\n");
+
+    if(!rows.length && !objectifs.length){
+      return "\nDONNÉES INDIVIDUELLES : aucune donnée individuelle chargée pour cette proposition.";
+    }
+
+    const blocAdaptations=rows.length
+      ? "\nDONNÉES INDIVIDUELLES ANONYMISÉES (par séance) :\n"+
+        rows.map(r=>`- ${r.identifiant} (séance ${r.seance})\n  Adaptations : ${r.adaptation||"non renseigné"}\n  Besoins repérés / points de vigilance : ${r.vigilance||"non renseigné"}`).join("\n")
+      : "\nDONNÉES INDIVIDUELLES : aucune adaptation par séance chargée (à l'étape 4, cliquez sur « Charger les élèves du coffre » si un coffre est ouvert).";
+
+    return blocObjectifs+blocAdaptations;
   }
 
   function updatePrompt(){
@@ -1329,7 +1420,7 @@ RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances 
     r.readAsText(file);event.target.value="";
   }
 
-  return {init,go,filterCompetences,updateDomaineOptions,selectCompetence,setModeCadrage,toggleProjetCompetence,creerProjet,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents,updateCoffreWidget,renderMateriel,ajouterFichierMateriel,copyMaterielPrompt,ajouterMaterielIA,removeRessource};
+  return {init,go,filterCompetences,updateDomaineOptions,selectCompetence,setModeCadrage,toggleProjetCompetence,creerProjet,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,chargerObjectifsCoffre,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents,updateCoffreWidget,renderMateriel,ajouterFichierMateriel,copyMaterielPrompt,ajouterMaterielIA,removeRessource};
 })();
 
 App.init();

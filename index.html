@@ -47,12 +47,12 @@ h1,h2,h3,h4{
 a{color:inherit;}
 button{font-family:inherit;cursor:pointer;}
 .eyebrow{
-  font-family:'IBM Plex Mono',monospace;
-  font-size:11px;
-  letter-spacing:0.12em;
+  font-family:'Inter',sans-serif;
+  font-size:12px;
+  letter-spacing:0.06em;
   text-transform:uppercase;
   color:var(--accent-sky);
-  font-weight:500;
+  font-weight:700;
 }
 :focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
 
@@ -83,7 +83,7 @@ header.site-header{
   flex-shrink:0;
 }
 .brand-text{display:flex;flex-direction:column;line-height:1.15;}
-.brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
+.brand-text .top{font-size:10.5px;letter-spacing:0.1em;text-transform:uppercase;color:#B9C6E5;font-family:'Inter',sans-serif;font-weight:600;}
 .brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
 nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;align-items:center;}
 .nav-dropdown{flex:0 0 auto;}
@@ -110,7 +110,7 @@ nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
 .nav-dropdown-menu a{display:block!important;color:#D9E0F2!important;padding:9px 11px!important;border-radius:5px;margin:0!important;background:transparent!important;border:0!important;}
 .nav-dropdown-menu a:hover{background:rgba(255,255,255,.09)!important;color:#fff!important;}
 .menu-separator{height:1px;background:rgba(255,255,255,.12);margin:6px 4px;}
-.menu-label{padding:5px 11px 3px;color:#9EADD0;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;}
+.menu-label{padding:5px 11px 3px;color:#9EADD0;font-family:'Inter',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;}
 @media(max-width:760px){nav.main-nav{width:100%;}.nav-dropdown-menu{position:static;margin-top:4px;width:100%;}}
 nav.main-nav a.nav-coffre{
   background:rgba(181,80,46,.16);border:1px solid rgba(181,80,46,.4);
@@ -449,41 +449,41 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
     <a href="#top" class="brand">
       <span class="brand-mark" aria-hidden="true">RÉ</span>
       <span class="brand-text">
-        <span class="top">Portail non institutionnel</span>
-        <span class="bottom">Référentiel des programmes</span>
+        <span class="top">Synapses</span>
+        <span class="bottom">Référentiel des compétences</span>
       </span>
     </a>
     <nav class="main-nav" aria-label="Navigation principale">
       <details class="nav-dropdown">
-        <summary>Explorer</summary>
+        <summary>Consulter le référentiel</summary>
         <div class="nav-dropdown-menu">
-          <div class="menu-label">Référentiel</div>
-          <a href="#niveaux">Niveaux</a>
-          <a href="#disciplines">Disciplines</a>
-          <a href="#repertoire">Répertoire</a>
+          <div class="menu-label">Sur cette page</div>
+          <a href="#niveaux">Parcourir par niveau</a>
+          <a href="#disciplines">Parcourir par discipline</a>
+          <a href="#repertoire">Rechercher une compétence</a>
           <a href="#vue-ensemble">Vue d'ensemble</a>
           <div class="menu-separator"></div>
           <a href="cartographie-competences.html">Cartographie des compétences</a>
         </div>
       </details>
       <details class="nav-dropdown">
-        <summary>Construire</summary>
+        <summary>Préparer l'année</summary>
         <div class="nav-dropdown-menu">
           <div class="menu-label">Programmation pédagogique</div>
-          <a href="Programmation/sequences.html">Programmation</a>
-          <a href="Programmation/planning-affichage.html">Planning</a>
-          <a href="Programmation/generateur-sequences-projet.html">Générateur de séquences</a>
+          <a href="Programmation/sequences.html">Ma programmation</a>
+          <a href="Programmation/planning-affichage.html">Mon emploi du temps</a>
+          <a href="Programmation/generateur-sequences-projet.html">Créer une séquence</a>
         </div>
       </details>
       <details class="nav-dropdown">
-        <summary>Projet</summary>
+        <summary>À propos</summary>
         <div class="nav-dropdown-menu">
-          <a href="feedback/feedback.html">Feedback</a>
-          <a href="feedback/maintenance.html">Maintenance</a>
-          <a href="detailduprojet.html">Détails du projet</a>
+          <a href="detailduprojet.html">Le projet Synapses</a>
+          <a href="feedback/feedback.html">Donner mon avis</a>
+          <a href="feedback/maintenance.html">État du site</a>
         </div>
       </details>
-      <a href="fata-morgana/coffre.html" class="nav-coffre">🔒 Coffre</a>
+      <a href="fata-morgana/coffre.html" class="nav-coffre">🔒 Mon espace privé</a>
     
         
       </nav>
@@ -496,9 +496,9 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <!-- ===================== HERO ===================== -->
 <section class="hero home-only" id="top">
   <div class="hero-inner">
-    <p class="eyebrow">Tous les cycles · Toutes les disciplines · Sources conservées</p>
-    <h1>Référentiel des compétences des programmes scolaires</h1>
-    <p class="lead">Un espace de consultation clair et structuré, construit à partir du texte officiel du programme, pour naviguer entre cycles, niveaux, domaines et compétences sans reformulation approximative.</p>
+    <p class="eyebrow">De la TPS à la 6e · Toutes les disciplines</p>
+    <h1>Le référentiel des programmes, prêt à consulter</h1>
+    <p class="lead">Retrouvez en un instant les compétences des programmes officiels, classées par niveau, domaine et discipline — fidèles au texte du programme, sans reformulation ni raccourci.</p>
     <div class="search-wrap">
       <label for="mainSearch" class="sr-only">Rechercher une compétence, un mot-clé, une discipline ou un niveau</label>
       <div class="search-box">
@@ -515,9 +515,9 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <section class="section home-only" id="niveaux">
   <div class="section-head">
     <div>
-      <p class="eyebrow">Cycle des apprentissages fondamentaux</p>
-      <h2>Naviguer par niveau</h2>
-      <p>Les niveaux TPS à 6e sont disponibles. Sélectionnez un niveau pour filtrer l’ensemble du répertoire.</p>
+      <p class="eyebrow">Étape 1</p>
+      <h2>Choisir un niveau</h2>
+      <p>De la toute petite section à la 6e, cliquez sur un niveau pour n'afficher que les compétences qui le concernent.</p>
     </div>
   </div>
   <div class="level-cards" id="levelCards"></div>
@@ -527,9 +527,9 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <section class="section home-only" id="disciplines">
   <div class="section-head">
     <div>
-      <p class="eyebrow">Cycles 1 à 3 — domaines du référentiel</p>
-      <h2>Naviguer par domaine</h2>
-      <p>Les domaines sont construits directement à partir des compétences présentes dans competences.json.</p>
+      <p class="eyebrow">Étape 2</p>
+      <h2>Ou choisir une discipline</h2>
+      <p>Français, mathématiques, EPS, arts… chaque domaine regroupe les compétences qui lui sont propres, cycle après cycle.</p>
     </div>
   </div>
   <div class="domain-grid" id="domainCards"></div>
@@ -539,9 +539,9 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <section class="section home-only" id="repertoire">
   <div class="section-head">
     <div>
-      <p class="eyebrow">Répertoire structuré</p>
-      <h2>Compétences du programme</h2>
-      <p>Chaque fiche indique la discipline, le cycle, le niveau, le domaine, le sous-domaine et les objectifs d'apprentissage tels que rédigés dans le programme.</p>
+      <p class="eyebrow">Étape 3</p>
+      <h2>Trouver une compétence</h2>
+      <p>Affinez avec les filtres ou la recherche : chaque fiche précise la discipline, le cycle, le niveau, le domaine et les objectifs d'apprentissage tels que rédigés dans le programme.</p>
     </div>
   </div>
 
@@ -588,9 +588,9 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <section class="section home-only" id="vue-ensemble">
   <div class="section-head">
     <div>
-      <p class="eyebrow">Synthèse</p>
+      <p class="eyebrow">En un coup d'œil</p>
       <h2>Vue d'ensemble du référentiel</h2>
-      <p>Répartition des fiches de compétences par niveau et par domaine, sur l'ensemble des compétences des cycles 1 à 3.</p>
+      <p>Le nombre de compétences disponibles, réparties par niveau et par domaine, sur l'ensemble des cycles 1 à 3.</p>
     </div>
   </div>
   <div class="stats-grid" id="statsGrid"></div>
@@ -676,13 +676,13 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
 <footer>
   <div class="footer-inner">
     <div class="footer-note">
-      Portail de consultation non institutionnel. Les compétences sont chargées depuis le référentiel Programmation/data/competences.json, avec leurs sources conservées dans les données. Ce site n'est ni édité ni approuvé par le ministère de l'Éducation nationale.
+      Synapses est un outil personnel, réalisé par un enseignant. Chaque compétence conserve la référence exacte du texte officiel dont elle est issue. Ce site n'est ni édité ni approuvé par le ministère de l'Éducation nationale.
     </div>
     <div class="footer-cols">
       <div>
         <h5>Navigation</h5>
-        <a href="#niveaux">Niveaux</a><br><br>
-        <a href="#disciplines">Disciplines</a><br><br>
+        <a href="#niveaux">Par niveau</a><br><br>
+        <a href="#disciplines">Par discipline</a><br><br>
         <a href="#repertoire">Répertoire</a>
       </div>
       <div>
@@ -1357,6 +1357,26 @@ window.addEventListener("error", e=>{
   }
   window.addEventListener('hashchange', handleRoute);
   handleRoute();
+})();
+</script>
+
+<script>
+(function(){
+  var navDropdowns = Array.prototype.slice.call(document.querySelectorAll('.nav-dropdown'));
+  navDropdowns.forEach(function(dd){
+    dd.addEventListener('toggle', function(){
+      if(dd.open){
+        navDropdowns.forEach(function(other){
+          if(other !== dd) other.open = false;
+        });
+      }
+    });
+  });
+  document.addEventListener('click', function(e){
+    navDropdowns.forEach(function(dd){
+      if(dd.open && !dd.contains(e.target)) dd.open = false;
+    });
+  });
 })();
 </script>
 

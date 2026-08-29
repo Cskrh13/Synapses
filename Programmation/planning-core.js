@@ -1043,6 +1043,16 @@
 
       if (c) {
 
+        // Rétro-compatibilité : complète les champs ajoutés après coup
+        // sans jamais écraser une config existante.
+        if (!c.joursTravailles || !c.joursTravailles.length) c.joursTravailles = [1, 2, 3, 4, 5];
+        if (!Array.isArray(c.recreations)) c.recreations = [
+          { label: "Récréation matin", debut: "10:00", fin: "10:15" }
+        ];
+        if (!Array.isArray(c.pauses)) c.pauses = [
+          { label: "Pause méridienne", debut: "12:00", fin: "13:30" }
+        ];
+
         return c;
 
       }
@@ -1067,7 +1077,21 @@
         [],
 
       niveauxActifs:
-        []
+        [],
+
+      // Jours de la semaine travaillés (1=lundi … 5=vendredi).
+      joursTravailles:
+        [1, 2, 3, 4, 5],
+
+      // Récréations et pauses méridiennes "génériques" : appliquées à tous
+      // les niveaux actifs, sur tous les jours travaillés, via
+      // appliquerCreneauxFixes(). Plusieurs entrées = plusieurs récréations
+      // (ex. matin + après-midi) ou deux services de pause méridienne.
+      recreations:
+        [{ label: "Récréation matin", debut: "10:00", fin: "10:15" }],
+
+      pauses:
+        [{ label: "Pause méridienne", debut: "12:00", fin: "13:30" }]
 
     };
 
@@ -1117,6 +1141,62 @@
       JSON.stringify(g)
     );
 
+  }
+
+  // ------------------------------------------------------------------------
+  // Récréations / pauses "fixes", pilotées depuis la configuration générale
+  // ------------------------------------------------------------------------
+  //
+  // Plutôt que de les saisir créneau par créneau et niveau par niveau, on les
+  // définit une fois (config.recreations / config.pauses) et on les
+  // applique automatiquement à chaque niveau, sur chaque jour travaillé.
+  // Chaque occurrence générée porte un identifiant stable
+  // ("fixe_<niveau>_<jour>_<type>_<index>") pour pouvoir être mise à jour à
+  // l'identique plutôt que dupliquée si on relance l'application, et pour
+  // être proprement retirée si le nombre d'occurrences ou les jours
+  // travaillés changent ensuite.
+  //
+  function upsertCreneauFixe(liste, niveau, jour, type, index, def) {
+    const id = "fixe_" + niveau + "_" + jour + "_" + type + "_" + index;
+    let c = liste.find(x => x.id === id);
+    if (!c) {
+      c = { id: id, jour: jour, debut: def.debut, fin: def.fin, type: type, libelle: def.label || "", domaineCle: "" };
+      liste.push(c);
+    } else {
+      c.debut = def.debut;
+      c.fin = def.fin;
+      c.libelle = def.label || "";
+    }
+    return c;
+  }
+
+  function appliquerCreneauxFixes(config, grilles, niveaux) {
+    niveaux = (niveaux && niveaux.length) ? niveaux : NIVEAUX;
+    const jours = (config.joursTravailles && config.joursTravailles.length) ? config.joursTravailles : [1, 2, 3, 4, 5];
+    const recreations = config.recreations || [];
+    const pauses = config.pauses || [];
+
+    niveaux.forEach(niveau => {
+      grilles[niveau] = grilles[niveau] || [];
+
+      jours.forEach(j => {
+        recreations.forEach((def, idx) => upsertCreneauFixe(grilles[niveau], niveau, j, "recreation", idx, def));
+        pauses.forEach((def, idx) => upsertCreneauFixe(grilles[niveau], niveau, j, "pause", idx, def));
+      });
+
+      // Retire les occurrences fixes devenues obsolètes : jour non
+      // travaillé, ou index au-delà du nombre de récréations/pauses défini.
+      grilles[niveau] = grilles[niveau].filter(c => {
+        if (!c.id || c.id.indexOf("fixe_" + niveau + "_") !== 0) return true;
+        const parts = c.id.split("_"); // ["fixe", niveau, jour, type, index]
+        const jr = +parts[2], typ = parts[3], idx = +parts[4];
+        if (jours.indexOf(jr) === -1) return false;
+        const nb = (typ === "recreation" ? recreations : pauses).length;
+        return idx < nb;
+      });
+    });
+
+    return grilles;
   }
 
 
@@ -1179,24 +1259,37 @@
   //   date: "2026-05-25",
   //   remarque: "...",
   //   devoirs: "...",
-  //   creneaux: [
+  //   libellesBlocs: { "09:00|09:30": "Matin 1", ... },   // libellés de bloc personnalisés
+  //   exclusions: ["CE1__cr_ab12"],                        // origines retirées à la main
+  //   groupes: [
   //     {
-  //       id, label: "Matin 1", debut: "09:00", fin: "09:30",
-  //       groupes: [
-  //         {
-  //           id,
-  //           adulte: { type: "enseignant"|"aesh"|"atsem"|"autre", nom: "Vincent" },
-  //           titre: "Numération",
-  //           domaineCle: "maths::numeration",
-  //           niveau: "CE1",
-  //           seanceRef: { id, source, fichier } | null,
-  //           eleves: ["ELEVE-0042", ...],
-  //           remarque: ""
-  //         }, ...
-  //       ]
+  //       id, debut, fin,
+  //       origine: "CE1__cr_ab12" | null,   // lien vers le créneau de grille d'origine (null = ajouté à la main)
+  //       modifie: false,                    // dès que l'enseignant retouche titre/adulte/horaire : plus jamais resynchronisé
+  //       adulte: { type: "enseignant"|"aesh"|"atsem"|"autre", nom: "Vincent" } | null,
+  //       titre: "Numération",
+  //       domaineCle: "maths::numeration",
+  //       niveau: "CE1",
+  //       seanceRef: { id, source, fichier } | null,
+  //       eleves: ["ELEVE-0042", ...],
+  //       remarque: "",
+  //       fixe: false            // true pour récréation / pause (pas d'adulte ni d'élèves)
   //     }, ...
   //   ]
   // }
+  //
+  // Les groupes d'un même horaire (debut/fin identiques) sont affichés côte
+  // à côte comme des colonnes parallèles (cf. cahier journal ULIS papier) ;
+  // ce regroupement est calculé à l'affichage, pas persisté en imbrication,
+  // ce qui permet de suivre chaque groupe individuellement.
+  //
+  // PRIORITÉ DE SYNCHRONISATION (du plus fort au plus faible) :
+  //   1. Cahier journal  — un groupe marqué "modifie" n'est plus jamais
+  //      touché par une resynchronisation automatique depuis la grille.
+  //   2. Planning (affectations) — une séance affectée manuellement dans
+  //      Planning — Affichage (aff.manuel = true) est reprise telle quelle.
+  //   3. Planning — Gestion (grille) — sert de valeur par défaut tant que
+  //      rien de plus prioritaire ne l'a supplantée.
   //
   // Le journal reste 100% local (localStorage) : aucune identité d'élève
   // n'y est stockée, seulement des identifiants Synapses (ELEVE-xxxx), donc
@@ -1219,21 +1312,72 @@
   function journalPourDate(iso, journal) {
     journal = journal || chargerJournal();
     if (!journal[iso]) {
-      journal[iso] = { date: iso, remarque: "", devoirs: "", creneaux: [] };
+      journal[iso] = { date: iso, remarque: "", devoirs: "", libellesBlocs: {}, exclusions: [], groupes: [] };
     }
+    // Rétro-compatibilité avec l'ancien format imbriqué (creneaux[].groupes[]).
+    if (journal[iso].creneaux && !journal[iso].groupes) {
+      const plat = [];
+      journal[iso].creneaux.forEach(bloc => {
+        (bloc.groupes || []).forEach(g => {
+          plat.push(Object.assign({ debut: bloc.debut, fin: bloc.fin, origine: null, modifie: false }, g));
+        });
+      });
+      journal[iso] = {
+        date: iso,
+        remarque: journal[iso].remarque || "",
+        devoirs: journal[iso].devoirs || "",
+        libellesBlocs: {},
+        exclusions: [],
+        groupes: plat
+      };
+    }
+    journal[iso].libellesBlocs = journal[iso].libellesBlocs || {};
+    journal[iso].exclusions = journal[iso].exclusions || [];
+    journal[iso].groupes = journal[iso].groupes || [];
     return journal[iso];
   }
 
+  function cleBloc(debut, fin) { return debut + "|" + fin; }
+
+  /** Regroupe les groupes d'un jour par plage horaire, triés par heure. */
+  function regrouperParBloc(jourJournal) {
+    const parCle = new Map();
+    jourJournal.groupes.forEach(g => {
+      const cle = cleBloc(g.debut, g.fin);
+      if (!parCle.has(cle)) parCle.set(cle, { debut: g.debut, fin: g.fin, cle: cle, groupes: [] });
+      parCle.get(cle).groupes.push(g);
+    });
+    return Array.from(parCle.values()).sort((a, b) => heureVersMin(a.debut) - heureVersMin(b.debut));
+  }
+
+  function libelleBlocDefaut(debut) {
+    const h = heureVersMin(debut);
+    if (h < 10 * 60 + 30) return "Matin 1";
+    if (h < 12 * 60) return "Matin 2";
+    if (h < 15 * 60) return "Après-midi 1";
+    return "Après-midi 2";
+  }
+
+  function libelleBloc(jourJournal, debut, fin) {
+    return jourJournal.libellesBlocs[cleBloc(debut, fin)] || libelleBlocDefaut(debut);
+  }
+
   /**
-   * Construit (ou complète) le journal d'un jour à partir de la grille
-   * horaire hebdomadaire de chaque niveau actif, en fusionnant les
-   * créneaux qui se chevauchent en horaire (plusieurs niveaux/groupes en
-   * parallèle deviennent des "groupes" côte à côte dans le même bloc,
-   * comme un cahier journal ULIS classique).
+   * Synchronise le journal d'un jour avec la grille horaire hebdomadaire
+   * (et les affectations de séances) de chaque niveau actif.
    *
-   * N'écrase jamais un jour déjà personnalisé à la main : n'ajoute que
-   * les groupes correspondant à des créneaux de grille pas encore
-   * représentés (identifiés par niveau + domaineCle + horaire).
+   * Peut être appelée à chaque ouverture de la page (elle est sans danger) :
+   *  - un groupe jamais retouché par l'enseignant ("modifie" = false) est
+   *    mis à jour pour refléter la grille/l'affectation actuelles
+   *    (horaire, titre, domaine, séance affectée) ;
+   *  - un groupe retouché ("modifie" = true) n'est JAMAIS modifié par cette
+   *    fonction, conformément à la priorité « cahier journal » ;
+   *  - un groupe manuellement supprimé par l'enseignant (son origine est
+   *    dans jour.exclusions) n'est jamais recréé ;
+   *  - un groupe dont le créneau de grille d'origine a disparu (supprimé
+   *    dans Planning — Gestion) est retiré automatiquement, sauf s'il a été
+   *    modifié (auquel cas il est conservé, orphelin, plutôt que perdu).
+   *  - les groupes ajoutés à la main (origine = null) ne sont jamais touchés.
    */
   function genererJournalDepuisGrille(iso, config, grilles, affectations, banque) {
     const journal = chargerJournal();
@@ -1242,61 +1386,62 @@
     const jourSemaine = (jourDate.getDay() + 6) % 7 + 1; // 1=lundi
 
     const niveaux = (config.niveauxActifs && config.niveauxActifs.length) ? config.niveauxActifs : NIVEAUX;
-    const dejaPresents = new Set();
-    jour.creneaux.forEach(c => c.groupes.forEach(g => {
-      dejaPresents.add((g.niveau || "") + "__" + (g.domaineCle || "") + "__" + c.debut + "__" + c.fin);
-    }));
+
+    const parOrigine = new Map();
+    jour.groupes.forEach(g => { if (g.origine) parOrigine.set(g.origine, g); });
+
+    const originesVues = new Set();
 
     niveaux.forEach(niveau => {
       const grille = (grilles[niveau] || []).filter(c => c.jour === jourSemaine);
       grille.forEach(c => {
-        const empreinte = niveau + "__" + (c.domaineCle || "") + "__" + c.debut + "__" + c.fin;
-        if (dejaPresents.has(empreinte)) return;
+        const origine = niveau + "__" + c.id;
+        if (jour.exclusions.indexOf(origine) !== -1) return; // retiré à la main : on respecte ce choix
+        originesVues.add(origine);
 
-        // Bloc horaire correspondant (même début/fin), sinon on le crée.
-        let bloc = jour.creneaux.find(b => b.debut === c.debut && b.fin === c.fin);
-        if (!bloc) {
-          bloc = { id: uid("bloc"), label: PC_libelleBloc(c), debut: c.debut, fin: c.fin, groupes: [] };
-          jour.creneaux.push(bloc);
-        }
+        const existant = parOrigine.get(origine);
+        if (existant && existant.modifie) return; // priorité au cahier journal : on ne touche à rien
 
         if (c.type !== "seance") {
-          bloc.groupes.push({
-            id: uid("grp"), adulte: null, titre: TYPES_CRENEAU[c.type].label,
-            domaineCle: "", niveau: "", seanceRef: null, eleves: [], remarque: "", fixe: true
-          });
+          const titre = (c.libelle && c.libelle.trim()) ? c.libelle.trim() : TYPES_CRENEAU[c.type].label;
+          if (existant) {
+            existant.debut = c.debut; existant.fin = c.fin; existant.titre = titre;
+          } else {
+            jour.groupes.push({
+              id: uid("grp"), debut: c.debut, fin: c.fin, origine: origine, modifie: false,
+              adulte: null, titre: titre, domaineCle: "", niveau: "", seanceRef: null,
+              eleves: [], remarque: "", fixe: true
+            });
+          }
           return;
         }
 
         const aff = (affectations[niveau] || {})[cleCreneau(iso, c.id)];
         const bucket = (banque[niveau] && banque[niveau][c.domaineCle]) || null;
         const item = (aff && aff.seanceId && bucket) ? bucket.items.find(it => it.id === aff.seanceId) : null;
+        const titre = (item && (item.titre || item.type)) || (bucket ? bucket.label : c.domaineCle);
 
-        bloc.groupes.push({
-          id: uid("grp"),
-          adulte: { type: "enseignant", nom: "" },
-          titre: (item && (item.titre || item.type)) || (bucket ? bucket.label : c.domaineCle),
-          domaineCle: c.domaineCle,
-          niveau: niveau,
-          seanceRef: item ? { id: item.id, source: item.source, fichier: item.fichier || null } : null,
-          eleves: [],
-          remarque: "",
-          fixe: false
-        });
+        if (existant) {
+          existant.debut = c.debut; existant.fin = c.fin; existant.titre = titre;
+          existant.domaineCle = c.domaineCle; existant.niveau = niveau;
+          existant.seanceRef = item ? { id: item.id, source: item.source, fichier: item.fichier || null } : null;
+        } else {
+          jour.groupes.push({
+            id: uid("grp"), debut: c.debut, fin: c.fin, origine: origine, modifie: false,
+            adulte: { type: "enseignant", nom: "" }, titre: titre, domaineCle: c.domaineCle, niveau: niveau,
+            seanceRef: item ? { id: item.id, source: item.source, fichier: item.fichier || null } : null,
+            eleves: [], remarque: "", fixe: false
+          });
+        }
       });
     });
 
-    jour.creneaux.sort((a, b) => heureVersMin(a.debut) - heureVersMin(b.debut));
+    // Nettoyage : un groupe synchronisé (origine non nulle) dont le créneau
+    // de grille a disparu, et qui n'a jamais été retouché, est retiré.
+    jour.groupes = jour.groupes.filter(g => !g.origine || originesVues.has(g.origine) || g.modifie);
+
     sauverJournal(journal);
     return jour;
-  }
-
-  function PC_libelleBloc(creneau) {
-    const h = heureVersMin(creneau.debut);
-    if (h < 10 * 60 + 30) return "Matin 1";
-    if (h < 12 * 60) return "Matin 2";
-    if (h < 15 * 60) return "Après-midi 1";
-    return "Après-midi 2";
   }
 
   /**
@@ -1304,15 +1449,15 @@
    * partir des besoins/objectifs actifs lus dans le coffre ouvert.
    *
    * Principe (le système suggère, l'enseignant valide) :
-   *  - Pour chaque bloc horaire, on regarde les groupes "séance" (non figés).
+   *  - Pour chaque plage horaire, on regarde les groupes "séance" (non figés).
    *  - Chaque élève du coffre est rapproché du groupe dont le domaineCle
    *    correspond le mieux à ses besoins/objectifs actifs (correspondance
    *    de préfixe sur la discipline, ex. "maths" ~ "mathematiques").
    *  - À défaut de correspondance, l'élève est réparti sur le groupe le
-   *    moins chargé du bloc (équilibrage), pour qu'aucun groupe ne soit vide.
-   *  - Un élève déjà placé manuellement (présent dans un groupe) n'est pas
+   *    moins chargé de la plage (équilibrage), pour qu'aucun groupe ne soit vide.
+   *  - Un élève déjà placé (présent dans un groupe de la plage) n'est pas
    *    déplacé : on ne redistribue que les élèves absents de tous les
-   *    groupes du bloc.
+   *    groupes de cette plage horaire.
    */
   function repartirElevesAuto(iso, journalJour, coffre) {
     if (!coffre || !coffre.ouvert) return journalJour;
@@ -1327,7 +1472,7 @@
       return b.concat(o);
     }
 
-    journalJour.creneaux.forEach(bloc => {
+    regrouperParBloc(journalJour).forEach(bloc => {
       const groupesSeance = bloc.groupes.filter(g => !g.fixe);
       if (!groupesSeance.length) return;
 
@@ -1352,7 +1497,7 @@
 
         if (meilleurScore <= 0) {
           // Aucune correspondance : on équilibre sur le groupe le moins chargé.
-          meilleur = groupesSeance.reduce((min, g) => (g.eleves.length < min.eleves.length ? g : min), groupesSeance[0]);
+          meilleur = groupesSeance.reduce((min, g) => ((g.eleves||[]).length < (min.eleves||[]).length ? g : min), groupesSeance[0]);
         }
         if (meilleur) { meilleur.eleves = meilleur.eleves || []; meilleur.eleves.push(id); dejaPlaces.add(id); }
       });
@@ -1866,6 +2011,7 @@
     // Grilles
     chargerGrilles,
     sauverGrilles,
+    appliquerCreneauxFixes,
 
     // Affectations
     chargerAffectations,
@@ -1882,6 +2028,9 @@
     chargerJournal,
     sauverJournal,
     journalPourDate,
+    cleBloc,
+    regrouperParBloc,
+    libelleBloc,
     genererJournalDepuisGrille,
     repartirElevesAuto,
 

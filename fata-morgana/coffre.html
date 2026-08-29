@@ -238,8 +238,8 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
             <div class="conseils" id="forceMdpConseils"></div>
           </div>
         </div>
-        <div class="field"><label for="nomFichierExport">Nom du fichier</label>
-          <input type="text" id="nomFichierExport" placeholder="coffre.synapses"></div>
+        <div class="field"><label for="nomFichierExport">Nom du fichier (extension .synapses ajoutée automatiquement)</label>
+          <input type="text" id="nomFichierExport" placeholder="coffre"></div>
         <button class="btn btn-primary" id="btnExporter">Télécharger le .synapses</button>
         <p class="hint" style="margin-top:10px;">Le fichier est téléchargé dans votre dossier "Téléchargements" habituel — déplacez-le ensuite sur un support que vous seul contrôlez (clé USB, disque local). Ne le déposez jamais dans le dépôt GitHub du site.</p>
       </div>
@@ -379,6 +379,21 @@ const SYNAPSES_BUILD = {
     await ouvrirSuivi();
   });
 
+  // Impose l'extension .synapses au nom de fichier saisi pour l'export, quoi qu'on y tape
+  // (retire toute autre extension éventuelle, puis ajoute .synapses).
+  function nomFichierAvecExtensionSynapses(nom){
+    let n = (nom || '').trim();
+    if (!n) n = 'coffre';
+    n = n.replace(/\.[^./\\]*$/, ''); // retire une extension existante quelle qu'elle soit
+    return n + '.synapses';
+  }
+  const inputNomFichierExport = $('nomFichierExport');
+  inputNomFichierExport.addEventListener('blur', ()=>{
+    if (inputNomFichierExport.value.trim()) {
+      inputNomFichierExport.value = nomFichierAvecExtensionSynapses(inputNomFichierExport.value);
+    }
+  });
+
   $('btnOuvrir').addEventListener('click', async ()=>{
     const fichier = $('fichierCoffre').files[0];
     const mdp = $('mdpOuverture').value;
@@ -387,6 +402,9 @@ const SYNAPSES_BUILD = {
     try{
       await coffre.ouvrir(fichier, mdp);
       $('mdpOuverture').value = '';
+      // Le nom du fichier d'export est pré-rempli avec celui du fichier ouvert, pour
+      // qu'un "Enregistrer" ultérieur écrase naturellement le même fichier par défaut.
+      inputNomFichierExport.value = nomFichierAvecExtensionSynapses(fichier.name);
       setStatus($('statutOuverture'), 'Coffre ouvert avec succès (' + coffre.listerEleves().length + ' élève(s)).', true);
       refreshLockState();
       await ouvrirSuivi();
@@ -404,8 +422,10 @@ const SYNAPSES_BUILD = {
       if (!continuer) return;
     }
     try{
-      await coffre.telecharger(mdp, $('nomFichierExport').value.trim() || 'coffre.synapses');
-      setStatus($('statutExport'), 'Coffre chiffré et téléchargé. Conservez-le sur un support sûr (clé USB).', true);
+      const nomFichier = nomFichierAvecExtensionSynapses(inputNomFichierExport.value);
+      inputNomFichierExport.value = nomFichier;
+      await coffre.telecharger(mdp, nomFichier);
+      setStatus($('statutExport'), 'Coffre chiffré et téléchargé sous « ' + nomFichier + ' ». Conservez-le sur un support sûr (clé USB).', true);
     }catch(e){
       setStatus($('statutExport'), e.message, false);
     }

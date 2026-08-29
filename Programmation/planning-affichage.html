@@ -279,7 +279,7 @@ function renderSemaine(){
           carte.addEventListener("click", ()=> ouvrirDrawer(niveau, iso, c, item));
         } else {
           carte.className = "creneau-card " + c.type;
-          carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div><div class="creneau-titre">${c.type==="autre" && c.libelle ? c.libelle : PC.TYPES_CRENEAU[c.type].label}</div>`;
+          carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div><div class="creneau-titre">${(c.libelle && c.libelle.trim()) ? c.libelle : PC.TYPES_CRENEAU[c.type].label}</div>`;
         }
         groupe.appendChild(carte);
       });
@@ -389,6 +389,22 @@ function brancherChoixManuel(niveau, iso, creneau){
 /* ---------------- Navigation semaines ---------------- */
 $("prev-week").addEventListener("click", ()=>{ if(semaineIdx>0){ semaineIdx--; renderSemaine(); } });
 $("next-week").addEventListener("click", ()=>{ if(semaineIdx<semaines.length-1){ semaineIdx++; renderSemaine(); } });
+
+// Si la configuration, les grilles ou les affectations changent dans un
+// autre onglet (Planning — Gestion), on relit tout et on réaffiche —
+// fluidité entre les pages du planning, sans jamais perdre les affectations
+// manuelles (déjà protégées par le flag "manuel" côté planning-core.js).
+window.addEventListener("storage", (e)=>{
+  if([PC.STORE_CONFIG, PC.STORE_GRILLES, PC.STORE_AFFECT].includes(e.key)){
+    config = PC.chargerConfig();
+    grilles = PC.chargerGrilles();
+    affectations = PC.chargerAffectations();
+    semaines = PC.calculerSemaines(config);
+    if(semaineIdx >= semaines.length) semaineIdx = Math.max(0, semaines.length-1);
+    renderNiveauxToggle();
+    renderSemaine();
+  }
+});
 
 /* ---------------- Initialisation ---------------- */
 (async function init(){

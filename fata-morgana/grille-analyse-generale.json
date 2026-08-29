@@ -1,0 +1,280 @@
+{
+  "meta": {
+    "titre": "Grille d'analyse ULIS — domaines transversaux",
+    "version": "0.2",
+    "description": "Référentiel PUBLIC et non nominatif. Contient uniquement des points d'appui, difficultés, besoins, adaptations et objectifs-types génériques (aucune donnée élève). Structure inspirée de la grille BARRY pour les domaines transversaux ; les domaines disciplinaires (Mathématiques, Français) s'appuient sur Programmation/data/competences.json (S4C).",
+    "extensible": true,
+    "structureChaine": {
+      "principe": "Chaque difficulté renvoie à un ou plusieurs besoins (difficultes[].besoinsLies -> besoins[].id). Chaque besoin renvoie à des adaptations pertinentes (besoins[].adaptationsLiees -> adaptations[].id) et à des objectifs-types (besoins[].objectifsTypes), formulations génériques que le moteur d'analyse peut proposer sans jamais les imposer (voir §7-8 de la synthèse projet).",
+      "usageAttendu": "Observation élève -> sélection d'une difficulté -> suggestion des besoins liés -> l'enseignant retient une hypothèse -> suggestion des adaptations liées -> l'enseignant en retient une, l'utilise, en évalue l'efficacité -> suggestion des objectifs-types liés -> l'enseignant valide (ou reformule) l'objectif individuel -> l'objectif rejoint le parcours de l'élève dans le coffre.",
+      "avertissement": "Toutes les suggestions issues de cette grille sont des points de départ génériques, jamais des prescriptions automatiques. La validation humaine reste obligatoire à chaque étape (choix du besoin, de l'adaptation, de l'objectif)."
+    }
+  },
+  "domaines": [
+    {
+      "id": "affectif",
+      "nom": "Affectif",
+      "source": "BARRY",
+      "couleur": "#6B4E8E",
+      "pointsAppui": [
+        { "id": "aff_pa_motivation", "libelle": "Motivation pour certaines activités" },
+        { "id": "aff_pa_plaisir", "libelle": "Plaisir manifeste dans l'activité" },
+        { "id": "aff_pa_confiance_adulte", "libelle": "Relation de confiance avec l'adulte" },
+        { "id": "aff_pa_rituels", "libelle": "Attachement rassurant à certains rituels" },
+        { "id": "aff_pa_humour", "libelle": "Sensible à l'humour, bon levier relationnel" },
+        { "id": "aff_pa_fierte", "libelle": "Manifeste de la fierté lors d'une réussite" }
+      ],
+      "difficultes": [
+        { "id": "aff_di_anxiete", "libelle": "Anxiété face à la nouveauté", "besoinsLies": ["aff_be_securisation", "aff_be_anticipation"] },
+        { "id": "aff_di_estime", "libelle": "Faible estime de soi", "besoinsLies": ["aff_be_valorisation", "aff_be_droit_erreur"] },
+        { "id": "aff_di_erreur", "libelle": "Difficulté à accepter l'erreur", "besoinsLies": ["aff_be_droit_erreur"] },
+        { "id": "aff_di_emotions", "libelle": "Réactions émotionnelles intenses", "besoinsLies": ["aff_be_verbalisation_emotions", "aff_be_gestion_frustration"] },
+        { "id": "aff_di_dependance_adulte", "libelle": "Dépendance excessive à la validation de l'adulte", "besoinsLies": ["aff_be_autonomisation"] },
+        { "id": "aff_di_frustration", "libelle": "Faible tolérance à la frustration", "besoinsLies": ["aff_be_gestion_frustration"] }
+      ],
+      "besoins": [
+        {
+          "id": "aff_be_securisation", "libelle": "Sécurisation affective",
+          "adaptationsLiees": ["aff_ad_rituel_demarrage", "aff_ad_contrat_confiance"],
+          "objectifsTypes": [{ "id": "aff_ob_rituel_autonome", "libelle": "Suivre le rituel de démarrage sans sollicitation de l'adulte" }]
+        },
+        {
+          "id": "aff_be_valorisation", "libelle": "Valorisation régulière",
+          "adaptationsLiees": ["aff_ad_encouragements"],
+          "objectifsTypes": [{ "id": "aff_ob_reussite_identifiee", "libelle": "Identifier au moins une réussite personnelle par séance" }]
+        },
+        {
+          "id": "aff_be_anticipation", "libelle": "Anticipation des changements",
+          "adaptationsLiees": ["aff_ad_rituel_demarrage", "aff_ad_planning_visuel"],
+          "objectifsTypes": [{ "id": "aff_ob_anticipation_support", "libelle": "Anticiper le déroulement d'une activité à l'aide d'un support visuel" }]
+        },
+        {
+          "id": "aff_be_droit_erreur", "libelle": "Droit à l'erreur explicite",
+          "adaptationsLiees": ["aff_ad_contrat_confiance", "aff_ad_dedramatisation_erreur"],
+          "objectifsTypes": [{ "id": "aff_ob_corriger_sans_rejet", "libelle": "Corriger une erreur signalée sans réaction de rejet ou d'évitement" }]
+        },
+        {
+          "id": "aff_be_verbalisation_emotions", "libelle": "Verbalisation des émotions",
+          "adaptationsLiees": ["aff_ad_verbalisation"],
+          "objectifsTypes": [{ "id": "aff_ob_nommer_emotion", "libelle": "Nommer une émotion ressentie à l'aide d'un support (pictogrammes, échelle)" }]
+        },
+        {
+          "id": "aff_be_autonomisation", "libelle": "Autonomisation progressive vis-à-vis de l'adulte",
+          "adaptationsLiees": ["aff_ad_delai_validation"],
+          "objectifsTypes": [{ "id": "aff_ob_tache_sans_validation", "libelle": "Réaliser une tâche courte avant de solliciter la validation de l'adulte" }]
+        },
+        {
+          "id": "aff_be_gestion_frustration", "libelle": "Gestion de la frustration",
+          "adaptationsLiees": ["aff_ad_pause_retour_calme"],
+          "objectifsTypes": [{ "id": "aff_ob_retour_calme", "libelle": "Utiliser un temps de retour au calme identifié en cas de frustration" }]
+        }
+      ],
+      "adaptations": [
+        { "id": "aff_ad_encouragements", "libelle": "Encouragements fréquents et ciblés" },
+        { "id": "aff_ad_rituel_demarrage", "libelle": "Rituel de démarrage rassurant" },
+        { "id": "aff_ad_verbalisation", "libelle": "Verbalisation des émotions avec l'adulte" },
+        { "id": "aff_ad_contrat_confiance", "libelle": "Contrat de confiance explicite" },
+        { "id": "aff_ad_planning_visuel", "libelle": "Planning visuel de la séance affiché en amont" },
+        { "id": "aff_ad_dedramatisation_erreur", "libelle": "Dédramatisation explicite du statut de l'erreur" },
+        { "id": "aff_ad_delai_validation", "libelle": "Délai progressif avant validation de l'adulte" },
+        { "id": "aff_ad_pause_retour_calme", "libelle": "Espace / temps de retour au calme identifié" }
+      ]
+    },
+    {
+      "id": "social",
+      "nom": "Social",
+      "source": "BARRY",
+      "couleur": "#2A7F72",
+      "pointsAppui": [
+        { "id": "soc_pa_contact_pairs", "libelle": "Recherche du contact avec les pairs" },
+        { "id": "soc_pa_imitation", "libelle": "Capacité à imiter les pairs" },
+        { "id": "soc_pa_regles", "libelle": "Respect de certaines règles collectives" },
+        { "id": "soc_pa_petit_groupe", "libelle": "Bonne participation en petit groupe" },
+        { "id": "soc_pa_entraide", "libelle": "Spontanément entraidant envers un pair en difficulté" },
+        { "id": "soc_pa_leadership", "libelle": "Prend spontanément un rôle de meneur dans le jeu" }
+      ],
+      "difficultes": [
+        { "id": "soc_di_partage", "libelle": "Difficulté à partager / coopérer", "besoinsLies": ["soc_be_codes", "soc_be_petit_groupe"] },
+        { "id": "soc_di_retrait", "libelle": "Retrait social", "besoinsLies": ["soc_be_inclusion"] },
+        { "id": "soc_di_conflits", "libelle": "Conflits fréquents avec les pairs", "besoinsLies": ["soc_be_mediation"] },
+        { "id": "soc_di_tour_parole", "libelle": "Difficulté à respecter le tour de parole", "besoinsLies": ["soc_be_cadre"] },
+        { "id": "soc_di_interpretation", "libelle": "Difficulté à interpréter les intentions d'autrui", "besoinsLies": ["soc_be_decodage_social"] },
+        { "id": "soc_di_isolement_recreation", "libelle": "Isolement pendant les temps de récréation", "besoinsLies": ["soc_be_inclusion"] }
+      ],
+      "besoins": [
+        {
+          "id": "soc_be_codes", "libelle": "Apprentissage explicite des codes sociaux",
+          "adaptationsLiees": ["soc_ad_regles_explicites", "soc_ad_scenarios_sociaux"],
+          "objectifsTypes": [{ "id": "soc_ob_nommer_regle", "libelle": "Nommer une règle sociale explicite d'un jeu collectif" }]
+        },
+        {
+          "id": "soc_be_cadre", "libelle": "Cadre explicite et stable",
+          "adaptationsLiees": ["soc_ad_regles_explicites"],
+          "objectifsTypes": [{ "id": "soc_ob_tour_parole", "libelle": "Attendre son tour de parole lors d'un échange collectif" }]
+        },
+        {
+          "id": "soc_be_mediation", "libelle": "Médiation par l'adulte",
+          "adaptationsLiees": ["soc_ad_mediation_conflit"],
+          "objectifsTypes": [{ "id": "soc_ob_verbaliser_desaccord", "libelle": "Verbaliser un désaccord avec l'aide de l'adulte plutôt que d'agir" }]
+        },
+        {
+          "id": "soc_be_petit_groupe", "libelle": "Travail en petits groupes",
+          "adaptationsLiees": ["soc_ad_tutorat", "soc_ad_role_valorisant"],
+          "objectifsTypes": [{ "id": "soc_ob_tache_collective", "libelle": "Participer à une tâche collective en groupe de 2 à 3 élèves" }]
+        },
+        {
+          "id": "soc_be_inclusion", "libelle": "Inclusion dans le groupe de pairs",
+          "adaptationsLiees": ["soc_ad_role_valorisant", "soc_ad_binome_reference"],
+          "objectifsTypes": [{ "id": "soc_ob_jeu_recreation", "libelle": "Participer à un jeu collectif à la récréation avec un pair identifié" }]
+        },
+        {
+          "id": "soc_be_decodage_social", "libelle": "Décodage des situations sociales",
+          "adaptationsLiees": ["soc_ad_scenarios_sociaux"],
+          "objectifsTypes": [{ "id": "soc_ob_identifier_emotion_pair", "libelle": "Identifier l'émotion probable d'un camarade dans une situation donnée" }]
+        }
+      ],
+      "adaptations": [
+        { "id": "soc_ad_tutorat", "libelle": "Tutorat entre pairs" },
+        { "id": "soc_ad_regles_explicites", "libelle": "Règles du jeu explicitées en amont" },
+        { "id": "soc_ad_role_valorisant", "libelle": "Rôle valorisant confié dans le groupe" },
+        { "id": "soc_ad_mediation_conflit", "libelle": "Médiation systématique lors des conflits" },
+        { "id": "soc_ad_scenarios_sociaux", "libelle": "Scénarios sociaux / bandes dessinées de situations types" },
+        { "id": "soc_ad_binome_reference", "libelle": "Binôme de référence désigné pour les temps informels" }
+      ]
+    },
+    {
+      "id": "cognitif",
+      "nom": "Cognitif",
+      "source": "BARRY",
+      "couleur": "#2E5EAA",
+      "pointsAppui": [
+        { "id": "cog_pa_memoire_visuelle", "libelle": "Bonne mémoire visuelle" },
+        { "id": "cog_pa_curiosite", "libelle": "Curiosité, intérêt pour les activités" },
+        { "id": "cog_pa_raisonnement_oral", "libelle": "Capacité de raisonnement à l'oral" },
+        { "id": "cog_pa_comprehension_orale", "libelle": "Bonne compréhension orale" },
+        { "id": "cog_pa_gout_defi", "libelle": "Goût pour le défi / la résolution de problèmes concrets" },
+        { "id": "cog_pa_transfert_court", "libelle": "Capable de réutiliser une procédure sur un exemple proche" }
+      ],
+      "difficultes": [
+        { "id": "cog_di_attention", "libelle": "Difficulté à maintenir l'attention", "besoinsLies": ["cog_be_ecoute"] },
+        { "id": "cog_di_lenteur", "libelle": "Lenteur de traitement de l'information", "besoinsLies": ["cog_be_temps_supplementaire"] },
+        { "id": "cog_di_memorisation", "libelle": "Difficulté de mémorisation", "besoinsLies": ["cog_be_reactivation"] },
+        { "id": "cog_di_planification", "libelle": "Difficulté à planifier une tâche", "besoinsLies": ["cog_be_structuration"] },
+        { "id": "cog_di_generalisation", "libelle": "Difficulté à généraliser une procédure à un contexte nouveau", "besoinsLies": ["cog_be_transfert"] },
+        { "id": "cog_di_double_tache", "libelle": "Difficulté à traiter deux consignes/tâches simultanément", "besoinsLies": ["cog_be_charge"] }
+      ],
+      "besoins": [
+        {
+          "id": "cog_be_ecoute", "libelle": "Maintenir une écoute attentive",
+          "adaptationsLiees": ["cog_ad_consigne_structuree", "cog_ad_objectif_explicite", "cog_ad_activite_courte", "cog_ad_pauses"],
+          "objectifsTypes": [{ "id": "cog_ob_comprendre_consigne", "libelle": "Comprendre une consigne" }]
+        },
+        {
+          "id": "cog_be_charge", "libelle": "Réduire la charge cognitive",
+          "adaptationsLiees": ["cog_ad_activite_courte", "cog_ad_support_visuel"],
+          "objectifsTypes": [{ "id": "cog_ob_une_consigne_a_la_fois", "libelle": "Réaliser une tâche en traitant une seule consigne à la fois" }]
+        },
+        {
+          "id": "cog_be_reactivation", "libelle": "Répéter / réactiver les connaissances",
+          "adaptationsLiees": ["cog_ad_support_visuel", "cog_ad_reactivation_espacee"],
+          "objectifsTypes": [{ "id": "cog_ob_restituer_notion", "libelle": "Restituer une notion travaillée la veille à l'aide d'un support" }]
+        },
+        {
+          "id": "cog_be_structuration", "libelle": "Structurer les étapes d'une tâche",
+          "adaptationsLiees": ["cog_ad_support_visuel", "cog_ad_decoupage_etapes"],
+          "objectifsTypes": [{ "id": "cog_ob_suivre_etapes", "libelle": "Réaliser une tâche en suivant les étapes d'un support séquentiel" }]
+        },
+        {
+          "id": "cog_be_temps_supplementaire", "libelle": "Bénéficier d'un temps de traitement supplémentaire",
+          "adaptationsLiees": ["cog_ad_temps_majore"],
+          "objectifsTypes": [{ "id": "cog_ob_terminer_temps_amenage", "libelle": "Terminer une tâche courte dans un temps aménagé" }]
+        },
+        {
+          "id": "cog_be_transfert", "libelle": "Favoriser le transfert et la généralisation",
+          "adaptationsLiees": ["cog_ad_exemples_varies"],
+          "objectifsTypes": [{ "id": "cog_ob_reutiliser_procedure", "libelle": "Réutiliser une procédure connue sur un exemple différent" }]
+        }
+      ],
+      "adaptations": [
+        { "id": "cog_ad_consigne_structuree", "libelle": "Consigne structurée et reformulée" },
+        { "id": "cog_ad_objectif_explicite", "libelle": "Objectif explicite avant la tâche" },
+        { "id": "cog_ad_activite_courte", "libelle": "Activité courte" },
+        { "id": "cog_ad_pauses", "libelle": "Pauses cognitives régulières" },
+        { "id": "cog_ad_support_visuel", "libelle": "Support visuel séquentiel des étapes" },
+        { "id": "cog_ad_reactivation_espacee", "libelle": "Réactivation espacée des notions déjà travaillées" },
+        { "id": "cog_ad_decoupage_etapes", "libelle": "Découpage de la tâche en étapes numérotées" },
+        { "id": "cog_ad_temps_majore", "libelle": "Temps majoré pour la réalisation de la tâche" },
+        { "id": "cog_ad_exemples_varies", "libelle": "Multiplication d'exemples variés d'une même procédure" }
+      ],
+      "chaineExemple": {
+        "difficulte": "cog_di_attention",
+        "besoin": "cog_be_ecoute",
+        "adaptations": ["cog_ad_consigne_structuree", "cog_ad_objectif_explicite", "cog_ad_activite_courte", "cog_ad_pauses"],
+        "objectif": "cog_ob_comprendre_consigne",
+        "commentaire": "Chaîne de référence reprise telle quelle de la synthèse projet (§7) : Observation (difficulté à maintenir l'attention) -> Besoin (maintenir une écoute attentive) -> Adaptations -> Compétence/objectif (comprendre une consigne) -> Séance concernée."
+      }
+    },
+    {
+      "id": "sensorimoteur",
+      "nom": "Sensorimoteur",
+      "source": "BARRY",
+      "couleur": "#B5871E",
+      "pointsAppui": [
+        { "id": "sen_pa_motricite_globale", "libelle": "Bonne motricité globale" },
+        { "id": "sen_pa_aisance_manuelle", "libelle": "Aisance manuelle" },
+        { "id": "sen_pa_lateralisation", "libelle": "Bonne latéralisation" },
+        { "id": "sen_pa_tolerance", "libelle": "Tolérance sensorielle correcte dans certains contextes" },
+        { "id": "sen_pa_endurance_posturale", "libelle": "Bonne endurance posturale sur les temps assis courts" },
+        { "id": "sen_pa_reperage_temporel", "libelle": "Bon repérage dans le temps de la journée" }
+      ],
+      "difficultes": [
+        { "id": "sen_di_motricite_fine", "libelle": "Difficulté de motricité fine", "besoinsLies": ["sen_be_materiel"] },
+        { "id": "sen_di_hypersensibilite", "libelle": "Hypersensibilité sensorielle (bruit, lumière, toucher)", "besoinsLies": ["sen_be_amenagement"] },
+        { "id": "sen_di_fatigabilite", "libelle": "Fatigabilité", "besoinsLies": ["sen_be_pauses_motrices"] },
+        { "id": "sen_di_espace", "libelle": "Difficulté de repérage spatial", "besoinsLies": ["sen_be_reperes"] },
+        { "id": "sen_di_graphisme", "libelle": "Difficulté dans le geste graphique (tenue, pression, tracé)", "besoinsLies": ["sen_be_adaptation_ecriture"] },
+        { "id": "sen_di_coordination", "libelle": "Difficulté de coordination motrice globale (équilibre, latéralité croisée)", "besoinsLies": ["sen_be_activites_psychomotrices"] }
+      ],
+      "besoins": [
+        {
+          "id": "sen_be_amenagement", "libelle": "Aménagement sensoriel de l'environnement",
+          "adaptationsLiees": ["sen_ad_coin_calme"],
+          "objectifsTypes": [{ "id": "sen_ob_rester_engage", "libelle": "Rester engagé dans une activité malgré une gêne sensorielle, avec l'aménagement prévu" }]
+        },
+        {
+          "id": "sen_be_materiel", "libelle": "Adaptation du matériel",
+          "adaptationsLiees": ["sen_ad_materiel_adapte"],
+          "objectifsTypes": [{ "id": "sen_ob_outil_autonome", "libelle": "Utiliser l'outil scripteur adapté de façon autonome" }]
+        },
+        {
+          "id": "sen_be_pauses_motrices", "libelle": "Pauses motrices régulières",
+          "adaptationsLiees": ["sen_ad_pause_mouvement"],
+          "objectifsTypes": [{ "id": "sen_ob_solliciter_pause", "libelle": "Solliciter une pause mouvement avant l'apparition de la fatigue" }]
+        },
+        {
+          "id": "sen_be_reperes", "libelle": "Repères spatiaux stables",
+          "adaptationsLiees": ["sen_ad_marquage_visuel"],
+          "objectifsTypes": [{ "id": "sen_ob_reperage_classe", "libelle": "Se repérer dans l'espace de la classe à l'aide des marquages visuels" }]
+        },
+        {
+          "id": "sen_be_adaptation_ecriture", "libelle": "Adaptation du support graphique",
+          "adaptationsLiees": ["sen_ad_supports_lignes"],
+          "objectifsTypes": [{ "id": "sen_ob_trace_lisible", "libelle": "Produire un tracé lisible sur un support adapté (lignage, guide)" }]
+        },
+        {
+          "id": "sen_be_activites_psychomotrices", "libelle": "Activités psychomotrices régulières",
+          "adaptationsLiees": ["sen_ad_temps_psychomotricite"],
+          "objectifsTypes": [{ "id": "sen_ob_parcours_moteur", "libelle": "Réaliser un parcours moteur simple avec appui verbal" }]
+        }
+      ],
+      "adaptations": [
+        { "id": "sen_ad_materiel_adapte", "libelle": "Matériel adapté (crayon, ciseaux, ...)" },
+        { "id": "sen_ad_coin_calme", "libelle": "Casque anti-bruit / coin calme disponible" },
+        { "id": "sen_ad_pause_mouvement", "libelle": "Pause mouvement programmée" },
+        { "id": "sen_ad_marquage_visuel", "libelle": "Marquage visuel de l'espace de travail" },
+        { "id": "sen_ad_supports_lignes", "libelle": "Supports graphiques adaptés (lignage agrandi, guide-doigts, réglette)" },
+        { "id": "sen_ad_temps_psychomotricite", "libelle": "Temps ritualisé d'activité psychomotrice" }
+      ]
+    }
+  ]
+}
