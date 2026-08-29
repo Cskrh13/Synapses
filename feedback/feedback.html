@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Synapses — Déposer un retour de test</title>
+<style>
+  :root{
+    --bg:#f5f4f0; --card:#ffffff; --border:#e2e0d8; --border-strong:#c9c6ba;
+    --text:#1f1e1b; --text2:#5f5e58; --text3:#8b897f;
+    --accent:#185fa5; --accent-bg:#e6f1fb;
+    --danger:#a32d2d; --danger-bg:#fcebeb;
+    --warn:#854f0b; --warn-bg:#faeeda;
+    --ok:#27500a; --ok-bg:#eaf3de;
+    --purple:#3c3489; --purple-bg:#eeedfe;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);padding:24px;}
+  h1{font-size:20px;font-weight:600;margin:0 0 4px;}
+  .subtitle{color:var(--text2);font-size:13px;margin:0 0 20px;}
+  .layout{max-width:780px;margin:0 auto;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:16px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  label{font-size:12px;color:var(--text2);display:block;margin-bottom:3px;}
+  select,input[type=text],textarea{
+    width:100%;padding:7px 9px;border:1px solid var(--border-strong);border-radius:6px;
+    font-size:13px;font-family:inherit;background:#fff;color:var(--text);
+  }
+  textarea{resize:vertical;min-height:44px;}
+  button{
+    cursor:pointer;border:1px solid var(--border-strong);background:#fff;color:var(--text);
+    padding:8px 14px;border-radius:6px;font-size:13px;font-family:inherit;
+  }
+  button:hover{background:#f2f1ec;}
+  button.primary{background:var(--accent);border-color:var(--accent);color:#fff;}
+  button.primary:hover{background:#134d88;}
+  button:disabled{opacity:.5;cursor:not-allowed;}
+  .fields{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:10px;}
+  .fields-2{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-bottom:10px;}
+  .section-title{font-size:14px;font-weight:600;margin:0 0 10px;}
+  .muted{color:var(--text3);font-size:12px;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{text-align:left;font-weight:600;color:var(--text2);padding:6px 8px;border-bottom:1px solid var(--border-strong);}
+  td{padding:6px 8px;border-bottom:1px solid var(--border);vertical-align:top;}
+  .tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap;}
+  .tag-bug{background:var(--danger-bg);color:var(--danger);}
+  .tag-incomprehension{background:var(--warn-bg);color:var(--warn);}
+  .tag-suggestion{background:var(--accent-bg);color:var(--accent);}
+  .tag-positif{background:var(--ok-bg);color:var(--ok);}
+  .group-tag{font-size:11px;padding:1px 6px;border-radius:5px;background:var(--purple-bg);color:var(--purple);font-weight:600;}
+  .empty{padding:18px;text-align:center;color:var(--text3);font-size:13px;}
+  .badge{display:inline-flex;align-items:center;justify-content:center;min-width:20px;height:20px;padding:0 6px;border-radius:99px;background:var(--accent);color:#fff;font-size:12px;font-weight:600;}
+  .label-help{display:flex;align-items:center;gap:5px;}
+  .help{position:relative;display:inline-flex;align-items:center;justify-content:center;width:17px;height:17px;border:1px solid var(--accent);border-radius:50%;color:var(--accent);font-size:11px;font-weight:700;cursor:help;line-height:1;flex:0 0 auto;}
+  .help-tip{position:absolute;z-index:1000;left:24px;top:50%;transform:translateY(-50%);width:250px;background:#1f1e1b;color:#fff;border-radius:7px;padding:9px 10px;font-size:12px;font-weight:400;line-height:1.4;box-shadow:0 6px 20px rgba(0,0,0,.18);opacity:0;visibility:hidden;pointer-events:none;transition:opacity .15s ease 1.5s, visibility 0s linear 1.65s;}
+  .help:hover .help-tip{opacity:1;visibility:visible;transition:opacity .15s ease 1.5s, visibility 0s linear 1.5s;}
+  .help:focus .help-tip{opacity:1;visibility:visible;transition:opacity .15s ease, visibility 0s;}
+  .del-btn{padding:3px 8px;font-size:11px;}
+  .step{font-size:11px;color:var(--text3);text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;}
+</style>
+</head>
+<body>
+<div class="layout">
+  <h1>Synapses — Déposer un retour de test</h1>
+  <p class="subtitle">v0.9.0-test — merci pour votre participation à cette phase de test</p>
+
+  <div class="card" style="background:var(--accent-bg);border-color:var(--accent);">
+    <p style="margin:0;font-size:12.5px;color:var(--accent);">
+      Ajoutez ici tous vos retours au fil de vos tests. Ils s'accumulent dans la liste ci-dessous
+      pendant que cette page reste ouverte. Une fois terminé, téléchargez le fichier unique regroupant
+      tous vos retours et envoyez-le par e-mail — n'oubliez pas de joindre le fichier téléchargé au message.
+      Aucun nom n'est demandé, seule votre équipe est enregistrée.
+    </p>
+  </div>
+
+  <div class="card">
+    <div class="step">Étape 1</div>
+    <div class="section-title">Ajouter un retour</div>
+    <div class="fields">
+      <div>
+        <label class="label-help">Équipe<span class="help" tabindex="0" aria-label="Aide">?<span class="help-tip">Choisissez votre groupe de test. Aucun nom personnel n’est enregistré dans le retour.</span></span></label>
+        <select id="f-group">
+          <option value="CAPPEI">CAPPEI / ASH</option>
+          <option value="PE">Professeur des écoles</option>
+        </select>
+      </div>
+      <div>
+        <label class="label-help">Page concernée<span class="help" tabindex="0" aria-label="Aide">?<span class="help-tip">Indiquez la page ou la partie de Synapses sur laquelle porte votre retour.</span></span></label>
+        <select id="f-page">
+          <option>Portail / Référentiel</option>
+          <option>Cartographie des compétences</option>
+          <option>Séquences &amp; séances</option>
+          <option>Planning — Gestion</option>
+          <option>Planning — Affichage</option>
+          <option>Générateur de séquences</option>
+          <option>Coffre confidentiel</option>
+          <option>Autre / transverse</option>
+        </select>
+      </div>
+      <div>
+        <label class="label-help">Catégorie<span class="help" tabindex="0" aria-label="Aide">?<span class="help-tip">Bug = erreur technique ; Incompréhension = fonctionnement difficile à comprendre ; Suggestion = idée d’amélioration ; Point positif = élément particulièrement apprécié.</span></span></label>
+        <select id="f-category">
+          <option value="Bug">Bug</option>
+          <option value="Incompréhension">Incompréhension</option>
+          <option value="Suggestion">Suggestion</option>
+          <option value="Point positif">Point positif</option>
+        </select>
+      </div>
+    </div>
+    <div class="fields-2">
+      <div>
+        <label class="label-help">Ce qui a été essayé / description<span class="help" tabindex="0" aria-label="Aide">?<span class="help-tip">Décrivez ce que vous avez fait, étape par étape si possible, et ce que vous avez constaté.</span></span></label>
+        <textarea id="f-desc" placeholder="Étapes suivies, contexte..."></textarea>
+      </div>
+      <div>
+        <label class="label-help">Attendu vs réel<span class="help" tabindex="0" aria-label="Aide">?<span class="help-tip">Expliquez ce que vous pensiez obtenir puis ce qui s’est réellement produit.</span></span></label>
+        <textarea id="f-expected" placeholder="Ce qui était attendu, et ce qui s'est réellement passé"></textarea>
+      </div>
+    </div>
+    <div class="fields" style="grid-template-columns:1fr;">
+      <div>
+        <label class="label-help">Navigateur / appareil<span class="help" tabindex="0" aria-label="Aide">?<span class="help-tip">Indiquez par exemple Chrome sur ordinateur, Firefox sur Mac, Safari sur iPad, etc.</span></span></label>
+        <input type="text" id="f-browser" placeholder="Chrome, ordinateur...">
+      </div>
+    </div>
+    <button class="primary" onclick="addEntry()">+ Ajouter ce retour à ma liste</button>
+  </div>
+
+  <div class="card">
+    <div class="step">Étape 2</div>
+    <div class="row" style="justify-content:space-between;">
+      <div class="section-title" style="margin:0;">Mes retours de cette session <span class="badge" id="count-badge">0</span></div>
+    </div>
+    <div id="listWrap" style="margin-top:10px;"></div>
+  </div>
+
+  <div class="card">
+    <div class="step">Étape 3</div>
+    <div class="section-title">Envoyer mes retours</div>
+    <p class="muted" style="margin-top:0;">Le bouton ci-dessous télécharge un seul fichier regroupant tous les retours listés ci-dessus, puis ouvre votre messagerie. Pensez à joindre le fichier téléchargé avant d'envoyer.</p>
+    <div class="row">
+      <button class="primary" onclick="sendByEmail()">📧 Télécharger et préparer l'e-mail</button>
+    </div>
+  </div>
+
+  <p class="muted">Cette page ne conserve rien une fois fermée : pensez à envoyer votre fichier avant de quitter.</p>
+</div>
+
+<script>
+let sessionData = [];
+
+function newId(){ return Date.now()+"-"+Math.random().toString(36).slice(2,8); }
+
+function escapeHtml(s){
+  return (s||"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+function tagClass(prefix, value){
+  const map = {"Bug":"bug","Incompréhension":"incomprehension","Suggestion":"suggestion","Point positif":"positif"};
+  return prefix+"-"+(map[value]||"suggestion");
+}
+
+function addEntry(){
+  const desc = document.getElementById("f-desc").value.trim();
+  if(!desc){
+    alert("Merci de décrire au moins brièvement le retour avant de l'ajouter.");
+    return;
+  }
+  const entry = {
+    id: newId(),
+    dateSubmitted: new Date().toISOString().slice(0,10),
+    testerGroup: document.getElementById("f-group").value,
+    page: document.getElementById("f-page").value,
+    category: document.getElementById("f-category").value,
+    desc: desc,
+    expected: document.getElementById("f-expected").value.trim(),
+    browser: document.getElementById("f-browser").value.trim(),
+    priority: "À trier",
+    status: "Nouveau",
+    assignee: "",
+    notes: ""
+  };
+  sessionData.push(entry);
+  ["f-desc","f-expected","f-browser"].forEach(fid=>document.getElementById(fid).value="");
+  render();
+}
+
+function deleteEntry(id){
+  sessionData = sessionData.filter(d=>d.id!==id);
+  render();
+}
+
+function render(){
+  document.getElementById("count-badge").textContent = sessionData.length;
+  const wrap = document.getElementById("listWrap");
+  if(sessionData.length===0){
+    wrap.innerHTML = '<div class="empty">Aucun retour ajouté pour le moment.</div>';
+    return;
+  }
+  let html = `<table><thead><tr>
+    <th>Équipe</th><th>Page</th><th>Catégorie</th><th>Description</th><th></th>
+  </tr></thead><tbody>`;
+  sessionData.forEach(d=>{
+    html += `<tr>
+      <td><span class="group-tag">${d.testerGroup==="CAPPEI"?"CAPPEI/ASH":"PE"}</span></td>
+      <td>${escapeHtml(d.page)}</td>
+      <td><span class="tag ${tagClass('tag',d.category)}">${escapeHtml(d.category)}</span></td>
+      <td>${escapeHtml(d.desc)}</td>
+      <td><button class="del-btn" onclick="deleteEntry('${d.id}')">Suppr.</button></td>
+    </tr>`;
+  });
+  html += "</tbody></table>";
+  wrap.innerHTML = html;
+}
+
+function downloadJSON(filename){
+  const blob = new Blob([JSON.stringify(sessionData, null, 2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url; a.download = filename; document.body.appendChild(a); a.click(); a.remove();
+  setTimeout(()=>URL.revokeObjectURL(url), 1000);
+}
+
+function sendByEmail(){
+  if(sessionData.length===0){ alert("Ajoutez au moins un retour avant l'envoi."); return; }
+  const group = sessionData[0].testerGroup;
+  const filename = "synapses-retours-"+group.toLowerCase()+"-"+new Date().toISOString().slice(0,10)+".json";
+  downloadJSON(filename);
+  const subject = encodeURIComponent("Synapses — retours de test — "+new Date().toLocaleDateString("fr-FR"));
+  const body = encodeURIComponent(
+    "Bonjour,\n\nVeuillez trouver ci-joint mes retours de test Synapses ("+sessionData.length+" retour(s)).\n\n"+
+    "Le fichier « "+filename+" » vient d’être téléchargé automatiquement : merci de l’ajouter en pièce jointe à cet e-mail avant l’envoi.\n\nMerci."
+  );
+  setTimeout(()=>{ window.location.href = "mailto:cskrh13@gmail.com?subject="+subject+"&body="+body; }, 450);
+}
+
+render();
+</script>
+</body>
+</html>

@@ -1,0 +1,549 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<!-- SYNAPSES-AUTHOR: Cskrh13 / Vincent | © 2026 -->
+<meta name="author" content="Cskrh13 / Vincent">
+<meta name="copyright" content="© 2026 Cskrh13 / Vincent — Synapses">
+<meta name="application-name" content="Synapses">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cahier journal — Synapses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#1E2A4A; --navy-deep:#141d33; --bg:#F6F5F1; --panel:#FFFFFF; --panel-raised:#FAF9F5;
+  --line:#DEDBD2; --ink:#20242E; --ink-soft:#5B5F6B; --accent-sky:#2E5EAA; --ring:#2E5EAA;
+  --danger:#B5502E; --ok:#2A7F72; --gold:#B5871E; --radius:10px; --radius-sm:6px;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;line-height:1.5;-webkit-font-smoothing:antialiased;}
+h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:600;margin:0;letter-spacing:-0.01em;}
+button{cursor:pointer;font-family:inherit;}
+a{color:inherit;}
+:focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
+code{font-family:"IBM Plex Mono",monospace;font-size:.9em;}
+.eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-sky);font-weight:500;}
+
+header.site-header{background:var(--navy);color:#fff;padding:16px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
+.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.brand-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:#fff;flex-shrink:0;}
+.brand-text{font-family:'Fraunces',serif;font-weight:600;font-size:16px;}
+nav.pl-nav{display:flex;gap:8px;flex-wrap:wrap;}
+nav.pl-nav a{color:#D9E0F2;text-decoration:none;font-size:13.5px;font-weight:500;padding:7px 12px;border-radius:6px;background:rgba(255,255,255,.06);}
+nav.pl-nav a.active{background:var(--accent-sky);color:#fff;}
+.nav-index-link{margin-right:auto;font-weight:700;}
+
+.coffre-widget{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 12px;border:1px solid rgba(255,255,255,.3);border-radius:20px;}
+.coffre-widget .badge-coffre{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;white-space:nowrap;}
+.coffre-widget .badge-coffre.ouvert{color:#BFE3DA;}
+.btn{font-family:'Inter',sans-serif;font-size:13px;font-weight:600;border:1px solid var(--line);background:var(--panel);color:var(--ink);padding:8px 14px;border-radius:8px;transition:background .15s;white-space:nowrap;}
+.btn:hover{background:var(--panel-raised);}
+.btn.primary{background:var(--accent-sky);border-color:var(--accent-sky);color:#fff;}
+.btn.primary:hover{background:#3f6fc0;}
+.btn.small{padding:5px 10px;font-size:12px;}
+.btn.danger{color:#B5502E;border-color:#E3C9BE;}
+.btn.danger:hover{background:#FBEEE9;}
+.btn.on-header{border-color:rgba(255,255,255,.3);background:transparent;color:#fff;}
+.btn.on-header:hover{background:rgba(255,255,255,.1);}
+
+main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
+
+/* -------- Bandeau d'aide guidée -------- */
+.onboarding{background:#EFF4FB;border:1px solid #C9D8F0;border-radius:var(--radius);padding:16px 20px;margin-bottom:18px;}
+.onboarding h3{font-size:14.5px;margin-bottom:8px;}
+.onboarding ol{margin:0 0 8px;padding-left:20px;font-size:13.5px;color:var(--ink-soft);}
+.onboarding ol li{margin-bottom:4px;}
+.onboarding .close-onboarding{float:right;background:none;border:none;color:var(--accent-sky);font-size:12.5px;font-weight:600;}
+
+/* -------- Barre de navigation jour -------- */
+.day-toolbar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;margin-bottom:16px;}
+.day-nav{display:flex;align-items:center;gap:8px;}
+.day-nav button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:7px 12px;font-weight:700;}
+.day-nav input[type=date]{border:1px solid var(--line);border-radius:8px;padding:7px 10px;font-family:'IBM Plex Mono',monospace;font-size:13px;}
+.day-title{font-size:20px;text-transform:capitalize;}
+.day-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
+
+/* -------- État vide / guidage -------- */
+.empty-journal{background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);padding:36px 28px;text-align:center;color:var(--ink-soft);}
+.empty-journal h3{color:var(--ink);margin-bottom:8px;}
+.empty-journal p{max-width:520px;margin:0 auto 16px;font-size:13.5px;}
+
+/* -------- Tableau cahier journal -------- */
+.journal-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
+.journal-table > tbody > tr > td{border-top:1px solid var(--line);vertical-align:top;padding:0;}
+.bloc-row-head{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--panel-raised);}
+.bloc-row-head input.bloc-label{font-family:'Fraunces',serif;font-weight:600;font-size:14px;border:1px solid transparent;background:transparent;border-radius:6px;padding:3px 6px;width:140px;}
+.bloc-row-head input.bloc-label:hover,.bloc-row-head input.bloc-label:focus{border-color:var(--line);background:#fff;}
+.bloc-row-head input.bloc-heure{font-family:'IBM Plex Mono',monospace;font-size:12.5px;border:1px solid var(--line);border-radius:6px;padding:3px 6px;width:64px;background:#fff;}
+.bloc-row-head .sep{color:var(--ink-soft);}
+.bloc-row-head .spacer{flex:1;}
+.bloc-groupes{display:flex;gap:10px;padding:10px 12px 14px;flex-wrap:wrap;}
+.groupe-card{flex:1 1 220px;min-width:220px;background:var(--panel-raised);border:1px solid var(--line);border-radius:8px;padding:10px 12px;}
+.groupe-card.fixe{background:#F1EFE9;font-style:italic;color:var(--ink-soft);}
+.groupe-card .row1{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
+.groupe-card select.adulte-type{border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:12px;font-weight:700;background:#fff;}
+.groupe-card input.adulte-nom{border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:12.5px;flex:1;min-width:60px;}
+.groupe-card input.groupe-titre{width:100%;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:13px;font-weight:600;margin-bottom:6px;background:#fff;}
+.groupe-card .domaine-tag{font-size:10.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-bottom:6px;display:block;}
+.eleves-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;}
+.eleve-chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:2px 4px 2px 10px;font-size:11.5px;}
+.eleve-chip button{border:none;background:var(--panel-raised);border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;color:var(--danger);}
+.groupe-card select.add-eleve{width:100%;border:1px dashed var(--line);border-radius:6px;padding:4px 6px;font-size:12px;background:#fff;color:var(--ink-soft);margin-bottom:6px;}
+.groupe-card textarea.remarque{width:100%;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:12px;resize:vertical;min-height:32px;}
+.groupe-card .card-foot{display:flex;justify-content:flex-end;margin-top:6px;}
+.groupe-card .card-foot button{border:none;background:none;color:var(--danger);font-size:11.5px;font-weight:600;}
+.add-groupe-btn{flex:0 0 auto;align-self:stretch;border:1px dashed var(--line);background:transparent;border-radius:8px;min-width:56px;color:var(--ink-soft);font-size:20px;}
+.add-groupe-btn:hover{background:var(--panel-raised);}
+.add-bloc-row{text-align:center;padding:14px;}
+
+/* -------- Bas de journal -------- */
+.journal-bottom{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:16px;}
+.journal-bottom .field{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 14px;}
+.journal-bottom .field label{display:block;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-bottom:6px;}
+.journal-bottom textarea{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px;font-size:13.5px;min-height:60px;resize:vertical;}
+
+/* -------- Modal coffre (repris de sequences.html) -------- */
+.modal-overlay{position:fixed;inset:0;background:rgba(20,29,51,.45);display:none;align-items:center;justify-content:center;z-index:80;padding:20px;}
+.modal-overlay.open{display:flex;}
+.modal{background:#fff;border-radius:var(--radius);max-width:520px;width:100%;max-height:90vh;overflow-y:auto;}
+.modal-head{display:flex;justify-content:space-between;align-items:center;padding:16px 20px;border-bottom:1px solid var(--line);}
+.modal-close{border:none;background:var(--panel-raised);border-radius:8px;width:30px;height:30px;font-size:15px;}
+.modal-body{padding:18px 20px;}
+.modal-body .field{margin-bottom:14px;}
+.modal-body label{display:block;font-size:12.5px;font-weight:600;margin-bottom:5px;}
+.modal-body input[type=password]{width:100%;border:1px solid var(--line);border-radius:6px;padding:9px;font-size:13.5px;}
+.modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--line);}
+
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:all .25s;z-index:90;}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+.synapses-footer{margin-top:40px;padding:18px 24px;text-align:center;font-size:11px;color:var(--ink-soft);border-top:1px solid var(--line);}
+.synapses-footer div:first-child{font-weight:600;letter-spacing:.04em;}
+
+@media print{
+  header.site-header,.onboarding,.day-actions,.coffre-widget,.add-groupe-btn,.add-bloc-row,.card-foot,.synapses-footer,select.add-eleve{display:none !important;}
+  body{background:#fff;}
+  .journal-table{border:1px solid #999;}
+}
+</style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a class="brand" href="../index.html">
+      <div class="brand-mark">S</div>
+      <div class="brand-text">Synapses</div>
+    </a>
+    <nav class="pl-nav">
+      <a href="../index.html" class="nav-index-link">Accueil</a>
+      <a href="planning-gestion.html">Planning — Gestion</a>
+      <a href="planning-affichage.html">Planning — Affichage</a>
+      <a href="planning-jour.html" class="active">Cahier journal</a>
+      <a href="sequences.html">Séquences &amp; séances</a>
+    </nav>
+    <div class="coffre-widget">
+      <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
+      <button class="btn small on-header" id="btn-coffre-toggle">Ouvrir le coffre</button>
+    </div>
+  </div>
+</header>
+
+<div class="modal-overlay" id="modal-coffre">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Ouvrir le coffre élèves</h3>
+      <button class="modal-close" data-close="modal-coffre">✕</button>
+    </div>
+    <div class="modal-body">
+      <div class="field">
+        <label>Fichier .synapses — sur cet ordinateur</label>
+        <button type="button" class="btn" id="coffre-browse-btn" style="width:100%;text-align:left;">📁 Parcourir mon ordinateur…</button>
+        <input type="file" id="coffre-file" accept=".synapses" style="display:none;">
+        <div id="coffre-file-name" style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;">Aucun fichier sélectionné.</div>
+      </div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="coffre-password" placeholder="Mot de passe du coffre"></div>
+      <p style="font-size:12.5px;color:var(--ink-soft);margin:14px 0 0;line-height:1.6;">
+        🔒 Ce fichier est lu directement depuis votre disque par votre navigateur : il n'est jamais envoyé au site, ni à un serveur, ni sur GitHub.<br>
+        ⚠️ Ne placez jamais ce fichier dans le dépôt GitHub du site.
+      </p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close="modal-coffre">Annuler</button>
+      <button class="btn primary" id="btn-coffre-open-confirm">Ouvrir</button>
+    </div>
+  </div>
+</div>
+
+<main>
+  <div class="eyebrow">Dimension temporelle</div>
+  <h1 style="font-size:24px;margin:6px 0 14px;">Cahier journal</h1>
+
+  <div class="onboarding" id="onboarding">
+    <button class="close-onboarding" id="btn-close-onboarding">Masquer ✕</button>
+    <h3>Comment utiliser cette page ?</h3>
+    <ol>
+      <li><strong>Générer</strong> — cliquez sur « Générer depuis la grille » pour créer automatiquement les créneaux et groupes du jour à partir du planning hebdomadaire (Planning — Gestion). Rien n'est écrasé si vous avez déjà modifié ce jour.</li>
+      <li><strong>Organiser</strong> — pour chaque créneau, ajoutez ou ajustez les groupes de besoin/travail (colonnes), affectez un adulte (enseignant, AESH, ATSEM…) et un titre de séance à chacun.</li>
+      <li><strong>Répartir</strong> — ouvrez le coffre élèves puis cliquez sur « Répartir les élèves » : Synapses propose une répartition à partir des besoins/objectifs actifs de chaque élève. <strong>Vous validez toujours</strong> en ajustant les chips élève à la main.</li>
+    </ol>
+    <p style="font-size:12px;color:var(--ink-soft);margin:0;">Aucune identité d'élève n'est jamais écrite dans ce planning : seuls des identifiants Synapses (ELEVE-xxxx) y apparaissent, rapprochés des noms en mémoire uniquement si le coffre est ouvert dans cet onglet.</p>
+  </div>
+
+  <div class="day-toolbar">
+    <div class="day-nav">
+      <button id="prev-day">◀</button>
+      <input type="date" id="date-picker">
+      <button id="next-day">▶</button>
+      <button id="btn-today">Aujourd'hui</button>
+    </div>
+    <div class="day-title" id="day-title">—</div>
+    <div class="day-actions">
+      <button class="btn" id="btn-generer-jour">↺ Générer depuis la grille</button>
+      <button class="btn" id="btn-repartir-eleves">🎯 Répartir les élèves</button>
+      <button class="btn" id="btn-print">🖨 Imprimer</button>
+      <a class="btn" href="planning-affichage.html">← Retour à la semaine</a>
+    </div>
+  </div>
+
+  <div id="content"></div>
+
+  <div class="journal-bottom">
+    <div class="field">
+      <label for="j-remarque">Remarque</label>
+      <textarea id="j-remarque" placeholder="Ex. Accueil observateur…"></textarea>
+    </div>
+    <div class="field">
+      <label for="j-devoirs">Devoirs</label>
+      <textarea id="j-devoirs"></textarea>
+    </div>
+  </div>
+</main>
+
+<div class="toast" id="toast"></div>
+
+<script src="planning-core.js"></script>
+<script src="../fata-morgana/synapses-coffre.js"></script>
+<script>
+"use strict";
+const PC = window.PlanningCore;
+const $ = id => document.getElementById(id);
+
+function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
+function escapeAttr(s){ return (s==null?"":String(s)).replace(/"/g,'&quot;'); }
+function escapeHTML(s){ return (s==null?"":String(s)).replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
+
+/* ---------------- État ---------------- */
+let config = PC.chargerConfig();
+let grilles = PC.chargerGrilles();
+let affectations = PC.chargerAffectations();
+let banque = {};
+let iso = (new URLSearchParams(location.search).get("date")) || PC.dateISO(new Date());
+let jour = null;
+
+/* ---------------- Coffre (repris du modèle sequences.html) ---------------- */
+let coffre = null;
+try{ coffre = new SynapsesCoffre.Coffre(); }catch(e){ coffre = null; }
+function coffreDisponible(){ return !!coffre; }
+function coffreOuvert(){ return !!(coffre && coffre.ouvert); }
+function eleveLabel(e){
+  const id = e.identite || {};
+  return (`${id.prenom||""} ${id.nom||""}`).trim() || e.identifiantSynapses;
+}
+function updateCoffreWidget(){
+  const status = $("coffre-status"), btn = $("btn-coffre-toggle");
+  if(!coffreDisponible()){ status.textContent = "Coffre indisponible"; btn.style.display = "none"; return; }
+  if(coffreOuvert()){
+    status.textContent = "Coffre ouvert · " + coffre.listerEleves().length + " élève(s)";
+    status.classList.add("ouvert");
+    btn.textContent = "Fermer le coffre";
+  } else {
+    status.textContent = "Coffre fermé";
+    status.classList.remove("ouvert");
+    btn.textContent = "Ouvrir le coffre";
+  }
+}
+function openModal(id){ document.getElementById(id).classList.add('open'); }
+function closeModal(id){ document.getElementById(id).classList.remove('open'); }
+document.querySelectorAll('[data-close]').forEach(btn=>{
+  btn.addEventListener('click', ()=> closeModal(btn.getAttribute('data-close')));
+});
+if($("btn-coffre-toggle")){
+  $("btn-coffre-toggle").addEventListener("click", ()=>{
+    if(coffreOuvert()){
+      if(confirm("Fermer le coffre et purger les données élèves de la mémoire de cet onglet ?")){
+        coffre.purger();
+        updateCoffreWidget();
+        toast("Coffre fermé, données purgées");
+        renderJour();
+      }
+    } else {
+      openModal('modal-coffre');
+    }
+  });
+  $("coffre-browse-btn").addEventListener("click", ()=> $("coffre-file").click());
+  $("coffre-file").addEventListener("change", ()=>{
+    const f = $("coffre-file").files[0];
+    $("coffre-file-name").textContent = f ? ("Sélectionné : " + f.name) : "Aucun fichier sélectionné.";
+  });
+  $("btn-coffre-open-confirm").addEventListener("click", async ()=>{
+    const file = $("coffre-file").files[0];
+    const pwd = $("coffre-password").value;
+    if(!file){ toast("Choisissez un fichier .synapses"); return; }
+    if(!pwd){ toast("Saisissez le mot de passe du coffre"); return; }
+    try{
+      await coffre.ouvrir(file, pwd);
+      closeModal('modal-coffre');
+      $("coffre-password").value = "";
+      $("coffre-file").value = "";
+      $("coffre-file-name").textContent = "Aucun fichier sélectionné.";
+      updateCoffreWidget();
+      toast("Coffre ouvert : " + coffre.listerEleves().length + " élève(s)");
+      renderJour();
+    }catch(e){
+      toast("Impossible d'ouvrir le coffre : " + e.message);
+    }
+  });
+  window.addEventListener('beforeunload', ()=>{ if(coffre) coffre.purger(); });
+}
+
+/* ---------------- Onboarding ---------------- */
+const ONB_KEY = "synapses_journal_onboarding_vu";
+if(localStorage.getItem(ONB_KEY)) $("onboarding").style.display = "none";
+$("btn-close-onboarding").addEventListener("click", ()=>{
+  $("onboarding").style.display = "none";
+  localStorage.setItem(ONB_KEY, "1");
+});
+
+/* ---------------- Sauvegarde ---------------- */
+function sauver(){
+  const journal = PC.chargerJournal();
+  journal[iso] = jour;
+  PC.sauverJournal(journal);
+}
+
+/* ---------------- Rendu ---------------- */
+function labelEleve(id){
+  if(coffreOuvert()){
+    const e = coffre.listerEleves().find(x=>x.identifiantSynapses===id);
+    if(e) return eleveLabel(e) + " (" + id + ")";
+  }
+  return id;
+}
+
+function optionsElevesDisponibles(groupe){
+  if(!coffreOuvert()) return "";
+  return coffre.listerEleves()
+    .filter(e=> !(groupe.eleves||[]).includes(e.identifiantSynapses))
+    .map(e=>`<option value="${escapeAttr(e.identifiantSynapses)}">${escapeHTML(eleveLabel(e))}</option>`).join("");
+}
+
+function renderJour(){
+  $("date-picker").value = iso;
+  $("day-title").textContent = PC.formatDateLong(PC.parseISO(iso));
+
+  const journal = PC.chargerJournal();
+  jour = PC.journalPourDate(iso, journal);
+  PC.sauverJournal(journal);
+
+  $("j-remarque").value = jour.remarque || "";
+  $("j-devoirs").value = jour.devoirs || "";
+
+  const content = $("content");
+  content.innerHTML = "";
+
+  if(!jour.creneaux.length){
+    content.innerHTML = `
+      <div class="empty-journal">
+        <h3>Aucun cahier journal pour ce jour</h3>
+        <p>Générez-le automatiquement depuis la grille horaire hebdomadaire définie dans « Planning — Gestion », puis ajustez les groupes, les adultes et les élèves. Vous pouvez aussi ajouter un premier créneau à la main.</p>
+        <button class="btn primary" id="btn-generer-jour-vide">↺ Générer depuis la grille</button>
+        <button class="btn" id="btn-ajouter-bloc-vide" style="margin-left:8px;">+ Ajouter un créneau</button>
+      </div>`;
+    $("btn-generer-jour-vide").addEventListener("click", genererDepuisGrille);
+    $("btn-ajouter-bloc-vide").addEventListener("click", ()=> ajouterBloc());
+    return;
+  }
+
+  const table = document.createElement("table");
+  table.className = "journal-table";
+  const tbody = document.createElement("tbody");
+
+  jour.creneaux.slice().sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut)).forEach(bloc=>{
+    const tr = document.createElement("tr");
+    const td = document.createElement("td");
+
+    const head = document.createElement("div");
+    head.className = "bloc-row-head";
+    head.innerHTML = `
+      <input class="bloc-label" value="${escapeAttr(bloc.label)}" data-role="label">
+      <input class="bloc-heure" value="${escapeAttr(bloc.debut)}" data-role="debut">
+      <span class="sep">–</span>
+      <input class="bloc-heure" value="${escapeAttr(bloc.fin)}" data-role="fin">
+      <span class="spacer"></span>
+      <button class="btn small danger" data-role="del-bloc">✕ Supprimer ce créneau</button>`;
+    head.querySelector('[data-role=label]').addEventListener("change", e=>{ bloc.label=e.target.value; sauver(); });
+    head.querySelector('[data-role=debut]').addEventListener("change", e=>{ bloc.debut=e.target.value; sauver(); renderJour(); });
+    head.querySelector('[data-role=fin]').addEventListener("change", e=>{ bloc.fin=e.target.value; sauver(); });
+    head.querySelector('[data-role=del-bloc]').addEventListener("click", ()=>{
+      if(!confirm("Supprimer ce créneau et tous ses groupes ?")) return;
+      jour.creneaux = jour.creneaux.filter(b=>b.id!==bloc.id);
+      sauver(); renderJour();
+    });
+    td.appendChild(head);
+
+    const groupesWrap = document.createElement("div");
+    groupesWrap.className = "bloc-groupes";
+    bloc.groupes.forEach(g=> groupesWrap.appendChild(renderGroupeCard(bloc, g)));
+
+    const addBtn = document.createElement("button");
+    addBtn.className = "add-groupe-btn";
+    addBtn.title = "Ajouter un groupe en parallèle sur ce créneau";
+    addBtn.textContent = "+";
+    addBtn.addEventListener("click", ()=>{
+      bloc.groupes.push({ id: PC.uid("grp"), adulte:{type:"enseignant",nom:""}, titre:"Nouveau groupe", domaineCle:"", niveau:"", seanceRef:null, eleves:[], remarque:"", fixe:false });
+      sauver(); renderJour();
+    });
+    groupesWrap.appendChild(addBtn);
+
+    td.appendChild(groupesWrap);
+    tr.appendChild(td);
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  content.appendChild(table);
+
+  const addBlocRow = document.createElement("div");
+  addBlocRow.className = "add-bloc-row";
+  addBlocRow.innerHTML = `<button class="btn" id="btn-add-bloc">+ Ajouter un créneau</button>`;
+  content.appendChild(addBlocRow);
+  $("btn-add-bloc").addEventListener("click", ()=> ajouterBloc());
+}
+
+function ajouterBloc(){
+  const debut = prompt("Heure de début (HH:MM)", "09:00"); if(debut===null) return;
+  const fin = prompt("Heure de fin (HH:MM)", "09:30"); if(fin===null) return;
+  const label = prompt("Libellé du créneau", "Nouveau créneau") || "Créneau";
+  jour.creneaux.push({ id: PC.uid("bloc"), label, debut, fin, groupes: [] });
+  sauver(); renderJour();
+}
+
+function renderGroupeCard(bloc, g){
+  const card = document.createElement("div");
+  card.className = "groupe-card" + (g.fixe ? " fixe" : "");
+
+  if(g.fixe){
+    card.innerHTML = `<div class="row1"><b>${escapeHTML(g.titre)}</b></div>`;
+    return card;
+  }
+
+  const typesOptions = PC.TYPES_ADULTE.map(t=>`<option value="${t.id}" ${g.adulte && g.adulte.type===t.id?'selected':''}>${t.label}</option>`).join("");
+
+  card.innerHTML = `
+    <input class="groupe-titre" value="${escapeAttr(g.titre)}" placeholder="Titre du groupe / séance">
+    ${g.domaineCle ? `<span class="domaine-tag">${escapeHTML(g.niveau||"")} · ${escapeHTML(g.domaineCle)}</span>` : ""}
+    <div class="row1">
+      <select class="adulte-type">${typesOptions}</select>
+      <input class="adulte-nom" placeholder="Nom (ex. Vincent, Yasmina…)" value="${escapeAttr(g.adulte ? g.adulte.nom : "")}">
+    </div>
+    <div class="eleves-chips" data-role="chips"></div>
+    <select class="add-eleve" data-role="add-eleve">
+      <option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>
+      ${optionsElevesDisponibles(g)}
+    </select>
+    <textarea class="remarque" placeholder="Point de vigilance / remarque…">${escapeHTML(g.remarque||"")}</textarea>
+    <div class="card-foot"><button data-role="del-groupe">✕ Supprimer ce groupe</button></div>`;
+
+  function renderChips(){
+    const chips = card.querySelector('[data-role=chips]');
+    chips.innerHTML = "";
+    (g.eleves||[]).forEach(id=>{
+      const chip = document.createElement("span");
+      chip.className = "eleve-chip";
+      chip.innerHTML = `${escapeHTML(labelEleve(id))} <button title="Retirer">✕</button>`;
+      chip.querySelector("button").addEventListener("click", ()=>{
+        g.eleves = g.eleves.filter(x=>x!==id);
+        sauver(); renderChips();
+        card.querySelector('[data-role=add-eleve]').innerHTML =
+          `<option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
+      });
+      chips.appendChild(chip);
+    });
+  }
+  renderChips();
+
+  card.querySelector(".groupe-titre").addEventListener("change", e=>{ g.titre=e.target.value; sauver(); });
+  card.querySelector(".adulte-type").addEventListener("change", e=>{ g.adulte = g.adulte||{}; g.adulte.type=e.target.value; sauver(); });
+  card.querySelector(".adulte-nom").addEventListener("change", e=>{ g.adulte = g.adulte||{}; g.adulte.nom=e.target.value; sauver(); });
+  card.querySelector(".remarque").addEventListener("change", e=>{ g.remarque=e.target.value; sauver(); });
+  card.querySelector('[data-role=add-eleve]').addEventListener("change", e=>{
+    const id = e.target.value;
+    if(!id) return;
+    g.eleves = g.eleves || [];
+    if(!g.eleves.includes(id)) g.eleves.push(id);
+    sauver(); renderChips();
+    e.target.innerHTML = `<option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
+  });
+  card.querySelector('[data-role=del-groupe]').addEventListener("click", ()=>{
+    bloc.groupes = bloc.groupes.filter(x=>x.id!==g.id);
+    sauver(); renderJour();
+  });
+
+  return card;
+}
+
+/* ---------------- Actions globales ---------------- */
+async function genererDepuisGrille(){
+  try{
+    if(!Object.keys(banque).length) banque = await PC.chargerBanque();
+  }catch(e){ /* on continue sans détail de séance */ }
+  PC.genererJournalDepuisGrille(iso, config, grilles, affectations, banque);
+  toast("Cahier journal généré depuis la grille du planning.");
+  renderJour();
+}
+$("btn-generer-jour").addEventListener("click", genererDepuisGrille);
+
+$("btn-repartir-eleves").addEventListener("click", ()=>{
+  if(!coffreOuvert()){ toast("Ouvrez le coffre pour répartir les élèves."); openModal('modal-coffre'); return; }
+  const journal = PC.chargerJournal();
+  jour = PC.journalPourDate(iso, journal);
+  PC.repartirElevesAuto(iso, jour, coffre);
+  toast("Répartition proposée — vérifiez et ajustez si besoin.");
+  renderJour();
+});
+
+$("btn-print").addEventListener("click", ()=> window.print());
+
+$("j-remarque").addEventListener("change", e=>{ jour.remarque=e.target.value; sauver(); });
+$("j-devoirs").addEventListener("change", e=>{ jour.devoirs=e.target.value; sauver(); });
+
+/* ---------------- Navigation jour ---------------- */
+function allerA(nouvIso){
+  iso = nouvIso;
+  const url = new URL(location.href);
+  url.searchParams.set("date", iso);
+  history.replaceState(null, "", url);
+  renderJour();
+}
+$("prev-day").addEventListener("click", ()=> allerA(PC.dateISO(PC.addDays(PC.parseISO(iso), -1))));
+$("next-day").addEventListener("click", ()=> allerA(PC.dateISO(PC.addDays(PC.parseISO(iso), 1))));
+$("btn-today").addEventListener("click", ()=> allerA(PC.dateISO(new Date())));
+$("date-picker").addEventListener("change", e=>{ if(e.target.value) allerA(e.target.value); });
+
+/* ---------------- Initialisation ---------------- */
+(async function init(){
+  updateCoffreWidget();
+  try{ banque = await PC.chargerBanque(); }catch(e){ /* affichage possible sans détail de séance */ }
+  renderJour();
+})();
+</script>
+
+<footer class="synapses-footer">
+    <div>Synapses — Grand Planificateur pédagogique</div>
+    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
+</footer>
+</body>
+</html>

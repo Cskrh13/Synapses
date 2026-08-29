@@ -122,6 +122,20 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
     font-weight: 600;
     letter-spacing: .04em;
 }
+.mode-toggle{display:flex;gap:18px;flex-wrap:wrap;margin-bottom:10px}
+.mode-toggle label{display:flex;align-items:center;gap:6px;font-weight:700;color:var(--ink);text-transform:none;margin:0;font-size:.85rem;cursor:pointer}
+.mode-toggle input{width:auto}
+.panier-domaine{margin-bottom:8px}
+.panier-domaine strong{display:block;font-size:.75rem;color:var(--soft);text-transform:uppercase;margin-bottom:4px}
+.panier-item{display:flex;justify-content:space-between;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--line)}
+.panier-item:last-child{border-bottom:0}
+
+/* Tableau de bord placé avant les étapes */
+.top-dashboard{max-width:1180px;margin:24px auto 0;padding:0 22px}
+.top-dashboard-inner{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:16px}
+.top-dashboard .card{margin:0}
+@media(max-width:760px){.top-dashboard{padding:0 14px}.top-dashboard-inner{grid-template-columns:1fr}}
+
 </style>
 </head>
 <body>
@@ -165,16 +179,9 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
     <p>Le créateur suit maintenant la logique des documents de référence : <strong>cadrage de la séquence → objectifs → progression → séances détaillées → validation</strong>. Chaque séance possède son déroulé, son analyse de tâche, ses aménagements et la posture de l’enseignant.</p>
   </section>
 
-  <div class="stepper" id="stepper">
-    <button class="step active" data-step="1" onclick="App.go(1)">1 · Cadrer<span>niveau, domaine, compétence</span></button>
-    <button class="step" data-step="2" onclick="App.go(2)">2 · Structurer<span>objectifs et élèves</span></button>
-    <button class="step" data-step="3" onclick="App.go(3)">3 · Organiser<span>progression des séances</span></button>
-    <button class="step" data-step="4" onclick="App.go(4)">4 · Détailler<span>déroulé de chaque séance</span></button>
-    <button class="step" data-step="5" onclick="App.go(5)">5 · Finaliser<span>aperçu, JSON, IA gratuite</span></button>
-  </div>
-
-  <div class="workspace">
-    <aside>
+  
+  <div class="top-dashboard">
+    <div class="top-dashboard-inner">
       <div class="card">
         <h3>Votre séquence</h3>
         <div id="selection-status" class="status">Commencez par sélectionner une compétence.</div>
@@ -189,21 +196,50 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
         </div>
         <p class="help">Vous pouvez revenir à une étape à tout moment. Les modifications restent dans cette page jusqu'à l'export.</p>
       </div>
-    </aside>
+    </div>
+  </div>
 
+  <div class="stepper" id="stepper">
+    <button class="step active" data-step="1" onclick="App.go(1)">1 · Cadrer<span>niveau, domaine, compétence</span></button>
+    <button class="step" data-step="2" onclick="App.go(2)">2 · Structurer<span>objectifs et élèves</span></button>
+    <button class="step" data-step="3" onclick="App.go(3)">3 · Organiser<span>progression des séances</span></button>
+    <button class="step" data-step="4" onclick="App.go(4)">4 · Détailler<span>déroulé de chaque séance</span></button>
+    <button class="step" data-step="5" onclick="App.go(5)">5 · Finaliser<span>aperçu, JSON, IA gratuite</span></button>
+  </div>
+
+  <div class="workspace">
     <section id="content">
       <!-- STEP 1 -->
       <div class="step-panel" data-panel="1">
         <div class="card">
           <h3>1. Cadrer la séquence</h3>
-          <p class="help">Ne remplissez pas tout. Choisissez d’abord la compétence : le générateur prépare ensuite une structure que vous pourrez corriger.</p>
+          <div class="mode-toggle" role="radiogroup" aria-label="Mode de cadrage">
+            <label><input type="radio" name="mode-cadrage" value="competence" checked onchange="App.setModeCadrage(this.value)"> Cadrer par compétence</label>
+            <label><input type="radio" name="mode-cadrage" value="projet" onchange="App.setModeCadrage(this.value)"> Cadrer par projet</label>
+          </div>
+          <p class="help" id="mode-cadrage-help">Ne remplissez pas tout. Choisissez d’abord la compétence : le générateur prépare ensuite une structure que vous pourrez corriger.</p>
+
+          <div id="projet-fields" style="display:none">
+            <label>Titre du projet</label>
+            <input id="projet-titre" placeholder="Ex. Exposition Sciences &amp; Arts autour de l'eau">
+            <label>Problématique / objectif du projet</label>
+            <textarea id="projet-description" placeholder="Le thème fédérateur, ce que les élèves vont produire ou vivre"></textarea>
+          </div>
+
           <div class="two">
             <div><label>Niveau</label><select id="niveau" onchange="App.filterCompetences()"><option value="">Tous les niveaux</option></select></div>
             <div><label>Domaine</label><select id="domaine" onchange="App.filterCompetences()"><option value="">Tous les domaines</option></select></div>
           </div>
-          <label>Rechercher une compétence</label>
+          <label id="search-label">Rechercher une compétence</label>
           <input id="search" placeholder="Ex. comparer, lire, écrire, mesurer…" oninput="App.filterCompetences()">
           <div id="competences" class="choice-list"></div>
+
+          <div id="projet-panier-wrap" style="display:none;margin-top:14px">
+            <h4>Compétences du projet sélectionnées</h4>
+            <p class="help">Un projet travaille plusieurs compétences transversales, si possible réparties sur plusieurs domaines.</p>
+            <div id="projet-panier"></div>
+            <div class="toolbar"><button class="btn" id="btn-creer-projet" onclick="App.creerProjet()" disabled>Construire le cadrage du projet →</button></div>
+          </div>
         </div>
 
         <div class="card" id="seq-cadrage" style="display:none">
@@ -294,9 +330,9 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
             <label>Prompt prêt à copier</label>
             <div id="atelier-prompt" class="prompt-box"></div>
             <div class="toolbar"><button class="btn ai" onclick="App.copyPrompt()">📋 Copier le prompt</button><span class="help">Puis collez-le dans votre chat gratuit préféré.</span></div>
-            <label>Réponse du modèle</label>
+            <label>Proposition de l’IA à analyser</label>
             <textarea id="atelier-response" rows="12" placeholder="Collez ici le JSON retourné par l’IA…"></textarea>
-            <div class="toolbar"><button class="btn" onclick="App.importAI()">Analyser et intégrer la proposition</button></div>
+            <div class="toolbar"><button class="btn" onclick="App.importAI()">Analyser, vérifier et intégrer la proposition</button></div>
             <div id="atelier-result"></div>
           </div>
         </div>
@@ -340,6 +376,8 @@ function eleveLabel(e){const id=e.identite||{};return (`${id.prenom||""} ${id.no
 const App = (() => {
   let refs = [], domaines = [], niveaux = [], selected = null, step = 1;
   let sequence = null;
+  let modeCadrage = "competence";
+  let projetPanier = [];
 
   const TYPES = [
     ["diagnostique","Diagnostique"],
@@ -397,23 +435,117 @@ const App = (() => {
     const box=document.getElementById("competences");
     if(!n&&!d&&!q){box.innerHTML='<div class="empty">Choisissez un niveau, un domaine ou saisissez un mot-clé.</div>';return}
     if(!r.length){box.innerHTML='<div class="empty">Aucune compétence trouvée.</div>';return}
-    box.innerHTML=r.slice(0,120).map(c=>`<div class="choice ${selected&&selected.id===c.id?"selected":""}" onclick="App.selectCompetence('${esc(c.id)}')"><strong>${esc(c.niveau?`[${c.niveau}] `:"")}${esc(c.domaine)}</strong><div>${esc(c.intitule)}</div></div>`).join("");
+    box.innerHTML=r.slice(0,120).map(c=>{
+      const isProjet=modeCadrage==="projet";
+      const isSelected=isProjet?projetPanier.includes(c.id):(selected&&selected.id===c.id);
+      const onclick=isProjet?`App.toggleProjetCompetence('${esc(c.id)}')`:`App.selectCompetence('${esc(c.id)}')`;
+      const marker=isProjet?(isSelected?"☑ ":"☐ "):"";
+      return `<div class="choice ${isSelected?"selected":""}" onclick="${onclick}"><strong>${marker}${esc(c.niveau?`[${c.niveau}] `:"")}${esc(c.domaine)}</strong><div>${esc(c.intitule)}</div></div>`;
+    }).join("");
+  }
+
+  function setModeCadrage(m){
+    modeCadrage=m;
+    document.getElementById("projet-fields").style.display=m==="projet"?"block":"none";
+    document.getElementById("projet-panier-wrap").style.display=m==="projet"?"block":"none";
+    document.getElementById("mode-cadrage-help").textContent = m==="projet"
+      ? "Sélectionnez plusieurs compétences, si possible dans plusieurs domaines : elles seront toutes travaillées ensemble dans le projet."
+      : "Ne remplissez pas tout. Choisissez d’abord la compétence : le générateur prépare ensuite une structure que vous pourrez corriger.";
+    document.getElementById("search-label").textContent = m==="projet" ? "Rechercher des compétences à ajouter au projet" : "Rechercher une compétence";
+    filterCompetences();
+    if(m==="projet") renderProjetPanier();
+  }
+
+  function toggleProjetCompetence(id){
+    const idx=projetPanier.indexOf(id);
+    if(idx>=0) projetPanier.splice(idx,1); else projetPanier.push(id);
+    filterCompetences();
+    renderProjetPanier();
+  }
+
+  function renderProjetPanier(){
+    const wrap=document.getElementById("projet-panier");
+    const btn=document.getElementById("btn-creer-projet");
+    if(!wrap)return;
+    if(!projetPanier.length){
+      wrap.innerHTML='<div class="empty">Aucune compétence ajoutée pour le moment.</div>';
+      if(btn)btn.disabled=true;
+      return;
+    }
+    if(btn)btn.disabled=false;
+    const comps=projetPanier.map(id=>refs.find(c=>c.id===id)).filter(Boolean);
+    const parDomaine={};
+    comps.forEach(c=>{(parDomaine[c.domaine]=parDomaine[c.domaine]||[]).push(c)});
+    wrap.innerHTML=Object.entries(parDomaine).map(([dom,items])=>`
+      <div class="panier-domaine">
+        <strong>${esc(dom)} (${items.length})</strong>
+        ${items.map(c=>`<div class="panier-item">
+          <span>${esc(c.intitule)}${c.niveau?` <span class="tag">${esc(c.niveau)}</span>`:""}</span>
+          <button class="btn danger small" type="button" onclick="App.toggleProjetCompetence('${esc(c.id)}')">×</button>
+        </div>`).join("")}
+      </div>`).join("");
+  }
+
+  function updateSelectionAside(){
+    const statusEl=document.getElementById("selection-status");
+    const cardEl=document.getElementById("selection-card");
+    if(sequence && sequence.mode==="projet"){
+      statusEl.className="status ok";
+      statusEl.textContent="Projet cadré · "+(sequence.competences_projet||[]).length+" compétence(s)";
+      cardEl.style.display="block";
+      const doms=[...new Set((sequence.competences_projet||[]).map(c=>c.domaine))];
+      cardEl.innerHTML=`<strong>${esc(sequence.titre)}</strong><div class="tag ai">🧩 Projet</div>${doms.map(d=>`<div class="tag accent">${esc(d)}</div>`).join("")}`;
+    }else if(selected){
+      statusEl.className="status ok";
+      statusEl.textContent="Compétence sélectionnée";
+      cardEl.style.display="block";
+      cardEl.innerHTML=`<strong>${esc(selected.intitule)}</strong><div class="tag accent">${esc(selected.domaine)}</div>${selected.niveau?`<div class="tag">${esc(selected.niveau)}</div>`:""}`;
+    }else{
+      statusEl.className="status";
+      statusEl.textContent="Commencez par sélectionner une compétence.";
+      cardEl.style.display="none";
+    }
+  }
+
+  function creerProjet(){
+    if(!projetPanier.length){alert("Ajoutez au moins une compétence au projet.");return}
+    const comps=projetPanier.map(id=>refs.find(c=>c.id===id)).filter(Boolean);
+    const titreSaisi=document.getElementById("projet-titre").value.trim();
+    const description=document.getElementById("projet-description").value.trim();
+    selected=null;
+    sequence={
+      id:"SEQ-PROJET-"+uid(), mode:"projet",
+      competence_principale:null,
+      competences_projet:comps.map(c=>({id:c.id,intitule:c.intitule,domaine:c.domaine,domaine_id:c.domaine_id,niveau:c.niveau})),
+      domaine:[...new Set(comps.map(c=>c.domaine))].join(" · "),
+      titre:"Projet : "+(titreSaisi||"sans titre"), domaine_socle:"",
+      classe:comps.find(c=>c.niveau)?.niveau||"",
+      competences_travaillees:comps.map(c=>c.intitule), objectif_coeur_de_cible:description,
+      objectif_commun:"", references_theoriques:"", prerequis:[],
+      objectifs_individuels:[], seances:[]
+    };
+    updateSelectionAside();
+    document.getElementById("seq-cadrage").style.display="block";
+    const titleEl=document.querySelector("#seq-cadrage .sequence-title");
+    if(titleEl)titleEl.textContent="Cadrage du projet";
+    setFields();
+    filterCompetences();
+    go(1);
   }
 
   function selectCompetence(id){
     selected=refs.find(c=>c.id===id)||null;if(!selected)return;
     sequence={
-      id:"SEQ-"+selected.id+"-"+Date.now(), competence_principale:selected.id, domaine:selected.domaine,
+      id:"SEQ-"+selected.id+"-"+Date.now(), mode:"competence", competence_principale:selected.id, domaine:selected.domaine,
       titre:"Séquence : "+selected.intitule, domaine_socle:"", classe:selected.niveau||"",
       competences_travaillees:[selected.intitule], objectif_coeur_de_cible:selected.intitule,
       objectif_commun:"", references_theoriques:"", prerequis:selected.prerequis||[],
       objectifs_individuels:[], seances:[]
     };
-    document.getElementById("selection-status").className="status ok";
-    document.getElementById("selection-status").textContent="Compétence sélectionnée";
-    document.getElementById("selection-card").style.display="block";
-    document.getElementById("selection-card").innerHTML=`<strong>${esc(selected.intitule)}</strong><div class="tag accent">${esc(selected.domaine)}</div>${selected.niveau?`<div class="tag">${esc(selected.niveau)}</div>`:""}`;
+    updateSelectionAside();
     document.getElementById("seq-cadrage").style.display="block";
+    const titleEl=document.querySelector("#seq-cadrage .sequence-title");
+    if(titleEl)titleEl.textContent="Cadrage";
     setFields();
     filterCompetences();
     go(1);
@@ -458,10 +590,14 @@ const App = (() => {
 
   function sessionTemplate(type="exploration",i=1){
     const name=TYPES.find(x=>x[0]===type)?.[1]||"Séance";
+    const isProjet=sequence?.mode==="projet";
+    const compsProjet=isProjet?(sequence.competences_projet||[]):[];
     return {
       id:uid("SEANCE"),numero:i,type,titre:`Séance ${i} — ${name}`,
-      competence_cible:selected?.intitule||"",competences_periph:[],
-      modalites_generales:"",niveaux:sequence?.classe?[sequence.classe]:(selected?.niveau?[selected.niveau]:[]),
+      competence_cible:isProjet?"":(selected?.intitule||""),
+      competences_periph:isProjet?compsProjet.map(c=>c.intitule):[],
+      modalites_generales:"",
+      niveaux:sequence?.classe?[sequence.classe]:(isProjet?[...new Set(compsProjet.map(c=>c.niveau).filter(Boolean))]:(selected?.niveau?[selected.niveau]:[])),
       objectif:"",problematique:"",consigne:"",tache:"",
       criteres_reussite:"",materiel:[],duree_estimee_min:Number(document.getElementById("duree-defaut").value)||45,
       vigilance:"",deroule:DEFAULT_PHASES.map((p,j)=>({phase:p,temps:j===0?5:"",modalite_materiel:"",deroulement:"",analyse_tache:"",amenagement:"",posture:""})),
@@ -476,7 +612,7 @@ const App = (() => {
   }
 
   function generateSequence(){
-    if(!sequence||!selected){alert("Sélectionnez d’abord une compétence.");return}
+    if(!sequence||(sequence.mode!=="projet"&&!selected)){alert("Sélectionnez d’abord une compétence.");return}
     const n=Number(document.getElementById("nb-seances").value)||7;
     const types=recommendedTypes(n);
     sequence.seances=types.map((t,i)=>sessionTemplate(t,i+1));
@@ -633,9 +769,38 @@ const App = (() => {
   }
   function loadPrivateStudents(i){
     if(!coffreOuvert()){alert("Ouvrez d’abord le coffre élèves.");return}
-    const s=sequence.seances[i]; s.adaptations_individuelles=s.adaptations_individuelles||[];
-    const ids=new Set(s.adaptations_individuelles.map(x=>x.identifiant).filter(Boolean));
-    coffre.listerEleves().forEach(e=>{if(!ids.has(e.identifiantSynapses))s.adaptations_individuelles.push({identifiant:e.identifiantSynapses,adaptation:"",vigilance:""})});
+    if(!sequence?.seances[i])return;
+    const eleves=coffre.listerEleves()||[];
+    const rows=eleves.map(e=>{
+      const objectifs=(e.objectifs||[])
+        .filter(o=>!o.statut || o.statut==="actif")
+        .map(o=>o.libelle||o.objectif||"")
+        .filter(Boolean);
+      const adaptations=(e.adaptations||[])
+        .map(a=>typeof a==="string"?a:(a.libelle||a.adaptation||""))
+        .filter(Boolean);
+      const obs=e.observations||[];
+      const adaptationsObs=obs.flatMap(o=>[o.adaptationUtilisee,o.adaptationProposee])
+        .map(a=>typeof a==="string"?a:(a?.libelle||a?.adaptation||""))
+        .filter(Boolean);
+      const difficultes=obs.map(o=>o.difficulte||o.difficultes||"").flat()
+        .map(d=>typeof d==="string"?d:(d?.libelle||d?.texte||""))
+        .filter(Boolean);
+
+      // L'adaptation est renseignée à partir des objectifs actifs et des adaptations connues.
+      const adaptation=[...objectifs,...adaptations,...adaptationsObs]
+        .filter((v,n,a)=>v && a.indexOf(v)===n).join("\n• ");
+      // Le point de vigilance reprend les informations de difficultés observées.
+      const vigilance=[...difficultes].filter((v,n,a)=>v && a.indexOf(v)===n).join("\n• ");
+
+      return {
+        identifiant:e.identifiantSynapses||e.id||"",
+        adaptation:adaptation ? "• "+adaptation : "",
+        vigilance:vigilance ? "• "+vigilance : ""
+      };
+    }).filter(r=>r.identifiant);
+
+    sequence.seances[i].adaptations_individuelles=rows;
     renderPrivateStudents(i);
   }
   function phaseField(si,pi,k,v){if(sequence?.seances[si]?.deroule?.[pi])sequence.seances[si].deroule[pi][k]=v}
@@ -729,17 +894,45 @@ const App = (() => {
 }`;
   }
 
+  function contextPrompt(){
+    if(sequence.mode==="projet"){
+      const parDomaine={};
+      (sequence.competences_projet||[]).forEach(c=>{(parDomaine[c.domaine]=parDomaine[c.domaine]||[]).push(c.intitule)});
+      const liste=Object.entries(parDomaine).map(([d,items])=>`- ${d} : ${items.join(" ; ")}`).join("\\n");
+      return `Mode de cadrage : PROJET (plusieurs compétences transversales, ce n'est PAS une séquence construite autour d'une seule compétence)
+Titre / thème du projet : ${sequence.titre}
+Problématique / objectif du projet : ${sequence.objectif_coeur_de_cible||"à définir"}
+Niveau/classe : ${sequence.classe||"à préciser"}
+Compétences travaillées, regroupées par domaine :
+${liste||"- (aucune compétence sélectionnée)"}`;
+    }
+    return `Compétence principale : ${selected?.intitule||sequence.competence_principale}
+Domaine : ${selected?.domaine||sequence.domaine}
+Niveau/classe : ${sequence.classe||selected?.niveau||"à préciser"}
+Objectif cœur de cible : ${sequence.objectif_coeur_de_cible||"à définir"}`;
+  }
+
+  function contexteIndividuelPrompt(){
+    if(!sequence)return "";
+    const rows=(sequence.seances||[]).flatMap((s,si)=>
+      (s.adaptations_individuelles||[]).map(r=>({
+        seance:si+1,
+        identifiant:r.identifiant||"ÉLÈVE-ANONYME",
+        adaptation:r.adaptation||"",
+        vigilance:r.vigilance||""
+      }))
+    ).filter(r=>r.adaptation||r.vigilance);
+    if(!rows.length)return "\nDONNÉES INDIVIDUELLES : aucune donnée individuelle chargée pour cette proposition.";
+    return "\nDONNÉES INDIVIDUELLES ANONYMISÉES :\n"+
+      rows.map(r=>`- ${r.identifiant} (séance ${r.seance})\n  Objectifs / adaptations : ${r.adaptation||"non renseigné"}\n  Informations de difficultés / points de vigilance : ${r.vigilance||"non renseigné"}`).join("\n");
+  }
+
   function updatePrompt(){
     if(!sequence)return;
     const action=document.getElementById("atelier-action").value;
     const wrap=document.getElementById("atelier-session-wrap");
     wrap.style.display=action==="seance"?"block":"none";
     if(action==="seance")updateSessionSelect();
-    let context=`Compétence principale : ${selected?.intitule||sequence.competence_principale}
-Domaine : ${selected?.domaine||sequence.domaine}
-Niveau/classe : ${sequence.classe||selected?.niveau||"à préciser"}
-Objectif cœur de cible : ${sequence.objectif_coeur_de_cible||"à définir"}
-`;
     let task="";
     if(action==="seance"){
       const i=Number(document.getElementById("atelier-session").value||0),s=sequence.seances[i];
@@ -747,24 +940,38 @@ Objectif cœur de cible : ${sequence.objectif_coeur_de_cible||"à définir"}
     }else if(action==="ameliorer"){
       task=`\\nProgression actuelle : ${JSON.stringify(sequence.seances,null,2)}`;
     }
-    document.getElementById("atelier-prompt").textContent=`Tu es un conseiller pédagogique. Tu produis une proposition directement exploitable par un enseignant.
+    const progressionRule = sequence.mode==="projet"
+      ? `- Ce cadrage est un PROJET, pas une séquence construite autour d'une seule compétence : chaque séance doit mobiliser PLUSIEURS des compétences listées dans le contexte, si possible de domaines différents.
+- Indique dans "competence_cible" la compétence la plus centrale pour la séance, et liste les autres compétences du projet réellement mobilisées dans "competences_periph".
+- Assure-toi qu'à la fin de l'enchaînement, chaque compétence du projet ait été mobilisée dans au moins une séance.
+- Les séances peuvent s'organiser autour d'une production ou d'un temps fort commun (exposition, spectacle, défi, sortie…) plutôt que suivre la seule logique diagnostique → évaluation.`
+      : `- Construis un enchaînement de séances cohérent : diagnostique → exploration → références → structuration → entraînement/systématisation → approfondissement → évaluation lorsque le nombre de séances le permet.`;
+    document.getElementById("atelier-prompt").textContent=`Tu es un conseiller pédagogique. Tu produis une proposition directement exploitable par un enseignant, sous la forme d'une SÉQUENCE composée de SÉANCES (pas d'une progression d'étapes de compétence).
 
 RÈGLES :
 - Respecte exactement la structure JSON ci-dessous.
 - Ne mets aucun texte avant ou après le JSON.
-- Construis une progression cohérente : diagnostique → exploration → références → structuration → entraînement/systématisation → approfondissement → évaluation lorsque le nombre de séances le permet.
+- La clé racine du tableau doit s'appeler exactement "seances" (jamais "etapes"). Chaque séance est un objet numéroté par la clé "numero" (jamais "ordre").
+${progressionRule}
 - Pour chaque séance, rédige des informations concrètes, pas des intitulés génériques.
 - Le déroulé doit expliciter ce que font les élèves et l'enseignant.
 - Chaque ligne du déroulé renseigne : temps, modalité + matériel, déroulement, analyse de la tâche, aménagement/différenciation, posture de l'enseignant.
 - Prends en compte la surcharge cognitive, les aides visuelles, la manipulation, la verbalisation et la progressivité lorsqu'elles sont pertinentes.
 - N'invente pas de référence institutionnelle précise si elle n'est pas fournie.
 - L'objectif et les critères doivent être observables.
+- Les données individuelles sont anonymisées : ne demande ni nom, ni prénom, ni établissement, ni classe précise.
+- Utilise les objectifs/adaptations pour proposer des aménagements concrets.
+- Utilise les informations de difficultés comme points de vigilance pédagogiques.
+- Ne pose aucun diagnostic médical ou psychologique et ne déduis aucun trouble.
+- Ne transforme jamais une proposition en décision automatique : l'enseignant garde la validation finale.
 
 CONTEXTE :
-${context}${task}
+${contextPrompt()}${contexteIndividuelPrompt()}${task}
 
-FORMAT JSON EXACT :
-${schemaPrompt()}`;
+FORMAT JSON EXACT — rappel : la clé racine du tableau est "seances", chaque séance a une clé "numero" (pas "etapes" / "ordre") :
+${schemaPrompt()}
+
+RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances numérotées avec "numero"). N'utilise pas les clés "etapes" ou "ordre", qui appartiennent à un autre outil.`;
   }
 
   function copyPrompt(){
@@ -806,7 +1013,7 @@ ${schemaPrompt()}`;
       setFields();renderSessions();renderDetails();
       return "Séquence intégrée : "+sequence.seances.length+" séances.";
     }
-    throw new Error("Le JSON doit contenir une propriété « seances ».");
+    throw new Error("Le JSON doit contenir une propriété « seances ». "+(Array.isArray(obj.etapes)?"Ce JSON contient « etapes » : c'est la réponse de l'atelier Progression (autre outil), pas celle du générateur de séquences. Recopiez le prompt ci-dessus dans un NOUVEAU chat, sans historique, pour obtenir une réponse avec « seances ».":""));
   }
 
   function importAI(){
@@ -898,7 +1105,26 @@ ${schemaPrompt()}`;
         const obj=JSON.parse(r.result);
         if(!obj.seances)throw new Error("Ce fichier ne contient pas de séquence exploitable.");
         sequence=obj;
-        selected=refs.find(c=>c.id===sequence.competence_principale)||{id:sequence.competence_principale,intitule:sequence.competences_travaillees?.[0]||"",domaine:sequence.domaine||"",niveau:""};
+        if(sequence.mode==="projet"){
+          selected=null;
+          modeCadrage="projet";
+          projetPanier=(sequence.competences_projet||[]).map(c=>c.id);
+          const radio=document.querySelector('input[name="mode-cadrage"][value="projet"]');
+          if(radio)radio.checked=true;
+          setModeCadrage("projet");
+          const titreEl=document.getElementById("projet-titre"), descEl=document.getElementById("projet-description");
+          if(titreEl)titreEl.value=(sequence.titre||"").replace(/^Projet\s*:\s*/,"");
+          if(descEl)descEl.value=sequence.objectif_coeur_de_cible||"";
+          renderProjetPanier();
+        }else{
+          selected=refs.find(c=>c.id===sequence.competence_principale)||{id:sequence.competence_principale,intitule:sequence.competences_travaillees?.[0]||"",domaine:sequence.domaine||"",niveau:""};
+          modeCadrage="competence";
+          const radio=document.querySelector('input[name="mode-cadrage"][value="competence"]');
+          if(radio)radio.checked=true;
+          setModeCadrage("competence");
+        }
+        updateSelectionAside();
+        document.getElementById("seq-cadrage").style.display="block";
         sequence.seances=sequence.seances.map(normaliserSeance);
         setFields();renderSessions();renderDetails();go(5);
       }catch(e){alert("Import impossible : "+e.message)}
@@ -906,11 +1132,11 @@ ${schemaPrompt()}`;
     r.readAsText(file);event.target.value="";
   }
 
-  return {init,go,filterCompetences,selectCompetence,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents};
+  return {init,go,filterCompetences,selectCompetence,setModeCadrage,toggleProjetCompetence,creerProjet,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents,updateCoffreWidget};
 })();
 
 App.init();
-updateCoffreWidget();
+App.updateCoffreWidget();
 window.addEventListener("beforeunload",()=>{if(coffre)coffre.purger()});
 </script>
 

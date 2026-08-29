@@ -85,7 +85,10 @@ header.site-header{
 .brand-text{display:flex;flex-direction:column;line-height:1.15;}
 .brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
 .brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
-nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;align-items:center;}
+.nav-dropdown{flex:0 0 auto;}
+.nav-dropdown>summary{height:36px;line-height:20px;}
+nav.main-nav>a{height:36px;box-sizing:border-box;display:flex;align-items:center;}
 nav.main-nav a{
   color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;
   padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;
@@ -96,6 +99,19 @@ nav.main-nav a.nav-programmation{
   margin-left:4px;color:#fff;
 }
 nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
+
+/* Menus déroulants */
+.nav-dropdown{position:relative;}
+.nav-dropdown>summary{list-style:none;color:#D9E0F2;font-size:14px;font-weight:500;padding:8px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;display:block;box-sizing:border-box;}
+.nav-dropdown>summary::-webkit-details-marker{display:none;}
+.nav-dropdown>summary::after{content:"⌄";font-size:11px;margin-left:7px;opacity:.75;}
+.nav-dropdown[open]>summary,.nav-dropdown>summary:hover{background:rgba(255,255,255,.09);color:#fff;}
+.nav-dropdown-menu{position:absolute;top:100%;right:0;margin-top:7px;min-width:235px;background:var(--navy);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:7px;box-shadow:0 14px 30px rgba(0,0,0,.25);z-index:100;}
+.nav-dropdown-menu a{display:block!important;color:#D9E0F2!important;padding:9px 11px!important;border-radius:5px;margin:0!important;background:transparent!important;border:0!important;}
+.nav-dropdown-menu a:hover{background:rgba(255,255,255,.09)!important;color:#fff!important;}
+.menu-separator{height:1px;background:rgba(255,255,255,.12);margin:6px 4px;}
+.menu-label{padding:5px 11px 3px;color:#9EADD0;font-family:'IBM Plex Mono',monospace;font-size:10px;letter-spacing:.1em;text-transform:uppercase;}
+@media(max-width:760px){nav.main-nav{width:100%;}.nav-dropdown-menu{position:static;margin-top:4px;width:100%;}}
 nav.main-nav a.nav-coffre{
   background:rgba(181,80,46,.16);border:1px solid rgba(181,80,46,.4);
   margin-left:4px;color:#fff;
@@ -438,14 +454,35 @@ mark{background:#FCE9C9;color:inherit;border-radius:2px;padding:0 1px;}
       </span>
     </a>
     <nav class="main-nav" aria-label="Navigation principale">
-      <a href="#niveaux">Niveaux</a>
-      <a href="#disciplines">Disciplines</a>
-      <a href="#repertoire">Répertoire</a>
-      <a href="#vue-ensemble">Vue d'ensemble</a>
-      <a href="Programmation/sequences.html" class="nav-programmation">Programmation →</a>
-      <a href="Programmation/planning-affichage.html" class="nav-programmation">Planning →</a>
-      <a href="Programmation/generateur-sequences-projet.html">Générateur de séquences</a>
-      <a href="fata-morgana/coffre.html" class="nav-coffre">🔒 Coffre confidentiel</a>
+      <details class="nav-dropdown">
+        <summary>Explorer</summary>
+        <div class="nav-dropdown-menu">
+          <div class="menu-label">Référentiel</div>
+          <a href="#niveaux">Niveaux</a>
+          <a href="#disciplines">Disciplines</a>
+          <a href="#repertoire">Répertoire</a>
+          <a href="#vue-ensemble">Vue d'ensemble</a>
+          <div class="menu-separator"></div>
+          <a href="cartographie-competences.html">Cartographie des compétences</a>
+        </div>
+      </details>
+      <details class="nav-dropdown">
+        <summary>Construire</summary>
+        <div class="nav-dropdown-menu">
+          <div class="menu-label">Programmation pédagogique</div>
+          <a href="Programmation/sequences.html">Programmation</a>
+          <a href="Programmation/planning-affichage.html">Planning</a>
+          <a href="Programmation/generateur-sequences-projet.html">Générateur de séquences</a>
+        </div>
+      </details>
+      <details class="nav-dropdown">
+        <summary>Projet</summary>
+        <div class="nav-dropdown-menu">
+          <a href="feedback/synapses-triages-feedback.html">Feedback</a>
+          <a href="detailduprojet.html">Détails du projet</a>
+        </div>
+      </details>
+      <a href="fata-morgana/coffre.html" class="nav-coffre">🔒 Coffre</a>
     </nav>
   </div>
 </header>

@@ -36,12 +36,18 @@
     return new Date().toISOString();
   }
 
-  function coffreVide(nomEtablissement) {
+  /**
+   * @param {string} [nomEtablissement] - libre, jamais transmis à une IA (voir grille-analyse.js)
+   * @param {string} [dispositif] - type de dispositif d'école inclusive (ex: "ULIS école"),
+   *   donnée générique (pas d'identité), seule autorisée à être transmise en contexte IA.
+   */
+  function coffreVide(nomEtablissement, dispositif) {
     return {
       version: 1,
       creeLe: nowIso(),
       modifieLe: nowIso(),
       etablissement: nomEtablissement || '',
+      dispositif: dispositif || '',
       // Le référentiel public (programmes, BARRY, S4C, séances...) N'EST
       // JAMAIS recopié ici : seules les données propres à l'élève y figurent.
       eleves: []
@@ -96,9 +102,11 @@
     }
 
     /** Crée un nouveau coffre vide en mémoire. Rien n'est écrit sur disque
-     *  tant que exporter()/telecharger() n'est pas appelé explicitement. */
-    creer(nomEtablissement) {
-      this._data = coffreVide(nomEtablissement);
+     *  tant que exporter()/telecharger() n'est pas appelé explicitement.
+     *  @param {string} [nomEtablissement]
+     *  @param {string} [dispositif] - requis côté UI avant l'appel (voir coffre.html) */
+    creer(nomEtablissement, dispositif) {
+      this._data = coffreVide(nomEtablissement, dispositif);
       this._ouvert = true;
       return this._data;
     }

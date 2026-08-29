@@ -24,14 +24,19 @@ button{cursor:pointer;font-family:inherit;}
 a{color:inherit;}
 :focus-visible{outline:3px solid var(--ring);outline-offset:2px;}
 .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--accent-sky);font-weight:500;}
-header.site-header{background:var(--navy);color:#fff;padding:16px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
-.header-inner{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap;}
+header.site-header{background:var(--navy);color:#fff;padding:14px 24px;border-bottom:3px solid var(--accent-sky);position:sticky;top:0;z-index:20;}
+.header-top{max-width:1400px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:20px;flex-wrap:wrap;}
 .brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
-.brand-mark{width:36px;height:36px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:#fff;flex-shrink:0;}
-.brand-text{font-family:'Fraunces',serif;font-weight:600;font-size:16px;}
-nav.pl-nav{display:flex;gap:8px;}
-nav.pl-nav a{color:#D9E0F2;text-decoration:none;font-size:13.5px;font-weight:500;padding:7px 12px;border-radius:6px;background:rgba(255,255,255,.06);}
-nav.pl-nav a.active{background:var(--accent-sky);color:#fff;}
+.brand-mark{width:40px;height:40px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:#fff;flex-shrink:0;}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-text .top{font-size:10px;letter-spacing:0.14em;text-transform:uppercase;color:#B9C6E5;font-family:'IBM Plex Mono',monospace;}
+.brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;align-items:center;}
+nav.main-nav a{color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;}
+nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
+nav.main-nav a.nav-programmation{background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.25);margin-left:4px;color:#fff;}
+nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
+nav.main-nav a.nav-programmation.active{background:var(--accent-sky);border-color:var(--accent-sky);}
 main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;}
 .toolbar .chip-toggle{display:flex;gap:6px;flex-wrap:wrap;}
@@ -45,6 +50,9 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .day-col{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px;min-height:120px;}
 .day-col h3{font-size:14px;margin-bottom:2px;}
 .day-col .day-date{font-size:11.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-bottom:10px;}
+.day-col-head{display:block;text-decoration:none;color:inherit;border-radius:6px;margin:-4px -4px 6px;padding:4px;}
+.day-col-head:hover{background:var(--panel-raised);}
+.day-col-head .zoom-hint{font-size:11px;opacity:.55;}
 .niveau-group{margin-bottom:12px;}
 .niveau-group .niveau-label{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px;}
 .creneau-card{border-radius:8px;padding:7px 9px;margin-bottom:6px;font-size:12.5px;border:1px solid var(--line);}
@@ -98,16 +106,20 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
 <body>
 
 <header class="site-header">
-  <div class="header-inner">
-    <a class="brand" href="../index.html">
-      <div class="brand-mark">S</div>
-      <div class="brand-text">Synapses</div>
+  <div class="header-top">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">RÉ</span>
+      <span class="brand-text">
+        <span class="top">Portail non institutionnel</span>
+        <span class="bottom">Planning</span>
+      </span>
     </a>
-    <nav class="pl-nav">
-      <a href="../index.html" class="nav-index-link">Accueil</a>
-      <a href="planning-gestion.html">Planning — Gestion</a>
-      <a href="planning-affichage.html" class="active">Planning — Affichage</a>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <a href="../index.html">Accueil</a>
       <a href="sequences.html">Séquences &amp; séances</a>
+      <a href="planning-gestion.html" class="nav-programmation">Planning — Gestion</a>
+      <a href="planning-affichage.html" class="nav-programmation active">Planning — Affichage</a>
+      <a href="planning-jour.html" class="nav-programmation">Cahier journal</a>
     </nav>
   </div>
 </header>
@@ -128,8 +140,7 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
     </div>
   </section>
 
-  <div class="eyebrow">Dimension temporelle</div>
-  <h1 style="font-size:24px;margin:6px 0 18px;">Planning de la semaine</h1>
+  <h1 style="font-size:24px;margin:0 0 18px;">Planning de la semaine</h1>
 
   <div class="toolbar">
     <div class="chip-toggle" id="niveaux-affiches"></div>
@@ -242,7 +253,11 @@ function renderSemaine(){
     const iso = PC.dateISO(jourDate);
     const col = document.createElement("div");
     col.className = "day-col";
-    col.innerHTML = `<h3>${j.nom}</h3><div class="day-date">${PC.formatDateShort(jourDate)}</div>`;
+    col.innerHTML = `
+      <a class="day-col-head" href="planning-jour.html?date=${iso}" title="Ouvrir le cahier journal de ce jour">
+        <h3>${j.nom} <span class="zoom-hint">🔍</span></h3>
+        <div class="day-date">${PC.formatDateShort(jourDate)}</div>
+      </a>`;
 
     niveauxAffiches.forEach(niveau=>{
       const creneauxJour = (grilles[niveau]||[]).filter(c=>c.jour===j.n).sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
@@ -264,7 +279,7 @@ function renderSemaine(){
           carte.addEventListener("click", ()=> ouvrirDrawer(niveau, iso, c, item));
         } else {
           carte.className = "creneau-card " + c.type;
-          carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div><div class="creneau-titre">${PC.TYPES_CRENEAU[c.type].label}</div>`;
+          carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div><div class="creneau-titre">${c.type==="autre" && c.libelle ? c.libelle : PC.TYPES_CRENEAU[c.type].label}</div>`;
         }
         groupe.appendChild(carte);
       });

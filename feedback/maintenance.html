@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<title>Synapses — Suivi des retours de test</title>
+<style>
+  :root{
+    --bg:#f5f4f0; --card:#ffffff; --border:#e2e0d8; --border-strong:#c9c6ba;
+    --text:#1f1e1b; --text2:#5f5e58; --text3:#8b897f;
+    --accent:#185fa5; --accent-bg:#e6f1fb;
+    --danger:#a32d2d; --danger-bg:#fcebeb;
+    --warn:#854f0b; --warn-bg:#faeeda;
+    --ok:#27500a; --ok-bg:#eaf3de;
+    --purple:#3c3489; --purple-bg:#eeedfe;
+  }
+  *{box-sizing:border-box;}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif;background:var(--bg);color:var(--text);padding:24px;}
+  h1{font-size:20px;font-weight:600;margin:0 0 4px;}
+  .subtitle{color:var(--text2);font-size:13px;margin:0 0 20px;}
+  .layout{max-width:1280px;margin:0 auto;}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:16px 18px;margin-bottom:16px;}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;}
+  .metrics{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;}
+  .metric{background:#faf9f6;border:1px solid var(--border);border-radius:8px;padding:10px 12px;}
+  .metric .num{font-size:22px;font-weight:600;}
+  .metric .lbl{font-size:11px;color:var(--text2);text-transform:uppercase;letter-spacing:.03em;}
+  label{font-size:12px;color:var(--text2);display:block;margin-bottom:3px;}
+  select,input[type=text]{
+    width:100%;padding:7px 9px;border:1px solid var(--border-strong);border-radius:6px;
+    font-size:13px;font-family:inherit;background:#fff;color:var(--text);
+  }
+  button{
+    cursor:pointer;border:1px solid var(--border-strong);background:#fff;color:var(--text);
+    padding:8px 14px;border-radius:6px;font-size:13px;font-family:inherit;
+  }
+  button:hover{background:#f2f1ec;}
+  table{width:100%;border-collapse:collapse;font-size:12.5px;}
+  th{text-align:left;font-weight:600;color:var(--text2);padding:8px 8px;border-bottom:1px solid var(--border-strong);white-space:nowrap;cursor:pointer;user-select:none;}
+  th:hover{color:var(--text);}
+  td{padding:7px 8px;border-bottom:1px solid var(--border);vertical-align:top;}
+  tr:hover td{background:#faf9f6;}
+  .tag{display:inline-block;padding:2px 8px;border-radius:99px;font-size:11px;font-weight:600;white-space:nowrap;}
+  .tag-bug{background:var(--danger-bg);color:var(--danger);}
+  .tag-incomprehension{background:var(--warn-bg);color:var(--warn);}
+  .tag-suggestion{background:var(--accent-bg);color:var(--accent);}
+  .tag-positif{background:var(--ok-bg);color:var(--ok);}
+  .tag-critique{background:var(--danger-bg);color:var(--danger);}
+  .tag-haute{background:var(--warn-bg);color:var(--warn);}
+  .tag-moyenne{background:var(--accent-bg);color:var(--accent);}
+  .tag-basse{background:#f1efe8;color:var(--text2);}
+  .desc-cell{max-width:300px;}
+  .desc-cell .exp{color:var(--text2);font-size:11.5px;margin-top:3px;}
+  select.mini{padding:4px 6px;font-size:12px;border-radius:5px;}
+  .toolbar{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px;margin-bottom:10px;}
+  .section-title{font-size:14px;font-weight:600;margin:0 0 10px;}
+  .muted{color:var(--text3);font-size:12px;}
+  .empty{padding:24px;text-align:center;color:var(--text3);}
+  .group-tag{font-size:11px;padding:1px 6px;border-radius:5px;background:var(--purple-bg);color:var(--purple);font-weight:600;}
+  .barwrap{display:flex;align-items:center;gap:8px;margin-bottom:6px;}
+  .barlabel{width:130px;font-size:12px;color:var(--text2);flex-shrink:0;}
+  .bar{flex:1;background:#f1efe8;border-radius:4px;height:14px;overflow:hidden;}
+  .barfill{height:100%;background:var(--accent);}
+  .barcount{width:24px;text-align:right;font-size:12px;color:var(--text2);}
+  .status-banner{font-size:12.5px;padding:10px 12px;border-radius:8px;margin-bottom:16px;}
+  .status-ok{background:var(--ok-bg);color:var(--ok);border:1px solid var(--ok);}
+  .status-warn{background:var(--warn-bg);color:var(--warn);border:1px solid var(--warn);}
+  .nav-link{font-size:12.5px;color:var(--accent);text-decoration:none;}
+  .nav-link:hover{text-decoration:underline;}
+  .readonly-pill{font-size:11px;padding:2px 8px;border-radius:99px;background:#f1efe8;color:var(--text2);font-weight:600;}
+</style>
+</head>
+<body>
+<div class="layout">
+  <div class="row" style="justify-content:space-between;margin-bottom:6px;">
+    <h1>Synapses — Suivi des retours de test <span class="readonly-pill">lecture seule</span></h1>
+    <a class="nav-link" href="administrationretours.html">Gérer et trier les retours →</a>
+  </div>
+  <p class="subtitle">v0.9.0-test — vue de consultation, données mises à jour par l'administrateur</p>
+
+  <div id="status-banner"></div>
+
+  <div class="card">
+    <div class="section-title">Tableau de bord</div>
+    <div class="metrics" id="dashboard"></div>
+  </div>
+
+  <div class="card">
+    <div class="row" style="justify-content:space-between;align-items:flex-start;">
+      <div style="flex:1;min-width:220px;">
+        <div class="section-title">Par catégorie</div>
+        <div id="chart-category"></div>
+      </div>
+      <div style="flex:1;min-width:220px;">
+        <div class="section-title">Par page</div>
+        <div id="chart-page"></div>
+      </div>
+      <div style="flex:1;min-width:220px;">
+        <div class="section-title">Bugs par équipe testeuse</div>
+        <div id="chart-group"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="toolbar">
+      <div class="row">
+        <div>
+          <label>Recherche</label>
+          <input type="text" id="search" oninput="render()" placeholder="Mot-clé..." style="width:180px;">
+        </div>
+        <div>
+          <label>Catégorie</label>
+          <select id="filter-category" onchange="render()" class="mini">
+            <option value="">Toutes</option>
+            <option>Bug</option><option>Incompréhension</option><option>Suggestion</option><option>Point positif</option>
+          </select>
+        </div>
+        <div>
+          <label>Page</label>
+          <select id="filter-page" onchange="render()" class="mini"><option value="">Toutes</option></select>
+        </div>
+        <div>
+          <label>Équipe</label>
+          <select id="filter-group" onchange="render()" class="mini">
+            <option value="">Toutes</option><option value="CAPPEI">CAPPEI / ASH</option><option value="PE">PE</option>
+          </select>
+        </div>
+        <div>
+          <label>Priorité</label>
+          <select id="filter-priority" onchange="render()" class="mini">
+            <option value="">Toutes</option><option>Critique</option><option>Haute</option><option>Moyenne</option><option>Basse</option><option>À trier</option>
+          </select>
+        </div>
+        <div>
+          <label>Statut</label>
+          <select id="filter-status" onchange="render()" class="mini">
+            <option value="">Tous</option><option>Nouveau</option><option>Assigné</option><option>En cours</option><option>Résolu</option><option>Rejeté</option>
+          </select>
+        </div>
+      </div>
+      <div class="row">
+        <button onclick="loadCentral()">↻ Actualiser</button>
+        <label style="display:inline-block;">
+          <button onclick="document.getElementById('manualFile').click()">Charger un fichier manuellement</button>
+          <input type="file" id="manualFile" accept=".json" style="display:none" onchange="loadManual(event)">
+        </label>
+      </div>
+    </div>
+
+    <div id="tableWrap"></div>
+  </div>
+
+  <p class="muted">Cette page charge automatiquement <code>retours-central.json</code> placé à côté d'elle sur le site. Si ce fichier n'est pas accessible (page ouverte localement, ou pas encore publié), utilisez le chargement manuel.</p>
+</div>
+
+<script>
+const PAGES = ["Portail / Référentiel","Cartographie des compétences","Séquences & séances","Planning — Gestion","Planning — Affichage","Générateur de séquences","Coffre confidentiel","Autre / transverse"];
+let sortKey = "dateSubmitted";
+let sortDir = -1;
+let data = [];
+
+const filterPageSel = document.getElementById("filter-page");
+PAGES.forEach(p=>{
+  const o = document.createElement("option"); o.textContent = p; filterPageSel.appendChild(o);
+});
+
+function escapeHtml(s){
+  return (s||"").replace(/[&<>"']/g, m=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[m]));
+}
+
+function tagClass(prefix, value){
+  const map = {"Bug":"bug","Incompréhension":"incomprehension","Suggestion":"suggestion","Point positif":"positif",
+    "Critique":"critique","Haute":"haute","Moyenne":"moyenne","Basse":"basse","À trier":"basse"};
+  return prefix+"-"+(map[value]||"basse");
+}
+
+function setBanner(kind, text){
+  const cls = kind==="ok" ? "status-ok" : "status-warn";
+  document.getElementById("status-banner").innerHTML = `<div class="status-banner ${cls}">${text}</div>`;
+}
+
+async function loadCentral(){
+  setBanner("warn", "Chargement de retours-central.json…");
+  try{
+    const res = await fetch("./retours-central.json?t="+Date.now(), {cache:"no-store"});
+    if(!res.ok) throw new Error("HTTP "+res.status);
+    const parsed = await res.json();
+    data = Array.isArray(parsed) ? parsed : [];
+    setBanner("ok", "Données à jour — "+data.length+" retour(s) chargé(s) depuis retours-central.json.");
+  }catch(e){
+    setBanner("warn", "Impossible de charger retours-central.json automatiquement (page ouverte localement, ou fichier pas encore publié). Utilisez le chargement manuel ci-dessous.");
+  }
+  render();
+}
+
+function loadManual(event){
+  const file = event.target.files && event.target.files[0];
+  if(!file) return;
+  const reader = new FileReader();
+  reader.onload = ()=>{
+    try{
+      const parsed = JSON.parse(reader.result);
+      data = Array.isArray(parsed) ? parsed : [];
+      setBanner("ok", data.length+" retour(s) chargé(s) depuis le fichier « "+file.name+" ».");
+      render();
+    }catch(err){
+      setBanner("warn", "Le fichier sélectionné n'est pas un JSON valide.");
+    }
+  };
+  reader.readAsText(file, "UTF-8");
+  event.target.value = "";
+}
+
+function sortBy(key){
+  if(sortKey===key){ sortDir*=-1; } else { sortKey=key; sortDir=1; }
+  render();
+}
+
+function render(){
+  const search = document.getElementById("search").value.toLowerCase();
+  const fCat = document.getElementById("filter-category").value;
+  const fPage = document.getElementById("filter-page").value;
+  const fGroup = document.getElementById("filter-group").value;
+  const fPriority = document.getElementById("filter-priority").value;
+  const fStatus = document.getElementById("filter-status").value;
+
+  let rows = data.filter(d=>{
+    if(fCat && d.category!==fCat) return false;
+    if(fPage && d.page!==fPage) return false;
+    if(fGroup && d.testerGroup!==fGroup) return false;
+    if(fPriority && d.priority!==fPriority) return false;
+    if(fStatus && d.status!==fStatus) return false;
+    if(search){
+      const blob = ((d.testerGroup||"")+" "+d.page+" "+d.desc+" "+d.expected+" "+d.assignee).toLowerCase();
+      if(!blob.includes(search)) return false;
+    }
+    return true;
+  });
+
+  rows.sort((a,b)=>{
+    let va = a[sortKey]||"", vb = b[sortKey]||"";
+    if(va<vb) return -1*sortDir;
+    if(va>vb) return 1*sortDir;
+    return 0;
+  });
+
+  renderDashboard();
+  renderCharts();
+  renderTable(rows);
+}
+
+function renderDashboard(){
+  const total = data.length;
+  const bugs = data.filter(d=>d.category==="Bug").length;
+  const critHaute = data.filter(d=>d.priority==="Critique"||d.priority==="Haute").length;
+  const aTrier = data.filter(d=>d.priority==="À trier"||d.status==="Nouveau").length;
+  const resolus = data.filter(d=>d.status==="Résolu").length;
+  const positifs = data.filter(d=>d.category==="Point positif").length;
+  const metrics = [
+    ["Total retours", total], ["Bugs signalés", bugs], ["Critique + haute", critHaute],
+    ["À trier", aTrier], ["Résolus", resolus], ["Points positifs", positifs],
+  ];
+  document.getElementById("dashboard").innerHTML = metrics.map(([lbl,num])=>
+    `<div class="metric"><div class="num">${num}</div><div class="lbl">${lbl}</div></div>`
+  ).join("");
+}
+
+function barChart(container, counts, total){
+  const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+  if(entries.length===0){ container.innerHTML = '<p class="muted">Aucune donnée.</p>'; return; }
+  container.innerHTML = entries.map(([k,v])=>{
+    const pct = total ? Math.round((v/total)*100) : 0;
+    return `<div class="barwrap">
+      <div class="barlabel">${escapeHtml(k)}</div>
+      <div class="bar"><div class="barfill" style="width:${pct}%"></div></div>
+      <div class="barcount">${v}</div>
+    </div>`;
+  }).join("");
+}
+
+function renderCharts(){
+  const byCategory = {}, byPage = {}, byGroupBugs = {};
+  data.forEach(d=>{
+    byCategory[d.category] = (byCategory[d.category]||0)+1;
+    byPage[d.page] = (byPage[d.page]||0)+1;
+    if(d.category==="Bug"){
+      const g = d.testerGroup==="CAPPEI" ? "CAPPEI / ASH" : "Professeurs des écoles";
+      byGroupBugs[g] = (byGroupBugs[g]||0)+1;
+    }
+  });
+  barChart(document.getElementById("chart-category"), byCategory, data.length);
+  barChart(document.getElementById("chart-page"), byPage, data.length);
+  const bugTotal = data.filter(d=>d.category==="Bug").length;
+  barChart(document.getElementById("chart-group"), byGroupBugs, bugTotal);
+}
+
+function renderTable(rows){
+  if(rows.length===0){
+    document.getElementById("tableWrap").innerHTML = '<div class="empty">Aucun retour ne correspond aux filtres.</div>';
+    return;
+  }
+  let html = `<table><thead><tr>
+    <th onclick="sortBy('dateSubmitted')">Date</th>
+    <th onclick="sortBy('testerGroup')">Équipe</th>
+    <th onclick="sortBy('page')">Page</th>
+    <th onclick="sortBy('category')">Catégorie</th>
+    <th>Description</th>
+    <th onclick="sortBy('priority')">Priorité</th>
+    <th onclick="sortBy('status')">Statut</th>
+    <th>Assigné à</th>
+  </tr></thead><tbody>`;
+
+  rows.forEach(d=>{
+    html += `<tr>
+      <td>${escapeHtml(d.dateSubmitted)}</td>
+      <td><span class="group-tag">${d.testerGroup==="CAPPEI"?"CAPPEI/ASH":"PE"}</span></td>
+      <td>${escapeHtml(d.page)}</td>
+      <td><span class="tag ${tagClass('tag',d.category)}">${escapeHtml(d.category)}</span></td>
+      <td class="desc-cell">${escapeHtml(d.desc)}${d.expected?`<div class="exp">${escapeHtml(d.expected)}</div>`:""}${d.browser?`<div class="exp">${escapeHtml(d.browser)}</div>`:""}</td>
+      <td><span class="tag ${tagClass('tag',d.priority)}">${escapeHtml(d.priority)}</span></td>
+      <td>${escapeHtml(d.status)}</td>
+      <td>${escapeHtml(d.assignee)}</td>
+    </tr>`;
+  });
+
+  html += "</tbody></table>";
+  document.getElementById("tableWrap").innerHTML = html;
+}
+
+loadCentral();
+</script>
+</body>
+</html>

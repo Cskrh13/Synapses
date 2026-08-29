@@ -74,6 +74,16 @@
   const STORE_AFFECT =
     "synapses_planning_affectations";
 
+  const STORE_JOURNAL =
+    "synapses_planning_journal";
+
+  const TYPES_ADULTE = [
+    { id: "enseignant", label: "Enseignant" },
+    { id: "aesh", label: "AESH" },
+    { id: "atsem", label: "ATSEM" },
+    { id: "autre", label: "Autre" }
+  ];
+
 
   // ========================================================================
   // CLÉ USB
@@ -1161,6 +1171,258 @@
 
 
   // ========================================================================
+  // CAHIER JOURNAL (vue à la journée)
+  // ========================================================================
+  //
+  // Une entrée de journal, par date ISO :
+  // {
+  //   date: "2026-05-25",
+  //   remarque: "...",
+  //   devoirs: "...",
+  //   creneaux: [
+  //     {
+  //       id, label: "Matin 1", debut: "09:00", fin: "09:30",
+  //       groupes: [
+  //         {
+  //           id,
+  //           adulte: { type: "enseignant"|"aesh"|"atsem"|"autre", nom: "Vincent" },
+  //           titre: "Numération",
+  //           domaineCle: "maths::numeration",
+  //           niveau: "CE1",
+  //           seanceRef: { id, source, fichier } | null,
+  //           eleves: ["ELEVE-0042", ...],
+  //           remarque: ""
+  //         }, ...
+  //       ]
+  //     }, ...
+  //   ]
+  // }
+  //
+  // Le journal reste 100% local (localStorage) : aucune identité d'élève
+  // n'y est stockée, seulement des identifiants Synapses (ELEVE-xxxx), donc
+  // rien de nominatif ne transite. Le rapprochement avec les vrais noms se
+  // fait en mémoire, uniquement si le coffre est ouvert dans l'onglet.
+  // ========================================================================
+
+  function chargerJournal() {
+    try {
+      return JSON.parse(localStorage.getItem(STORE_JOURNAL)) || {};
+    } catch (e) {
+      return {};
+    }
+  }
+
+  function sauverJournal(j) {
+    localStorage.setItem(STORE_JOURNAL, JSON.stringify(j));
+  }
+
+  function journalPourDate(iso, journal) {
+    journal = journal || chargerJournal();
+    if (!journal[iso]) {
+      journal[iso] = { date: iso, remarque: "", devoirs: "", creneaux: [] };
+    }
+    return journal[iso];
+  }
+
+  /**
+   * Construit (ou complète) le journal d'un jour à partir de la grille
+   * horaire hebdomadaire de chaque niveau actif, en fusionnant les
+   * créneaux qui se chevauchent en horaire (plusieurs niveaux/groupes en
+   * parallèle deviennent des "groupes" côte à côte dans le même bloc,
+   * comme un cahier journal ULIS classique).
+   *
+   * N'écrase jamais un jour déjà personnalisé à la main : n'ajoute que
+   * les groupes correspondant à des créneaux de grille pas encore
+   * représentés (identifiés par niveau + domaineCle + horaire).
+   */
+  function genererJournalDepuisGrille(iso, config, grilles, affectations, banque) {
+    const journal = chargerJournal();
+    const jour = journalPourDate(iso, journal);
+    const jourDate = parseISO(iso);
+    const jourSemaine = (jourDate.getDay() + 6) % 7 + 1; // 1=lundi
+
+    const niveaux = (config.niveauxActifs && config.niveauxActifs.length) ? config.niveauxActifs : NIVEAUX;
+    const dejaPresents = new Set();
+    jour.creneaux.forEach(c => c.groupes.forEach(g => {
+      dejaPresents.add((g.niveau || "") + "__" + (g.domaineCle || "") + "__" + c.debut + "__" + c.fin);
+    }));
+
+    niveaux.forEach(niveau => {
+      const grille = (grilles[niveau] || []).filter(c => c.jour === jourSemaine);
+      grille.forEach(c => {
+        const empreinte = niveau + "__" + (c.domaineCle || "") + "__" + c.debut + "__" + c.fin;
+        if (dejaPresents.has(empreinte)) return;
+
+        // Bloc horaire correspondant (même début/fin), sinon on le crée.
+        let bloc = jour.creneaux.find(b => b.debut === c.debut && b.fin === c.fin);
+        if (!bloc) {
+          bloc = { id: uid("bloc"), label: PC_libelleBloc(c), debut: c.debut, fin: c.fin, groupes: [] };
+          jour.creneaux.push(bloc);
+        }
+
+        if (c.type !== "seance") {
+          bloc.groupes.push({
+            id: uid("grp"), adulte: null, titre: TYPES_CRENEAU[c.type].label,
+            domaineCle: "", niveau: "", seanceRef: null, eleves: [], remarque: "", fixe: true
+          });
+          return;
+        }
+
+        const aff = (affectations[niveau] || {})[cleCreneau(iso, c.id)];
+        const bucket = (banque[niveau] && banque[niveau][c.domaineCle]) || null;
+        const item = (aff && aff.seanceId && bucket) ? bucket.items.find(it => it.id === aff.seanceId) : null;
+
+        bloc.groupes.push({
+          id: uid("grp"),
+          adulte: { type: "enseignant", nom: "" },
+          titre: (item && (item.titre || item.type)) || (bucket ? bucket.label : c.domaineCle),
+          domaineCle: c.domaineCle,
+          niveau: niveau,
+          seanceRef: item ? { id: item.id, source: item.source, fichier: item.fichier || null } : null,
+          eleves: [],
+          remarque: "",
+          fixe: false
+        });
+      });
+    });
+
+    jour.creneaux.sort((a, b) => heureVersMin(a.debut) - heureVersMin(b.debut));
+    sauverJournal(journal);
+    return jour;
+  }
+
+  function PC_libelleBloc(creneau) {
+    const h = heureVersMin(creneau.debut);
+    if (h < 10 * 60 + 30) return "Matin 1";
+    if (h < 12 * 60) return "Matin 2";
+    if (h < 15 * 60) return "Après-midi 1";
+    return "Après-midi 2";
+  }
+
+  /**
+   * Répartition automatique des élèves dans les groupes d'un jour, à
+   * partir des besoins/objectifs actifs lus dans le coffre ouvert.
+   *
+   * Principe (le système suggère, l'enseignant valide) :
+   *  - Pour chaque bloc horaire, on regarde les groupes "séance" (non figés).
+   *  - Chaque élève du coffre est rapproché du groupe dont le domaineCle
+   *    correspond le mieux à ses besoins/objectifs actifs (correspondance
+   *    de préfixe sur la discipline, ex. "maths" ~ "mathematiques").
+   *  - À défaut de correspondance, l'élève est réparti sur le groupe le
+   *    moins chargé du bloc (équilibrage), pour qu'aucun groupe ne soit vide.
+   *  - Un élève déjà placé manuellement (présent dans un groupe) n'est pas
+   *    déplacé : on ne redistribue que les élèves absents de tous les
+   *    groupes du bloc.
+   */
+  function repartirElevesAuto(iso, journalJour, coffre) {
+    if (!coffre || !coffre.ouvert) return journalJour;
+    const eleves = coffre.listerEleves ? coffre.listerEleves() : [];
+    if (!eleves.length) return journalJour;
+
+    function besoinsEtObjectifs(e) {
+      const b = (e.besoins || []).map(x => String(x.domaine || x.champ || x.hypothese || "").toLowerCase());
+      const o = (e.objectifs || [])
+        .filter(x => !x.statut || x.statut === "actif")
+        .map(x => String(x.domaine || x.libelle || x.contexte || "").toLowerCase());
+      return b.concat(o);
+    }
+
+    journalJour.creneaux.forEach(bloc => {
+      const groupesSeance = bloc.groupes.filter(g => !g.fixe);
+      if (!groupesSeance.length) return;
+
+      const dejaPlaces = new Set();
+      groupesSeance.forEach(g => (g.eleves || []).forEach(id => dejaPlaces.add(id)));
+
+      eleves.forEach(e => {
+        const id = e.identifiantSynapses;
+        if (dejaPlaces.has(id)) return;
+
+        const mots = besoinsEtObjectifs(e);
+        let meilleur = null, meilleurScore = -1;
+        groupesSeance.forEach(g => {
+          const cle = String(g.domaineCle || g.titre || "").toLowerCase();
+          let score = 0;
+          mots.forEach(m => {
+            if (!m) return;
+            if (cle.indexOf(m.slice(0, 4)) !== -1 || m.indexOf(cle.split("::")[0] || cle) !== -1) score++;
+          });
+          if (score > meilleurScore) { meilleurScore = score; meilleur = g; }
+        });
+
+        if (meilleurScore <= 0) {
+          // Aucune correspondance : on équilibre sur le groupe le moins chargé.
+          meilleur = groupesSeance.reduce((min, g) => (g.eleves.length < min.eleves.length ? g : min), groupesSeance[0]);
+        }
+        if (meilleur) { meilleur.eleves = meilleur.eleves || []; meilleur.eleves.push(id); dejaPlaces.add(id); }
+      });
+    });
+
+    const journal = chargerJournal();
+    journal[iso] = journalJour;
+    sauverJournal(journal);
+    return journalJour;
+  }
+
+  // ========================================================================
+  // IMPORT / EXPORT JSON DU PLANNING (fichier téléchargeable, hors USB)
+  // ========================================================================
+
+  function exporterPlanningJSON(config, grilles, affectations, journal) {
+    return {
+      format: "synapses-planning",
+      version: 2,
+      maj: new Date().toISOString(),
+      config: config || {},
+      grilles: grilles || {},
+      affectations: affectations || {},
+      journal: journal || {}
+    };
+  }
+
+  function telechargerPlanningJSON(config, grilles, affectations, journal) {
+    const paquet = exporterPlanningJSON(config, grilles, affectations, journal);
+    const blob = new Blob([JSON.stringify(paquet, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "synapses-planning-" + dateISO(new Date()) + ".json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+    return paquet;
+  }
+
+  function lireFichierJSON(file) {
+    return new Promise((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onload = () => {
+        try { resolve(JSON.parse(reader.result)); }
+        catch (e) { reject(new Error("Fichier JSON invalide.")); }
+      };
+      reader.onerror = () => reject(new Error("Lecture du fichier impossible."));
+      reader.readAsText(file);
+    });
+  }
+
+  /**
+   * Applique un paquet importé (fichier .json exporté par Synapses) au
+   * stockage local courant. Retourne un résumé des parties appliquées.
+   */
+  function appliquerPaquetPlanning(paquet) {
+    if (!paquet || paquet.format !== "synapses-planning") {
+      throw new Error("Ce fichier ne semble pas être un export de planning Synapses.");
+    }
+    const applique = [];
+    if (paquet.config) { sauverConfig(paquet.config); applique.push("configuration"); }
+    if (paquet.grilles) { sauverGrilles(paquet.grilles); applique.push("grilles horaires"); }
+    if (paquet.affectations) { sauverAffectations(paquet.affectations); applique.push("affectations"); }
+    if (paquet.journal) { sauverJournal(paquet.journal); applique.push("cahier journal"); }
+    return applique;
+  }
+
+  // ========================================================================
   // CALENDRIER
   // ========================================================================
 
@@ -1573,11 +1835,13 @@
     NIVEAUX,
     JOURS,
     TYPES_CRENEAU,
+    TYPES_ADULTE,
 
     // Stockage
     STORE_CONFIG,
     STORE_GRILLES,
     STORE_AFFECT,
+    STORE_JOURNAL,
 
     // Utilitaires
     slug,
@@ -1613,6 +1877,19 @@
 
     // Génération
     genererAffectations,
+
+    // Cahier journal
+    chargerJournal,
+    sauverJournal,
+    journalPourDate,
+    genererJournalDepuisGrille,
+    repartirElevesAuto,
+
+    // Import / export JSON
+    exporterPlanningJSON,
+    telechargerPlanningJSON,
+    lireFichierJSON,
+    appliquerPaquetPlanning,
 
     // Clé USB
     connecterDossierUSB,

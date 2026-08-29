@@ -56,6 +56,11 @@ textarea{width:100%;min-height:60px;resize:vertical;}
 .status.err{display:block;background:#FBEAE5;color:var(--danger);border:1px solid #F0C6B8;}
 .pill{display:inline-flex;align-items:center;gap:6px;font-family:'IBM Plex Mono',monospace;font-size:11px;padding:4px 10px;border-radius:99px;background:#EEF2FB;color:var(--accent-sky);font-weight:600;}
 .pill.closed{background:#F1F1EC;color:var(--ink-soft);}
+.force-mdp{margin-top:6px;max-width:260px;}
+.force-mdp .barre{height:6px;border-radius:4px;background:#EAE8E0;overflow:hidden;}
+.force-mdp .barre-remplie{height:100%;width:0%;border-radius:4px;transition:width .2s,background-color .2s;background:#B5502E;}
+.force-mdp .label{font-size:11.5px;margin-top:4px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;}
+.force-mdp .conseils{font-size:11.5px;color:var(--ink-soft);margin-top:3px;}
 table{width:100%;border-collapse:collapse;font-size:13.5px;margin-top:10px;}
 th,td{text-align:left;padding:8px 6px;border-bottom:1px solid var(--line);}
 th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase;letter-spacing:.04em;}
@@ -108,6 +113,21 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 .si-frise-type{font-weight:600;font-size:13.5px;}
 .si-frise-detail{font-size:13px;color:var(--ink-soft);}
 
+/* ===== grille-analyse.js (onglet "Analyse & IA") ===== */
+.ga-section { margin-bottom: 28px; }
+.ga-section h3 { font-family: Georgia, serif; margin: 0 0 10px; font-size: 1.1rem; }
+.ga-section h4 { margin: 16px 0 6px; font-size: .95rem; }
+.ga-section ul, .ga-section ol { margin: 0; padding-left: 22px; }
+.ga-section li { margin-bottom: 6px; }
+.ga-atelier-ia { border-left: 5px solid var(--accent-sky); padding-left: 14px; }
+.ga-toolbar { margin: 10px 0; display: flex; gap: 10px; }
+.ga-textarea {
+  width: 100%; box-sizing: border-box; font-family: Consolas, monospace;
+  font-size: .8rem; border-radius: 8px; padding: 10px; margin: 6px 0 10px;
+}
+.ga-resultats-ia { margin-top: 16px; }
+.prompt-box{font-family:Consolas,monospace;font-size:.76rem;background:#151922;color:#eef2f8;border-radius:10px;padding:12px;white-space:pre-wrap;max-height:430px;overflow:auto;}
+
 .synapses-footer {
     margin-top: 40px;
     padding: 18px 24px;
@@ -156,6 +176,24 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
       <div>
         <h3 style="font-size:15px;margin-bottom:8px;">Créer un nouveau coffre</h3>
         <div class="field">
+          <label for="dispositif">Dispositif d'école inclusive (obligatoire)</label>
+          <select id="dispositif" required>
+            <option value="">— sélectionner —</option>
+            <option value="ULIS école">ULIS école</option>
+            <option value="ULIS collège">ULIS collège</option>
+            <option value="ULIS lycée">ULIS lycée</option>
+            <option value="UEE">UEE (unité d'enseignement externalisée)</option>
+            <option value="UPE2A">UPE2A</option>
+            <option value="SEGPA">SEGPA</option>
+            <option value="Classe ordinaire avec inclusion">Classe ordinaire avec inclusion</option>
+            <option value="Autre">Autre</option>
+          </select>
+          <p class="hint" style="margin:6px 0 0;">
+            Utilisé uniquement pour donner du contexte pédagogique à l'atelier IA (onglet « Analyse & IA »).
+            À l'inverse, l'établissement/la classe ne sont <strong>jamais</strong> transmis à une IA, quels que soient vos réglages.
+          </p>
+        </div>
+        <div class="field">
           <label for="nomEtab">Établissement / classe (optionnel)</label>
           <input type="text" id="nomEtab" placeholder="ex : ULIS école Jean Moulin">
         </div>
@@ -169,7 +207,7 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
         </div>
         <div class="field">
           <label for="mdpOuverture">Mot de passe</label>
-          <input type="password" id="mdpOuverture" placeholder="Mot de passe du coffre">
+          <input type="password" id="mdpOuverture" placeholder="Mot de passe du coffre" autocomplete="current-password">
         </div>
         <button class="btn btn-outline" id="btnOuvrir">Ouvrir le coffre</button>
         <p class="hint" style="margin-top:10px;">
@@ -193,7 +231,13 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
       <div>
         <h3 style="font-size:15px;margin-bottom:8px;">Enregistrer le coffre chiffré</h3>
         <div class="field"><label for="mdpExport">Mot de passe (choisissez-en un si nouveau coffre)</label>
-          <input type="password" id="mdpExport" placeholder="Mot de passe du coffre"></div>
+          <input type="password" id="mdpExport" placeholder="Mot de passe du coffre" autocomplete="new-password">
+          <div class="force-mdp" id="forceMdpExport" aria-live="polite">
+            <div class="barre"><div class="barre-remplie" id="forceMdpBarre"></div></div>
+            <div class="label" id="forceMdpLabel">&nbsp;</div>
+            <div class="conseils" id="forceMdpConseils"></div>
+          </div>
+        </div>
         <div class="field"><label for="nomFichierExport">Nom du fichier</label>
           <input type="text" id="nomFichierExport" placeholder="coffre.synapses"></div>
         <button class="btn btn-primary" id="btnExporter">Télécharger le .synapses</button>
@@ -211,6 +255,7 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 
 <script src="synapses-crypto.js"></script>
 <script src="synapses-coffre.js"></script>
+<script src="grille-analyse.js"></script>
 <script src="suivi-individuel.js"></script>
 <script>
 /* =========================================================
@@ -245,9 +290,17 @@ const SYNAPSES_BUILD = {
     ['cardSuivi','cardExport'].forEach(id=>{
       $(id).classList.toggle('disabled-overlay', !on);
     });
-    $('etatCoffre').innerHTML = on
-      ? '<span class="pill">Coffre ouvert' + (coffre.donnees.etablissement ? ' — ' + coffre.donnees.etablissement : '') + '</span>'
-      : '<span class="pill closed">Aucun coffre ouvert</span>';
+    // Construction DOM (jamais innerHTML) : le nom d'établissement est une
+    // donnée saisie par l'utilisateur (ou lue depuis un .synapses déchiffré),
+    // donc potentiellement non fiable — on ne l'insère jamais comme HTML.
+    const etatCoffre = $('etatCoffre');
+    etatCoffre.innerHTML = '';
+    const pill = document.createElement('span');
+    pill.className = on ? 'pill' : 'pill closed';
+    pill.textContent = on
+      ? 'Coffre ouvert' + (coffre.donnees.etablissement ? ' — ' + coffre.donnees.etablissement : '')
+      : 'Aucun coffre ouvert';
+    etatCoffre.appendChild(pill);
   }
 
   const suivi = new SynapsesSuiviIndividuel.SuiviIndividuel(coffre, {
@@ -265,8 +318,62 @@ const SYNAPSES_BUILD = {
     $('suiviIndividuelApp').innerHTML = '';
   }
 
+  /* -------- Force du mot de passe du coffre -------- */
+  function evaluerForceMdp(mdp){
+    if (!mdp) return { score: 0, label: '', couleur: '#EAE8E0', largeur: '0%', conseils: '' };
+
+    let score = 0;
+    if (mdp.length >= 8) score++;
+    if (mdp.length >= 12) score++;
+    if (/[a-z]/.test(mdp) && /[A-Z]/.test(mdp)) score++;
+    if (/[0-9]/.test(mdp)) score++;
+    if (/[^A-Za-z0-9]/.test(mdp)) score++;
+
+    // Pénalité en cas de mot de passe trop court, quel que soit le reste.
+    if (mdp.length < 8) score = Math.min(score, 1);
+
+    const paliers = [
+      { seuil: 0, label: 'Très faible', couleur: '#B5502E', largeur: '15%' },
+      { seuil: 1, label: 'Faible',      couleur: '#C97A3A', largeur: '35%' },
+      { seuil: 2, label: 'Moyen',       couleur: '#B5871E', largeur: '55%' },
+      { seuil: 3, label: 'Bon',         couleur: '#6B9E3F', largeur: '75%' },
+      { seuil: 4, label: 'Fort',        couleur: '#2A7F72', largeur: '90%' },
+      { seuil: 5, label: 'Très fort',   couleur: '#1E6B5F', largeur: '100%' }
+    ];
+    const palier = paliers[Math.min(score, paliers.length - 1)];
+
+    const manques = [];
+    if (mdp.length < 12) manques.push('12 caractères ou plus');
+    if (!(/[a-z]/.test(mdp) && /[A-Z]/.test(mdp))) manques.push('majuscules et minuscules');
+    if (!/[0-9]/.test(mdp)) manques.push('un chiffre');
+    if (!/[^A-Za-z0-9]/.test(mdp)) manques.push('un caractère spécial');
+    const conseils = (score < 4 && manques.length) ? 'Pour renforcer : ' + manques.join(', ') + '.' : '';
+
+    return { score, label: palier.label, couleur: palier.couleur, largeur: palier.largeur, conseils };
+  }
+
+  function brancherForceMdp(inputId, barreId, labelId, conseilsId){
+    const input = $(inputId);
+    if (!input) return;
+    input.addEventListener('input', ()=>{
+      const r = evaluerForceMdp(input.value);
+      const barre = $(barreId), label = $(labelId), conseils = $(conseilsId);
+      barre.style.width = r.largeur;
+      barre.style.background = r.couleur;
+      label.textContent = input.value ? ('Force du mot de passe : ' + r.label) : '\u00A0';
+      conseils.textContent = r.conseils;
+    });
+  }
+  brancherForceMdp('mdpExport', 'forceMdpBarre', 'forceMdpLabel', 'forceMdpConseils');
+
   $('btnCreer').addEventListener('click', async ()=>{
-    coffre.creer($('nomEtab').value.trim());
+    const dispositif = $('dispositif').value;
+    if (!dispositif) {
+      setStatus($('statutOuverture'), 'Précisez le dispositif d\'école inclusive avant de créer le coffre.', false);
+      $('dispositif').focus();
+      return;
+    }
+    coffre.creer($('nomEtab').value.trim(), dispositif);
     setStatus($('statutOuverture'), 'Nouveau coffre créé en mémoire. Pensez à l\'enregistrer (§3) avant de fermer l\'onglet.', true);
     refreshLockState();
     await ouvrirSuivi();
@@ -291,6 +398,11 @@ const SYNAPSES_BUILD = {
   $('btnExporter').addEventListener('click', async ()=>{
     const mdp = $('mdpExport').value;
     if (!mdp) { setStatus($('statutExport'), 'Choisissez un mot de passe pour chiffrer le coffre.', false); return; }
+    const force = evaluerForceMdp(mdp);
+    if (force.score <= 1) {
+      const continuer = confirm('Ce mot de passe est ' + force.label.toLowerCase() + '. Un mot de passe faible protège moins bien les données confidentielles du coffre. Continuer quand même ?');
+      if (!continuer) return;
+    }
     try{
       await coffre.telecharger(mdp, $('nomFichierExport').value.trim() || 'coffre.synapses');
       setStatus($('statutExport'), 'Coffre chiffré et téléchargé. Conservez-le sur un support sûr (clé USB).', true);

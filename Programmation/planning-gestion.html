@@ -89,12 +89,13 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 <header class="site-header">
   <div class="header-inner">
     <a class="brand" href="../index.html">
-      <div class="brand-mark">S</div>
+      <div class="brand-mark" aria-hidden="true">RÉ</div>
       <div class="brand-text">Synapses</div>
     </a>
     <nav class="pl-nav">
       <a href="planning-gestion.html" class="active">Planning — Gestion</a>
       <a href="planning-affichage.html">Planning — Affichage</a>
+      <a href="planning-jour.html">Cahier journal</a>
       <a href="sequences.html">Séquences &amp; séances</a>
     </nav>
   </div>
@@ -156,6 +157,24 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
     <button class="btn primary" id="btn-generer">Générer / mettre à jour le planning</button>
     <span id="gen-status" style="margin-left:12px;color:var(--ink-soft);font-size:13.5px;"></span>
     <div class="summary-grid" id="summary"></div>
+  </section>
+
+  <!-- =============== IMPORT / EXPORT JSON =============== -->
+  <section class="card">
+    <h2>Importer / exporter le planning</h2>
+    <p class="hint">
+      Sauvegardez l'intégralité du planning (configuration, grilles horaires, affectations
+      et cahier journal jour par jour) dans un fichier <code>.json</code> que vous pouvez
+      conserver, transférer sur un autre poste ou déposer sur une clé USB. Ce fichier ne
+      contient aucune donnée nominative : seuls des identifiants Synapses (ELEVE-xxxx)
+      peuvent y apparaître si des groupes de journal ont été renseignés.
+    </p>
+    <div class="row" style="align-items:center;gap:14px;">
+      <button class="btn primary" id="btn-export-json">⬇ Exporter en .json</button>
+      <button class="btn" id="btn-import-json-browse">📁 Importer un fichier .json…</button>
+      <input type="file" id="import-json-file" accept=".json,application/json" style="display:none;">
+      <span id="import-json-status" class="hint" style="margin:0;">Aucun fichier importé.</span>
+    </div>
   </section>
 </main>
 
@@ -359,6 +378,31 @@ $("btn-generer").addEventListener("click", async ()=>{
     toast("Planning généré avec succès.");
   }catch(e){
     $("gen-status").textContent = "Erreur : " + e.message;
+  }
+});
+
+/* ---------------- Import / export JSON ---------------- */
+$("btn-export-json").addEventListener("click", ()=>{
+  const journal = PC.chargerJournal();
+  const affectationsActuelles = PC.chargerAffectations();
+  PC.telechargerPlanningJSON(config, grilles, affectationsActuelles, journal);
+  toast("Export téléchargé.");
+});
+$("btn-import-json-browse").addEventListener("click", ()=> $("import-json-file").click());
+$("import-json-file").addEventListener("change", async ()=>{
+  const f = $("import-json-file").files[0];
+  if(!f) return;
+  try{
+    const paquet = await PC.lireFichierJSON(f);
+    const applique = PC.appliquerPaquetPlanning(paquet);
+    $("import-json-status").textContent = "Importé (" + f.name + ") : " + applique.join(", ") + ".";
+    toast("Import réussi — la page va se recharger.");
+    setTimeout(()=> location.reload(), 900);
+  }catch(e){
+    $("import-json-status").textContent = "Import impossible : " + e.message;
+    toast("Import impossible : " + e.message);
+  }finally{
+    $("import-json-file").value = "";
   }
 });
 

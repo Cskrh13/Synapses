@@ -255,7 +255,8 @@
         { id: 'besoins', label: 'Besoins' },
         { id: 'adaptations', label: 'Adaptations' },
         { id: 'objectifs', label: 'Objectifs' },
-        { id: 'parcours', label: 'Parcours' }
+        { id: 'parcours', label: 'Parcours' },
+        { id: 'analyse', label: 'Analyse & IA' }
       ];
 
       const nav = el('div', { class: 'si-onglets-nav' }, onglets.map((o) =>
@@ -272,6 +273,7 @@
         case 'adaptations': contenu = this._renderOngletListeSimple(eleve, 'adaptations', ['libelle', 'utilisee', 'efficacite']); break;
         case 'objectifs': contenu = this._renderOngletListeSimple(eleve, 'objectifs', ['libelle', 'statut']); break;
         case 'parcours': contenu = this._renderOngletParcours(eleve); break;
+        case 'analyse': contenu = this._renderOngletAnalyse(eleve); break;
         default: contenu = el('div', {}, []);
       }
 
@@ -426,6 +428,23 @@
           el('div', { class: 'si-frise-detail' }, [e.libelle || e.resume || ''])
         ])
       ));
+    }
+
+    // ---- Onglet Analyse & IA : compilation, parcours, atelier IA anonymisé ----
+    // (voir grille-analyse.js, à charger avant ce script pour activer l'onglet)
+
+    _renderOngletAnalyse(eleve) {
+      if (!global.SynapsesGrilleAnalyse) {
+        return el('p', { class: 'si-error' }, [
+          'Le moteur d\'analyse (grille-analyse.js) n\'est pas chargé sur cette page.'
+        ]);
+      }
+      if (!this._grilleAnalyseUI) {
+        this._grilleAnalyseUI = new global.SynapsesGrilleAnalyse.GrilleAnalyseUI(this.coffre, this.referentielGeneral);
+      }
+      const wrap = el('div', { class: 'si-analyse' });
+      this._grilleAnalyseUI.render(wrap, eleve);
+      return wrap;
     }
   }
 
