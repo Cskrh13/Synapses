@@ -20,14 +20,26 @@
 body{margin:0;background:var(--bg);color:var(--ink);font-family:Inter,-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,sans-serif;line-height:1.5}
 button,input,select,textarea{font:inherit}
 button{cursor:pointer}
-.topbar{background:var(--navy);color:#fff;padding:18px 24px;position:sticky;top:0;z-index:20;box-shadow:0 2px 12px rgba(0,0,0,.12)}
-.topbar-inner{max-width:1250px;margin:auto;display:flex;gap:18px;align-items:center;justify-content:space-between}
-.brand{display:flex;align-items:center;gap:12px}
-.brand-badge{width:42px;height:42px;border-radius:11px;background:var(--blue);display:grid;place-items:center;font-weight:800}
-.brand h1{font-size:1.05rem;margin:0}.brand small{color:#b9c4d8}
-.top-actions{display:flex;gap:8px;flex-wrap:wrap}
+.topbar{background:#1E2A4A;color:#fff;position:sticky;top:0;z-index:50;border-bottom:3px solid #2E5EAA}
+.topbar-inner{max-width:1250px;margin:auto;padding:14px 24px;display:flex;gap:18px;align-items:center;justify-content:space-between;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
+.brand-badge{width:40px;height:40px;border-radius:8px;background:linear-gradient(160deg,#2E5EAA,#5486d6);display:grid;place-items:center;font-weight:700;font-size:18px;flex-shrink:0}
+.brand h1{font-size:1.05rem;margin:0}.brand small{color:#B9C4D8}
+.top-actions{display:flex;gap:8px;flex-wrap:wrap;row-gap:8px;align-items:center}
 .top-actions button{border:1px solid rgba(255,255,255,.3);background:transparent;color:#fff;padding:8px 12px;border-radius:999px}
 .top-actions button:hover{background:rgba(255,255,255,.1)}
+
+/* Nav à menus déroulants — reprise de la DA d'index.html */
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;align-items:center}
+.nav-dropdown{position:relative;flex:0 0 auto}
+.nav-dropdown>summary{height:36px;line-height:20px;list-style:none;color:#D9E0F2;font-size:14px;font-weight:500;padding:8px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;box-sizing:border-box}
+.nav-dropdown>summary::-webkit-details-marker{display:none}
+.nav-dropdown>summary::after{content:"⌄";font-size:11px;margin-left:7px;opacity:.75}
+.nav-dropdown[open]>summary,.nav-dropdown>summary:hover{background:rgba(255,255,255,.09);color:#fff}
+.nav-dropdown-menu{position:absolute;top:100%;left:0;margin-top:7px;min-width:235px;background:#1E2A4A;border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:7px;box-shadow:0 14px 30px rgba(0,0,0,.25);z-index:100}
+.nav-dropdown-menu a{display:block!important;color:#D9E0F2!important;padding:9px 11px!important;border-radius:5px;margin:0!important;background:transparent!important;border:0!important;font-size:13.5px;font-weight:500}
+.nav-dropdown-menu a:hover{background:rgba(255,255,255,.09)!important;color:#fff!important}
+@media(max-width:760px){nav.main-nav{width:100%}.nav-dropdown-menu{position:static;margin-top:4px;width:100%}}
 main{max-width:1250px;margin:auto;padding:26px 20px 50px}
 .hero h2{margin:0;font-family:Georgia,serif;font-size:2rem}.hero p{max-width:800px;color:var(--soft);margin-top:7px}
 .stepper{display:grid;grid-template-columns:repeat(6,1fr);gap:8px;margin:22px 0}
@@ -65,10 +77,13 @@ textarea{resize:vertical;min-height:90px}input:focus,select:focus,textarea:focus
 .session-fields{display:grid;grid-template-columns:1fr 1fr;gap:10px}.session-fields .full{grid-column:1/-1}
 .phase{border:1px solid var(--line);border-radius:10px;margin-top:10px;overflow:hidden}
 .phase-head{display:flex;justify-content:space-between;align-items:center;background:#f8f9f9;padding:8px 10px;font-weight:800}
-.phase-grid{display:grid;grid-template-columns:100px 1.1fr 1.7fr 1.2fr 1.5fr 1.3fr;gap:0;border-top:1px solid var(--line)}
-.phase-grid>div{padding:8px;border-right:1px solid var(--line);border-bottom:1px solid var(--line);font-size:.78rem}
-.phase-grid>div:nth-child(6n){border-right:0}.phase-grid input,.phase-grid textarea{font-size:.76rem;padding:6px;min-height:50px}
-.phase-grid.header{background:#f2f4f5;font-weight:800;color:var(--soft)}
+.phase-card{border:1px solid var(--line);border-radius:10px;margin-top:12px;overflow:hidden;background:#fff}
+.phase-card-head{background:#f8f9f9;padding:10px 14px;font-weight:800;border-bottom:1px solid var(--line);font-size:.92rem}
+.phase-card-body{padding:14px;display:grid;grid-template-columns:1fr 1fr;gap:12px 16px}
+.phase-card-body label{display:block;font-size:.78rem;font-weight:800;color:var(--soft);margin:0 0 5px}
+.phase-card-body textarea{min-height:72px;font-size:.85rem}
+.phase-card-body .full{grid-column:1/-1}
+@media(max-width:640px){.phase-card-body{grid-template-columns:1fr}}
 .objectives{display:grid;grid-template-columns:1fr 1fr;gap:10px}
 .student-row{display:grid;grid-template-columns:1fr 2fr 2fr auto;gap:8px;align-items:start;margin-bottom:7px}
 .meta-box{background:#f8f9f9;border-radius:10px;padding:10px}.meta-box strong{display:block;font-size:.75rem;color:var(--soft);text-transform:uppercase}
@@ -115,7 +130,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
   .pdf-cadrage th{background:#f2f4f5;text-align:left}
   .pdf-materiel{border:1px dashed #c9622f;border-radius:8px;padding:9px 10px;margin-top:8px;font-size:10px;background:#fff8f3}
 }
-@media(max-width:900px){.stepper{grid-template-columns:1fr 1fr}.phase-grid{grid-template-columns:1fr}.phase-grid.header{display:none}.phase-grid>div{border-right:0}.two,.seq-grid,.objectives,.session-fields{grid-template-columns:1fr}.student-row{grid-template-columns:1fr}.topbar{position:static}}
+@media(max-width:900px){.stepper{grid-template-columns:1fr 1fr}.two,.seq-grid,.objectives,.session-fields{grid-template-columns:1fr}.student-row{grid-template-columns:1fr}.topbar{position:static}}
 
 .synapses-footer {
     margin-top: 40px;
@@ -148,7 +163,17 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
 <body>
 <header class="topbar">
   <div class="topbar-inner">
-    <div class="brand"><div class="brand-badge">RÉ</div><div><h1>Créateur de séquences</h1><small>Mode guidé · séquences et séances détaillées</small></div></div>
+    <a class="brand" href="sequences.html"><div class="brand-badge">RÉ</div><div><h1>Créateur de séquences</h1><small>Mode guidé · séquences et séances détaillées</small></div></a>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <details class="nav-dropdown">
+        <summary>Préparer l'année</summary>
+        <div class="nav-dropdown-menu">
+          <a href="sequences.html">📚 Ma programmation</a>
+          <a href="planning-affichage.html">🗓 Mon emploi du temps</a>
+          <a href="generateur-sequences-projet.html" aria-current="page">🧩 Créer une séquence</a>
+        </div>
+      </details>
+    </nav>
     <div class="top-actions">
       <div class="coffre-widget">
         <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
@@ -427,7 +452,12 @@ let coffre=null;
 try{coffre=new SynapsesCoffre.Coffre()}catch(e){coffre=null}
 function coffreDisponible(){return !!coffre}
 function coffreOuvert(){return !!(coffre&&coffre.ouvert)}
-function eleveLabel(e){const id=e.identite||{};return (`${id.prenom||""} ${id.nom||""}`).trim()||e.identifiantSynapses}
+function eleveLabel(e){
+  // Ne renvoie que le numéro d'anonymat : ce libellé alimente aussi le
+  // JSON exporté, le PDF imprimé et le prompt envoyé à l'IA, qui ne
+  // doivent jamais contenir le nom/prénom réel de l'élève.
+  return e.identifiantSynapses;
+}
 
 const App = (() => {
   let refs = [], domaines = [], niveaux = [], selected = null, step = 1;
@@ -937,14 +967,16 @@ Une fois l'image téléchargée, chargez-la dans Synapses via « Charger un fich
 
   function renderDetail(s,i){
     const phases=s.deroule||[];
-    const phaseRows=phases.map((p,j)=>`<div class="phase-grid">
-      <div><strong>${esc(p.phase)}</strong></div>
-      <div><textarea placeholder="Temps" oninput="App.phaseField(${i},${j},'temps',this.value)">${esc(p.temps)}</textarea></div>
-      <div><textarea placeholder="Modalité + matériel" oninput="App.phaseField(${i},${j},'modalite_materiel',this.value)">${esc(p.modalite_materiel)}</textarea></div>
-      <div><textarea placeholder="Déroulement concret" oninput="App.phaseField(${i},${j},'deroulement',this.value)">${esc(p.deroulement)}</textarea></div>
-      <div><textarea placeholder="Analyse de la tâche : ce que l’élève doit mobiliser" oninput="App.phaseField(${i},${j},'analyse_tache',this.value)">${esc(p.analyse_tache)}</textarea></div>
-      <div><textarea placeholder="Aménagement / différenciation" oninput="App.phaseField(${i},${j},'amenagement',this.value)">${esc(p.amenagement)}</textarea></div>
-      <div><textarea placeholder="Posture de l’enseignant" oninput="App.phaseField(${i},${j},'posture',this.value)">${esc(p.posture)}</textarea></div>
+    const phaseCards=phases.map((p,j)=>`<div class="phase-card">
+      <div class="phase-card-head">${esc(p.phase)}</div>
+      <div class="phase-card-body">
+        <div><label>Temps (min)</label><textarea placeholder="Temps" oninput="App.phaseField(${i},${j},'temps',this.value)">${esc(p.temps)}</textarea></div>
+        <div><label>Modalité + matériel</label><textarea placeholder="Modalité + matériel" oninput="App.phaseField(${i},${j},'modalite_materiel',this.value)">${esc(p.modalite_materiel)}</textarea></div>
+        <div class="full"><label>Déroulement concret</label><textarea placeholder="Déroulement concret" oninput="App.phaseField(${i},${j},'deroulement',this.value)">${esc(p.deroulement)}</textarea></div>
+        <div class="full"><label>Analyse de la tâche : ce que l'élève doit mobiliser</label><textarea placeholder="Analyse de la tâche" oninput="App.phaseField(${i},${j},'analyse_tache',this.value)">${esc(p.analyse_tache)}</textarea></div>
+        <div><label>Aménagement / différenciation</label><textarea placeholder="Aménagement / différenciation" oninput="App.phaseField(${i},${j},'amenagement',this.value)">${esc(p.amenagement)}</textarea></div>
+        <div><label>Posture de l'enseignant</label><textarea placeholder="Posture de l'enseignant" oninput="App.phaseField(${i},${j},'posture',this.value)">${esc(p.posture)}</textarea></div>
+      </div>
     </div>`).join("");
     return `<details class="card" open>
       <summary><span class="tag accent">${i+1}</span> <strong>${esc(s.titre)}</strong> <span class="tag">${esc(s.type)}</span> <span class="tag">${s.duree_estimee_min||45} min</span></summary>
@@ -977,8 +1009,7 @@ Une fois l'image téléchargée, chargez-la dans Synapses via « Charger un fich
           <div class="full"><label>Points de vigilance</label><textarea oninput="App.sessionField(${i},'vigilance',this.value)">${esc(s.vigilance)}</textarea></div>
         </div>
         <h4>Déroulé détaillé</h4>
-        <div class="phase-grid header"><div>Phase</div><div>Temps</div><div>Modalité + matériel</div><div>Déroulement</div><div>Analyse de la tâche</div><div>Aménagement</div><div>Posture enseignant</div></div>
-        ${phaseRows}
+        ${phaseCards}
         <div class="toolbar"><button class="btn secondary small" onclick="App.addPhase(${i})">+ Ajouter une phase</button><button class="btn secondary small" onclick="App.exporterPDF('seance',${i})">Télécharger le PDF</button><button class="btn small" onclick="App.go(6)">Voir l’aperçu</button></div>
       </div>
     </details>`;
@@ -1468,6 +1499,25 @@ RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances 
 App.init();
 App.updateCoffreWidget();
 window.addEventListener("beforeunload",()=>{if(coffre)coffre.purger()});
+</script>
+<script>
+(function(){
+  var navDropdowns = Array.prototype.slice.call(document.querySelectorAll('.nav-dropdown'));
+  navDropdowns.forEach(function(dd){
+    dd.addEventListener('toggle', function(){
+      if(dd.open){
+        navDropdowns.forEach(function(other){
+          if(other !== dd) other.open = false;
+        });
+      }
+    });
+  });
+  document.addEventListener('click', function(e){
+    navDropdowns.forEach(function(dd){
+      if(dd.open && !dd.contains(e.target)) dd.open = false;
+    });
+  });
+})();
 </script>
 
 <footer class="synapses-footer">

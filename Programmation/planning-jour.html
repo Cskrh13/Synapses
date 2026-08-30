@@ -256,8 +256,10 @@ try{ coffre = new SynapsesCoffre.Coffre(); }catch(e){ coffre = null; }
 function coffreDisponible(){ return !!coffre; }
 function coffreOuvert(){ return !!(coffre && coffre.ouvert); }
 function eleveLabel(e){
-  const id = e.identite || {};
-  return (`${id.prenom||""} ${id.nom||""}`).trim() || e.identifiantSynapses;
+  // Ne renvoie que le numéro d'anonymat : ce libellé alimente les groupes
+  // du jour, qui sont enregistrés dans localStorage (non chiffré). Le
+  // nom/prénom réel de l'élève ne doit jamais en sortir.
+  return e.identifiantSynapses;
 }
 function updateCoffreWidget(){
   const status = $("coffre-status"), btn = $("btn-coffre-toggle");
@@ -335,7 +337,7 @@ function sauver(){
 function labelEleve(id){
   if(coffreOuvert()){
     const e = coffre.listerEleves().find(x=>x.identifiantSynapses===id);
-    if(e) return eleveLabel(e) + " (" + id + ")";
+    if(e) return eleveLabel(e);
   }
   return id;
 }

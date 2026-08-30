@@ -29,9 +29,29 @@ body{margin:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-u
 h1,h2,h3{font-family:'Fraunces',serif;font-weight:600;margin:0 0 8px;letter-spacing:-0.01em;}
 button{font-family:inherit;cursor:pointer;}
 .eyebrow{font-family:'IBM Plex Mono',monospace;font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--accent-sky);font-weight:500;}
-header.site-header{background:var(--navy);color:#fff;padding:18px 24px;border-bottom:3px solid var(--accent-sky);}
-.header-inner{max-width:960px;margin:0 auto;display:flex;align-items:center;gap:14px;}
-.brand-mark{width:38px;height:38px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;color:#fff;flex-shrink:0;}
+header.site-header{background:var(--navy);color:#fff;position:sticky;top:0;z-index:50;border-bottom:3px solid var(--accent-sky);}
+.header-top{display:flex;align-items:center;justify-content:space-between;max-width:1240px;margin:0 auto;padding:14px 24px;gap:20px;flex-wrap:wrap;}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff;}
+.brand-mark{width:40px;height:40px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:18px;color:#fff;flex-shrink:0;}
+.brand-text{display:flex;flex-direction:column;line-height:1.15;}
+.brand-text .top{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#B9C6E5;font-family:'Inter',sans-serif;font-weight:600;}
+.brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:17px;}
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;align-items:center;}
+nav.main-nav>a{height:36px;box-sizing:border-box;display:flex;align-items:center;}
+nav.main-nav a{color:#D9E0F2;text-decoration:none;font-size:14px;font-weight:500;padding:8px 12px;border-radius:6px;transition:background .15s;white-space:nowrap;}
+nav.main-nav a:hover{background:rgba(255,255,255,.09);color:#fff;}
+.nav-dropdown{position:relative;flex:0 0 auto;}
+.nav-dropdown>summary{height:36px;line-height:20px;list-style:none;color:#D9E0F2;font-size:14px;font-weight:500;padding:8px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;display:block;box-sizing:border-box;}
+.nav-dropdown>summary::-webkit-details-marker{display:none;}
+.nav-dropdown>summary::after{content:"⌄";font-size:11px;margin-left:7px;opacity:.75;}
+.nav-dropdown[open]>summary,.nav-dropdown>summary:hover{background:rgba(255,255,255,.09);color:#fff;}
+.nav-dropdown-menu{position:absolute;top:100%;right:0;margin-top:7px;min-width:235px;background:var(--navy);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:7px;box-shadow:0 14px 30px rgba(0,0,0,.25);z-index:100;}
+.nav-dropdown-menu a{display:block!important;color:#D9E0F2!important;padding:9px 11px!important;border-radius:5px;margin:0!important;background:transparent!important;border:0!important;}
+.nav-dropdown-menu a:hover{background:rgba(255,255,255,.09)!important;color:#fff!important;}
+.menu-separator{height:1px;background:rgba(255,255,255,.12);margin:6px 4px;}
+.menu-label{padding:5px 11px 3px;color:#9EADD0;font-family:'Inter',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;}
+@media(max-width:760px){nav.main-nav{width:100%;}.nav-dropdown-menu{position:static;margin-top:4px;width:100%;}}
+nav.main-nav a.nav-coffre-actif{background:rgba(181,80,46,.16);border:1px solid rgba(181,80,46,.4);margin-left:4px;color:#fff;cursor:default;}
 main{max-width:960px;margin:0 auto;padding:32px 24px 80px;}
 .banner{background:#FFF7ED;border:1px solid #EFD9B8;color:#7A4A12;border-radius:var(--radius);padding:14px 18px;font-size:14px;margin-bottom:28px;}
 .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:22px 24px;margin-bottom:20px;}
@@ -145,16 +165,47 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 <body>
 
 <header class="site-header">
-  <div class="header-inner">
-    <div class="brand-mark">S</div>
-    <div>
-      <div class="eyebrow" style="color:#B9C6E5;">Synapses</div>
-      <h1 style="color:#fff;font-size:20px;">Coffre confidentiel</h1>
-    </div>
-    <div style="margin-left:auto;display:flex;align-items:center;gap:12px;">
-      <a href="../index.html" style="color:#fff;font-size:13.5px;font-weight:600;text-decoration:none;border:1px solid rgba(255,255,255,.3);border-radius:7px;padding:8px 14px;white-space:nowrap;">← Portail</a>
-      <div id="etatCoffre"><span class="pill closed">Aucun coffre ouvert</span></div>
-    </div>
+  <div class="header-top">
+    <a href="../index.html" class="brand">
+      <span class="brand-mark" aria-hidden="true">RÉ</span>
+      <span class="brand-text">
+        <span class="top">Synapses</span>
+        <span class="bottom">Coffre confidentiel</span>
+      </span>
+    </a>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <details class="nav-dropdown">
+        <summary>Consulter le référentiel</summary>
+        <div class="nav-dropdown-menu">
+          <div class="menu-label">Sur la page d'accueil</div>
+          <a href="../index.html#niveaux">Parcourir par niveau</a>
+          <a href="../index.html#disciplines">Parcourir par discipline</a>
+          <a href="../index.html#repertoire">Rechercher une compétence</a>
+          <a href="../index.html#vue-ensemble">Vue d'ensemble</a>
+          <div class="menu-separator"></div>
+          <a href="../cartographie-competences.html">Cartographie des compétences</a>
+        </div>
+      </details>
+      <details class="nav-dropdown">
+        <summary>Préparer l'année</summary>
+        <div class="nav-dropdown-menu">
+          <div class="menu-label">Programmation pédagogique</div>
+          <a href="../Programmation/sequences.html">Ma programmation</a>
+          <a href="../Programmation/planning-affichage.html">Mon emploi du temps</a>
+          <a href="../Programmation/generateur-sequences-projet.html">Créer une séquence</a>
+        </div>
+      </details>
+      <details class="nav-dropdown">
+        <summary>À propos</summary>
+        <div class="nav-dropdown-menu">
+          <a href="../detailduprojet.html">Le projet Synapses</a>
+          <a href="../feedback/feedback.html">Donner mon avis</a>
+          <a href="../feedback/maintenance.html">État du site</a>
+        </div>
+      </details>
+      <a href="coffre.html" class="nav-coffre-actif" aria-current="page">🔒 Mon espace privé</a>
+    </nav>
+    <div id="etatCoffre" style="margin-left:auto;"><span class="pill closed">Aucun coffre ouvert</span></div>
   </div>
 </header>
 
@@ -444,6 +495,25 @@ const SYNAPSES_BUILD = {
   window.addEventListener('beforeunload', ()=>{ coffre.purger(); });
 
   refreshLockState();
+})();
+</script>
+<script>
+(function(){
+  var navDropdowns = Array.prototype.slice.call(document.querySelectorAll('.nav-dropdown'));
+  navDropdowns.forEach(function(dd){
+    dd.addEventListener('toggle', function(){
+      if(dd.open){
+        navDropdowns.forEach(function(other){
+          if(other !== dd) other.open = false;
+        });
+      }
+    });
+  });
+  document.addEventListener('click', function(e){
+    navDropdowns.forEach(function(dd){
+      if(dd.open && !dd.contains(e.target)) dd.open = false;
+    });
+  });
 })();
 </script>
 

@@ -8,106 +8,167 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Cartographie des compétences — Synapses</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500&display=swap" rel="stylesheet">
 <style>
 :root{
-  --ink:#152333;--muted:#68737e;--line:#d8dde2;--panel:rgba(255,255,255,.90);
-  --gold:#b88924;--green:#2f8f68;--orange:#d79224;--blue:#4d91b7;
+  --navy:#1E2A4A;--navy-deep:#141d33;--bg:#F6F5F1;--panel:#FFFFFF;--line:#DEDBD2;
+  --ink:#20242E;--ink-soft:#5B5F6B;--accent-sky:#2E5EAA;--ring:#2E5EAA;
+  --lecture:#B5502E;--ecriture:#2A7F72;--oral:#6B4E8E;--vocabulaire:#B5871E;
+  --radius:10px;
+  --node-competence:#2A7F72;--node-sequence:#B5871E;--node-seance:#2E5EAA;
 }
 *{box-sizing:border-box}
-html,body{margin:0;width:100%;height:100%;overflow:hidden;color:var(--ink);font-family:Georgia,"Times New Roman",serif}
-body{background:radial-gradient(circle at 50% 35%,#fff 0,#f7f8f9 56%,#e9edf0 100%)}
-#app{position:fixed;inset:0}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;color:var(--ink);font-family:'Inter',system-ui,sans-serif;-webkit-font-smoothing:antialiased}
+body{background:var(--bg)}
+h1,h2,h3,h4{font-family:'Fraunces',serif;font-weight:600;letter-spacing:-.01em;margin:0}
+a{color:inherit}
+:focus-visible{outline:3px solid var(--ring);outline-offset:2px}
+#app{position:fixed;inset:0;display:flex;flex-direction:column;overflow:hidden}
+#stage{position:relative;flex:1 1 auto;min-height:0;overflow:hidden}
 canvas{position:absolute;inset:0;width:100%;height:100%;cursor:grab;touch-action:none}
 canvas.dragging{cursor:grabbing}
-header{position:absolute;z-index:10;left:24px;top:14px;pointer-events:none}
-h1{margin:0;font-size:clamp(24px,2.7vw,38px);font-weight:500;letter-spacing:3px;font-variant:small-caps}
-.subtitle{margin-top:5px;color:#53606a;font-size:13px}
-.toolbar{position:absolute;z-index:12;left:24px;right:24px;top:82px;display:flex;gap:7px;align-items:center;flex-wrap:wrap;padding:8px;background:rgba(255,255,255,.72);border:1px solid rgba(210,217,223,.9);box-shadow:0 8px 24px rgba(24,40,55,.06);backdrop-filter:blur(7px)}
-.group{display:flex;align-items:center;gap:4px;flex-wrap:wrap}
-.label{font-size:10px;text-transform:uppercase;letter-spacing:1.1px;color:#68737e;font-weight:bold;margin-right:3px}
-button,input{font:13px Georgia,"Times New Roman",serif;border:1px solid #d2d8dd;background:rgba(255,255,255,.94);color:var(--ink);border-radius:2px}
-button{padding:7px 10px;cursor:pointer}button:hover{border-color:#a9b5bf}
-button.active{background:#f3ead2;border-color:#d4b56a;color:#755411;font-weight:bold}
-input{width:280px;padding:8px 10px}
-#reset{background:#fff}
-#status{font-size:11px;color:#68737e;margin-left:auto}
-.side{position:absolute;z-index:11;pointer-events:none}
-.card{background:var(--panel);border:1px solid rgba(205,212,218,.88);box-shadow:0 10px 30px rgba(28,45,61,.08);backdrop-filter:blur(7px);padding:13px 15px;pointer-events:auto}
-#legend{right:24px;bottom:24px;width:190px}
-#help{left:24px;bottom:24px;width:330px}
-.card h3{font-size:12px;margin:0 0 10px;text-transform:uppercase;letter-spacing:1.3px}
-.legendrow{display:flex;align-items:center;gap:9px;margin:7px 0;font-size:12px}
-.dot{width:11px;height:11px;border-radius:50%;display:inline-block}
-.lineSample{width:24px;height:0;border-top:1px solid #65717a;display:inline-block}
-.dashSample{width:24px;height:0;border-top:2px dashed #a97d22;display:inline-block}
-.navrow{margin:6px 0;font-size:11px;color:#58636d}
-.bottom{position:absolute;z-index:12;left:50%;bottom:14px;transform:translateX(-50%);display:flex;align-items:center;gap:8px;padding:7px 10px;border:1px solid #d8dde2;background:rgba(255,255,255,.88);box-shadow:0 8px 24px rgba(24,40,55,.09);backdrop-filter:blur(8px)}
-.bottom button{font-size:18px;line-height:1;padding:3px 8px;border:0;background:transparent;border-radius:3px}
-.bottom button.active{background:#f3ead2;color:#755411}
-#zoomRange{width:130px}
-#relationMenu{position:absolute;z-index:13;left:50%;bottom:62px;transform:translateX(-50%);display:none;gap:6px;padding:7px;border:1px solid #d8dde2;background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(24,40,55,.12);backdrop-filter:blur(8px)}
-#relationMenu.open{display:flex}
-#relationMenu button{font-size:11px;padding:7px 9px}
-.linkedItem{cursor:pointer;text-decoration:underline;text-underline-offset:2px}
-.linkedItem:hover{background:#f5ead3}
-#panel{position:absolute;z-index:30;right:24px;top:145px;width:min(390px,calc(100vw - 48px));max-height:calc(100vh - 185px);overflow:auto;transform:translateX(calc(100% + 40px));transition:transform .2s ease;pointer-events:auto}
-#panel.open{transform:translateX(0)}
-.panelCard{background:rgba(255,255,255,.96);border:1px solid #d4dbe0;box-shadow:0 18px 50px rgba(26,44,60,.14);padding:18px}
-.close{float:right;font:22px Arial,sans-serif;color:#89939c;cursor:pointer}
-.tag{display:inline-block;font:10px Arial,sans-serif;text-transform:uppercase;letter-spacing:1px;padding:4px 7px;border-radius:999px;background:#edf3f7;color:#506271}
-#panel h2{font-size:20px;line-height:1.2;margin:10px 28px 7px 0}
-.meta{font-size:12px;color:#6b7580;margin-bottom:12px}
-.section{margin:14px 0}.section h4{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:#5d6871;margin:0 0 6px}
-.item{border:1px solid #e0e4e7;border-left:3px solid var(--gold);padding:7px 8px;margin:5px 0;background:#fbfcfd;font-size:12px;line-height:1.35}
-.panelAction{display:inline-block;margin-top:8px;padding:8px 10px;border:1px solid #9cb0c0;color:#234f76;text-decoration:none;font-size:12px}
-#error{display:none;position:absolute;z-index:40;left:50%;top:50%;transform:translate(-50%,-50%);width:min(700px,90vw);padding:20px;background:white;border:1px solid #c9d0d6;box-shadow:0 20px 60px rgba(0,0,0,.15)}
-#error h2{margin:0 0 10px}.errorText{white-space:pre-wrap;font:12px/1.5 Consolas,monospace;color:#7a2e2e}
-@media(max-width:900px){header{left:12px}.toolbar{left:12px;right:12px;top:74px}.toolbar input{width:210px}#help{display:none}#legend{right:12px;bottom:70px}.bottom{bottom:7px}#panel{right:10px;top:135px}}
 
-.synapses-footer {
-    margin-top: 40px;
-    padding: 18px 24px;
-    text-align: center;
-    font-size: 11px;
-    color: var(--muted);
-    border-top: 1px solid var(--line);
-}
-.synapses-footer div:first-child {
-    font-weight: 600;
-    letter-spacing: .04em;
+/* ===== Header (charte Synapses) ===== */
+header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--navy);color:#fff;border-bottom:3px solid var(--accent-sky)}
+.header-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 22px;flex-wrap:wrap}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{width:38px;height:38px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
+.brand-text{display:flex;flex-direction:column;line-height:1.15}
+.brand-text .top{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#B9C6E5;font-weight:600}
+.brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:16px}
+#subtitle{font-size:12.5px;color:#B9C6E5;margin-top:2px}
+.btn-back{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;font-size:13px;font-weight:500;padding:9px 14px;border-radius:7px;white-space:nowrap}
+.btn-back:hover{background:rgba(255,255,255,.18)}
+
+/* ===== Toolbar (panneau de filtres, aéré) ===== */
+.toolbar{position:relative;z-index:19;flex:0 0 auto;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:0 6px 18px rgba(24,40,55,.05);padding:11px 22px}
+.tb-row{display:flex;align-items:center;gap:9px;flex-wrap:wrap;margin-bottom:9px}
+.tb-row:last-child{margin-bottom:0}
+.tb-label{flex:0 0 auto;font-size:11px;text-transform:uppercase;letter-spacing:.07em;color:var(--ink-soft);font-weight:700;min-width:74px}
+.tb-scroll{display:flex;gap:6px;flex-wrap:wrap;flex:1 1 auto}
+.tb-scroll button{font:500 12.5px 'Inter',sans-serif;border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:999px;padding:6px 13px;cursor:pointer;transition:background .12s,border-color .12s,color .12s;white-space:nowrap}
+.tb-scroll button:hover{border-color:#b9c3cc;color:var(--ink)}
+.tb-scroll button.active{background:var(--accent-sky);border-color:var(--accent-sky);color:#fff;font-weight:600}
+
+/* ===== Filtres Niveaux / Domaines en menus déroulants ===== */
+.filter-dropdown{position:relative;flex:0 0 auto}
+.filter-dropdown>summary{list-style:none;cursor:pointer;font:600 13px 'Inter',sans-serif;color:var(--navy);background:#fff;border:1px solid var(--line);border-radius:8px;padding:9px 14px;display:flex;align-items:center;gap:7px;white-space:nowrap;user-select:none}
+.filter-dropdown>summary::-webkit-details-marker{display:none}
+.filter-dropdown>summary::after{content:"⌄";font-size:11px;color:var(--ink-soft);margin-left:2px}
+.filter-dropdown[open]>summary,.filter-dropdown>summary:hover{border-color:var(--accent-sky)}
+.filter-dropdown .count{font:600 11px 'IBM Plex Mono',monospace;color:var(--accent-sky);background:#EEF3FB;border-radius:999px;padding:2px 8px}
+.filter-dropdown-menu{position:absolute;z-index:25;top:calc(100% + 7px);left:0;width:min(560px,86vw);max-height:340px;overflow:auto;background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;box-shadow:0 16px 36px rgba(24,40,55,.14)}
+@media(max-width:760px){.filter-dropdown-menu{width:86vw}}
+
+.tb-search-row{gap:10px}
+#search{flex:1 1 260px;min-width:180px;font:14px 'Inter',sans-serif;border:1px solid var(--line);background:#fff;color:var(--ink);border-radius:7px;padding:9px 12px}
+#search::placeholder{color:#9aa2ab}
+.btn-reset{font:500 13px 'Inter',sans-serif;border:1px solid var(--line);background:#fff;color:var(--ink-soft);border-radius:7px;padding:9px 14px;cursor:pointer}
+.btn-reset:hover{border-color:#b9c3cc;color:var(--ink)}
+#status{font:500 12px 'Inter',sans-serif;color:var(--ink-soft);margin-left:auto;white-space:nowrap}
+
+/* ===== Panneaux flottants (légende / navigation) ===== */
+.side{position:absolute;z-index:11;pointer-events:none}
+.card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 30px rgba(28,45,61,.08);backdrop-filter:blur(6px);padding:16px 17px;pointer-events:auto}
+#legend{right:20px;bottom:20px;width:210px}
+#help{left:20px;bottom:20px;width:300px}
+.card h3{font-size:11px;margin:0 0 11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-family:'Inter',sans-serif;font-weight:700}
+.legendrow{display:flex;align-items:center;gap:9px;margin:8px 0;font-size:12.5px;color:var(--ink)}
+.dot{width:11px;height:11px;border-radius:50%;display:inline-block;flex-shrink:0}
+.lineSample{width:22px;height:0;border-top:1.5px solid #7a8792;display:inline-block;flex-shrink:0}
+.dashSample{width:22px;height:0;border-top:2px dashed var(--vocabulaire);display:inline-block;flex-shrink:0}
+.navrow{margin:7px 0;font-size:12px;color:var(--ink-soft);line-height:1.45}
+
+/* ===== Barre de zoom / navigation caméra ===== */
+.bottom{position:absolute;z-index:12;left:50%;bottom:16px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(24,40,55,.1);backdrop-filter:blur(8px)}
+.bottom button{font-size:16px;line-height:1;padding:8px 11px;border:0;background:transparent;border-radius:999px;color:var(--ink-soft);cursor:pointer}
+.bottom button:hover{background:#eef1f4;color:var(--ink)}
+.bottom button.active{background:var(--accent-sky);color:#fff}
+#zoomRange{width:120px;accent-color:var(--accent-sky)}
+#relationMenu{position:absolute;z-index:13;left:50%;bottom:66px;transform:translateX(-50%);display:none;gap:6px;padding:6px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.96);box-shadow:0 8px 24px rgba(24,40,55,.12);backdrop-filter:blur(8px)}
+#relationMenu.open{display:flex}
+#relationMenu button{font:500 12px 'Inter',sans-serif;padding:8px 11px;border:1px solid var(--line);border-radius:7px;background:#fff;color:var(--ink-soft);cursor:pointer}
+#relationMenu button:hover{border-color:#b9c3cc;color:var(--ink)}
+
+/* ===== Fiche latérale (détail d'un nœud) ===== */
+.linkedItem{cursor:pointer}
+.linkedItem:hover{background:#EEF3FB}
+#panel{position:absolute;z-index:30;right:20px;top:14px;width:min(400px,calc(100vw - 40px));max-height:calc(100vh - 34px);overflow:auto;transform:translateX(calc(100% + 40px));transition:transform .2s ease;pointer-events:auto}
+#panel.open{transform:translateX(0)}
+.panelCard{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 18px 50px rgba(26,44,60,.16);padding:22px}
+.close{float:right;font:26px/1 'Inter',sans-serif;color:#9aa2ab;cursor:pointer}
+.close:hover{color:var(--ink)}
+.tag{display:inline-block;font:600 10.5px 'Inter',sans-serif;text-transform:uppercase;letter-spacing:.05em;padding:5px 9px;border-radius:999px;background:#EEF3FB;color:var(--accent-sky)}
+#panel h2{font-size:21px;line-height:1.25;margin:11px 30px 8px 0;color:var(--navy)}
+.meta{font-size:12.5px;color:var(--ink-soft);margin-bottom:14px}
+.section{margin:16px 0}
+.section h4{font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin:0 0 8px;font-weight:700}
+.item{border:1px solid var(--line);border-left:3px solid var(--vocabulaire);border-radius:0 6px 6px 0;padding:9px 10px;margin:6px 0;background:#FAF9F6;font-size:13px;line-height:1.45;color:var(--ink)}
+.panelAction{display:inline-block;margin-top:10px;padding:10px 15px;border-radius:7px;background:var(--accent-sky);color:#fff;text-decoration:none;font:600 13px 'Inter',sans-serif}
+.panelAction:hover{background:#264d8f}
+
+/* ===== Erreur ===== */
+#error{display:none;position:absolute;z-index:40;left:50%;top:50%;transform:translate(-50%,-50%);width:min(700px,90vw);padding:24px;background:#fff;border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 20px 60px rgba(0,0,0,.15)}
+#error h2{margin:0 0 12px;color:var(--navy);font-size:20px}
+.errorText{white-space:pre-wrap;font:12px/1.6 'IBM Plex Mono',monospace;color:#8a3a3a}
+
+/* ===== Footer ===== */
+.synapses-footer{flex:0 0 auto;position:relative;z-index:19;padding:9px 22px;text-align:center;font:12px 'Inter',sans-serif;color:var(--ink-soft);background:var(--panel);border-top:1px solid var(--line)}
+.synapses-footer div:first-child{font-weight:600;letter-spacing:.03em;color:var(--ink)}
+
+@media(max-width:900px){
+  .header-top{padding:10px 14px}
+  .toolbar{padding:12px 14px 14px}
+  .tb-label{min-width:auto;width:100%}
+  #help{display:none}
+  #legend{right:12px;bottom:70px;width:180px}
+  .bottom{bottom:8px}
+  #panel{right:8px;top:8px;width:calc(100vw - 16px)}
 }
 </style>
 </head>
 <body>
 <div id="app">
-<a id="backProgramming" href="Programmation/sequences.html"
-style="position:fixed;z-index:20;right:24px;top:18px;padding:8px 12px;background:rgba(255,255,255,.92);
-border:1px solid #d2d8dd;color:#152333;text-decoration:none;font:13px Georgia,serif;
-box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
-<canvas id="graph" aria-label="Cartographie des compétences"></canvas>
-<header>
-  <h1>Cartographie des séquences</h1>
-  <div class="subtitle" id="subtitle">Chargement des données pédagogiques…</div>
+
+<header class="site-header">
+  <div class="header-top">
+    <div class="brand">
+      <span class="brand-mark" aria-hidden="true">RÉ</span>
+      <span class="brand-text">
+        <span class="top">Synapses</span>
+        <span class="bottom">Cartographie des compétences</span>
+      </span>
+    </div>
+    <div>
+      <div id="subtitle">Chargement des données pédagogiques…</div>
+    </div>
+    <a id="backProgramming" class="btn-back" href="Programmation/sequences.html">← Retour à la programmation</a>
+  </div>
 </header>
 
 <div class="toolbar">
-  <div class="group"><span class="label">Vue</span>
-    <button id="viewGlobal" class="active">Vue globale</button>
-    <button id="viewNiveau">Vue niveau</button>
-    <button id="viewCompetence">Vue compétence</button>
+  <div class="tb-row tb-search-row">
+    <details class="filter-dropdown" id="levelsDropdown">
+      <summary>Niveaux <span class="count" id="levelsCount"></span></summary>
+      <div class="filter-dropdown-menu tb-scroll" id="levels"></div>
+    </details>
+    <details class="filter-dropdown" id="domainsDropdown">
+      <summary>Domaines <span class="count" id="domainsCount"></span></summary>
+      <div class="filter-dropdown-menu tb-scroll" id="domains"></div>
+    </details>
+    <input id="search" autocomplete="off" placeholder="Rechercher une compétence, une séquence, une séance…">
+    <button class="btn-reset" id="reset">Réinitialiser les filtres</button>
+    <span id="status">Chargement…</span>
   </div>
-  <div class="group"><span class="label">Niveaux</span><span id="levels"></span></div>
-  <div class="group"><span class="label">Domaines</span><span id="domains"></span></div>
-  <input id="search" autocomplete="off" placeholder="Rechercher compétence, séquence, séance…">
-  <button id="reset">Réinitialiser</button>
-  <span id="status">Chargement…</span>
 </div>
 
+<div id="stage">
 <div class="side card" id="legend">
   <h3>Légende</h3>
-  <div class="legendrow"><span class="dot" style="background:#2f8f68"></span>Compétence (dans la sphère)</div>
-  <div class="legendrow"><span class="dot" style="background:#d79224"></span>Séquence (au clic)</div>
-  <div class="legendrow"><span class="dot" style="background:#4d91b7"></span>Séance (au clic)</div>
+  <div class="legendrow"><span class="dot" style="background:var(--node-competence)"></span>Compétence (dans la sphère)</div>
+  <div class="legendrow"><span class="dot" style="background:var(--node-sequence)"></span>Séquence (au clic)</div>
+  <div class="legendrow"><span class="dot" style="background:var(--node-seance)"></span>Séance (au clic)</div>
   <div class="legendrow"><span class="dashSample"></span>Prérequis déclaré</div>
   <div class="legendrow"><span class="lineSample"></span>Compétence → séquence</div>
   <div class="legendrow"><span class="lineSample" style="opacity:.55"></span>Séquence → séance</div>
@@ -139,7 +200,16 @@ box-shadow:0 6px 20px rgba(24,40,55,.08);">← Retour à la programmation</a>
 
 <aside id="panel"><div class="panelCard"><span class="close" id="close">×</span><div id="panelContent"></div></div></aside>
 <div id="error"><h2>Impossible de charger la cartographie</h2><div class="errorText" id="errorText"></div></div>
+<canvas id="graph" aria-label="Cartographie des compétences"></canvas>
 </div>
+
+<footer class="synapses-footer">
+    <div>Synapses — Grand Planificateur pédagogique</div>
+    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
+</footer>
+</div>
+
+
 
 <script>
 /* =========================================================
@@ -187,12 +257,14 @@ function normalizeLevel(value){
   return map[raw] || String(value??"").trim();
 }
 const TYPE = {
-  competence:{color:"#2f8f68",radius:15},
-  sequence:{color:"#d79224",radius:17},
-  seance:{color:"#4d91b7",radius:12}
+  competence:{color:"#2A7F72",radius:15},
+  sequence:{color:"#B5871E",radius:17},
+  seance:{color:"#2E5EAA",radius:12}
 };
 
 const $ = id => document.getElementById(id);
+const vw = () => $("stage").clientWidth;
+const vh = () => $("stage").clientHeight;
 const esc = v => String(v ?? "").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]));
 const norm = v => String(v ?? "").trim().toLowerCase();
 const levelRank = n => { const i=LEVEL_ORDER.indexOf(n); return i<0?999:i; };
@@ -210,9 +282,7 @@ const state = {
   dragging:false, panning:false, moved:false, lastX:0, lastY:0,
   sphereR:340, sphereSpacing:600, spiralRadiusBase:850, spiralRiseBase:190, spiralTurns:1.35,
   sphereRByLevel:{}, sphereScaleFactor:1, camDist:1500, fitZoom:.4,
-  projected:[],
-  viewMode:"global", // "global" | "niveau" | "competence"
-  focusLevel:null
+  projected:[]
 };
 
 /* ---------- Chargement robuste des chemins ---------- */
@@ -410,8 +480,8 @@ function computeCameraFraming(){
   // Distance de caméra très supérieure à l'étendue max : perspective
   // stable (pas d'inversion) et déformation douce, pour une lecture nette.
   state.camDist=Math.max(2600,maxRadiusXZ*2.6,maxHeight*2.6);
-  const fitW=(Math.min(innerWidth,innerHeight)*0.42)/maxRadiusXZ;
-  const fitH=(innerHeight*0.40)/maxHeight;
+  const fitW=(Math.min(vw(),vh())*0.42)/maxRadiusXZ;
+  const fitH=(vh()*0.40)/maxHeight;
   state.fitZoom=Math.max(0.02,Math.min(fitW,fitH,state.maxZoom));
   state.minZoom=Math.max(0.008,state.fitZoom*0.28);
   const range=$("zoomRange");
@@ -500,11 +570,6 @@ function loadCompetenceSatellites(compId){
 
 /* ---------- Filtres ---------- */
 function visible(n){
-  if(state.viewMode==="competence"){
-    const set=getCompetenceFocusSet(state.selected);
-    if(!set || !set.has(n.id)) return false;
-    return true;
-  }
   if(n.type==="competence"){
     if(!state.levels.has(normalizeLevel(n.niveau))) return false;
     if(state.domains.size && !state.domains.has(n.domaine_id)) return false;
@@ -531,6 +596,8 @@ function renderFilters(){
     b.onclick=()=>{state.domains.has(d.id)?state.domains.delete(d.id):state.domains.add(d.id);renderFilters();update();};
     domains.appendChild(b);
   }
+  $("levelsCount").textContent=`${state.levels.size}/${LEVEL_ORDER.length}`;
+  $("domainsCount").textContent=`${state.domains.size}/${state.compData.domaines.length}`;
 }
 
 /* ---------- Projection et rendu ---------- */
@@ -543,7 +610,7 @@ function rotate(p){
 function projectPoint(p){
   const r=rotate(p), d=state.camDist;
   const scale=(d/(d+r.z))*state.zoom;
-  return {x:innerWidth/2+state.panX+r.x*scale,y:innerHeight/2+state.panY+r.y*scale,z:r.z,scale};
+  return {x:vw()/2+state.panX+r.x*scale,y:vh()/2+state.panY+r.y*scale,z:r.z,scale};
 }
 function sphereProjection(level){
   const p=projectPoint(sphereCenter(level));
@@ -555,17 +622,14 @@ function sphereProjection(level){
    que le centre de sa sphère, et pas avec sa propre profondeur.
    Sans cela, l'écart de profondeur entre nœuds d'une même sphère se
    traduisait en perspective par un étalement en cône bien au-delà
-   du contour dessiné. En "vue compétence", les sphères sont masquées
-   et on garde la perspective complète, individuelle par nœud. */
+   du contour dessiné. */
 function projectNode(n){
-  if(state.viewMode!=="competence"){
-    const lvl=normalizeLevel(n.niveau);
-    if(lvl && LEVEL_ORDER.includes(lvl)){
-      const center=sphereCenter(lvl);
-      const sp=projectPoint(center);
-      const off=rotate({x:n.x-center.x,y:n.y-center.y,z:n.z-center.z});
-      return {x:sp.x+off.x*sp.scale,y:sp.y+off.y*sp.scale,z:sp.z+off.z,scale:sp.scale};
-    }
+  const lvl=normalizeLevel(n.niveau);
+  if(lvl && LEVEL_ORDER.includes(lvl)){
+    const center=sphereCenter(lvl);
+    const sp=projectPoint(center);
+    const off=rotate({x:n.x-center.x,y:n.y-center.y,z:n.z-center.z});
+    return {x:sp.x+off.x*sp.scale,y:sp.y+off.y*sp.scale,z:sp.z+off.z,scale:sp.scale};
   }
   return projectPoint(n);
 }
@@ -604,14 +668,14 @@ function drawSphere(ctx,s,label){
   ctx.strokeStyle="rgba(20,32,42,.9)";ctx.lineWidth=3;
   ctx.beginPath();ctx.arc(x,y,r,0,Math.PI*2);ctx.stroke();
 
-  ctx.fillStyle="rgba(21,35,51,.96)";ctx.font=`500 ${Math.max(22,Math.min(40,r*.18))}px Georgia`;
+  ctx.fillStyle="rgba(21,35,51,.96)";ctx.font=`600 ${Math.max(22,Math.min(40,r*.18))}px Fraunces,Georgia,serif`;
   ctx.textAlign="center";ctx.fillText(label,x,y-r-20);
   ctx.restore();
 }
 function drawNode(ctx,p,n){
   const r=Math.max(5,TYPE[n.type].radius*p.scale*.78);
   ctx.save();
-  const base=state.relationNodes.has(n.id) ? "#c52b2b" : TYPE[n.type].color;
+  const base=(state.selected===n.id || state.relationNodes.has(n.id)) ? "#c52b2b" : TYPE[n.type].color;
   const grad=ctx.createRadialGradient(p.x-r*.35,p.y-r*.42,1,p.x,p.y,r);
   grad.addColorStop(0,"rgba(255,255,255,.9)");
   grad.addColorStop(.25,base);grad.addColorStop(1,"rgba(0,0,0,.28)");
@@ -628,22 +692,19 @@ function focusOpacityFor(n){
 function draw(){
   const canvas=$("graph"),ctx=canvas.getContext("2d");
   const dpr=Math.min(devicePixelRatio||1,2);
-  canvas.width=innerWidth*dpr;canvas.height=innerHeight*dpr;
-  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,innerWidth,innerHeight);
+  canvas.width=vw()*dpr;canvas.height=vh()*dpr;
+  ctx.setTransform(dpr,0,0,dpr,0,0);ctx.clearRect(0,0,vw(),vh());
 
-  const bg=ctx.createRadialGradient(innerWidth*.52,innerHeight*.45,30,innerWidth*.52,innerHeight*.45,Math.max(innerWidth,innerHeight)*.72);
+  const bg=ctx.createRadialGradient(vw()*.52,vh()*.45,30,vw()*.52,vh()*.45,Math.max(vw(),vh())*.72);
   bg.addColorStop(0,"#fff");bg.addColorStop(.7,"#f5f7f8");bg.addColorStop(1,"#e7ebee");
-  ctx.fillStyle=bg;ctx.fillRect(0,0,innerWidth,innerHeight);
+  ctx.fillStyle=bg;ctx.fillRect(0,0,vw(),vh());
 
-  // En vue compétence, les sphères n'apportent rien : on les masque pour l'épure.
-  if(state.viewMode!=="competence"){
-    const spheres=LEVEL_ORDER
-      .filter(l=>state.levels.has(l))
-      .map(l=>({level:l,...sphereProjection(l)}))
-      .sort((a,b)=>b.z-a.z);
-    for(const s of spheres){
-      ctx.save();ctx.globalAlpha=1;drawSphere(ctx,s,s.level);ctx.restore();
-    }
+  const spheres=LEVEL_ORDER
+    .filter(l=>state.levels.has(l))
+    .map(l=>({level:l,...sphereProjection(l)}))
+    .sort((a,b)=>b.z-a.z);
+  for(const s of spheres){
+    ctx.save();ctx.globalAlpha=1;drawSphere(ctx,s,s.level);ctx.restore();
   }
 
   const projected=new Map();
@@ -679,27 +740,9 @@ function update(){
   const sea=state.nodes.filter(n=>n.type==="seance"&&visible(n)).length;
   const pre=state.links.filter(l=>l.type==="prerequis"&&state.nodes.find(n=>n.id===l.source&&visible(n))&&state.nodes.find(n=>n.id===l.target&&visible(n))).length;
   $("status").textContent=`${comps} compétences · ${seq} séquences · ${sea} séances · ${pre} prérequis`;
-  if(state.viewMode==="niveau"){
-    if(state.focusLevel){
-      const lc=state.nodes.filter(n=>n.type==="competence"&&normalizeLevel(n.niveau)===state.focusLevel).length;
-      const ls=state.nodes.filter(n=>n.type==="sequence"&&normalizeLevel(n.niveau)===state.focusLevel).length;
-      const lx=state.nodes.filter(n=>n.type==="seance"&&normalizeLevel(n.niveau)===state.focusLevel).length;
-      $("subtitle").textContent=`${state.focusLevel} · ${lc} compétences · ${ls} séquences · ${lx} séances`;
-    }else{
-      $("subtitle").textContent="Vue niveau : cliquez sur une sphère pour l'explorer";
-    }
-  }else if(state.viewMode==="competence"){
-    if(state.selected&&state.selected.startsWith("c:")){
-      const c=compById(state.selected.slice(2));
-      $("subtitle").textContent=`Vue compétence · ${c?.intitule||""} — prérequis, séquences et séances liées`;
-    }else{
-      $("subtitle").textContent="Vue compétence : sélectionnez une compétence pour l'activer";
-    }
-  }else{
-    $("subtitle").textContent=state.activeCompetenceSatellite
-      ? `${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cliquez une compétence pour ses séquences/séances`
-      : `${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cliquez une compétence pour charger ses séquences et séances`;
-  }
+  $("subtitle").textContent=state.activeCompetenceSatellite
+    ? `${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cliquez une compétence pour ses séquences/séances`
+    : `${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cliquez une compétence pour charger ses séquences et séances`;
 }
 function hit(clientX,clientY){
   const rect=$("graph").getBoundingClientRect();
@@ -721,24 +764,6 @@ function relationData(id){
   const pre=(byId.get(id)?.prerequis_competences||[]).filter(x=>byId.has(x));
   const after=state.compData.competences.filter(c=>(c.prerequis_competences||[]).includes(id));
   return {byId,pre,after};
-}
-/* ---------- Mode focus / Vue compétence ----------
-   Pour une compétence donnée : elle-même, ses prérequis déclarés,
-   les compétences qui en dépendent, ses séquences liées (competence_id exact)
-   et les séances de ces séquences. */
-function getCompetenceFocusSet(selId){
-  if(!selId||!selId.startsWith("c:")) return null;
-  const id=selId.slice(2);
-  const {pre,after}=relationData(id);
-  const set=new Set(["c:"+id]);
-  pre.forEach(x=>set.add("c:"+x));
-  after.forEach(c=>set.add("c:"+c.id));
-  const seqIds=state.sequences.filter(s=>extractExactCompetenceId(s)===id).map(s=>s.id);
-  seqIds.forEach(sid=>set.add("s:"+sid));
-  for(const se of state.seances){
-    if(seqIds.includes(se.sequence_id)) set.add("x:"+se.id);
-  }
-  return set;
 }
 function showRelations(mode){
   state.relationNodes=new Set(); state.relationLinks=new Set();
@@ -788,55 +813,9 @@ function showPanel(node){
     $("relationMenu").classList.add("open");
     $("panelContent").querySelectorAll("[data-c]").forEach(e=>e.onclick=()=>showPanel(state.nodes.find(n=>n.id==="c:"+e.dataset.c)));
     $("panelContent").querySelectorAll("[data-s]").forEach(e=>e.onclick=()=>showPanel(state.nodes.find(n=>n.id==="s:"+e.dataset.s)));
-    if(state.viewMode==="competence") focusOnCompetenceNode(node);
   }else $("relationMenu").classList.remove("open");
   update();
 }
-
-/* ---------- Vue niveau / Vue compétence : centrage caméra ---------- */
-function hitSphere(clientX,clientY){
-  const rect=$("graph").getBoundingClientRect();
-  const x=clientX-rect.left,y=clientY-rect.top;
-  let best=null,bestD=Infinity;
-  for(const l of LEVEL_ORDER.filter(l=>state.levels.has(l))){
-    const s=sphereProjection(l);
-    const d=Math.hypot(x-s.x,y-s.y);
-    if(d<s.r && d<bestD){best=l;bestD=d;}
-  }
-  return best;
-}
-function centerOn(worldPoint,targetZoom){
-  state.zoom=Math.min(state.maxZoom,Math.max(state.minZoom,targetZoom));
-  const p=projectPoint(worldPoint);
-  state.panX+=innerWidth/2-p.x;
-  state.panY+=innerHeight/2-p.y;
-  $("zoomRange").value=state.zoom;
-}
-function focusOnLevel(level){
-  state.focusLevel=level;
-  centerOn(sphereCenter(level),1.9);
-  update();
-}
-function focusOnCompetenceNode(node){
-  centerOn(node,Math.max(state.zoom,1.7));
-  update();
-}
-function setViewMode(mode){
-  state.viewMode=mode;
-  ["viewGlobal","viewNiveau","viewCompetence"].forEach(id=>$(id).classList.remove("active"));
-  $({global:"viewGlobal",niveau:"viewNiveau",competence:"viewCompetence"}[mode]).classList.add("active");
-  if(mode==="global"){
-    state.focusLevel=null;
-    resetView();
-  }else if(mode==="competence" && state.selected && state.selected.startsWith("c:")){
-    const n=state.nodes.find(x=>x.id===state.selected);
-    if(n) focusOnCompetenceNode(n);
-  }
-  update();
-}
-$("viewGlobal").onclick=()=>setViewMode("global");
-$("viewNiveau").onclick=()=>setViewMode("niveau");
-$("viewCompetence").onclick=()=>setViewMode("competence");
 
 /* ---------- Navigation ---------- */
 function resetView(){
@@ -851,7 +830,7 @@ $("reset").onclick=()=>{
   state.domains=new Set(state.compData.domaines.map(d=>d.id));
   state.selected=null;$("panel").classList.remove("open");
   clearDynamicNodes();
-  renderFilters();setViewMode("global");update();
+  renderFilters();resetView();update();
 };
 $("close").onclick=()=>{$("panel").classList.remove("open");state.selected=null;clearDynamicNodes();update();};
 $("home").onclick=resetView;
@@ -885,7 +864,7 @@ canvas.addEventListener("pointermove",e=>{
 canvas.addEventListener("dblclick",e=>{
   state.openingSpin=false;
   const n=hit(e.clientX,e.clientY);
-  if(n){const p=projectNode(n);state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,1.8));state.panX+=innerWidth/2-p.x;state.panY+=innerHeight/2-p.y;$("zoomRange").value=state.zoom;draw();}
+  if(n){const p=projectNode(n);state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,1.8));state.panX+=vw()/2-p.x;state.panY+=vh()/2-p.y;$("zoomRange").value=state.zoom;draw();}
 });
 canvas.addEventListener("pointerup",e=>{
   if(!state.dragging)return;
@@ -894,10 +873,6 @@ canvas.addEventListener("pointerup",e=>{
   if(!wasPan&&!moved){
     const n=hit(e.clientX,e.clientY);
     if(n) showPanel(n);
-    else if(state.viewMode==="niveau"){
-      const lvl=hitSphere(e.clientX,e.clientY);
-      if(lvl) focusOnLevel(lvl);
-    }
   }
 });
 canvas.addEventListener("wheel",e=>{
@@ -905,7 +880,7 @@ canvas.addEventListener("wheel",e=>{
   e.preventDefault();
   const rect=canvas.getBoundingClientRect();
   const mx=e.clientX-rect.left, my=e.clientY-rect.top;
-  const cx=innerWidth/2, cy=innerHeight/2;
+  const cx=vw()/2, cy=vh()/2;
   const newZoom=Math.max(state.minZoom,Math.min(state.maxZoom,state.zoom*(e.deltaY<0?1.08:.925)));
   const k=newZoom/state.zoom; // ratio réel appliqué (peut être bridé par min/max)
   // Le point du monde sous le curseur doit rester sous le curseur après le zoom.
@@ -937,12 +912,21 @@ $("rotateToggle").onclick=()=>setAutoRotate(!state.autoRotate);
 canvas.addEventListener("pointerdown",()=>{ if(state.autoRotate) setAutoRotate(false); });
 canvas.addEventListener("wheel",()=>{ if(state.autoRotate) setAutoRotate(false); },{passive:true});
 
-loadData().then(()=>draw());
+Promise.all([loadData(), document.fonts?.ready||Promise.resolve()]).then(()=>draw());
+
+/* ---------- Menus déroulants Niveaux / Domaines ---------- */
+(function(){
+  const dropdowns=[$("levelsDropdown"),$("domainsDropdown")];
+  dropdowns.forEach(dd=>{
+    dd.addEventListener("toggle",()=>{
+      if(dd.open) dropdowns.forEach(o=>{ if(o!==dd) o.open=false; });
+    });
+  });
+  document.addEventListener("click",e=>{
+    dropdowns.forEach(dd=>{ if(dd.open && !dd.contains(e.target)) dd.open=false; });
+  });
+})();
 </script>
 
-<footer class="synapses-footer">
-    <div>Synapses — Grand Planificateur pédagogique</div>
-    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
-</footer>
 </body>
 </html>

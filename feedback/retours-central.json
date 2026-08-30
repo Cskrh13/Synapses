@@ -1,19 +1,128 @@
-{
-  "version": "1.0.0",
-  "updatedAt": "2026-08-29T09:39:00Z",
-  "retours": [
-    {
-      "id": "web-20260829-002",
-      "fileName": "Programmation/sequences.html",
-      "alias": "",
-      "testerGroup": "Testeur",
-      "page": "Programmation — Séquences & séances",
-      "category": "Affichage / Données",
-      "desc": "La page affiche correctement la structure de la base pédagogique et les commandes disponibles, mais dans l'état observé aucune séquence n'est affichée : la zone de chargement reste sur « Chargement de la base pédagogique… ». Les sections Domaines et Périodes sont également présentes sans contenu visible.",
-      "expected": "Après le chargement automatique de data/index.json et des référentiels déclarés, les séquences disponibles devraient apparaître dans la liste, avec les domaines, périodes et informations associées. La page devrait remplacer l'état de chargement par le contenu effectivement chargé ou afficher clairement une erreur si les données ne peuvent pas être récupérées.",
-      "browser": "Test réalisé depuis la version publique du site",
-      "priority": "Élevée",
-      "status": "Nouveau"
-    }
-  ]
-}
+[
+  {
+    "id": "web-20260830-001",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Séquences & séances",
+    "category": "Bug",
+    "desc": "En ouvrant la page « Séquences & séances » depuis la version publique du site, la zone principale reste affichée sur « Chargement de la base pédagogique… ». Aucune séquence n'apparaît et les sections Domaines et Périodes restent sans contenu visible.",
+    "expected": "La page devrait charger les données disponibles puis afficher les domaines, périodes et séquences correspondants. Si les données ne peuvent pas être chargées, un message d'erreur explicite devrait remplacer l'indicateur de chargement.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "Élevée",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  },
+  {
+    "id": "web-20260830-002",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Séquences & séances",
+    "category": "Incompréhension",
+    "desc": "Lorsque la page est ouverte sans séquence disponible, l'utilisateur ne sait pas clairement si les données sont encore en cours de chargement, si aucune séquence n'est disponible ou si le chargement a échoué.",
+    "expected": "L'interface devrait distinguer clairement les situations « chargement en cours », « aucune donnée disponible » et « erreur de chargement », avec une indication permettant de comprendre quoi faire dans chaque cas.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "À trier",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  },
+  {
+    "id": "web-20260830-003",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Générateur de séquences",
+    "category": "Incompréhension",
+    "desc": "Le générateur affiche une phase de chargement du référentiel. Lorsque celui-ci n'est pas disponible, l'utilisateur ne dispose pas d'une indication suffisamment précise permettant de savoir quelle ressource est attendue ou ce qu'il doit faire.",
+    "expected": "En cas d'échec du chargement du référentiel, afficher un message indiquant clairement la ressource concernée et la conséquence sur les fonctionnalités du générateur.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "À trier",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  },
+  {
+    "id": "web-20260830-004",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Planning — Affichage",
+    "category": "Incompréhension",
+    "desc": "Lorsque le planning n'est pas disponible, il n'est pas immédiatement évident de distinguer l'absence de planning enregistré d'un problème de chargement ou de connexion à la source de données.",
+    "expected": "Afficher un état vide explicite indiquant si aucun planning n'est disponible ou si le planning n'a pas pu être chargé, ainsi que l'action attendue de l'utilisateur.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "À trier",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  },
+  {
+    "id": "web-20260830-005",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Générateur de séquences",
+    "category": "Suggestion",
+    "desc": "Le générateur propose plusieurs étapes successives pour construire une séquence : cadrage, objectifs, progression, séances et matériel. La richesse des possibilités peut rendre moins visible l'étape suivante à effectuer.",
+    "expected": "Ajouter un indicateur de progression permettant de voir clairement l'étape actuelle, les étapes déjà complétées et l'étape suivante recommandée.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "À trier",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  },
+  {
+    "id": "web-20260830-006",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Séquences & séances",
+    "category": "Suggestion",
+    "desc": "La page rassemble plusieurs fonctions liées à la création, l'importation, l'exportation et l'organisation des séquences. Pour un utilisateur découvrant Synapses, la première action à effectuer n'est pas toujours immédiatement identifiable.",
+    "expected": "Proposer un parcours d'entrée simple indiquant les principales étapes : créer ou importer une séquence, vérifier les compétences, organiser la programmation puis enregistrer ou exporter le travail.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "À trier",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  },
+  {
+    "id": "web-20260830-007",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Autre / transverse",
+    "category": "Suggestion",
+    "desc": "Les différentes fonctionnalités de Synapses utilisent plusieurs types de données et de fichiers locaux. L'utilisateur peut avoir besoin de comprendre rapidement quelles données sont publiques, lesquelles restent locales et lesquelles sont éventuellement transmises à un service externe.",
+    "expected": "Ajouter un indicateur simple dans les fonctionnalités concernées permettant d'identifier la nature des données utilisées : référentiel public, données locales ou données transmises à un service externe.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "À trier",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  },
+  {
+    "id": "web-20260830-008",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Autre / transverse",
+    "category": "Suggestion",
+    "desc": "Plusieurs pages affichent des contenus dynamiques et utilisent des messages de chargement. Une présentation homogène des différents états de l'application faciliterait la compréhension lors des tests.",
+    "expected": "Utiliser systématiquement quatre états clairement identifiables : chargement, contenu disponible, absence de données et erreur de chargement.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "À trier",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  },
+  {
+    "id": "web-20260830-009",
+    "dateSubmitted": "2026-08-30",
+    "testerGroup": "PE",
+    "page": "Autre / transverse",
+    "category": "Suggestion",
+    "desc": "La version de l'application n'est pas toujours suffisamment visible pour permettre d'identifier immédiatement la version testée lors de la transmission d'un retour.",
+    "expected": "Afficher de manière homogène la version de Synapses sur les différentes pages afin de pouvoir associer chaque retour à une version précise.",
+    "browser": "Version publique du site — ordinateur",
+    "priority": "À trier",
+    "status": "Nouveau",
+    "assignee": "",
+    "notes": ""
+  }
+]

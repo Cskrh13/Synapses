@@ -80,6 +80,26 @@ header.site-header{
 .coffre-widget{display:flex;align-items:center;gap:8px;padding:4px 4px 4px 12px;border:1px solid rgba(255,255,255,.3);border-radius:20px;}
 .coffre-widget .badge-coffre{font-family:'IBM Plex Mono',monospace;font-size:11px;color:#fff;white-space:nowrap;}
 .coffre-widget .badge-coffre.ouvert{color:#BFE3DA;}
+
+/* ===== Nav à menus déroulants (DA commune du site) ===== */
+nav.main-nav{display:flex;gap:6px;flex-wrap:wrap;row-gap:6px;align-items:center;}
+.nav-dropdown{position:relative;flex:0 0 auto;}
+.nav-dropdown>summary{height:36px;line-height:20px;list-style:none;color:#D9E0F2;font-size:14px;font-weight:500;padding:8px 12px;border-radius:6px;cursor:pointer;white-space:nowrap;display:flex;align-items:center;box-sizing:border-box;}
+.nav-dropdown>summary::-webkit-details-marker{display:none;}
+.nav-dropdown>summary::after{content:"⌄";font-size:11px;margin-left:7px;opacity:.75;}
+.nav-dropdown[open]>summary,.nav-dropdown>summary:hover{background:rgba(255,255,255,.09);color:#fff;}
+.nav-dropdown-menu{position:absolute;top:100%;left:0;margin-top:7px;min-width:250px;background:var(--navy);border:1px solid rgba(255,255,255,.16);border-radius:8px;padding:7px;box-shadow:0 14px 30px rgba(0,0,0,.25);z-index:100;}
+.nav-dropdown-menu a,.nav-dropdown-menu button{
+  display:flex!important;align-items:center;gap:8px;width:100%;text-align:left;
+  color:#D9E0F2!important;font-size:13.5px!important;font-weight:500!important;
+  padding:9px 11px!important;border-radius:5px;margin:0!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;
+  font-family:'Inter',sans-serif!important;white-space:normal!important;
+}
+.nav-dropdown-menu a:hover,.nav-dropdown-menu button:hover{background:rgba(255,255,255,.09)!important;color:#fff!important;}
+.menu-separator{height:1px;background:rgba(255,255,255,.12);margin:6px 4px;}
+.menu-label{padding:5px 11px 3px;color:#9EADD0;font-family:'Inter',sans-serif;font-weight:700;font-size:10.5px;letter-spacing:.08em;text-transform:uppercase;}
+@media(max-width:760px){nav.main-nav{width:100%;}.nav-dropdown-menu{position:static;margin-top:4px;width:100%;}}
 .repeater-row.has-picker{grid-template-columns:1.3fr 1fr 1.6fr auto;}
 .repeater-row .eleve-picker{width:100%;font-family:'Inter',sans-serif;font-size:13px;padding:8px 9px;border:1px solid var(--line);border-radius:8px;background:#F4F7FC;color:var(--ink);}
 .eleve-tools{display:flex;gap:14px;flex-wrap:wrap;margin-top:6px;align-items:center;}
@@ -564,23 +584,31 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
     <a href="../index.html" class="brand">
       <span class="brand-mark" aria-hidden="true">RÉ</span>
       <span class="brand-text">
-        <span class="top">Portail non institutionnel</span>
-        <span class="bottom">Programmation annuelle</span>
+        <span class="top">Synapses</span>
+        <span class="bottom">Ma programmation</span>
       </span>
     </a>
-    <div class="header-actions">
-      <div class="coffre-widget">
-        <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
-        <button class="btn small" id="btn-coffre-toggle">Ouvrir le coffre</button>
-      </div>
-      <button class="btn" id="btn-view-progression">📈 Progression annuelle</button>
-      <a class="btn" href="generateur-sequences-projet.html">🧩 Générateur de séquences</a>
-      <a class="btn" href="planning-affichage.html">🗓 Planning</a>
-      <button class="btn" id="btn-export-all">Exporter tout (JSON)</button>
-      <button class="btn" id="btn-import-all">Importer</button>
+    <nav class="main-nav" aria-label="Navigation principale">
+      <details class="nav-dropdown">
+        <summary>Préparer l'année</summary>
+        <div class="nav-dropdown-menu">
+          <a href="sequences.html" aria-current="page">📚 Ma programmation</a>
+          <a href="planning-affichage.html">🗓 Mon emploi du temps</a>
+          <a href="generateur-sequences-projet.html">🧩 Créer une séquence</a>
+        </div>
+      </details>
+      <details class="nav-dropdown">
+        <summary>Progression</summary>
+        <div class="nav-dropdown-menu">
+          <button type="button" id="btn-view-progression">📈 Voir ma progression annuelle</button>
+        </div>
+      </details>
       <input type="file" id="file-import" accept="application/json,.json" multiple style="display:none">
-      <button class="btn" id="btn-import-folder">📁 Importer un dossier</button>
       <input type="file" id="folder-import" webkitdirectory directory multiple style="display:none">
+    </nav>
+    <div class="coffre-widget">
+      <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
+      <button class="btn small" id="btn-coffre-toggle">Ouvrir le coffre</button>
     </div>
   </div>
 </header>
@@ -1045,8 +1073,11 @@ try{ coffre = new SynapsesCoffre.Coffre(); }catch(e){ coffre = null; }
 function coffreDisponible(){ return !!coffre; }
 function coffreOuvert(){ return !!(coffre && coffre.ouvert); }
 function eleveLabel(e){
-  const id = e.identite || {};
-  return (`${id.prenom||""} ${id.nom||""}`).trim() || e.identifiantSynapses;
+  // Volontairement limité à l'identifiant d'anonymat : le nom/prénom de
+  // l'élève ne doit jamais quitter le coffre chiffré pour se retrouver
+  // dans une séquence/séance (celles-ci sont enregistrées en clair dans
+  // localStorage). Seul le numéro d'anonymat est utilisé partout ailleurs.
+  return e.identifiantSynapses;
 }
 function updateCoffreWidget(){
   const status = document.getElementById('coffre-status');
@@ -1772,11 +1803,11 @@ function seqEleveRowHTML(identifiant="", nom="", objectif=""){
   const pickerHTML = withPicker ? `
     <select class="eleve-picker">
       <option value="">— Saisie libre —</option>
-      ${coffre.listerEleves().map(e=>`<option value="${escapeAttr(e.identifiantSynapses)}" ${e.identifiantSynapses===identifiant?'selected':''}>${escapeHTML(eleveLabel(e))} (${escapeHTML(e.identifiantSynapses)})</option>`).join('')}
+      ${coffre.listerEleves().map(e=>`<option value="${escapeAttr(e.identifiantSynapses)}" ${e.identifiantSynapses===identifiant?'selected':''}>${escapeHTML(eleveLabel(e))}</option>`).join('')}
     </select>` : '';
   return `<div class="repeater-row eleve-row ${withPicker?'has-picker':''}">
     ${pickerHTML}
-    <input type="text" class="seq-eleve-nom" placeholder="Nom" value="${escapeAttr(nom)}" data-identifiant="${escapeAttr(identifiant)}">
+    <input type="text" class="seq-eleve-nom" placeholder="Identifiant d'anonymat" value="${escapeAttr(nom)}" data-identifiant="${escapeAttr(identifiant)}">
     <input type="text" class="seq-eleve-objectif" placeholder="Objectif individuel" value="${escapeAttr(objectif)}">
     <button type="button" class="repeater-del">✕</button>
   </div>`;
@@ -2525,7 +2556,7 @@ function downloadJSON(pathSansExtension, data){
   a.click();
   URL.revokeObjectURL(a.href);
 }
-document.getElementById('btn-export-all').addEventListener('click', ()=>{
+document.getElementById('btn-export-all')?.addEventListener('click', ()=>{
   downloadJSON("programmation-complete", { sequences: state.sequences, seances: state.seances });
 });
 
@@ -2560,12 +2591,12 @@ function importJSONFiles(fileList){
     reader.readAsText(file);
   });
 }
-document.getElementById('btn-import-all').addEventListener('click', ()=> document.getElementById('file-import').click());
+document.getElementById('btn-import-all')?.addEventListener('click', ()=> document.getElementById('file-import').click());
 document.getElementById('file-import').addEventListener('change', e=>{
   importJSONFiles(e.target.files);
   e.target.value = "";
 });
-document.getElementById('btn-import-folder').addEventListener('click', ()=> document.getElementById('folder-import').click());
+document.getElementById('btn-import-folder')?.addEventListener('click', ()=> document.getElementById('folder-import').click());
 document.getElementById('folder-import').addEventListener('change', e=>{
   importJSONFiles(e.target.files);
   e.target.value = "";
@@ -2645,6 +2676,25 @@ chargerReferentielCompetences().then(()=>{
   renderSeqGrid();
   openFromCartographyURL();
 });
+</script>
+<script>
+(function(){
+  var navDropdowns = Array.prototype.slice.call(document.querySelectorAll('.nav-dropdown'));
+  navDropdowns.forEach(function(dd){
+    dd.addEventListener('toggle', function(){
+      if(dd.open){
+        navDropdowns.forEach(function(other){
+          if(other !== dd) other.open = false;
+        });
+      }
+    });
+  });
+  document.addEventListener('click', function(e){
+    navDropdowns.forEach(function(dd){
+      if(dd.open && !dd.contains(e.target)) dd.open = false;
+    });
+  });
+})();
 </script>
 
 <footer class="synapses-footer">
