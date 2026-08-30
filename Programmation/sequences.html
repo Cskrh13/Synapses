@@ -186,8 +186,9 @@ input[type="file"]{display:none;}
 .week-grid{display:grid;grid-template-columns:repeat(36,minmax(0,1fr));gap:3px;}
 .week-cell{
   aspect-ratio:1/1.15;background:#EEECE3;border-radius:4px;display:flex;align-items:center;justify-content:center;
-  font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--ink-soft);
+  font-family:'IBM Plex Mono',monospace;font-size:9px;color:var(--ink-soft);border:none;padding:0;cursor:pointer;
 }
+.week-cell:hover{background:#E4E1D6;}
 .week-cell.in-range{color:#fff;font-weight:700;}
 
 /* ---- Focus de progression autour de la séquence ---- */
@@ -550,7 +551,7 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 /* ===== Nouvelle programmation annuelle ===== */
 .prog-editor{margin:22px 0}.prog-editor-head{display:flex;justify-content:space-between;align-items:flex-start;gap:18px;margin-bottom:14px}.prog-editor-head h2{margin:0;color:var(--navy);font-size:19px}.prog-editor-head p{margin:6px 0 0;color:var(--ink-soft);max-width:850px}.prog-title-input{width:100%;border:0;border-bottom:2px solid var(--line);background:transparent;color:var(--navy);font-family:Georgia,serif;font-size:27px;font-weight:700;padding:4px 0}.prog-bricks{display:flex;flex-direction:column;gap:12px}.prog-brick{display:grid;grid-template-columns:46px 1fr;background:#fff;border:1px solid var(--line);border-radius:10px;overflow:hidden}.prog-brick-index{background:#eeeae0;display:flex;align-items:flex-start;justify-content:center;padding-top:18px;font:700 18px 'IBM Plex Mono',monospace;color:var(--navy)}.prog-brick-main{padding:16px}.prog-brick-top{display:flex;gap:10px;align-items:center}.prog-brick-top select{flex:1}.prog-brick-buttons{display:flex;gap:5px}.icon-btn{width:31px;height:31px;border:1px solid var(--line);background:#fff;border-radius:5px;cursor:pointer}.icon-btn.danger{color:#9a3d2e}.prog-official{font-size:11px;color:var(--ink-soft);margin:8px 0 12px}.prog-sequences{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}.prog-sequences>label{display:block;font:700 10px 'IBM Plex Mono',monospace;text-transform:uppercase;letter-spacing:.06em;margin-bottom:7px;color:var(--ink-soft)}.prog-seq-check{display:block;padding:5px 7px;background:#f7f5ef;margin:4px 0;border-radius:4px;font-size:12px}.periods-editor{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:12px}.period-editor{background:#fff;border:1px solid var(--line);border-radius:9px;min-height:270px;overflow:hidden}.period-editor>header{display:flex;gap:10px;align-items:center;padding:12px;background:#eeeae0;border-bottom:1px solid var(--line)}.period-number{font:700 16px 'IBM Plex Mono',monospace;color:var(--navy)}.period-editor h3{margin:0;font-size:15px}.period-count{font-size:10px;color:var(--ink-soft)}.period-body{padding:11px}.period-competence{display:flex;gap:8px;padding:7px;border:1px solid #ddd8cb;border-radius:5px;margin-bottom:6px}.period-competence>span{font:700 10px 'IBM Plex Mono',monospace}.period-competence strong{font-size:11px}.period-competence small{display:block;color:var(--ink-soft);margin-top:2px}.period-sequences{border-top:1px dashed var(--line);margin-top:10px;padding-top:9px}.period-sequences h4{font:700 10px 'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--ink-soft);margin:0 0 6px}.period-sequence{display:block;width:100%;text-align:left;border:1px solid #ddd8cb;background:#faf9f5;border-radius:5px;padding:7px;margin:5px 0;cursor:pointer}.period-sequence strong{display:block;font-size:11px}.period-sequence span{font-size:9px;color:var(--ink-soft)}.period-note{width:100%;min-height:60px;margin-top:10px;border:1px dashed var(--line);background:#faf9f5}.prog-empty{padding:18px;text-align:center;color:var(--ink-soft);border:1px dashed var(--line);border-radius:7px;background:#faf9f5}.prog-saved-label{font-size:12px;color:var(--ink-soft);align-self:center}.field-label{display:block;font-family:'IBM Plex Mono',monospace;font-size:10px;text-transform:uppercase;letter-spacing:.06em;color:var(--ink-soft);margin-top:16px}@media(max-width:1050px){.periods-editor{grid-template-columns:repeat(2,1fr)}}@media(max-width:700px){.prog-editor-head{flex-direction:column}.prog-brick{grid-template-columns:34px 1fr}.periods-editor{grid-template-columns:1fr}}
 
-.program-table-panel{margin:18px 0 24px}.program-table-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}.program-table-head h2{font-size:21px;color:var(--navy);margin:2px 0}.program-table-actions{display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap}.inline-field{margin:0;min-width:120px}.inline-field span{display:block;font:700 10px 'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px}.program-table-scroll{overflow:auto;margin-top:18px;border:1px solid var(--line);border-radius:8px;background:#fff}.program-table{width:100%;border-collapse:separate;border-spacing:0;min-width:1050px}.program-table th,.program-table td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);vertical-align:top}.program-table th{background:#eeeae0;padding:12px 10px;text-align:left;font-family:'Fraunces',serif;font-size:14px;color:var(--navy);position:sticky;top:0;z-index:2}.program-table th:first-child{width:190px;left:0;z-index:3}.program-table td:first-child{background:#faf9f5;position:sticky;left:0;z-index:1}.program-domain{padding:12px}.program-domain strong{display:block}.program-domain small{display:block;color:var(--ink-soft);margin-top:3px}.program-cell{padding:9px;min-height:135px}.program-seq-chip{display:block;width:100%;text-align:left;background:#faf9f5;border:1px solid var(--line);border-left:4px solid var(--accent-sky);border-radius:6px;padding:8px;margin-bottom:7px;cursor:grab}.program-seq-chip:active{cursor:grabbing}.program-seq-chip.dragging{opacity:.4}.program-cell.drag-over{outline:2px dashed var(--accent-sky);outline-offset:-4px;background:#eef4fc}.program-seq-chip strong{display:block;font-size:11.5px}.program-seq-chip span{display:block;font-size:9.5px;color:var(--ink-soft);margin-top:2px}.program-add{width:100%;border:1px dashed #bcb7aa;background:#fff;border-radius:5px;padding:7px;color:var(--ink-soft);font-size:11px}.program-add-wrap{position:relative}.program-add-btn{width:100%;border:1px dashed #bcb7aa;background:#fff;border-radius:5px;padding:7px;color:var(--ink-soft);font-size:11px;cursor:pointer;text-align:left}.program-add-btn:hover{border-color:var(--accent-sky);color:var(--accent-sky)}.program-add-menu{display:none;position:absolute;left:0;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 24px -12px rgba(30,42,74,.35);padding:8px;z-index:30;min-width:200px}.program-add-menu.open{display:block}.program-add-menu select{width:100%;margin-bottom:8px;font-size:11.5px;padding:6px;border:1px solid var(--line);border-radius:6px}.program-add-menu button{display:block;width:100%;text-align:left;background:#faf9f5;border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-size:11.5px;margin-bottom:6px;cursor:pointer;color:var(--ink)}.program-add-menu button:last-child{margin-bottom:0}.program-add-menu button:hover{background:#F0EEE7;border-color:#c7c2b3}.program-add-menu .pam-label{display:block;font:700 9.5px 'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--ink-soft);margin:0 0 4px}.program-empty-cell{color:#aaa;font-size:11px;text-align:center;padding:16px 5px}.program-cell select{width:100%;margin-top:6px}.program-remove{float:right;border:0;background:transparent;color:#9a3d2e;font-size:15px;cursor:pointer}.program-note{width:100%;min-height:52px;margin-top:7px;border:1px dashed var(--line);background:#faf9f5;padding:7px;font-size:11px}
+.program-table-panel{margin:18px 0 24px}.program-table-head{display:flex;justify-content:space-between;align-items:flex-end;gap:18px;flex-wrap:wrap}.program-table-head h2{font-size:21px;color:var(--navy);margin:2px 0}.program-table-actions{display:flex;gap:7px;align-items:flex-end;flex-wrap:wrap}.inline-field{margin:0;min-width:120px}.inline-field span{display:block;font:700 10px 'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px}.program-table-scroll{overflow:auto;margin-top:18px;border:1px solid var(--line);border-radius:8px;background:#fff}.program-table{width:100%;border-collapse:separate;border-spacing:0;min-width:1050px}.program-table th,.program-table td{border-right:1px solid var(--line);border-bottom:1px solid var(--line);vertical-align:top}.program-table th{background:#eeeae0;padding:12px 10px;text-align:left;font-family:'Fraunces',serif;font-size:14px;color:var(--navy);position:sticky;top:0;z-index:2}.program-table th:first-child{width:190px;left:0;z-index:3}.program-table td:first-child{background:#faf9f5;position:sticky;left:0;z-index:1}.program-domain{padding:12px}.program-domain strong{display:block}.program-domain small{display:block;color:var(--ink-soft);margin-top:3px}.program-cell{padding:9px;min-height:135px}.program-seq-chip{display:block;width:100%;text-align:left;background:#faf9f5;border:1px solid var(--line);border-left:4px solid var(--accent-sky);border-radius:6px;padding:8px;margin-bottom:7px;cursor:grab}.program-seq-chip:active{cursor:grabbing}.program-seq-chip.dragging{opacity:.4}.program-cell.drag-over{outline:2px dashed var(--accent-sky);outline-offset:-4px;background:#eef4fc}.program-seq-chip strong{display:block;font-size:11.5px}.program-seq-chip span{display:block;font-size:9.5px;color:var(--ink-soft);margin-top:2px}.program-add{width:100%;border:1px dashed #bcb7aa;background:#fff;border-radius:5px;padding:7px;color:var(--ink-soft);font-size:11px}.program-add-wrap{position:relative}.program-add-btn{width:100%;border:1px dashed #bcb7aa;background:#fff;border-radius:5px;padding:7px;color:var(--ink-soft);font-size:11px;cursor:pointer;text-align:left}.program-add-btn:hover{border-color:var(--accent-sky);color:var(--accent-sky)}.program-add-menu{display:none;position:absolute;left:0;right:0;top:100%;margin-top:4px;background:#fff;border:1px solid var(--line);border-radius:8px;box-shadow:0 10px 24px -12px rgba(30,42,74,.35);padding:8px;z-index:30;min-width:200px}.program-add-menu.open{display:block}.program-add-menu select{width:100%;margin-bottom:8px;font-size:11.5px;padding:6px;border:1px solid var(--line);border-radius:6px}.program-add-menu button{display:block;width:100%;text-align:left;background:#faf9f5;border:1px solid var(--line);border-radius:6px;padding:7px 9px;font-size:11.5px;margin-bottom:6px;cursor:pointer;color:var(--ink)}.program-add-menu button:last-child{margin-bottom:0}.program-add-menu button:hover{background:#F0EEE7;border-color:#c7c2b3}.program-add-menu .pam-label{display:block;font:700 9.5px 'IBM Plex Mono',monospace;text-transform:uppercase;color:var(--ink-soft);margin:8px 0 4px}.program-add-menu .pam-label:first-child{margin-top:0}.pam-text-row{display:flex;gap:6px}.pam-text-input{flex:1;font-size:11.5px;padding:6px 8px;border:1px solid var(--line);border-radius:6px}.pam-text-add{width:auto!important;flex-shrink:0;margin-bottom:0!important;white-space:nowrap}.program-seq-chip-draft{border-left-style:dashed;border-left-color:var(--ink-soft);background:#faf8f2}.program-empty-cell{color:#aaa;font-size:11px;text-align:center;padding:16px 5px}.program-cell select{width:100%;margin-top:6px}.program-remove{float:right;border:0;background:transparent;color:#9a3d2e;font-size:15px;cursor:pointer}.program-note{width:100%;min-height:52px;margin-top:7px;border:1px dashed var(--line);background:#faf9f5;padding:7px;font-size:11px}
 </style>
 <!-- Extraction de texte côté navigateur pour le fichier joint à l'atelier IA (PDF / Word) -->
 <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -720,7 +721,8 @@ footer{padding:30px 24px 20px;text-align:center;font-family:'IBM Plex Mono',mono
 
     <div class="cp-block">
       <div class="panel">
-        <h5 style="margin-bottom:14px;">Positionnement — 36 semaines</h5>
+        <h5 style="margin-bottom:6px;">Positionnement — 36 semaines</h5>
+        <p style="font-size:12px;color:var(--ink-soft);margin:0 0 14px;">Cliquez sur une semaine de début puis une semaine de fin pour positionner la séquence. <button type="button" id="seq-week-clear" style="background:none;border:none;color:var(--accent-sky);font-weight:600;cursor:pointer;padding:0;">Effacer le positionnement</button></p>
         <div class="period-row" id="periodRow"></div>
         <div class="week-grid" id="seq-week-grid"></div>
       </div>
@@ -1172,7 +1174,7 @@ async function chargerReferentielCompetences(){
    ------------------------------------------------------------ */
 function seqNiveau(seq){ return (seq && seq.niveau) || NIVEAUX[0]; }
 function seqMatiere(seq){ return (seq && seq.matiere) || MATIERE_DEFAUT; }
-function seqChamp(seq){ return (seq && (seq.competence_id || seq.domaine)) || "lecture"; }
+function seqChamp(seq){ return (seq && (seq.competence_id || seq.domaine_id || seq.domaine)) || "lecture"; }
 function seqChemin(seq){
   return `data/${seqNiveau(seq)}/${slug(seqMatiere(seq))}/${seqChamp(seq)}`;
 }
@@ -1384,7 +1386,7 @@ function renderSeqGrid(){
       <div class="sb-obj">${escapeHTML(seq.objectif_commun||"")}</div>
       <div class="sb-mini-weeks">${miniWeeksHTML(seq)}</div>
       <div class="sb-foot">
-        <span>S${seq.semaine_debut}–S${seq.semaine_fin} · ${nbSeances} séance${nbSeances>1?'s':''}</span>
+        <span>${(seq.semaine_debut&&seq.semaine_fin)?`S${seq.semaine_debut}–S${seq.semaine_fin} · `:""}${nbSeances} séance${nbSeances>1?'s':''}</span>
         <span class="sb-arrow">Ouvrir →</span>
       </div>
     `;
@@ -1400,6 +1402,110 @@ function escapeHTML(str){
 /* ============================================================
    VUE 2 — DÉTAIL D'UNE SÉQUENCE
    ============================================================ */
+/* ============================================================
+   FICHE SÉQUENCE — rendu complet (titre, tags, objectif, prérequis,
+   références, focus progression, objectifs individuels,
+   positionnement 36 semaines, séances)
+   ============================================================ */
+let seqWeekPickStart = null; // premier clic en attente du second, pour définir une plage
+
+function renderSeqDetail(){
+  const seq = state.sequences.find(s=>s.id===state.currentSeqId);
+  if(!seq){ backToList(); return; }
+  seqWeekPickStart = null;
+
+  const dom = sequenceDomainInfo(seq);
+  const niveau = seqNiveau(seq);
+  const matiere = seq.matiere || MATIERE_DEFAUT;
+  const periode = assignedPeriodForSequence(seq.id) || seq.periode || null;
+
+  document.getElementById('seq-eyebrow').textContent = [
+    niveau, matiere, dom.nom,
+    periode ? `Période ${periode}` : null,
+    (seq.semaine_debut && seq.semaine_fin) ? `Semaines ${seq.semaine_debut}–${seq.semaine_fin}` : null
+  ].filter(Boolean).join(' · ');
+
+  document.getElementById('seq-title').textContent = seq.titre || "Séquence sans titre";
+
+  const tags = [niveau, matiere, dom.nom, seq.classe].filter(Boolean);
+  document.getElementById('seq-tags').innerHTML =
+    tags.map(t=>`<span class="badge plain">${escapeHTML(t)}</span>`).join('') +
+    (seq.brouillon ? `<span class="badge plain" style="color:#9a3d2e;">📝 Brouillon</span>` : "") +
+    `<span class="badge plain" style="font-family:'IBM Plex Mono',monospace;font-size:10.5px;">${escapeHTML(seqChemin(seq))}/</span>`;
+
+  document.getElementById('seq-objectif').textContent = seq.objectif_commun || "—";
+
+  const prereqBlock = document.getElementById('seq-prerequis-block');
+  const prereqText = Array.isArray(seq.prerequis) ? seq.prerequis.filter(Boolean).join(' · ') : (seq.prerequis || '');
+  if(prereqText){ prereqBlock.style.display=''; document.getElementById('seq-prerequis').textContent = prereqText; }
+  else prereqBlock.style.display = 'none';
+
+  const refsBlock = document.getElementById('seq-refs-block');
+  if(seq.references_theoriques){ refsBlock.style.display=''; document.getElementById('seq-refs').textContent = seq.references_theoriques; }
+  else refsBlock.style.display = 'none';
+
+  const focusWrap = document.getElementById('seq-focus-progression');
+  const {previous, next} = getProgressionNeighbors(seq);
+  if(previous.length || next.length){
+    focusWrap.innerHTML = [
+      ...previous.map(s=>focusSequenceCard(s,'← Séquence précédente')),
+      `<div class="focus-card" style="background:#eef4fc;border-color:var(--accent-sky);"><strong>${escapeHTML(seq.titre||"Cette séquence")}</strong><span>Séquence actuelle</span></div>`,
+      ...next.map(s=>focusSequenceCard(s,'Séquence suivante →'))
+    ].join('');
+    focusWrap.querySelectorAll('[data-focus-seq]').forEach(btn=>btn.addEventListener('click', ()=> openSeqDetail(btn.dataset.focusSeq)));
+  } else {
+    focusWrap.innerHTML = `<p style="font-size:13px;color:var(--ink-soft);margin:0;">Aucune séquence précédente ou suivante n'est reliée à celle-ci pour l'instant.</p>`;
+  }
+
+  const elevesBlock = document.getElementById('seq-eleves-block');
+  const eleves = (seq.objectifs_individuels||[]).filter(e=>e.nom||e.objectif);
+  if(eleves.length){
+    elevesBlock.style.display = '';
+    document.getElementById('seq-eleves-body').innerHTML = eleves.map(e=>`<tr><td>${escapeHTML(e.nom)}</td><td>${escapeHTML(e.objectif)}</td></tr>`).join('');
+  } else elevesBlock.style.display = 'none';
+
+  renderSeqWeekGrid(seq, dom.couleur);
+  renderSeancesGrid(seq);
+}
+
+function renderSeqWeekGrid(seq, couleur){
+  couleur = couleur || sequenceDomainInfo(seq).couleur || colorForDomaine(sequenceDomainId(seq));
+  const grid = document.getElementById('seq-week-grid');
+  grid.innerHTML = "";
+  for(let w=1; w<=36; w++){
+    const cell = document.createElement('button');
+    cell.type = "button";
+    cell.className = "week-cell";
+    cell.textContent = w;
+    cell.title = "Semaine " + w;
+    const inRange = seq.semaine_debut && seq.semaine_fin && w>=seq.semaine_debut && w<=seq.semaine_fin;
+    if(inRange){ cell.classList.add('in-range'); cell.style.background = couleur; }
+    if(seqWeekPickStart===w) cell.style.outline = "2px solid " + couleur;
+    cell.addEventListener('click', ()=>{
+      if(seqWeekPickStart===null){
+        seqWeekPickStart = w;
+        renderSeqWeekGrid(seq, couleur);
+        return;
+      }
+      let debut = seqWeekPickStart, fin = w;
+      if(fin<debut){ const t=debut; debut=fin; fin=t; }
+      seq.semaine_debut = debut; seq.semaine_fin = fin;
+      seqWeekPickStart = null;
+      saveSequences(state.sequences);
+      renderSeqDetail();
+    });
+    grid.appendChild(cell);
+  }
+}
+document.getElementById('seq-week-clear')?.addEventListener('click', ()=>{
+  const seq = state.sequences.find(s=>s.id===state.currentSeqId);
+  if(!seq) return;
+  delete seq.semaine_debut; delete seq.semaine_fin;
+  seqWeekPickStart = null;
+  saveSequences(state.sequences);
+  renderSeqDetail();
+});
+
 function openSeqDetail(seqId){
   state.currentSeqId = seqId;
   document.getElementById('view-list').classList.remove('open');
@@ -1440,6 +1546,12 @@ function domainesDuNiveau(niveau){
     const nom=c.domaine||c.domaine_nom||c.domaineId||id;
     const discipline=c.discipline||c.matiere||'Autre';
     if(!map.has(id)) map.set(id,{id,nom,discipline});
+  });
+  // Une séquence-projet (plusieurs domaines/compétences à la fois) ne correspond à aucun
+  // domaine unique du référentiel : sans ceci, elle resterait invisible dans les filtres.
+  state.sequences.filter(s=>!niveau||seqNiveau(s)===niveau).forEach(s=>{
+    const d=sequenceDomainInfo(s);
+    if(d.id && !map.has(d.id)) map.set(d.id,d);
   });
   return [...map.values()].sort((a,b)=>(a.discipline||'').localeCompare(b.discipline||'','fr') || a.nom.localeCompare(b.nom,'fr'));
 }
@@ -1589,6 +1701,14 @@ document.getElementById('btn-prog-pdf').onclick=()=>printProgression(currentProg
 document.getElementById('btn-prog-doc').onclick=()=>downloadDocProgression(currentProgressionId);
 document.getElementById('btn-prog-json').onclick=()=>{const p=progressions.find(x=>x.id===currentProgressionId);if(p)downloadJSON(slug(p.titre||'programmation'),p);};
 document.getElementById('btn-prog-delete').onclick=()=>{if(!confirm('Supprimer cette programmation ?'))return;progressions=progressions.filter(p=>p.id!==currentProgressionId);saveProgressions(progressions);currentProgressionId=null;document.getElementById('prog-actions').style.display='none';document.getElementById('prog-content').innerHTML='';renderProgSaved();};
+function sequenceById(id){ return state.sequences.find(s=>s.id===id); }
+function sequenceRelationIds(seq, type){
+  // Le lien entre séquences (précédente/suivante) est volontairement local et manuel :
+  // il n'est renseigné que si la séquence porte explicitement ces champs (édition future).
+  if(!seq) return [];
+  const key = type==="previous" ? "sequences_precedentes" : "sequences_suivantes";
+  return Array.isArray(seq[key]) ? seq[key] : [];
+}
 function getProgressionNeighbors(seq){
   const previous=sequenceRelationIds(seq,"previous").map(sequenceById).filter(Boolean);
   const next=sequenceRelationIds(seq,"next").map(sequenceById).filter(Boolean);
@@ -2239,6 +2359,24 @@ function renderProgrammingTable(niveau){
     ev.stopPropagation();
     window.open('generateur-sequences-projet.html','_blank');
   });
+  wrap.querySelectorAll('.pam-text-add').forEach(btn=>{
+    const submit=(ev)=>{
+      ev.stopPropagation();
+      const input=btn.parentElement.querySelector('.pam-text-input');
+      const titre=(input.value||'').trim();
+      if(!titre){ input.focus(); return; }
+      const domaine_id=btn.dataset.programTextDomain, periode=Number(btn.dataset.programTextPeriod);
+      const seq={ id:uid('seq-txt'), titre, niveau, domaine_id, brouillon:true, objectif_commun:'' };
+      state.sequences.push(seq);
+      saveSequences(state.sequences);
+      p.affectations=p.affectations.filter(a=>a.sequence_id!==seq.id);
+      p.affectations.push({sequence_id:seq.id,periode,domaine_id});
+      saveProgrammations(programmations);
+      renderFilters(); renderSeqGrid(); renderProgrammingTable(niveau);
+    };
+    btn.onclick=submit;
+    btn.parentElement.querySelector('.pam-text-input').addEventListener('keydown',ev=>{ if(ev.key==='Enter') submit(ev); });
+  });
   wrap.querySelectorAll('[data-drag-seq]').forEach(chip=>{
     chip.addEventListener('dragstart',ev=>{
       ev.dataTransfer.setData('text/plain',chip.dataset.dragSeq);
@@ -2267,7 +2405,7 @@ function programCellHTML(p,niveau,d,per){
   const cellSeqs=programmeSequencesForCell(p,niveau,d.id,per);const used=new Set(p.affectations.map(a=>a.sequence_id));
   const candidates=state.sequences.filter(s=>s.niveau===niveau&&sequenceDomainId(s)===d.id&&!used.has(s.id));
   const cellKey=`${escapeAttr(d.id)}__${per}`;
-  return `<td><div class="program-cell" data-cell-domain="${escapeAttr(d.id)}" data-cell-period="${per}">${cellSeqs.length?cellSeqs.map(s=>`<button class="program-seq-chip" draggable="true" data-drag-seq="${escapeAttr(s.id)}" data-program-remove="${escapeAttr(s.id)}"><span class="program-remove">×</span><strong>${escapeHTML(s.titre)}</strong><span>${escapeHTML(s.competence_id?competenceLabel(s.competence_id):'Séquence')}</span></button>`).join(''):'<div class="program-empty-cell">Aucune séquence</div>'}<div class="program-add-wrap"><button type="button" class="program-add-btn" data-program-toggle="${cellKey}">＋ Ajouter une séquence…</button><div class="program-add-menu" id="pam-${cellKey}" data-domain="${escapeAttr(d.id)}" data-period="${per}">${candidates.length?`<span class="pam-label">Séquences déjà chargées</span><select class="program-add" data-program-add data-domain="${escapeAttr(d.id)}" data-period="${per}"><option value="">Choisir…</option>${candidates.map(s=>`<option value="${escapeAttr(s.id)}">${escapeHTML(s.titre)}</option>`).join('')}</select>`:''}<button type="button" class="pam-import" data-program-import-domain="${escapeAttr(d.id)}" data-program-import-period="${per}">📂 Importer depuis l'ordinateur…</button><button type="button" class="pam-generate">🧩 Ouvrir le générateur de séquences</button></div></div></div></td>`;
+  return `<td><div class="program-cell" data-cell-domain="${escapeAttr(d.id)}" data-cell-period="${per}">${cellSeqs.length?cellSeqs.map(s=>`<button class="program-seq-chip${s.brouillon?' program-seq-chip-draft':''}" draggable="true" data-drag-seq="${escapeAttr(s.id)}" data-program-remove="${escapeAttr(s.id)}"><span class="program-remove">×</span><strong>${escapeHTML(s.titre)}</strong><span>${s.brouillon?'📝 Brouillon — à compléter':(s.competence_id?competenceLabel(s.competence_id):'Séquence')}</span></button>`).join(''):'<div class="program-empty-cell">Aucune séquence</div>'}<div class="program-add-wrap"><button type="button" class="program-add-btn" data-program-toggle="${cellKey}">＋ Ajouter une séquence…</button><div class="program-add-menu" id="pam-${cellKey}" data-domain="${escapeAttr(d.id)}" data-period="${per}">${candidates.length?`<span class="pam-label">Séquences déjà chargées</span><select class="program-add" data-program-add data-domain="${escapeAttr(d.id)}" data-period="${per}"><option value="">Choisir…</option>${candidates.map(s=>`<option value="${escapeAttr(s.id)}">${escapeHTML(s.titre)}</option>`).join('')}</select>`:''}<button type="button" class="pam-import" data-program-import-domain="${escapeAttr(d.id)}" data-program-import-period="${per}">📂 Importer depuis l'ordinateur…</button><button type="button" class="pam-generate">🧩 Ouvrir le générateur de séquences</button><span class="pam-label">Ou juste un texte, à compléter plus tard</span><div class="pam-text-row"><input type="text" class="pam-text-input" placeholder="Intitulé de la séquence…"><button type="button" class="pam-text-add" data-program-text-domain="${escapeAttr(d.id)}" data-program-text-period="${per}">Ajouter</button></div></div></div></div></td>`;
 }
 function printProgramming(niveau){
  const p=ensureProgrammation(niveau),domaines=programmeDomaines(niveau),html=`<!doctype html><html><head><meta charset="utf-8"><style>@page{size:A4 landscape;margin:10mm}body{font-family:Arial;color:#202b39;font-size:9pt}h1{font-size:20pt}table{width:100%;border-collapse:collapse;table-layout:fixed}th,td{border:1px solid #aaa;padding:6px;vertical-align:top}th{background:#eee}.domain{font-weight:bold}.seq{padding:4px;margin:3px 0;background:#f1f1f1;border-radius:3px}.meta{color:#666}</style></head><body><h1>Programmation annuelle — ${escapeHTML(niveau)}</h1><p class="meta">Tableau 2 · programmation par domaine et par période</p><table><tr><th>Domaine</th>${[1,2,3,4,5].map(n=>`<th>Période ${n}</th>`).join('')}</tr>${domaines.map(d=>`<tr><td class="domain">${escapeHTML(d.nom)}</td>${[1,2,3,4,5].map(per=>`<td>${programmeSequencesForCell(p,niveau,d.id,per).map(s=>`<div class="seq">${escapeHTML(s.titre)}</div>`).join('')||'—'}</td>`).join('')}</tr>`).join('')}</table></body></html>`;
@@ -2283,9 +2421,20 @@ function mergeLocalSequenceData(data){
     if(!raw || typeof raw!=='object' || !raw.id || !raw.titre)return;
     const embedded=Array.isArray(raw.seances)?raw.seances:[];
     const seq={...raw}; delete seq.seances;
+    // Les séquences-projets (générateur, mode "projet") portent une "classe" plutôt qu'un
+    // "niveau", et n'ont pas de competence_id unique : sans ce champ, la séquence reste
+    // invisible dans le répertoire (filtres par niveau/domaine) même si elle est bien
+    // enregistrée. On normalise ici pour qu'elle s'affiche comme n'importe quelle autre.
+    if(!seq.niveau && seq.classe) seq.niveau = seq.classe;
+    const embeddedNormalisees = embedded.map(sea=>{
+      if(!sea || typeof sea!=='object') return sea;
+      const s={...sea};
+      if(!s.objectif_commun && s.objectif) s.objectif_commun = s.objectif;
+      return s;
+    });
     const idx=state.sequences.findIndex(x=>x.id===seq.id);
     if(idx>=0) state.sequences[idx]=seq; else state.sequences.push(seq);
-    embedded.forEach(sea=>{ if(sea && sea.id){ const j=state.seances.findIndex(x=>x.id===sea.id); if(j>=0)state.seances[j]=sea; else state.seances.push(sea); }});
+    embeddedNormalisees.forEach(sea=>{ if(sea && sea.id){ const j=state.seances.findIndex(x=>x.id===sea.id); if(j>=0)state.seances[j]=sea; else state.seances.push(sea); }});
     imported.push(seq);
   };
   if(Array.isArray(data?.sequences)) data.sequences.forEach(addSeq);

@@ -326,20 +326,34 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
 
         <div class="card">
           <h4>📁 Charger un fichier depuis l'ordinateur</h4>
-          <p class="help">Formats imprimables recommandés : image (PNG/JPG) ou PDF. Le fichier est intégré directement, sans envoi sur un serveur.</p>
-          <input type="file" id="materiel-file" accept="image/*,.pdf">
+          <p class="help">Formats imprimables recommandés : image (PNG/JPG) ou PDF. Le fichier est intégré directement, sans envoi sur un serveur. C'est aussi ici que vous chargez le fichier téléchargé depuis une IA (voir ci-dessous).</p>
+          <input type="file" id="materiel-file" accept="image/*,.pdf,.doc,.docx">
           <div class="toolbar"><button class="btn secondary" type="button" onclick="App.ajouterFichierMateriel()">Ajouter ce fichier à la séance</button></div>
         </div>
 
         <div class="card ai-panel">
-          <h4>✨ Générer du matériel via l'IA gratuite</h4>
-          <div class="notice">Copiez ce prompt dans votre chat IA gratuit préféré, puis collez sa réponse ci-dessous. Le matériel doit être imprimable (texte structuré, pas de HTML).</div>
+          <h4>✨ IA textuelle — générer un document (Word ou PDF)</h4>
+          <div class="notice">Copiez ce prompt dans votre IA gratuite préférée (ChatGPT, Claude, Gemini…) et demandez-lui de produire directement un fichier Word ou PDF téléchargeable. Téléchargez ce fichier, puis chargez-le ci-dessus via « Charger un fichier depuis l'ordinateur ».</div>
           <label>Prompt prêt à copier</label>
           <div id="materiel-prompt" class="prompt-box"></div>
           <div class="toolbar"><button class="btn ai" type="button" onclick="App.copyMaterielPrompt()">📋 Copier le prompt</button></div>
-          <label>Réponse du modèle</label>
-          <textarea id="materiel-ia-response" rows="8" placeholder="Collez ici le matériel généré…"></textarea>
-          <div class="toolbar"><button class="btn" type="button" onclick="App.ajouterMaterielIA()">Ajouter ce matériel à la séance</button></div>
+        </div>
+
+        <div class="card ai-panel">
+          <h4>🎨 IA image — générer un visuel</h4>
+          <div class="notice">Copiez ce prompt dans une IA de génération d'images, téléchargez l'image obtenue, puis chargez-la ci-dessus via « Charger un fichier depuis l'ordinateur ».</div>
+          <label>Style de rendu de l'image</label>
+          <select id="materiel-image-style" onchange="App.updateMaterielImagePrompt()">
+            <option value="dessin au trait noir et blanc, simple, destiné au coloriage">Dessin au trait (à colorier)</option>
+            <option value="illustration plate, couleurs douces, style pédagogique">Illustration plate et colorée</option>
+            <option value="pictogramme minimaliste, fond blanc, contours nets">Pictogramme minimaliste</option>
+            <option value="aquarelle douce, style livre pour enfants">Aquarelle (livre pour enfants)</option>
+            <option value="bande dessinée, contours nets, couleurs vives">Bande dessinée</option>
+            <option value="photo réaliste, lumière naturelle">Photo réaliste</option>
+          </select>
+          <label>Prompt prêt à copier</label>
+          <div id="materiel-image-prompt" class="prompt-box"></div>
+          <div class="toolbar"><button class="btn ai" type="button" onclick="App.copyMaterielImagePrompt()">📋 Copier le prompt image</button></div>
         </div>
       </div>
 
@@ -706,6 +720,7 @@ const App = (() => {
     if(prevValue&&sequence.seances[prevValue])sel.value=prevValue;
     renderMaterielRessources();
     updateMaterielPrompt();
+    updateMaterielImagePrompt();
   }
 
   function renderMaterielRessources(){
@@ -765,9 +780,8 @@ const App = (() => {
 
 RÈGLES :
 - Le contenu doit être directement imprimable (fiche A4, cartes à découper, texte structuré).
-- Réponds uniquement avec le contenu du matériel, sans commentaire ni explication autour.
-- Réponds en texte structuré uniquement (pas de HTML) : utilise des lignes, des tirets, des espacements pour organiser la mise en page. Le texte sera inséré tel quel (les sauts de ligne sont conservés).
-- Adapte la mise en page à un usage classe (formulations lisibles, espacement suffisant, pas de surcharge).
+- Produis directement un fichier téléchargeable au format Word (.doc/.docx) ou PDF contenant ce matériel — pas seulement une réponse en texte brut dans la conversation.
+- Adapte la mise en page à un usage classe (police lisible, espacement suffisant, pas de surcharge visuelle).
 
 CONTEXTE DE LA SÉANCE :
 Titre : ${s.titre||""}
@@ -778,12 +792,40 @@ Tâche : ${s.tache||"à préciser"}
 Matériel prévu : ${arr(s.materiel).join(", ")||"non précisé"}
 
 DEMANDE :
-Génère le matériel imprimable nécessaire pour cette séance (ex. cartes-nombres, fiche d'exercices, support de manipulation à découper…), prêt à être imprimé tel quel.`;
+Génère le matériel imprimable nécessaire pour cette séance (ex. cartes-nombres, fiche d'exercices, support de manipulation à découper…), sous forme d'un fichier Word ou PDF prêt à imprimer. Une fois le fichier téléchargé, chargez-le dans Synapses via « Charger un fichier depuis l'ordinateur ».`;
   }
 
   function copyMaterielPrompt(){
     const text=document.getElementById("materiel-prompt")?.textContent||"";
     navigator.clipboard?.writeText(text).then(()=>alert("Prompt copié.")).catch(()=>alert("Copie impossible : sélectionnez et copiez manuellement le texte."));
+  }
+
+  function updateMaterielImagePrompt(){
+    const box=document.getElementById("materiel-image-prompt");
+    if(!box||!sequence)return;
+    const i=currentMaterielIndex();
+    const s=sequence.seances[i];
+    if(!s){box.textContent="";return}
+    const style=document.getElementById("materiel-image-style")?.value||"illustration plate, couleurs douces, style pédagogique";
+    box.textContent=`Génère une image pour du matériel de classe imprimable, dans ce style : ${style}.
+
+CONTEXTE DE LA SÉANCE :
+Titre : ${s.titre||""}
+Niveaux : ${arr(s.niveaux).join(", ")||"à préciser"}
+Objectif : ${s.objectif||"à préciser"}
+Tâche : ${s.tache||"à préciser"}
+
+CONSIGNES POUR L'IMAGE :
+- Une seule scène ou un seul élément central, sans texte intégré à l'image.
+- Composition simple et lisible pour des élèves de primaire (ou dispositif ULIS).
+- Compatible avec une impression en noir et blanc si besoin (contours nets, pas de dégradés fins).
+
+Une fois l'image téléchargée, chargez-la dans Synapses via « Charger un fichier depuis l'ordinateur ».`;
+  }
+
+  function copyMaterielImagePrompt(){
+    const text=document.getElementById("materiel-image-prompt")?.textContent||"";
+    navigator.clipboard?.writeText(text).then(()=>alert("Prompt image copié.")).catch(()=>alert("Copie impossible : sélectionnez et copiez manuellement le texte."));
   }
 
   function ajouterMaterielIA(){
@@ -1420,7 +1462,7 @@ RAPPEL FINAL : ta réponse doit contenir la clé "seances" (tableau de séances 
     r.readAsText(file);event.target.value="";
   }
 
-  return {init,go,filterCompetences,updateDomaineOptions,selectCompetence,setModeCadrage,toggleProjetCompetence,creerProjet,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,chargerObjectifsCoffre,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents,updateCoffreWidget,renderMateriel,ajouterFichierMateriel,copyMaterielPrompt,ajouterMaterielIA,removeRessource};
+  return {init,go,filterCompetences,updateDomaineOptions,selectCompetence,setModeCadrage,toggleProjetCompetence,creerProjet,updateSequenceField,generateSequence,resizeSessions,addSession,renderSessions,toggleSession,sessionField,moveSession,removeSession,renderDetails,phaseField,addPhase,addStudent,studentField,removeStudent,chargerObjectifsCoffre,tab,openAtelier,updatePrompt,copyPrompt,importAI,exporter,importer,exporterPDF,toggleCoffre,closeCoffre,openCoffre,addPrivateStudent,removePrivateStudent,privateField,loadPrivateStudents,updateCoffreWidget,renderMateriel,ajouterFichierMateriel,copyMaterielPrompt,updateMaterielImagePrompt,copyMaterielImagePrompt,ajouterMaterielIA,removeRessource};
 })();
 
 App.init();
