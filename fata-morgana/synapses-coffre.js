@@ -86,7 +86,15 @@
       objectifs: [],
       // Parcours longitudinal §9, §11 : chronologie pédagogique, pas une
       // simple fiche de commentaires.
-      parcours: { seances: [], observations: [], progres: [], bilans: [] }
+      // - seances/observations/progres/bilans : journal manuel, saisi librement.
+      // - historiqueParcoursPropose : instantanés DATÉS du "parcours de
+      //   compétences proposé" (calculé par grille-analyse.js à partir des
+      //   besoins/objectifs). Chaque instantané est figé à l'initiative
+      //   explicite de l'enseignant (voir suivi-individuel.js) : le calcul en
+      //   direct continue d'évoluer normalement à côté, cet historique ne sert
+      //   qu'à observer comment la proposition a changé dans le temps — ce
+      //   n'est jamais une validation ni une prescription.
+      parcours: { seances: [], observations: [], progres: [], bilans: [], historiqueParcoursPropose: [] }
     };
   }
 
@@ -278,6 +286,29 @@
       const ev = Object.assign({ date: nowIso() }, evenement);
       e.parcours[cle].push(ev);
       return ev;
+    }
+
+    /**
+     * Fige un instantané daté du "parcours de compétences proposé" (calculé par
+     * grille-analyse.js) dans l'historique de l'élève. N'a aucun effet sur les
+     * besoins/objectifs/adaptations réels : c'est une photo, prise à
+     * l'initiative explicite de l'enseignant (bouton dédié dans l'onglet
+     * Parcours), qui sert uniquement à observer l'évolution de la proposition
+     * dans le temps.
+     * @param {string} identifiantSynapses
+     * @param {Array} etapes - le résultat de MoteurAnalyse.proposerParcours(eleve)
+     *   au moment de l'appel (tableau d'étapes {ordre, domaineNom, objectif, ...}).
+     */
+    enregistrerParcoursPropose(identifiantSynapses, etapes) {
+      const e = this.getEleve(identifiantSynapses);
+      // Compat. ascendante : les coffres créés avant l'ajout de ce champ n'ont
+      // pas encore cette clé.
+      if (!Array.isArray(e.parcours.historiqueParcoursPropose)) {
+        e.parcours.historiqueParcoursPropose = [];
+      }
+      const entree = { date: nowIso(), etapes: Array.isArray(etapes) ? etapes : [] };
+      e.parcours.historiqueParcoursPropose.push(entree);
+      return entree;
     }
   }
 

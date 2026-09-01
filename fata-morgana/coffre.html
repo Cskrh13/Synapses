@@ -95,6 +95,8 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 .si-sidebar{border-right:1px solid var(--line);padding:18px;background:#FAFAF7;}
 .si-sidebar-head{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;gap:8px;}
 .si-sidebar-head h3{font-size:15px;margin:0;}
+.si-btn-export-tout{width:100%;background:#fff;border:1px solid var(--line);color:var(--ink-soft);font-size:12.5px;padding:8px 10px;border-radius:7px;margin-bottom:14px;}
+.si-btn-export-tout:hover{border-color:var(--accent-sky);color:var(--accent-sky);}
 .si-eleves-liste{display:flex;flex-direction:column;gap:4px;}
 .si-eleve-item{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;background:transparent;border:1px solid transparent;border-radius:7px;padding:8px 10px;font-size:13.5px;}
 .si-eleve-item:hover{background:#F0EFE9;}
@@ -307,6 +309,11 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 <script src="synapses-crypto.js"></script>
 <script src="synapses-coffre.js"></script>
 <script src="grille-analyse.js"></script>
+<!-- Export PDF des fiches élève : bibliothèques tierces, exécutées entièrement
+     côté client (génération du PDF en mémoire, aucune donnée envoyée où que ce soit). -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+<script src="synapses-export-pdf.js"></script>
 <script src="suivi-individuel.js"></script>
 <script>
 /* =========================================================
