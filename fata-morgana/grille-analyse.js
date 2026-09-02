@@ -204,6 +204,33 @@
       return Array.from(parId.values()).sort((a, b) => b.occurrences - a.occurrences);
     }
 
+    /**
+     * Extrait, depuis le référentiel disciplinaire PUBLIC (competences.json,
+     * S4C), l'ensemble des compétences de français et de mathématiques,
+     * organisées par niveau (CP, CE1, CE2, CM1, CM2, 6e...). Sert de base de
+     * comparaison pour estimer une équivalence scolaire (voir
+     * genererPromptIA) : uniquement des données de programme, non
+     * nominatives, donc transmissibles sans restriction à une IA externe.
+     * Renvoie null si aucun référentiel disciplinaire n'a été fourni.
+     */
+    _extraitReferentielEquivalence() {
+      if (!this.referentielDisciplinaire) return null;
+      const liste = this.referentielDisciplinaire.competences || [];
+      const parDiscipline = { francais: [], mathematiques: [] };
+      liste.forEach((c) => {
+        const disc = (c.discipline || '').toLowerCase();
+        const cle = disc.startsWith('math') ? 'mathematiques' : (disc.startsWith('fran') ? 'francais' : null);
+        if (!cle) return;
+        parDiscipline[cle].push({
+          niveau: c.niveau || c.cycle || null,
+          domaine: c.domaine || null,
+          intitule: c.intitule || c.libelle || c.id
+        });
+      });
+      if (!parDiscipline.francais.length && !parDiscipline.mathematiques.length) return null;
+      return parDiscipline;
+    }
+
     // ------------------------------------------------------------------
     // Suggestion d'objectifs à partir des besoins compilés
     // ------------------------------------------------------------------
@@ -319,17 +346,19 @@
      * besoins, adaptations, objectifs actifs) sont conservées, sans dates
      * précises (juste l'ordre relatif).
      *
-     * L'ÂGE (eleve.age) est INTENTIONNELLEMENT EXCLU de cet instantané, malgré
-     * sa disponibilité sur l'objet élève. Décision : combiné aux observations
+     * L'ÂGE (eleve.age) et la CLASSE DE RÉFÉRENCE (eleve.classe) sont
+     * INTENTIONNELLEMENT EXCLUS de cet instantané, malgré leur disponibilité
+     * sur l'objet élève. Décision : combinés aux observations
      * détaillées (données de santé/handicap au sens de l'art. 9 RGPD) et au
      * contexte d'un dispositif à faible effectif (ULIS, UPE2A, SEGPA...), l'âge
-     * agit comme quasi-identifiant et augmente le risque de ré-identification
-     * par recoupement — d'autant qu'aucun contrat de sous-traitance (art. 28
-     * RGPD) ne lie l'enseignant au service IA externe utilisé. Le principe de
-     * minimisation (art. 5.1.c RGPD) prévaut sur le confort de calibrage que
-     * l'âge apporterait aux suggestions. L'âge reste néanmoins consultable/
-     * modifiable localement dans le coffre (aucun souci RGPD à cet usage),
-     * simplement jamais transmis hors de l'application.
+     * et la classe agissent comme quasi-identifiants et augmentent le risque de
+     * ré-identification par recoupement — d'autant qu'aucun contrat de
+     * sous-traitance (art. 28 RGPD) ne lie l'enseignant au service IA externe
+     * utilisé. Le principe de minimisation (art. 5.1.c RGPD) prévaut sur le
+     * confort de calibrage que ces données apporteraient aux suggestions.
+     * L'âge et la classe restent néanmoins consultables/modifiables localement
+     * dans le coffre (aucun souci RGPD à cet usage), simplement jamais
+     * transmis hors de l'application.
      */
     anonymiser(eleve) {
       const observations = (eleve.observations || []).map((o) => ({
@@ -384,7 +413,12 @@
   ],
   "parcoursPropose": [
     {"ordre": 1, "domaine": "…", "objectif": "…", "pourquoiCetOrdre": "…"}
-  ]
+  ],
+  "equivalenceScolaire": {
+    "francais": {"niveauEquivalent": "…", "compteRendu": "…"},
+    "mathematiques": {"niveauEquivalent": "…", "compteRendu": "…"},
+    "transversal": {"compteRendu": "…"}
+  }
 }`;
 
       const dispositifTxt = (dispositif || '').trim();
@@ -402,7 +436,16 @@
         discipline: c.discipline, competence: c.intitule, occurrencesObservees: c.occurrences
       }));
       const blocCompetences = competencesPub.length
-        ? `\n\nEXTRAIT DU RÉFÉRENTIEL PUBLIC DE COMPÉTENCES (Programmation/data/competences.json — non nominatif, tu peux t'en servir librement pour formuler des objectifs alignés sur les intitulés officiels) :\n${JSON.stringify(competencesPub, null, 2)}`
+        ? `\n\nEXTRAIT DU RÉFÉRENTIEL PUBLIC DE COMPÉTENCES DÉJÀ OBSERVÉES CHEZ CET ÉLÈVE (Programmation/data/competences.json — non nominatif) :\n${JSON.stringify(competencesPub, null, 2)}`
+        : '';
+
+      // Base de comparaison PUBLIQUE et complète (tous niveaux, français et
+      // mathématiques) pour permettre à l'IA de situer un niveau moyen
+      // équivalent — distincte de blocCompetences qui ne liste que ce qui a
+      // déjà été observé chez cet élève précis.
+      const refEquivalence = this._extraitReferentielEquivalence();
+      const blocEquivalence = refEquivalence
+        ? `\n\nRÉFÉRENTIEL PUBLIC DE COMPÉTENCES PAR NIVEAU, POUR COMPARAISON (Programmation/data/competences.json — non nominatif, couvre plusieurs niveaux du programme) :\n${JSON.stringify(refEquivalence, null, 2)}`
         : '';
 
       return `${intro}
@@ -411,11 +454,13 @@ RÈGLES :
 - Ne cherche jamais à identifier l'élève, son établissement, sa classe ou son âge, ni à demander des informations personnelles.
 - Respecte exactement la structure JSON demandée, sans texte avant ou après.
 - Appuie-toi sur les observations et les besoins/adaptations déjà compilés, ainsi que sur l'extrait du référentiel public de compétences ci-dessous s'il est fourni, pour proposer, en complément (pas en remplacement) : des hypothèses de besoins supplémentaires, des adaptations, des objectifs formulés de façon observable (en priorité alignés sur les intitulés du référentiel public quand c'est pertinent), et un parcours de compétences ordonné.
+- En t'appuyant sur le référentiel public de compétences par niveau fourni ci-dessous (s'il est présent) et sur l'ensemble des observations anonymisées, estime également une ÉQUIVALENCE SCOLAIRE : un niveau moyen équivalent en français et un niveau moyen équivalent en mathématiques, obtenus en comparant ce que l'élève maîtrise ou non aux compétences attendues à chaque niveau du programme. Indique le niveau le plus proche (ex. « CP », « milieu de CE1 », « fin de CE2 ») accompagné d'un compte rendu de quelques lignes justifiant cette estimation pour chaque discipline, puis rédige une troisième description, transversale, qui ne se limite pas au disciplinaire mais couvre l'ensemble des domaines (affectif, social, cognitif, sensorimoteur...).
+- Si les données disponibles sont insuffisantes pour estimer un niveau de façon fiable, dis-le explicitement dans le compte rendu correspondant plutôt que d'inventer un niveau précis.
 - Toute proposition reste une suggestion : ne formule rien comme une certitude ou un diagnostic.
 - Reste concret et évite les formulations génériques.
 
 DONNÉES ANONYMISÉES DE L'ÉLÈVE :
-${JSON.stringify(donnees, null, 2)}${blocCompetences}
+${JSON.stringify(donnees, null, 2)}${blocCompetences}${blocEquivalence}
 
 FORMAT JSON EXACT ATTENDU :
 ${schema}`;
@@ -437,11 +482,25 @@ ${schema}`;
       } catch (e) {
         throw new Error('Réponse IA illisible (JSON invalide) : ' + e.message);
       }
+      const eq = obj.equivalenceScolaire && typeof obj.equivalenceScolaire === 'object' ? obj.equivalenceScolaire : {};
+      const normEq = (v) => (v && typeof v === 'object') ? {
+        niveauEquivalent: typeof v.niveauEquivalent === 'string' ? v.niveauEquivalent : '',
+        compteRendu: typeof v.compteRendu === 'string' ? v.compteRendu : ''
+      } : null;
+      const normTransversal = (v) => (v && typeof v === 'object') ? {
+        compteRendu: typeof v.compteRendu === 'string' ? v.compteRendu : ''
+      } : null;
+
       return {
         hypothesesBesoins: Array.isArray(obj.hypothesesBesoins) ? obj.hypothesesBesoins : [],
         adaptationsSuggerees: Array.isArray(obj.adaptationsSuggerees) ? obj.adaptationsSuggerees : [],
         objectifsSuggeres: Array.isArray(obj.objectifsSuggeres) ? obj.objectifsSuggeres : [],
-        parcoursPropose: Array.isArray(obj.parcoursPropose) ? obj.parcoursPropose : []
+        parcoursPropose: Array.isArray(obj.parcoursPropose) ? obj.parcoursPropose : [],
+        equivalenceScolaire: {
+          francais: normEq(eq.francais),
+          mathematiques: normEq(eq.mathematiques),
+          transversal: normTransversal(eq.transversal)
+        }
       };
     }
   }
@@ -483,6 +542,42 @@ ${schema}`;
       container.appendChild(this._sectionBesoinsAdaptations(eleve));
       container.appendChild(this._sectionParcours(eleve));
       container.appendChild(this._sectionAtelierIA(eleve, container));
+    }
+
+    /** Rend uniquement la section "Équivalence scolaire" (niveau moyen
+     *  estimé en français/mathématiques + description transversale), pour
+     *  être réutilisée telle quelle dans l'onglet dédié de suivi-individuel.js. */
+    renderEquivalenceScolaire(eleve) {
+      return this._sectionEquivalenceScolaire(eleve);
+    }
+
+    _sectionEquivalenceScolaire(eleve) {
+      const eq = eleve.equivalenceScolaire || {};
+      const bloc = (titre, contenu) => el('div', { class: 'ga-equiv-bloc' }, [
+        el('h4', {}, [titre]),
+        contenu
+      ]);
+      const rendreDiscipline = (d) => d
+        ? el('div', {}, [
+            d.niveauEquivalent ? el('p', {}, [el('strong', {}, ['Niveau équivalent : ']), d.niveauEquivalent]) : null,
+            el('p', {}, [d.compteRendu || '—'])
+          ])
+        : el('p', { class: 'si-empty' }, ['Pas encore estimé.']);
+      const rendreTransversal = (t) => t
+        ? el('p', {}, [t.compteRendu || '—'])
+        : el('p', { class: 'si-empty' }, ['Pas encore estimé.']);
+
+      return el('div', { class: 'ga-section ga-equivalence' }, [
+        el('h3', {}, ['Équivalence scolaire']),
+        el('p', { class: 'si-hint' }, [
+          'Estimation d\'un niveau moyen équivalent en français et en mathématiques, obtenue par comparaison avec les compétences du programme (référentiel public), plus une description transversale à tous les domaines. ' +
+          'Généré et mis à jour depuis l\'atelier IA ci-dessous ; toujours une suggestion à valider, jamais un diagnostic.'
+        ]),
+        eq.dateMaj ? el('p', { class: 'si-hint' }, ['Dernière mise à jour : ' + new Date(eq.dateMaj).toLocaleDateString('fr-FR')]) : null,
+        bloc('Français', rendreDiscipline(eq.francais)),
+        bloc('Mathématiques', rendreDiscipline(eq.mathematiques)),
+        bloc('Description transversale', rendreTransversal(eq.transversal))
+      ]);
     }
 
     /** Rend uniquement la section "Parcours de compétences proposé", pour être
@@ -610,6 +705,29 @@ ${schema}`;
             .slice().sort((a, b) => (a.ordre || 0) - (b.ordre || 0))
             .map((p) => el('li', {}, [`[${p.domaine}] ${p.objectif}${p.pourquoiCetOrdre ? ' — ' + p.pourquoiCetOrdre : ''}`])))
         : el('p', { class: 'si-empty' }, ['Aucun.']));
+
+      wrap.appendChild(el('h4', {}, ['Équivalence scolaire proposée']));
+      const eq = props.equivalenceScolaire || {};
+      const rendreApercu = (d) => d
+        ? (d.niveauEquivalent ? `Niveau équivalent : ${d.niveauEquivalent} — ` : '') + (d.compteRendu || '')
+        : null;
+      const lignesEquiv = [];
+      if (eq.francais) lignesEquiv.push({ label: '[Français] ' + rendreApercu(eq.francais) });
+      if (eq.mathematiques) lignesEquiv.push({ label: '[Mathématiques] ' + rendreApercu(eq.mathematiques) });
+      if (eq.transversal) lignesEquiv.push({ label: '[Transversal] ' + (eq.transversal.compteRendu || '') });
+
+      wrap.appendChild(lignesEquiv.length
+        ? el('ul', {}, lignesEquiv.map((l) => el('li', {}, [l.label])))
+        : el('p', { class: 'si-empty' }, ['Aucune.']));
+      if (lignesEquiv.length) {
+        wrap.appendChild(el('button', {
+          class: 'si-btn',
+          onclick: () => {
+            this.coffre.enregistrerEquivalenceScolaire(eleve.identifiantSynapses, eq);
+            alert('Équivalence scolaire enregistrée dans l\'onglet dédié.');
+          }
+        }, ['Retenir cette équivalence scolaire']));
+      }
 
       wrap.appendChild(el('p', { class: 'si-hint' }, [
         'Chaque élément doit être retenu individuellement : rien n\'est ajouté au coffre automatiquement.'

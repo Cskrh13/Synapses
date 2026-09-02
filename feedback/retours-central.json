@@ -9,7 +9,7 @@
     "expected": "La page devrait charger les données disponibles puis afficher les domaines, périodes et séquences correspondants. Si les données ne peuvent pas être chargées, un message d'erreur explicite devrait remplacer l'indicateur de chargement.",
     "browser": "Version publique du site — ordinateur",
     "priority": "Élevée",
-    "status": "Résolu",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   },
@@ -23,7 +23,7 @@
     "expected": "L'interface devrait distinguer clairement les situations « chargement en cours », « aucune donnée disponible » et « erreur de chargement », avec une indication permettant de comprendre quoi faire dans chaque cas.",
     "browser": "Version publique du site — ordinateur",
     "priority": "À trier",
-    "status": "Résolu",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   },
@@ -37,7 +37,7 @@
     "expected": "En cas d'échec du chargement du référentiel, afficher un message indiquant clairement la ressource concernée et la conséquence sur les fonctionnalités du générateur.",
     "browser": "Version publique du site — ordinateur",
     "priority": "À trier",
-    "status": "Résolu",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   },
@@ -51,7 +51,7 @@
     "expected": "Afficher un état vide explicite indiquant si aucun planning n'est disponible ou si le planning n'a pas pu être chargé, ainsi que l'action attendue de l'utilisateur.",
     "browser": "Version publique du site — ordinateur",
     "priority": "À trier",
-    "status": "Résolu",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   },
@@ -65,7 +65,7 @@
     "expected": "Ajouter un indicateur de progression permettant de voir clairement l'étape actuelle, les étapes déjà complétées et l'étape suivante recommandée.",
     "browser": "Version publique du site — ordinateur",
     "priority": "À trier",
-    "status": "En cours",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   },
@@ -79,7 +79,7 @@
     "expected": "Proposer un parcours d'entrée simple indiquant les principales étapes : créer ou importer une séquence, vérifier les compétences, organiser la programmation puis enregistrer ou exporter le travail.",
     "browser": "Version publique du site — ordinateur",
     "priority": "À trier",
-    "status": "En cours",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   },
@@ -93,7 +93,7 @@
     "expected": "Ajouter un indicateur simple dans les fonctionnalités concernées permettant d'identifier la nature des données utilisées : référentiel public, données locales ou données transmises à un service externe.",
     "browser": "Version publique du site — ordinateur",
     "priority": "À trier",
-    "status": "En cours",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   },
@@ -107,7 +107,7 @@
     "expected": "Utiliser systématiquement quatre états clairement identifiables : chargement, contenu disponible, absence de données et erreur de chargement.",
     "browser": "Version publique du site — ordinateur",
     "priority": "À trier",
-    "status": "Assigné",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   },
@@ -121,7 +121,7 @@
     "expected": "Afficher de manière homogène la version de Synapses sur les différentes pages afin de pouvoir associer chaque retour à une version précise.",
     "browser": "Version publique du site — ordinateur",
     "priority": "À trier",
-    "status": "Assigné",
+    "status": "Nouveau",
     "assignee": "",
     "notes": ""
   }

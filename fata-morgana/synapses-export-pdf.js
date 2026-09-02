@@ -181,7 +181,8 @@
       doc.setFontSize(9);
       doc.setTextColor(185, 198, 229);
       const age = eleve.age != null ? (' · ' + eleve.age + ' an' + (eleve.age > 1 ? 's' : '')) : '';
-      doc.text(eleve.identifiantSynapses + age, MARGIN, 76);
+      const classe = eleve.classe != null ? (' · ' + eleve.classe) : '';
+      doc.text(eleve.identifiantSynapses + age + classe, MARGIN, 76);
 
       // Établissement / dispositif, aligné à droite
       doc.setFont('helvetica', 'normal');
@@ -221,9 +222,12 @@
         'Comment lire cette fiche : "Observations" = ce qui a été remarqué en classe, dans quel contexte, et ce qui ' +
         'a été essayé sur le moment. "Besoins identifiés" = ce dont l\'élève semble avoir besoin pour progresser, avec ' +
         'un niveau de priorité. "Adaptations" = les aménagements testés et leur efficacité observée. "Objectifs" = ce ' +
-        'qui est visé actuellement. "Parcours de compétences proposé" = une suite d\'objectifs suggérée par ' +
-        'l\'application, à valider ou ajuster. "Historique des parcours proposés" = des photos datées de cette ' +
-        'suggestion, prises volontairement pour suivre son évolution. "Journal de parcours" = une chronologie libre des étapes marquantes.';
+        'qui est visé actuellement. "Équivalence scolaire" = une estimation d\'un niveau moyen en français et en ' +
+        'mathématiques, comparée aux compétences du programme, plus une description transversale à tous les domaines ' +
+        '— toujours une suggestion à valider, jamais un diagnostic. "Parcours de compétences proposé" = une suite ' +
+        'd\'objectifs suggérée par l\'application, à valider ou ajuster. "Historique des parcours proposés" = des ' +
+        'photos datées de cette suggestion, prises volontairement pour suivre son évolution. "Journal de parcours" = ' +
+        'une chronologie libre des étapes marquantes.';
       doc.setFillColor.apply(doc, C.bg);
       doc.setDrawColor.apply(doc, C.line);
       const lignes = doc.splitTextToSize(texte, w - 2 * MARGIN - 16);
@@ -261,6 +265,23 @@
       doc.setTextColor.apply(doc, C.inkSoft);
       doc.text(texte, MARGIN, y);
       return y + 20;
+    }
+
+    /** Paragraphe de texte libre avec un petit sous-titre en gras au-dessus,
+     *  pour du contenu trop long/variable pour tenir dans une cellule de tableau
+     *  (ex. le compte rendu transversal de l'équivalence scolaire). */
+    _paragrapheAvecSousTitre(doc, y, sousTitre, texte) {
+      doc.setFont('helvetica', 'bold');
+      doc.setFontSize(9.5);
+      doc.setTextColor.apply(doc, C.ink);
+      doc.text(sousTitre, MARGIN, y);
+      y += 14;
+      doc.setFont('helvetica', 'normal');
+      doc.setFontSize(9);
+      doc.setTextColor.apply(doc, C.ink);
+      const lignes = doc.splitTextToSize(texte, this._largeurPage(doc) - 2 * MARGIN);
+      doc.text(lignes, MARGIN, y);
+      return y + lignes.length * 12 + 18;
     }
 
     /** Table ergonomique via autoTable, stylée pour coller à la DA (bandeau accent, lignes fines). */
@@ -387,6 +408,51 @@
         y = this._table(doc, y, ['Objectif', 'Statut'], rows, { 1: { cellWidth: 100 } });
       }
       y = this._sauteDePageSiNecessaire(doc, y);
+
+      // ---- Équivalence scolaire (voir grille-analyse.js / synapses-coffre.js) ----
+      const eq = eleve.equivalenceScolaire || {};
+      y = this._titreSection(doc, y, 'Équivalence scolaire',
+        'Estimation d\'un niveau moyen en français et en mathématiques, comparée aux compétences du programme, et une description transversale à tous les domaines — toujours une suggestion à valider, jamais un diagnostic.');
+      if (!eq.francais && !eq.mathematiques && !eq.transversal) {
+        y = this._texteVide(doc, y, 'Aucune équivalence scolaire enregistrée pour cet élève.');
+      } else {
+        if (eq.dateMaj) {
+          doc.setFont('helvetica', 'italic');
+          doc.setFontSize(8.5);
+          doc.setTextColor.apply(doc, C.inkSoft);
+          doc.text('Dernière mise à jour : ' + fmtDate(eq.dateMaj), MARGIN, y);
+          y += 16;
+        }
+        const rows = [
+          ['Français', (eq.francais && eq.francais.niveauEquivalent) || '—', (eq.francais && eq.francais.compteRendu) || '—'],
+          ['Mathématiques', (eq.mathematiques && eq.mathematiques.niveauEquivalent) || '—', (eq.mathematiques && eq.mathematiques.compteRendu) || '—']
+        ];
+        y = this._table(doc, y, ['Discipline', 'Niveau équivalent', 'Compte rendu'], rows, {
+          0: { cellWidth: 90 }, 1: { cellWidth: 110 }
+        });
+        if (eq.transversal && eq.transversal.compteRendu) {
+          y = this._paragrapheAvecSousTitre(doc, y, 'Description transversale (tous domaines)', eq.transversal.compteRendu);
+        }
+      }
+      y = this._sauteDePageSiNecessaire(doc, y);
+
+      // ---- Historique des équivalences scolaires précédentes ----
+      const historiqueEquivalence = (eq.historique || [])
+        .slice()
+        .sort((a, b) => new Date(b.date) - new Date(a.date)); // plus récent en premier
+      if (historiqueEquivalence.length) {
+        y = this._titreSection(doc, y, 'Historique des équivalences scolaires (' + historiqueEquivalence.length + ')',
+          'Versions précédentes conservées automatiquement à chaque nouvelle mise à jour, pour suivre l\'évolution de l\'estimation.');
+        const rows = historiqueEquivalence.map((h) => [
+          fmtDate(h.date),
+          (h.francais && h.francais.niveauEquivalent) || '—',
+          (h.mathematiques && h.mathematiques.niveauEquivalent) || '—'
+        ]);
+        y = this._table(doc, y, ['Date', 'Français', 'Mathématiques'], rows, {
+          0: { cellWidth: 90 }
+        });
+        y = this._sauteDePageSiNecessaire(doc, y);
+      }
 
       // ---- Parcours de compétences proposé (calculé, voir grille-analyse.js) ----
       const etapesParcours = this._etapesParcoursProposees(eleve);

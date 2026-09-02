@@ -61,12 +61,18 @@
    *   usage interne de l'application. NE JAMAIS transmettre à une IA, même anonymisée par
    *   ailleurs : grille-analyse.js l'exclut explicitement de MoteurAnalyse.anonymiser() (voir
    *   la note dans ce fichier pour le raisonnement RGPD).
+   * @param {string|null} [classe] - classe de référence, donnée stockée uniquement dans le
+   *   coffre local, pour affichage/usage interne de l'application (même statut que `age`,
+   *   même traitement : jamais transmise à une IA, exclue de MoteurAnalyse.anonymiser()).
+   *   Idéalement, ne renseigner que les INITIALES de la classe (ex. "CM2A" plutôt que le
+   *   libellé complet), afin de réduire encore le caractère identifiant de la donnée.
    */
-  function eleveVide(identifiantSynapses, identite, age) {
+  function eleveVide(identifiantSynapses, identite, age, classe) {
     return {
       identifiantSynapses,
       identite: identite || {}, // { nom, prenom, dateNaissance, classe, ... }
       age: (typeof age === 'number' && isFinite(age) && age >= 0) ? Math.round(age) : null,
+      classe: (typeof classe === 'string' && classe.trim() !== '') ? classe.trim() : null,
       parcoursScolaire: {},
       accompagnements: [],
       domainesAnalyse: {
@@ -94,7 +100,25 @@
       //   direct continue d'évoluer normalement à côté, cet historique ne sert
       //   qu'à observer comment la proposition a changé dans le temps — ce
       //   n'est jamais une validation ni une prescription.
-      parcours: { seances: [], observations: [], progres: [], bilans: [], historiqueParcoursPropose: [] }
+      parcours: { seances: [], observations: [], progres: [], bilans: [], historiqueParcoursPropose: [] },
+      // Équivalence scolaire §onglet dédié : estimation, par comparaison avec
+      // le référentiel public de compétences (S4C/competences.json), d'un
+      // niveau moyen équivalent en français et en mathématiques, accompagnée
+      // d'un compte rendu de quelques lignes pour chaque discipline ainsi
+      // que d'une description transversale (tous domaines confondus, pas
+      // seulement disciplinaire). Ces trois comptes rendus sont conservés
+      // comme des VARIABLES réutilisables (ex. pour générer d'autres
+      // documents/outils plus tard), pas seulement comme un texte affiché.
+      // Toujours une SUGGESTION à valider par l'enseignant (voir
+      // grille-analyse.js/genererPromptIA + Coffre.enregistrerEquivalenceScolaire) :
+      // jamais un diagnostic ni une donnée figée automatiquement.
+      equivalenceScolaire: {
+        francais: null,      // { niveauEquivalent, compteRendu }
+        mathematiques: null, // { niveauEquivalent, compteRendu }
+        transversal: null,   // { compteRendu }  — description transversale à tous les domaines
+        dateMaj: null,
+        historique: []       // instantanés datés successifs, mêmes trois variables
+      }
     };
   }
 
@@ -186,16 +210,18 @@
       this._assertOuvert();
       return this._data.eleves.map((e) => ({
         identifiantSynapses: e.identifiantSynapses,
-        identite: e.identite
+        identite: e.identite,
+        age: e.age,
+        classe: e.classe
       }));
     }
 
-    ajouterEleve(identifiantSynapses, identite, age) {
+    ajouterEleve(identifiantSynapses, identite, age, classe) {
       this._assertOuvert();
       if (this._data.eleves.some((e) => e.identifiantSynapses === identifiantSynapses)) {
         throw new Error('Identifiant Synapses déjà utilisé : ' + identifiantSynapses);
       }
-      const e = eleveVide(identifiantSynapses, identite, age);
+      const e = eleveVide(identifiantSynapses, identite, age, classe);
       this._data.eleves.push(e);
       return e;
     }
@@ -205,6 +231,15 @@
     definirAge(identifiantSynapses, age) {
       const e = this.getEleve(identifiantSynapses);
       e.age = (typeof age === 'number' && isFinite(age) && age >= 0) ? Math.round(age) : null;
+      return e;
+    }
+
+    /** Modifie uniquement la classe de référence (même statut que l'âge : re-modifiable
+     *  isolément sans passer par une refonte de l'identité nominative). Idéalement,
+     *  ne renseigner que les initiales de la classe. */
+    definirClasse(identifiantSynapses, classe) {
+      const e = this.getEleve(identifiantSynapses);
+      e.classe = (typeof classe === 'string' && classe.trim() !== '') ? classe.trim() : null;
       return e;
     }
 
@@ -286,6 +321,56 @@
       const ev = Object.assign({ date: nowIso() }, evenement);
       e.parcours[cle].push(ev);
       return ev;
+    }
+
+    /**
+     * Enregistre (après validation explicite de l'enseignant, depuis l'onglet
+     * "Analyse & IA") l'équivalence scolaire proposée pour un élève : un
+     * niveau moyen équivalent en français, un en mathématiques — chacun
+     * comparé aux compétences du programme (référentiel public S4C) — et une
+     * description transversale à tous les domaines (pas uniquement
+     * disciplinaire). Ces trois comptes rendus deviennent des variables
+     * réutilisables (eleve.equivalenceScolaire.francais/.mathematiques/.transversal),
+     * exploitables plus tard pour produire d'autres outils (export PDF,
+     * synthèse, etc.), tout en conservant un historique daté des versions
+     * précédentes.
+     * @param {string} identifiantSynapses
+     * @param {object} equivalence - { francais: {niveauEquivalent, compteRendu},
+     *   mathematiques: {niveauEquivalent, compteRendu}, transversal: {compteRendu} }
+     */
+    enregistrerEquivalenceScolaire(identifiantSynapses, equivalence) {
+      const e = this.getEleve(identifiantSynapses);
+      if (!e.equivalenceScolaire || typeof e.equivalenceScolaire !== 'object') {
+        e.equivalenceScolaire = { francais: null, mathematiques: null, transversal: null, dateMaj: null, historique: [] };
+      }
+      if (!Array.isArray(e.equivalenceScolaire.historique)) e.equivalenceScolaire.historique = [];
+
+      const francais = equivalence && equivalence.francais
+        ? { niveauEquivalent: equivalence.francais.niveauEquivalent || '', compteRendu: equivalence.francais.compteRendu || '' }
+        : null;
+      const mathematiques = equivalence && equivalence.mathematiques
+        ? { niveauEquivalent: equivalence.mathematiques.niveauEquivalent || '', compteRendu: equivalence.mathematiques.compteRendu || '' }
+        : null;
+      const transversal = equivalence && equivalence.transversal
+        ? { compteRendu: equivalence.transversal.compteRendu || '' }
+        : null;
+
+      // Conserve la version précédente dans l'historique avant d'écraser.
+      if (e.equivalenceScolaire.dateMaj) {
+        e.equivalenceScolaire.historique.push({
+          date: e.equivalenceScolaire.dateMaj,
+          francais: e.equivalenceScolaire.francais,
+          mathematiques: e.equivalenceScolaire.mathematiques,
+          transversal: e.equivalenceScolaire.transversal
+        });
+      }
+
+      e.equivalenceScolaire.francais = francais;
+      e.equivalenceScolaire.mathematiques = mathematiques;
+      e.equivalenceScolaire.transversal = transversal;
+      e.equivalenceScolaire.dateMaj = nowIso();
+
+      return e.equivalenceScolaire;
     }
 
     /**

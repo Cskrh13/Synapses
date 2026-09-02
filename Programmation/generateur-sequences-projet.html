@@ -344,6 +344,7 @@ footer{text-align:center;color:var(--muted);font-size:.8rem;padding:25px}
         <div class="card">
           <h3>5. Générer le matériel des séances</h3>
           <p class="help">Choisissez une séance, puis ajoutez le matériel imprimable nécessaire : en le chargeant depuis votre ordinateur, ou en le générant via un prompt IA gratuit. Ce matériel est rattaché à la fin de la séance choisie et apparaîtra dans le PDF.</p>
+          <p class="help">🔒 Si des adaptations individuelles ont été chargées depuis le coffre pour cette séance (étape 4), elles sont automatiquement ajoutées aux prompts ci-dessous (texte et image), avec une consigne explicite : un complément par élève, en plus du matériel commun de la classe — jamais à la place. Un élève par ligne, même en cas de besoins différents.</p>
           <label>Séance concernée</label>
           <select id="materiel-session" onchange="App.renderMateriel()"></select>
           <div id="materiel-ressources" style="margin-top:12px"></div>
@@ -800,6 +801,19 @@ const App = (() => {
     reader.readAsDataURL(file);
   }
 
+  /** Bloc commun aux prompts de l'étape 5 (texte ET image) : liste, pour la
+   *  séance courante, les adaptations individuelles déjà chargées depuis le
+   *  coffre (s.adaptations_individuelles — identifiant anonymisé uniquement).
+   *  Toujours présenté comme un COMPLÉMENT au matériel commun, jamais comme
+   *  un remplacement, et un élève par ligne pour que des besoins différents
+   *  ne soient jamais fusionnés. Renvoie "" si rien n'a été chargé. */
+  function materielAdaptationsBloc(s){
+    const rows=(s?.adaptations_individuelles||[]).filter(r=>r.adaptation||r.vigilance);
+    if(!rows.length)return "";
+    const lignes=rows.map(r=>`- ${r.identifiant||"ÉLÈVE-ANONYME"}\n  Adaptations : ${r.adaptation||"non renseigné"}\n  Besoins repérés / points de vigilance : ${r.vigilance||"non renseigné"}`).join("\n");
+    return `\nADAPTATIONS INDIVIDUELLES (données anonymisées du coffre, une entrée par élève) :\n${lignes}`;
+  }
+
   function updateMaterielPrompt(){
     const box=document.getElementById("materiel-prompt");
     if(!box||!sequence)return;
@@ -820,9 +834,11 @@ Niveaux : ${arr(s.niveaux).join(", ")||"à préciser"}
 Objectif : ${s.objectif||"à préciser"}
 Tâche : ${s.tache||"à préciser"}
 Matériel prévu : ${arr(s.materiel).join(", ")||"non précisé"}
-
+${materielAdaptationsBloc(s)}
 DEMANDE :
-Génère le matériel imprimable nécessaire pour cette séance (ex. cartes-nombres, fiche d'exercices, support de manipulation à découper…), sous forme d'un fichier Word ou PDF prêt à imprimer. Une fois le fichier téléchargé, chargez-le dans Synapses via « Charger un fichier depuis l'ordinateur ».`;
+Génère le matériel imprimable nécessaire pour cette séance (ex. cartes-nombres, fiche d'exercices, support de manipulation à découper…), sous forme d'un fichier Word ou PDF prêt à imprimer. Une fois le fichier téléchargé, chargez-le dans Synapses via « Charger un fichier depuis l'ordinateur ».${(s.adaptations_individuelles||[]).some(r=>r.adaptation||r.vigilance)?`
+- En plus de ce matériel commun pour la classe, ajoute pour CHAQUE élève listé dans « ADAPTATIONS INDIVIDUELLES » une variante ou un complément adapté à ses besoins (ex. version simplifiée, support visuel supplémentaire, texte agrandi, étayage renforcé…). Ce complément s'ajoute au matériel commun, il ne le remplace jamais.
+- Si plusieurs élèves ont des besoins différents, traite-les séparément : une variante par élève, clairement identifiée par son identifiant, sans jamais les regrouper ou les mélanger.`:""}`;
   }
 
   function copyMaterielPrompt(){
@@ -844,11 +860,13 @@ Titre : ${s.titre||""}
 Niveaux : ${arr(s.niveaux).join(", ")||"à préciser"}
 Objectif : ${s.objectif||"à préciser"}
 Tâche : ${s.tache||"à préciser"}
-
+${materielAdaptationsBloc(s)}
 CONSIGNES POUR L'IMAGE :
 - Une seule scène ou un seul élément central, sans texte intégré à l'image.
 - Composition simple et lisible pour des élèves de primaire (ou dispositif ULIS).
-- Compatible avec une impression en noir et blanc si besoin (contours nets, pas de dégradés fins).
+- Compatible avec une impression en noir et blanc si besoin (contours nets, pas de dégradés fins).${(s.adaptations_individuelles||[]).some(r=>r.adaptation||r.vigilance)?`
+- En plus de cette image commune pour la classe, propose pour CHAQUE élève listé dans « ADAPTATIONS INDIVIDUELLES » une variante visuelle adaptée à son besoin (ex. contraste renforcé, pictogramme supplémentaire, version épurée avec moins d'éléments…), en complément de l'image commune et jamais à sa place.
+- Si plusieurs élèves ont des besoins différents, décris une variante distincte par élève, identifiée par son identifiant, sans les fusionner.`:""}
 
 Une fois l'image téléchargée, chargez-la dans Synapses via « Charger un fichier depuis l'ordinateur ».`;
   }

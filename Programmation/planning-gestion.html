@@ -75,6 +75,38 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:8px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99;}
 .toast.show{opacity:1;}
 
+/* ---- Coffre (ouverture/fermeture) ---- */
+.coffre-bar{display:flex;align-items:center;gap:12px;flex-wrap:wrap;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;margin-bottom:20px;}
+.coffre-bar .etat{display:flex;align-items:center;gap:8px;font-size:13.5px;font-weight:600;}
+.coffre-dot{width:9px;height:9px;border-radius:50%;background:var(--danger);flex-shrink:0;}
+.coffre-dot.ouvert{background:var(--ok);}
+.coffre-bar .hint{margin:0;flex:1;min-width:200px;}
+.coffre-modal-overlay{position:fixed;inset:0;background:rgba(20,29,51,.5);display:none;align-items:center;justify-content:center;z-index:200;padding:20px;}
+.coffre-modal-overlay.open{display:flex;}
+.coffre-modal{background:#fff;border-radius:var(--radius);padding:24px;max-width:420px;width:100%;}
+.coffre-modal h3{font-size:16px;margin-bottom:6px;}
+.coffre-modal p.hint{margin-top:2px;}
+.coffre-modal .field{margin-top:12px;}
+.coffre-modal input[type="password"],.coffre-modal input[type="file"]{width:100%;}
+.coffre-modal .row{margin-top:18px;justify-content:flex-end;}
+
+/* ---- Onglets de la page ---- */
+.page-tabs{display:flex;gap:6px;flex-wrap:wrap;margin-bottom:22px;border-bottom:1px solid var(--line);padding-bottom:0;}
+.page-tabs button{border:1px solid var(--line);border-bottom:none;background:var(--panel-raised);border-radius:8px 8px 0 0;padding:10px 18px;font-weight:700;font-size:13.5px;color:var(--ink-soft);position:relative;top:1px;}
+.page-tabs button.active{background:var(--panel);color:var(--navy);border-color:var(--line);}
+.tab-panel{display:none;}
+.tab-panel.active{display:block;}
+
+/* ---- Classes (configuration générale) ---- */
+.classe-card{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:var(--panel-raised);display:flex;align-items:center;gap:10px;}
+.classe-card .swatch{width:12px;height:12px;border-radius:4px;flex-shrink:0;}
+.classe-card .infos{flex:1;min-width:0;}
+.classe-card b{display:block;font-size:13.5px;}
+.classe-card .niveau{font-size:11.5px;color:var(--ink-soft);}
+.service-classes{display:flex;flex-wrap:wrap;gap:5px;margin-top:4px;}
+.service-classes button{border:1px solid var(--line);background:#fff;border-radius:14px;padding:3px 10px;font-size:11.5px;font-weight:600;color:var(--ink-soft);}
+.service-classes button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
 .synapses-footer {
     margin-top: 40px;
     padding: 18px 24px;
@@ -111,121 +143,183 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 </header>
 
 <main>
-  <h1 style="font-size:26px;margin:0 0 20px;">Gestion du planning annuel</h1>
+  <h1 style="font-size:26px;margin:0 0 16px;">Gestion du planning annuel</h1>
 
-  <!-- =============== CONFIGURATION GÉNÉRALE =============== -->
-  <section class="card">
-    <h2>Configuration générale</h2>
-    <p class="hint">Date de rentrée, nombre de semaines à couvrir (36 par défaut) et périodes de vacances / fermetures (qui suspendent le décompte des semaines).</p>
-    <div class="row">
-      <div class="field">
-        <label for="cfg-rentree">Date de rentrée</label>
-        <input type="date" id="cfg-rentree">
+  <!-- =============== COFFRE : OUVERTURE / FERMETURE =============== -->
+  <div class="coffre-bar">
+    <div class="etat"><span class="coffre-dot" id="coffre-dot"></span><span id="coffre-etat-txt">Coffre fermé</span></div>
+    <p class="hint">Ouvrez le coffre pour charger la liste des élèves dans les classes (configuration générale). Rien n'est jamais écrit sur le disque : les élèves chargés disparaissent au rafraîchissement, à la fermeture de l'onglet ou en fermant le coffre.</p>
+    <button class="btn primary" id="btn-coffre-ouvrir">🔓 Ouvrir le coffre</button>
+    <button class="btn danger" id="btn-coffre-fermer" style="display:none;">🔒 Fermer le coffre</button>
+  </div>
+
+  <div class="coffre-modal-overlay" id="coffre-modal-overlay">
+    <div class="coffre-modal">
+      <h3>Ouvrir le coffre</h3>
+      <p class="hint">Sélectionnez le fichier <code>.synapses</code> et saisissez le mot de passe. Le contenu n'est déchiffré qu'en mémoire, pour cette session.</p>
+      <div class="field"><label>Fichier .synapses</label><input type="file" id="coffre-fichier" accept=".synapses"></div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="coffre-mdp"></div>
+      <div class="row"><button class="btn" data-close-coffre-modal="1">Annuler</button><button class="btn primary" id="btn-coffre-confirmer">Ouvrir</button></div>
+      <p class="hint" id="coffre-erreur" style="color:var(--danger);display:none;"></p>
+    </div>
+  </div>
+
+  <div class="page-tabs" id="page-tabs">
+    <button data-tab="tab-general" class="active">Configuration générale</button>
+    <button data-tab="tab-horaires">Jours travaillés &amp; horaires fixes</button>
+    <button data-tab="tab-grille">Grille horaire type</button>
+    <button data-tab="tab-generation">Génération</button>
+    <button data-tab="tab-import">Importer / exporter</button>
+  </div>
+
+  <!-- =============== ONGLET : CONFIGURATION GÉNÉRALE =============== -->
+  <div class="tab-panel active" id="tab-general">
+
+    <section class="card">
+      <h2>Année scolaire</h2>
+      <p class="hint">Date de rentrée, nombre de semaines à couvrir (36 par défaut) et périodes de vacances / fermetures (qui suspendent le décompte des semaines).</p>
+      <div class="row">
+        <div class="field">
+          <label for="cfg-rentree">Date de rentrée</label>
+          <input type="date" id="cfg-rentree">
+        </div>
+        <div class="field">
+          <label for="cfg-semaines">Nombre de semaines</label>
+          <input type="number" id="cfg-semaines" min="1" max="52" value="36" style="width:90px;">
+        </div>
+        <button class="btn primary" id="btn-save-config">Enregistrer la configuration</button>
       </div>
-      <div class="field">
-        <label for="cfg-semaines">Nombre de semaines</label>
-        <input type="number" id="cfg-semaines" min="1" max="52" value="36" style="width:90px;">
+
+      <h3 style="font-size:15px;margin-top:22px;margin-bottom:8px;">Périodes de vacances</h3>
+      <p class="hint" style="margin-top:0;">Toute semaine (lundi–vendredi) touchant une de ces périodes est exclue du décompte des semaines de classe.</p>
+      <table class="vac" id="vac-table">
+        <thead><tr><th>Libellé</th><th>Début</th><th>Fin</th><th></th></tr></thead>
+        <tbody id="vac-body"></tbody>
+      </table>
+      <div class="row" style="margin-top:10px;">
+        <div class="field"><label>Libellé</label><input type="text" id="vac-libelle" placeholder="Vacances de la Toussaint" style="width:220px;"></div>
+        <div class="field"><label>Début</label><input type="date" id="vac-debut"></div>
+        <div class="field"><label>Fin</label><input type="date" id="vac-fin"></div>
+        <button class="btn" id="btn-add-vac">+ Ajouter une période</button>
       </div>
-      <button class="btn primary" id="btn-save-config">Enregistrer la configuration</button>
-    </div>
+    </section>
 
-    <h3 style="font-size:15px;margin-top:22px;margin-bottom:8px;">Périodes de vacances</h3>
-    <p class="hint" style="margin-top:0;">Toute semaine (lundi–vendredi) touchant une de ces périodes est exclue du décompte des semaines de classe.</p>
-    <table class="vac" id="vac-table">
-      <thead><tr><th>Libellé</th><th>Début</th><th>Fin</th><th></th></tr></thead>
-      <tbody id="vac-body"></tbody>
-    </table>
-    <div class="row" style="margin-top:10px;">
-      <div class="field"><label>Libellé</label><input type="text" id="vac-libelle" placeholder="Vacances de la Toussaint" style="width:220px;"></div>
-      <div class="field"><label>Début</label><input type="date" id="vac-debut"></div>
-      <div class="field"><label>Fin</label><input type="date" id="vac-fin"></div>
-      <button class="btn" id="btn-add-vac">+ Ajouter une période</button>
-    </div>
-  </section>
+    <!-- =============== CLASSES =============== -->
+    <section class="card">
+      <h2>Classes</h2>
+      <p class="hint">Créez ici une ou plusieurs classes (deux CE2 peuvent coexister sans partager ni récréation ni grille horaire). Chaque classe a son propre onglet dans « Grille horaire type » et dans « Planning — Affichage ».</p>
+      <div class="row">
+        <div class="field"><label>Nom de la classe</label><input type="text" id="classe-nom" placeholder="Ex. : CE2 A" style="width:180px;"></div>
+        <div class="field"><label>Niveau</label><select id="classe-niveau"></select></div>
+        <button class="btn primary" id="btn-add-classe">+ Créer la classe</button>
+      </div>
+      <div class="summary-grid" id="classes-list" style="margin-top:16px;"></div>
 
-  <!-- =============== JOURS TRAVAILLÉS & HORAIRES FIXES =============== -->
-  <section class="card">
-    <h2>Jours travaillés &amp; horaires fixes</h2>
-    <p class="hint">Cochez les jours travaillés, puis définissez les horaires des récréations et de la pause méridienne. Cliquez sur « Appliquer » pour les insérer automatiquement dans la grille de chaque niveau géré, sur chaque jour coché — deux récréations (ou deux services de pause) sont possibles : ajoutez simplement une seconde ligne.</p>
+      <div id="classe-eleves-bloc" style="display:none;margin-top:20px;padding-top:16px;border-top:1px solid var(--line);">
+        <h3 style="font-size:14px;margin-bottom:8px;">Charger les élèves du coffre dans une classe</h3>
+        <p class="hint" style="margin-top:0;">Cette association (élève ↔ classe) reste en mémoire uniquement, comme le reste du coffre : elle n'est jamais enregistrée sur le disque.</p>
+        <div class="row">
+          <div class="field"><label>Classe</label><select id="classe-cible-eleves"></select></div>
+          <button class="btn" id="btn-charger-eleves-classe">Charger les élèves du coffre dans cette classe</button>
+        </div>
+        <div class="summary-grid" id="classe-eleves-list" style="margin-top:12px;"></div>
+      </div>
+    </section>
+  </div>
 
-    <h3 style="font-size:14px;margin-bottom:8px;">Jours travaillés</h3>
-    <div class="chip-toggle" id="jours-travailles" style="margin-bottom:18px;"></div>
+  <!-- =============== ONGLET : JOURS TRAVAILLÉS & HORAIRES FIXES =============== -->
+  <div class="tab-panel" id="tab-horaires">
+    <section class="card">
+      <h2>Jours travaillés</h2>
+      <div class="chip-toggle" id="jours-travailles"></div>
+    </section>
 
-    <h3 style="font-size:14px;margin-bottom:8px;">Récréations</h3>
-    <table class="vac" id="recre-table">
-      <thead><tr><th>Libellé</th><th>Début</th><th>Fin</th><th></th></tr></thead>
-      <tbody id="recre-body"></tbody>
-    </table>
-    <div class="row" style="margin-top:10px;">
-      <div class="field"><label>Libellé</label><input type="text" id="recre-libelle" placeholder="Récréation après-midi" style="width:200px;"></div>
-      <div class="field"><label>Début</label><input type="time" id="recre-debut"></div>
-      <div class="field"><label>Fin</label><input type="time" id="recre-fin"></div>
-      <button class="btn" id="btn-add-recre">+ Ajouter une récréation</button>
-    </div>
+    <section class="card">
+      <h2>Récréations &amp; pause méridienne</h2>
+      <p class="hint">Pensées à l'échelle de l'école : définissez chaque service une seule fois, puis cochez les classes concernées (une classe non cochée n'aura pas ce créneau — utile si deux CE2 ne font pas la récréation ensemble). Cliquez sur « Appliquer » pour les insérer dans la grille de chaque classe cochée, sur chaque jour travaillé.</p>
 
-    <h3 style="font-size:14px;margin:22px 0 8px;">Pause méridienne</h3>
-    <table class="vac" id="pause-table">
-      <thead><tr><th>Libellé</th><th>Début</th><th>Fin</th><th></th></tr></thead>
-      <tbody id="pause-body"></tbody>
-    </table>
-    <div class="row" style="margin-top:10px;">
-      <div class="field"><label>Libellé</label><input type="text" id="pause-libelle" placeholder="2ᵉ service" style="width:200px;"></div>
-      <div class="field"><label>Début</label><input type="time" id="pause-debut"></div>
-      <div class="field"><label>Fin</label><input type="time" id="pause-fin"></div>
-      <button class="btn" id="btn-add-pause">+ Ajouter une pause</button>
-    </div>
+      <h3 style="font-size:14px;margin-bottom:8px;">Récréations</h3>
+      <div id="recre-list"></div>
+      <div class="row" style="margin-top:10px;">
+        <div class="field"><label>Libellé</label><input type="text" id="recre-libelle" placeholder="Récréation après-midi" style="width:200px;"></div>
+        <div class="field"><label>Début</label><input type="time" id="recre-debut"></div>
+        <div class="field"><label>Fin</label><input type="time" id="recre-fin"></div>
+        <button class="btn" id="btn-add-recre">+ Ajouter une récréation</button>
+      </div>
 
-    <div class="row" style="margin-top:18px;">
-      <button class="btn primary" id="btn-appliquer-fixes">Appliquer aux niveaux gérés</button>
-      <span id="fixes-status" style="color:var(--ink-soft);font-size:13.5px;"></span>
-    </div>
-  </section>
+      <h3 style="font-size:14px;margin:22px 0 8px;">Pause méridienne</h3>
+      <div id="pause-list"></div>
+      <div class="row" style="margin-top:10px;">
+        <div class="field"><label>Libellé</label><input type="text" id="pause-libelle" placeholder="2ᵉ service" style="width:200px;"></div>
+        <div class="field"><label>Début</label><input type="time" id="pause-debut"></div>
+        <div class="field"><label>Fin</label><input type="time" id="pause-fin"></div>
+        <button class="btn" id="btn-add-pause">+ Ajouter une pause</button>
+      </div>
 
-  <!-- =============== NIVEAUX ACTIFS =============== -->
-  <section class="card">
-    <h2>Niveaux gérés</h2>
-    <p class="hint">Planning multi-niveaux : sélectionnez les classes à planifier simultanément. Chaque niveau a sa propre grille horaire.</p>
-    <div class="chip-toggle" id="niveaux-actifs"></div>
-  </section>
+      <div class="row" style="margin-top:18px;">
+        <button class="btn primary" id="btn-appliquer-fixes">Appliquer aux classes</button>
+        <span id="fixes-status" style="color:var(--ink-soft);font-size:13.5px;"></span>
+      </div>
+    </section>
+  </div>
 
-  <!-- =============== GRILLE HORAIRE TYPE =============== -->
-  <section class="card">
-    <h2>Grille horaire type (hebdomadaire)</h2>
-    <p class="hint">Définissez, pour chaque niveau, les créneaux du lundi au vendredi : séances (rattachées à un domaine — remplies automatiquement à la génération), récréations, pauses ou autres rituels. Cette grille se répète sur toutes les semaines de classe.</p>
-    <div class="niveau-tabs" id="grille-niveau-tabs"></div>
-    <div id="grille-body"></div>
-  </section>
+  <!-- =============== ONGLET : GRILLE HORAIRE TYPE =============== -->
+  <div class="tab-panel" id="tab-grille">
+    <section class="card">
+      <h2>Grille horaire type (hebdomadaire)</h2>
+      <p class="hint">Définissez, pour chaque classe, les créneaux du lundi au vendredi : séances (rattachées à un domaine — remplies automatiquement à la génération), récréations, pauses ou autres rituels. Cette grille se répète sur toutes les semaines de classe.</p>
+      <div class="niveau-tabs" id="grille-classe-tabs"></div>
+      <div id="grille-body"></div>
+    </section>
+  </div>
 
-  <!-- =============== GÉNÉRATION =============== -->
-  <section class="card">
-    <h2>Génération du planning</h2>
-    <p class="hint">Répartit automatiquement, pour chaque créneau de type « Séance », la prochaine séance disponible du domaine choisi (fichiers du dépôt + séances créées dans « Séquences &amp; séances »). Les créneaux déjà modifiés à la main dans la page d'affichage <strong>ne sont jamais écrasés</strong>.</p>
-    <button class="btn primary" id="btn-generer">Générer / mettre à jour le planning</button>
-    <span id="gen-status" style="margin-left:12px;color:var(--ink-soft);font-size:13.5px;"></span>
-    <div class="summary-grid" id="summary"></div>
-  </section>
+  <!-- =============== ONGLET : GÉNÉRATION =============== -->
+  <div class="tab-panel" id="tab-generation">
+    <section class="card">
+      <h2>Génération du planning</h2>
+      <p class="hint">Répartit automatiquement, pour chaque créneau de type « Séance », la prochaine séance disponible du domaine choisi (fichiers du dépôt + séances créées dans « Séquences &amp; séances »). Les créneaux déjà modifiés à la main dans la page d'affichage <strong>ne sont jamais écrasés</strong>.</p>
+      <button class="btn primary" id="btn-generer">Générer / mettre à jour le planning</button>
+      <span id="gen-status" style="margin-left:12px;color:var(--ink-soft);font-size:13.5px;"></span>
+      <div class="summary-grid" id="summary"></div>
+    </section>
+  </div>
 
-  <!-- =============== IMPORT / EXPORT JSON =============== -->
-  <section class="card">
-    <h2>Importer / exporter le planning</h2>
-    <p class="hint">
-      Sauvegardez l'intégralité du planning (configuration, grilles horaires, affectations
-      et cahier journal jour par jour) dans un fichier <code>.json</code> que vous pouvez
-      conserver, transférer sur un autre poste ou déposer sur une clé USB. Ce fichier ne
-      contient aucune donnée nominative : seuls des identifiants Synapses (ELEVE-xxxx)
-      peuvent y apparaître si des groupes de journal ont été renseignés.
-    </p>
-    <div class="row" style="align-items:center;gap:14px;">
-      <button class="btn primary" id="btn-export-json">⬇ Exporter en .json</button>
-      <button class="btn" id="btn-import-json-browse">📁 Importer un fichier .json…</button>
-      <input type="file" id="import-json-file" accept=".json,application/json" style="display:none;">
-      <span id="import-json-status" class="hint" style="margin:0;">Aucun fichier importé.</span>
-    </div>
-  </section>
+  <!-- =============== ONGLET : IMPORT / EXPORT JSON =============== -->
+  <div class="tab-panel" id="tab-import">
+    <section class="card">
+      <h2>Configuration (classes, jours, récréations, calendrier)</h2>
+      <p class="hint">Un fichier léger, facile à partager entre collègues ou à réutiliser d'une année sur l'autre : classes créées, jours travaillés, récréations/pauses et calendrier. Ne contient ni grilles horaires détaillées ni affectations.</p>
+      <div class="row" style="align-items:center;gap:14px;">
+        <button class="btn primary" id="btn-export-config">⬇ Exporter la configuration</button>
+        <button class="btn" id="btn-import-config-browse">📁 Importer une configuration…</button>
+        <input type="file" id="import-config-file" accept=".json,application/json" style="display:none;">
+        <span id="import-config-status" class="hint" style="margin:0;">Aucun fichier importé.</span>
+      </div>
+    </section>
+
+    <section class="card">
+      <h2>Planning complet</h2>
+      <p class="hint">
+        Sauvegardez l'intégralité du planning (configuration, grilles horaires, affectations
+        et cahier journal jour par jour) dans un fichier <code>.json</code> que vous pouvez
+        conserver, transférer sur un autre poste ou déposer sur une clé USB. Ce fichier ne
+        contient aucune donnée nominative : seuls des identifiants Synapses (ELEVE-xxxx)
+        peuvent y apparaître si des groupes de journal ont été renseignés.
+      </p>
+      <div class="row" style="align-items:center;gap:14px;">
+        <button class="btn primary" id="btn-export-json">⬇ Exporter en .json</button>
+        <button class="btn" id="btn-import-json-browse">📁 Importer un fichier .json…</button>
+        <input type="file" id="import-json-file" accept=".json,application/json" style="display:none;">
+        <span id="import-json-status" class="hint" style="margin:0;">Aucun fichier importé.</span>
+      </div>
+    </section>
+  </div>
 </main>
 
 <div class="toast" id="toast"></div>
 
+<script src="synapses-crypto.js"></script>
+<script src="synapses-coffre.js"></script>
 <script src="planning-core.js"></script>
 <script>
 /* =========================================================
@@ -253,7 +347,56 @@ function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("sho
 let config = PC.chargerConfig();
 let grilles = PC.chargerGrilles();
 let banque = {}; // rempli au chargement
-let grilleNiveauCourant = null;
+let grilleClasseCourant = null;
+
+/* ---------------- Onglets ---------------- */
+document.querySelectorAll("#page-tabs button").forEach(b=>{
+  b.addEventListener("click", ()=>{
+    document.querySelectorAll("#page-tabs button").forEach(x=>x.classList.remove("active"));
+    document.querySelectorAll(".tab-panel").forEach(x=>x.classList.remove("active"));
+    b.classList.add("active");
+    $(b.dataset.tab).classList.add("active");
+  });
+});
+
+/* ---------------- Coffre : ouverture / fermeture ---------------- */
+const coffre = new SynapsesCoffre.Coffre();
+function majEtatCoffre(){
+  const ouvert = coffre.ouvert;
+  $("coffre-dot").classList.toggle("ouvert", ouvert);
+  $("coffre-etat-txt").textContent = ouvert ? "Coffre ouvert (en mémoire, session en cours)" : "Coffre fermé";
+  $("btn-coffre-ouvrir").style.display = ouvert ? "none" : "";
+  $("btn-coffre-fermer").style.display = ouvert ? "" : "none";
+  $("classe-eleves-bloc").style.display = ouvert ? "" : "none";
+  if(ouvert) renderClasseElevesSelect();
+}
+$("btn-coffre-ouvrir").addEventListener("click", ()=>{
+  $("coffre-erreur").style.display = "none";
+  $("coffre-fichier").value = ""; $("coffre-mdp").value = "";
+  $("coffre-modal-overlay").classList.add("open");
+});
+document.querySelectorAll("[data-close-coffre-modal]").forEach(b=> b.addEventListener("click", ()=> $("coffre-modal-overlay").classList.remove("open")));
+$("btn-coffre-confirmer").addEventListener("click", async ()=>{
+  const fichier = $("coffre-fichier").files[0];
+  const mdp = $("coffre-mdp").value;
+  if(!fichier || !mdp){ $("coffre-erreur").textContent = "Choisissez un fichier .synapses et saisissez le mot de passe."; $("coffre-erreur").style.display=""; return; }
+  try{
+    await coffre.ouvrir(fichier, mdp);
+    $("coffre-modal-overlay").classList.remove("open");
+    majEtatCoffre();
+    toast("Coffre ouvert.");
+  }catch(e){
+    $("coffre-erreur").textContent = e.message || "Ouverture impossible.";
+    $("coffre-erreur").style.display = "";
+  }
+});
+$("btn-coffre-fermer").addEventListener("click", ()=>{
+  coffre.purger();
+  majEtatCoffre();
+  renderClasses(); // les libellés "N élèves chargés" redeviennent 0
+  toast("Coffre fermé — données retirées de la mémoire.");
+});
+window.addEventListener("beforeunload", ()=>{ coffre.purger(); });
 
 /* ---------------- Configuration générale ---------------- */
 function renderConfig(){
@@ -311,30 +454,54 @@ function renderJoursTravailles(){
   });
 }
 
-function renderListeHoraires(cle, corpsId){
-  const body = $(corpsId);
-  body.innerHTML = "";
-  (config[cle]||[]).forEach((h,i)=>{
-    const tr = document.createElement("tr");
-    tr.innerHTML = `<td>${h.label||"—"}</td><td>${h.debut}</td><td>${h.fin}</td><td><button class="btn sm danger" data-i="${i}">Retirer</button></td>`;
-    body.appendChild(tr);
-  });
-  body.querySelectorAll("button[data-i]").forEach(b=>{
-    b.addEventListener("click", ()=>{
-      config[cle].splice(+b.dataset.i,1);
-      PC.sauverConfig(config);
-      renderListeHoraires(cle, corpsId);
-    });
-  });
+function classeCheckboxesHTML(def){
+  const chosen = def.classes && def.classes.length ? def.classes : [];
+  return `<div class="service-classes">${config.classes.map(cl=>
+    `<button type="button" data-toggle-classe="${cl.id}" class="${chosen.includes(cl.id)?'active':''}">${cl.nom}</button>`
+  ).join("") || '<span class="empty-hint">Créez une classe dans l\'onglet « Configuration générale ».</span>'}</div>`;
 }
-function renderRecreations(){ renderListeHoraires("recreations","recre-body"); }
-function renderPauses(){ renderListeHoraires("pauses","pause-body"); }
+
+function renderListeHoraires(cle, wrapId){
+  const wrap = $(wrapId);
+  wrap.innerHTML = "";
+  (config[cle]||[]).forEach((h,i)=>{
+    const card = document.createElement("div");
+    card.className = "jour-block";
+    card.style.marginBottom = "10px";
+    card.innerHTML = `
+      <div class="row" style="align-items:center;">
+        <b style="flex:1;">${h.label||"—"} <span style="color:var(--ink-soft);font-weight:400;">${h.debut}–${h.fin}</span></b>
+        <button class="btn sm danger" data-i="${i}">Retirer</button>
+      </div>
+      <p class="hint" style="margin:8px 0 4px;">Classes concernées (aucune coche = toutes) :</p>
+      ${classeCheckboxesHTML(h)}
+    `;
+    card.querySelector("[data-i]").addEventListener("click", ()=>{
+      config[cle].splice(i,1);
+      PC.sauverConfig(config);
+      renderListeHoraires(cle, wrapId);
+    });
+    card.querySelectorAll("[data-toggle-classe]").forEach(b=>{
+      b.addEventListener("click", ()=>{
+        h.classes = h.classes || [];
+        const idx = h.classes.indexOf(b.dataset.toggleClasse);
+        if(idx>=0) h.classes.splice(idx,1); else h.classes.push(b.dataset.toggleClasse);
+        PC.sauverConfig(config);
+        renderListeHoraires(cle, wrapId);
+      });
+    });
+    wrap.appendChild(card);
+  });
+  if(!wrap.children.length) wrap.innerHTML = '<div class="empty-hint">Aucun service défini pour l\'instant.</div>';
+}
+function renderRecreations(){ renderListeHoraires("recreations","recre-list"); }
+function renderPauses(){ renderListeHoraires("pauses","pause-list"); }
 
 $("btn-add-recre").addEventListener("click", ()=>{
   const debut = $("recre-debut").value, fin = $("recre-fin").value;
   if(!debut || !fin){ toast("Indiquez une heure de début et de fin."); return; }
   config.recreations = config.recreations || [];
-  config.recreations.push({ label: $("recre-libelle").value.trim() || "Récréation", debut, fin });
+  config.recreations.push({ label: $("recre-libelle").value.trim() || "Récréation", debut, fin, classes: [] });
   PC.sauverConfig(config);
   $("recre-libelle").value=""; $("recre-debut").value=""; $("recre-fin").value="";
   renderRecreations();
@@ -343,18 +510,17 @@ $("btn-add-pause").addEventListener("click", ()=>{
   const debut = $("pause-debut").value, fin = $("pause-fin").value;
   if(!debut || !fin){ toast("Indiquez une heure de début et de fin."); return; }
   config.pauses = config.pauses || [];
-  config.pauses.push({ label: $("pause-libelle").value.trim() || "Pause méridienne", debut, fin });
+  config.pauses.push({ label: $("pause-libelle").value.trim() || "Pause méridienne", debut, fin, classes: [] });
   PC.sauverConfig(config);
   $("pause-libelle").value=""; $("pause-debut").value=""; $("pause-fin").value="";
   renderPauses();
 });
 
 $("btn-appliquer-fixes").addEventListener("click", ()=>{
-  const actifs = config.niveauxActifs || [];
-  if(!actifs.length){ toast("Sélectionnez au moins un niveau géré avant d'appliquer."); return; }
+  if(!config.classes.length){ toast("Créez au moins une classe avant d'appliquer."); return; }
   if(!(config.joursTravailles||[]).length){ toast("Cochez au moins un jour travaillé."); return; }
   PC.sauverConfig(config);
-  PC.appliquerCreneauxFixes(config, grilles, actifs);
+  PC.appliquerCreneauxFixes(config, grilles, config.classes.map(c=>c.id));
   PC.sauverGrilles(grilles);
   $("fixes-status").textContent = "Appliqué le " + new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}) + ".";
   toast("Récréations et pauses appliquées à la grille.");
@@ -362,59 +528,111 @@ $("btn-appliquer-fixes").addEventListener("click", ()=>{
   renderSummary();
 });
 
-/* ---------------- Niveaux actifs ---------------- */
-function renderNiveauxActifs(){
-  const wrap = $("niveaux-actifs");
+/* ---------------- Classes (configuration générale) ---------------- */
+let elevesParClasse = {}; // ÉPHÉMÈRE : jamais persisté, vidé à la fermeture du coffre
+
+function renderClasseNiveauSelect(sel){
+  sel.innerHTML = PC.NIVEAUX_DISPONIBLES.map(n=>`<option value="${n}">${n}</option>`).join("");
+}
+renderClasseNiveauSelect($("classe-niveau"));
+
+function renderClasses(){
+  const wrap = $("classes-list");
   wrap.innerHTML = "";
-  PC.NIVEAUX.forEach(n=>{
-    const b = document.createElement("button");
-    const actif = (config.niveauxActifs||[]).includes(n);
-    b.textContent = n; b.className = actif ? "active" : "";
-    b.addEventListener("click", ()=>{
-      config.niveauxActifs = config.niveauxActifs || [];
-      const idx = config.niveauxActifs.indexOf(n);
-      if(idx>=0) config.niveauxActifs.splice(idx,1); else config.niveauxActifs.push(n);
-      PC.sauverConfig(config);
-      renderNiveauxActifs();
-      renderGrilleTabs();
-      renderSummary();
+  config.classes.forEach(cl=>{
+    const nbEleves = (elevesParClasse[cl.id]||[]).length;
+    const div = document.createElement("div");
+    div.className = "classe-card";
+    div.innerHTML = `
+      <span class="swatch" style="background:${cl.couleur};"></span>
+      <div class="infos"><b>${cl.nom}</b><span class="niveau">${cl.niveau}${nbEleves?" · "+nbEleves+" élève(s) chargé(s)":""}</span></div>
+      <button class="btn sm danger" data-del-classe="${cl.id}">Supprimer</button>
+    `;
+    div.querySelector("[data-del-classe]").addEventListener("click", ()=>{
+      if(!confirm(`Supprimer la classe « ${cl.nom} » ? Sa grille horaire sera perdue.`)) return;
+      PC.supprimerClasse(config, cl.id, grilles, PC.chargerAffectations());
+      delete elevesParClasse[cl.id];
+      PC.sauverConfig(config); PC.sauverGrilles(grilles);
+      renderClasses(); renderRecreations(); renderPauses(); renderGrilleTabs(); renderSummary(); renderClasseElevesSelect();
     });
-    wrap.appendChild(b);
+    wrap.appendChild(div);
+  });
+  if(!wrap.children.length) wrap.innerHTML = '<div class="empty-hint">Aucune classe créée pour l\'instant.</div>';
+}
+$("btn-add-classe").addEventListener("click", ()=>{
+  const nom = $("classe-nom").value.trim();
+  if(!nom){ toast("Indiquez un nom de classe."); return; }
+  PC.creerClasse(config, nom, $("classe-niveau").value);
+  PC.sauverConfig(config);
+  $("classe-nom").value = "";
+  renderClasses(); renderRecreations(); renderPauses(); renderGrilleTabs(); renderSummary(); renderClasseElevesSelect();
+});
+
+function renderClasseElevesSelect(){
+  const sel = $("classe-cible-eleves");
+  if(!sel) return;
+  sel.innerHTML = config.classes.map(cl=>`<option value="${cl.id}">${cl.nom}</option>`).join("") || '<option value="">Aucune classe</option>';
+}
+$("btn-charger-eleves-classe").addEventListener("click", ()=>{
+  if(!coffre.ouvert){ toast("Ouvrez le coffre d'abord."); return; }
+  const classeId = $("classe-cible-eleves").value;
+  if(!classeId){ toast("Créez une classe d'abord."); return; }
+  const cl = PC.classeById(config, classeId);
+  const eleves = (coffre.donnees.eleves||[]).filter(e=> (e.classe||"").toLowerCase() === (cl.nom||"").toLowerCase() || (e.classe||"").toLowerCase() === (cl.niveau||"").toLowerCase());
+  const aCharger = eleves.length ? eleves : (coffre.donnees.eleves||[]); // à défaut de correspondance de classe, propose toute la liste
+  elevesParClasse[classeId] = aCharger.map(e=>({ identifiantSynapses: e.identifiantSynapses, nom: (e.identite && (e.identite.prenom || e.identite.nom)) || e.identifiantSynapses }));
+  renderClasses();
+  renderClasseElevesListe();
+  toast(elevesParClasse[classeId].length + " élève(s) chargé(s) dans « " + cl.nom + " » (en mémoire uniquement).");
+});
+function renderClasseElevesListe(){
+  const wrap = $("classe-eleves-list");
+  wrap.innerHTML = "";
+  Object.entries(elevesParClasse).forEach(([classeId, liste])=>{
+    const cl = PC.classeById(config, classeId);
+    if(!cl || !liste.length) return;
+    liste.forEach(e=>{
+      const div = document.createElement("div");
+      div.className = "summary-item";
+      div.innerHTML = `<b>${e.nom}</b>${cl.nom}`;
+      wrap.appendChild(div);
+    });
   });
 }
 
-/* ---------------- Grille horaire par niveau ---------------- */
+/* ---------------- Grille horaire par classe ---------------- */
 function renderGrilleTabs(){
-  const wrap = $("grille-niveau-tabs");
+  const wrap = $("grille-classe-tabs");
   wrap.innerHTML = "";
-  const actifs = config.niveauxActifs || [];
-  if(!actifs.length){ wrap.innerHTML = '<span class="empty-hint">Sélectionnez au moins un niveau ci-dessus.</span>'; $("grille-body").innerHTML=""; return; }
-  if(!actifs.includes(grilleNiveauCourant)) grilleNiveauCourant = actifs[0];
-  actifs.forEach(n=>{
+  const classes = config.classes || [];
+  if(!classes.length){ wrap.innerHTML = '<span class="empty-hint">Créez au moins une classe dans « Configuration générale ».</span>'; $("grille-body").innerHTML=""; return; }
+  if(!classes.some(c=>c.id===grilleClasseCourant)) grilleClasseCourant = classes[0].id;
+  classes.forEach(cl=>{
     const b = document.createElement("button");
-    b.textContent = n; b.className = n===grilleNiveauCourant ? "active" : "";
-    b.addEventListener("click", ()=>{ grilleNiveauCourant = n; renderGrilleTabs(); renderGrilleBody(); });
+    b.textContent = cl.nom; b.className = cl.id===grilleClasseCourant ? "active" : "";
+    b.addEventListener("click", ()=>{ grilleClasseCourant = cl.id; renderGrilleTabs(); renderGrilleBody(); });
     wrap.appendChild(b);
   });
   renderGrilleBody();
 }
 
-function domainesDisponibles(niveau){
-  const parNiveau = banque[niveau] || {};
+function domainesDisponibles(classeId){
+  const cl = PC.classeById(config, classeId);
+  const parNiveau = (cl && banque[cl.niveau]) || {};
   return Object.entries(parNiveau).map(([cle,b])=>({cle,label:b.label,count:b.items.length}));
 }
 
 function renderGrilleBody(){
   const wrap = $("grille-body");
   wrap.innerHTML = "";
-  if(!grilleNiveauCourant) return;
-  grilles[grilleNiveauCourant] = grilles[grilleNiveauCourant] || [];
-  const domaines = domainesDisponibles(grilleNiveauCourant);
+  if(!grilleClasseCourant) return;
+  grilles[grilleClasseCourant] = grilles[grilleClasseCourant] || [];
+  const domaines = domainesDisponibles(grilleClasseCourant);
 
   PC.JOURS.forEach(j=>{
     const bloc = document.createElement("div");
     bloc.className = "jour-block";
-    const creneauxJour = grilles[grilleNiveauCourant].filter(c=>c.jour===j.n);
+    const creneauxJour = grilles[grilleClasseCourant].filter(c=>c.jour===j.n);
     bloc.innerHTML = `<h4>${j.nom}</h4><div class="creneaux-list" data-jour="${j.n}"></div>
       <button class="btn sm" data-add="${j.n}">+ Ajouter un créneau</button>`;
     const list = bloc.querySelector(".creneaux-list");
@@ -427,7 +645,7 @@ function renderGrilleBody(){
 
   wrap.querySelectorAll("button[data-add]").forEach(b=>{
     b.addEventListener("click", ()=>{
-      grilles[grilleNiveauCourant].push({ id:PC.uid("cr"), jour:+b.dataset.add, debut:"09:00", fin:"09:30", type:"seance", domaineCle: domaines[0]?domaines[0].cle:"" });
+      grilles[grilleClasseCourant].push({ id:PC.uid("cr"), jour:+b.dataset.add, debut:"09:00", fin:"09:30", type:"seance", domaineCle: domaines[0]?domaines[0].cle:"" });
       PC.sauverGrilles(grilles);
       renderGrilleBody();
     });
@@ -457,7 +675,7 @@ function renderCreneauRow(c, domaines){
     });
   });
   row.querySelector("[data-del]").addEventListener("click", ()=>{
-    grilles[grilleNiveauCourant] = grilles[grilleNiveauCourant].filter(x=>x.id!==c.id);
+    grilles[grilleClasseCourant] = grilles[grilleClasseCourant].filter(x=>x.id!==c.id);
     PC.sauverGrilles(grilles);
     renderGrilleBody();
   });
@@ -469,16 +687,16 @@ function renderSummary(){
   const wrap = $("summary");
   wrap.innerHTML = "";
   const semaines = PC.calculerSemaines(config);
-  (config.niveauxActifs||[]).forEach(niveau=>{
-    const grille = (grilles[niveau]||[]).filter(c=>c.type==="seance");
+  (config.classes||[]).forEach(cl=>{
+    const grille = (grilles[cl.id]||[]).filter(c=>c.type==="seance");
     const besoinsParDomaine = {};
     grille.forEach(c=>{ besoinsParDomaine[c.domaineCle] = (besoinsParDomaine[c.domaineCle]||0) + semaines.length; });
     Object.entries(besoinsParDomaine).forEach(([cle,besoin])=>{
-      const dispo = (banque[niveau] && banque[niveau][cle]) ? banque[niveau][cle].items.length : 0;
-      const label = (banque[niveau] && banque[niveau][cle]) ? banque[niveau][cle].label : cle;
+      const dispo = (banque[cl.niveau] && banque[cl.niveau][cle]) ? banque[cl.niveau][cle].items.length : 0;
+      const label = (banque[cl.niveau] && banque[cl.niveau][cle]) ? banque[cl.niveau][cle].label : cle;
       const div = document.createElement("div");
       div.className = "summary-item";
-      div.innerHTML = `<b>${niveau} · ${label}</b>${dispo} séance(s) disponible(s) pour ${besoin} créneau(x) sur ${semaines.length} semaine(s) — <span class="${dispo>=besoin?'ok':'warn'}">${dispo>=besoin?'suffisant':'insuffisant'}</span>`;
+      div.innerHTML = `<b>${cl.nom} · ${label}</b>${dispo} séance(s) disponible(s) pour ${besoin} créneau(x) sur ${semaines.length} semaine(s) — <span class="${dispo>=besoin?'ok':'warn'}">${dispo>=besoin?'suffisant':'insuffisant'}</span>`;
       wrap.appendChild(div);
     });
   });
@@ -487,12 +705,11 @@ function renderSummary(){
 
 $("btn-generer").addEventListener("click", async ()=>{
   if(!config.rentree){ toast("Renseignez une date de rentrée avant de générer."); return; }
-  const actifs = config.niveauxActifs||[];
-  if(!actifs.length){ toast("Sélectionnez au moins un niveau."); return; }
+  if(!config.classes.length){ toast("Créez au moins une classe."); return; }
   $("gen-status").textContent = "Génération en cours…";
   try{
     const affectationsExistantes = PC.chargerAffectations();
-    const nouvelles = await PC.genererAffectations(actifs, config, grilles, affectationsExistantes);
+    const nouvelles = await PC.genererAffectations(config.classes, config, grilles, affectationsExistantes);
     PC.sauverAffectations(nouvelles);
     $("gen-status").textContent = "Planning généré. Consultez la page « Planning — Affichage ».";
     toast("Planning généré avec succès.");
@@ -501,7 +718,31 @@ $("btn-generer").addEventListener("click", async ()=>{
   }
 });
 
-/* ---------------- Import / export JSON ---------------- */
+/* ---------------- Import / export de la configuration ---------------- */
+$("btn-export-config").addEventListener("click", ()=>{
+  PC.exporterConfigJSON(config);
+  toast("Configuration exportée.");
+});
+$("btn-import-config-browse").addEventListener("click", ()=> $("import-config-file").click());
+$("import-config-file").addEventListener("change", async ()=>{
+  const f = $("import-config-file").files[0];
+  if(!f) return;
+  try{
+    const payload = await PC.lireFichierJSON(f);
+    PC.importerConfigJSON(config, payload);
+    PC.sauverConfig(config);
+    $("import-config-status").textContent = "Configuration importée (" + f.name + ").";
+    toast("Configuration importée — la page va se recharger.");
+    setTimeout(()=> location.reload(), 900);
+  }catch(e){
+    $("import-config-status").textContent = "Import impossible : " + e.message;
+    toast("Import impossible : " + e.message);
+  }finally{
+    $("import-config-file").value = "";
+  }
+});
+
+/* ---------------- Import / export du planning complet (JSON) ---------------- */
 $("btn-export-json").addEventListener("click", ()=>{
   const journal = PC.chargerJournal();
   const affectationsActuelles = PC.chargerAffectations();
@@ -528,8 +769,10 @@ $("import-json-file").addEventListener("change", async ()=>{
 
 /* ---------------- Initialisation ---------------- */
 (async function init(){
+  majEtatCoffre();
   renderConfig();
-  renderNiveauxActifs();
+  renderClasses();
+  renderClasseElevesSelect();
   try{
     banque = await PC.chargerBanque();
   }catch(e){

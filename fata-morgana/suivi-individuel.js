@@ -228,7 +228,8 @@
         onclick: () => { this.eleveSelectionneId = e.identifiantSynapses; this._render(); }
       }, [
         el('span', { class: 'si-eleve-id' }, [e.identifiantSynapses]),
-        el('span', { class: 'si-eleve-nom' }, [identite])
+        el('span', { class: 'si-eleve-nom' }, [identite]),
+        e.classe ? el('span', { class: 'si-eleve-classe' }, [e.classe]) : null
       ]);
     }
 
@@ -239,8 +240,9 @@
       const prenom = prompt('Prénom (optionnel) :') || '';
       const ageStr = prompt('Âge (optionnel — donnée stockée uniquement dans le coffre local, jamais transmise à une IA) :') || '';
       const age = ageStr.trim() !== '' && !isNaN(Number(ageStr)) ? Number(ageStr) : null;
+      const classe = prompt('Classe de référence (optionnel — donnée stockée uniquement dans le coffre local, jamais transmise à une IA ; idéalement, ne donner que les initiales de la classe, ex. "CM2A") :') || '';
       try {
-        this.coffre.ajouterEleve(id.trim(), { nom: nom.trim(), prenom: prenom.trim() }, age);
+        this.coffre.ajouterEleve(id.trim(), { nom: nom.trim(), prenom: prenom.trim() }, age, classe.trim());
         this.eleveSelectionneId = id.trim();
         this._render();
       } catch (e) {
@@ -284,11 +286,23 @@
         }
       }, [eleve.age != null ? (eleve.age + ' an' + (eleve.age > 1 ? 's' : '')) : 'Âge non renseigné']);
 
+      const btnClasse = el('button', {
+        class: 'si-btn si-btn-small',
+        title: 'Modifier la classe de référence (donnée stockée uniquement dans le coffre local, jamais transmise à une IA ; idéalement, ne donner que les initiales de la classe)',
+        onclick: () => {
+          const v = prompt('Classe de référence de l\'élève (idéalement, initiales seulement, ex. "CM2A") :', eleve.classe != null ? eleve.classe : '');
+          if (v === null) return;
+          this.coffre.definirClasse(eleve.identifiantSynapses, v.trim());
+          this._render();
+        }
+      }, [eleve.classe != null ? eleve.classe : 'Classe non renseignée']);
+
       return el('div', { class: 'si-fiche-entete' }, [
         el('div', {}, [
           el('div', { class: 'si-fiche-id' }, [eleve.identifiantSynapses]),
           el('h2', { class: 'si-fiche-nom' }, [identite || '(identité non renseignée)']),
-          btnAge
+          btnAge,
+          btnClasse
         ]),
         el('div', { style: 'display:flex;gap:8px;flex-wrap:wrap;' }, [
           el('button', {
@@ -343,7 +357,8 @@
         { id: 'adaptations', label: 'Adaptations' },
         { id: 'objectifs', label: 'Objectifs' },
         { id: 'parcours', label: 'Parcours' },
-        { id: 'analyse', label: 'Analyse & IA' }
+        { id: 'analyse', label: 'Analyse & IA' },
+        { id: 'equivalence', label: 'Équivalence scolaire' }
       ];
 
       const nav = el('div', { class: 'si-onglets-nav' }, onglets.map((o) =>
@@ -361,6 +376,7 @@
         case 'objectifs': contenu = this._renderOngletListeSimple(eleve, 'objectifs', ['libelle', 'statut']); break;
         case 'parcours': contenu = this._renderOngletParcours(eleve); break;
         case 'analyse': contenu = this._renderOngletAnalyse(eleve); break;
+        case 'equivalence': contenu = this._renderOngletEquivalence(eleve); break;
         default: contenu = el('div', {}, []);
       }
 
@@ -635,6 +651,92 @@
       }
       const wrap = el('div', { class: 'si-analyse' });
       ui.render(wrap, eleve);
+      return wrap;
+    }
+
+    // ---- Onglet Équivalence scolaire : niveau moyen français/mathématiques
+    // (comparé au programme) + description transversale. Peut être généré
+    // depuis l'atelier IA de l'onglet "Analyse & IA", ET modifié/enregistré
+    // manuellement ici à tout moment (l'enseignant garde toujours la main
+    // sur le texte final, voir §7 des règles absolues du projet). ----
+
+    _renderOngletEquivalence(eleve) {
+      const wrap = el('div', { class: 'si-equivalence' });
+
+      wrap.appendChild(el('p', { class: 'si-hint' }, [
+        'Estimation d\'un niveau moyen équivalent en français et en mathématiques, comparée aux compétences du programme, plus une description transversale à tous les domaines. ' +
+        'Vous pouvez générer une première version depuis l\'onglet "Analyse & IA" (atelier IA), puis corriger ou rédiger librement le texte ci-dessous : c\'est toujours la version enregistrée ici qui fait foi.'
+      ]));
+
+      const eq = eleve.equivalenceScolaire || {};
+      if (eq.dateMaj) {
+        wrap.appendChild(el('p', { class: 'si-hint' }, ['Dernière mise à jour : ' + new Date(eq.dateMaj).toLocaleDateString('fr-FR')]));
+      }
+
+      const inputNiveauFr = el('input', { type: 'text', class: 'si-input', placeholder: 'Ex. : milieu de CE1', value: (eq.francais && eq.francais.niveauEquivalent) || '' });
+      const taCompteRenduFr = el('textarea', { rows: 4, class: 'ga-textarea', placeholder: 'Compte rendu de quelques lignes pour le français…' }, [(eq.francais && eq.francais.compteRendu) || '']);
+
+      const inputNiveauMaths = el('input', { type: 'text', class: 'si-input', placeholder: 'Ex. : fin de CE2', value: (eq.mathematiques && eq.mathematiques.niveauEquivalent) || '' });
+      const taCompteRenduMaths = el('textarea', { rows: 4, class: 'ga-textarea', placeholder: 'Compte rendu de quelques lignes pour les mathématiques…' }, [(eq.mathematiques && eq.mathematiques.compteRendu) || '']);
+
+      const taTransversal = el('textarea', { rows: 4, class: 'ga-textarea', placeholder: 'Description transversale, tous domaines confondus (affectif, social, cognitif, sensorimoteur…)…' }, [(eq.transversal && eq.transversal.compteRendu) || '']);
+
+      const messageStatut = el('span', { class: 'si-hint' }, ['']);
+
+      const enregistrer = () => {
+        const francais = (inputNiveauFr.value.trim() || taCompteRenduFr.value.trim())
+          ? { niveauEquivalent: inputNiveauFr.value.trim(), compteRendu: taCompteRenduFr.value.trim() }
+          : null;
+        const mathematiques = (inputNiveauMaths.value.trim() || taCompteRenduMaths.value.trim())
+          ? { niveauEquivalent: inputNiveauMaths.value.trim(), compteRendu: taCompteRenduMaths.value.trim() }
+          : null;
+        const transversal = taTransversal.value.trim()
+          ? { compteRendu: taTransversal.value.trim() }
+          : null;
+
+        this.coffre.enregistrerEquivalenceScolaire(eleve.identifiantSynapses, { francais, mathematiques, transversal });
+        this._render();
+      };
+
+      const form = el('div', { class: 'si-form-observation' }, [
+        el('h3', {}, ['Français']),
+        el('div', { class: 'si-form-row' }, [el('label', {}, ['Niveau équivalent']), inputNiveauFr]),
+        el('div', { class: 'si-form-row' }, [el('label', {}, ['Compte rendu']), taCompteRenduFr]),
+        el('h3', { style: 'margin-top:18px;' }, ['Mathématiques']),
+        el('div', { class: 'si-form-row' }, [el('label', {}, ['Niveau équivalent']), inputNiveauMaths]),
+        el('div', { class: 'si-form-row' }, [el('label', {}, ['Compte rendu']), taCompteRenduMaths]),
+        el('h3', { style: 'margin-top:18px;' }, ['Description transversale']),
+        el('div', { class: 'si-form-row' }, [el('label', {}, ['Compte rendu']), taTransversal]),
+        el('div', { class: 'ga-toolbar', style: 'margin-top:14px;' }, [
+          el('button', { class: 'si-btn si-btn-primary', onclick: enregistrer }, ['Enregistrer']),
+          messageStatut
+        ])
+      ]);
+      wrap.appendChild(form);
+
+      const historique = ((eleve.equivalenceScolaire || {}).historique || []).slice().reverse();
+      wrap.appendChild(el('h3', { style: 'margin-top:28px;' }, ['Historique des versions précédentes']));
+      if (!historique.length) {
+        wrap.appendChild(el('p', { class: 'si-empty' }, ['Aucun historique pour l\'instant : chaque nouvel enregistrement (manuel ou via l\'IA) conserve automatiquement la version précédente ici.']));
+      } else {
+        wrap.appendChild(el('div', { class: 'si-frise' }, historique.map((h) =>
+          el('div', { class: 'si-frise-item' }, [
+            el('div', { class: 'si-frise-date' }, [new Date(h.date).toLocaleDateString('fr-FR')]),
+            el('div', { class: 'si-frise-type' }, ['Équivalence scolaire']),
+            el('div', { class: 'si-frise-detail' }, [
+              [
+                h.francais ? 'Français : ' + (h.francais.niveauEquivalent || '—') : null,
+                h.mathematiques ? 'Mathématiques : ' + (h.mathematiques.niveauEquivalent || '—') : null
+              ].filter(Boolean).join(' · ') || '—'
+            ])
+          ])
+        )));
+      }
+
+      wrap.appendChild(el('p', { class: 'si-hint', style: 'margin-top:16px;' }, [
+        'Pour repartir d\'une proposition générée automatiquement, utilisez l\'atelier IA de l\'onglet "Analyse & IA" (le prompt copié demande une estimation de niveau équivalent en français et en mathématiques ainsi qu\'une description transversale), puis affinez le texte ici si besoin.'
+      ]));
+
       return wrap;
     }
   }

@@ -53,9 +53,14 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .day-col-head{display:block;text-decoration:none;color:inherit;border-radius:6px;margin:-4px -4px 6px;padding:4px;}
 .day-col-head:hover{background:var(--panel-raised);}
 .day-col-head .zoom-hint{font-size:11px;opacity:.55;}
-.niveau-group{margin-bottom:12px;}
+.day-body{display:flex;flex-direction:column;gap:8px;}
+.creneau-commun{margin-bottom:2px;}
+.classes-row{display:flex;gap:8px;align-items:flex-start;}
+.niveau-group{flex:1;min-width:0;}
 .niveau-group .niveau-label{font-size:10.5px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-soft);margin-bottom:5px;}
 .creneau-card{border-radius:8px;padding:7px 9px;margin-bottom:6px;font-size:12.5px;border:1px solid var(--line);}
+.creneau-card .classes-tags{display:flex;flex-wrap:wrap;gap:4px;margin-top:4px;}
+.creneau-card .classes-tags span{font-size:9.5px;font-weight:700;padding:1px 7px;border-radius:20px;background:var(--panel);border:1px solid var(--line);color:var(--ink-soft);}
 .creneau-card.seance{cursor:pointer;background:var(--panel-raised);border-left:4px solid var(--accent-sky);}
 .creneau-card.seance:hover{background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.08);}
 .creneau-card.seance.vide{border-left-color:var(--danger);}
@@ -143,7 +148,7 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
   <h1 style="font-size:24px;margin:0 0 18px;">Planning de la semaine</h1>
 
   <div class="toolbar">
-    <div class="chip-toggle" id="niveaux-affiches"></div>
+    <div class="chip-toggle" id="classes-affichees"></div>
     <div class="week-nav">
       <button id="prev-week">◀</button>
       <span class="label" id="week-label">—</span>
@@ -192,7 +197,7 @@ let affectations = PC.chargerAffectations();
 let banque = {};
 let semaines = [];
 let semaineIdx = 0;
-let niveauxAffiches = [];
+let classesAffichees = []; // ids de classes
 
 function couleurDomaine(cle){
   let hash=0; const s=String(cle||"");
@@ -201,23 +206,24 @@ function couleurDomaine(cle){
   return palette[hash%palette.length];
 }
 
-function renderNiveauxToggle(){
-  const wrap = $("niveaux-affiches");
+function renderClassesToggle(){
+  const wrap = $("classes-affichees");
   wrap.innerHTML = "";
-  const disponibles = (config.niveauxActifs && config.niveauxActifs.length) ? config.niveauxActifs : PC.NIVEAUX;
-  if(!niveauxAffiches.length) niveauxAffiches = disponibles.slice();
-  disponibles.forEach(n=>{
+  const disponibles = config.classes || [];
+  if(!classesAffichees.length) classesAffichees = disponibles.map(c=>c.id);
+  disponibles.forEach(cl=>{
     const b = document.createElement("button");
-    b.textContent = n;
-    b.className = niveauxAffiches.includes(n) ? "active" : "";
+    b.textContent = cl.nom;
+    b.className = classesAffichees.includes(cl.id) ? "active" : "";
     b.addEventListener("click", ()=>{
-      const i = niveauxAffiches.indexOf(n);
-      if(i>=0) niveauxAffiches.splice(i,1); else niveauxAffiches.push(n);
-      renderNiveauxToggle();
+      const i = classesAffichees.indexOf(cl.id);
+      if(i>=0) classesAffichees.splice(i,1); else classesAffichees.push(cl.id);
+      renderClassesToggle();
       renderSemaine();
     });
     wrap.appendChild(b);
   });
+  if(!disponibles.length) wrap.innerHTML = '<span class="hint">Aucune classe créée — rendez-vous sur « Planning — Gestion ».</span>';
 }
 
 function renderWeekNav(){
@@ -225,10 +231,17 @@ function renderWeekNav(){
   $("week-label").textContent = sem ? `Semaine ${sem.numero} — ${PC.formatDateShort(sem.lundi)} au ${PC.formatDateShort(sem.vendredi)}` : "—";
 }
 
-function itemPourCle(niveau, domaineCle, seanceId){
-  const bucket = banque[niveau] && banque[niveau][domaineCle];
+function itemPourCle(classeNiveau, domaineCle, seanceId){
+  const bucket = banque[classeNiveau] && banque[classeNiveau][domaineCle];
   if(!bucket) return null;
   return bucket.items.find(it=>it.id===seanceId) || null;
+}
+
+/** Clé de "signature" d'un créneau, indépendante de la classe — sert à
+ *  détecter les services communs (récréations/pauses à l'échelle de
+ *  l'école) partagés à l'identique par toutes les classes affichées. */
+function signatureCreneau(c){
+  return c.debut + "|" + c.fin + "|" + c.type + "|" + (c.type === "seance" ? "" : (c.libelle || c.type));
 }
 
 function renderSemaine(){
@@ -240,10 +253,11 @@ function renderSemaine(){
     content.innerHTML = '<div class="empty-state">Aucune configuration de rentrée / semaines n\'est encore définie. Rendez-vous sur la page « Planning — Gestion ».</div>';
     return;
   }
-  if(!niveauxAffiches.length){
-    content.innerHTML = '<div class="empty-state">Sélectionnez au moins un niveau à afficher.</div>';
+  if(!classesAffichees.length){
+    content.innerHTML = '<div class="empty-state">Sélectionnez au moins une classe à afficher.</div>';
     return;
   }
+  const classesObjs = classesAffichees.map(id=>PC.classeById(config,id)).filter(Boolean);
 
   const grid = document.createElement("div");
   grid.className = "week-grid";
@@ -259,32 +273,75 @@ function renderSemaine(){
         <div class="day-date">${PC.formatDateShort(jourDate)}</div>
       </a>`;
 
-    niveauxAffiches.forEach(niveau=>{
-      const creneauxJour = (grilles[niveau]||[]).filter(c=>c.jour===j.n).sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
+    const body = document.createElement("div");
+    body.className = "day-body";
+
+    // ---- 1) Créneaux "communs" : partagés à l'identique par TOUTES les
+    // classes affichées (récréations/pauses école entière) -> une seule
+    // brique, fusionnée, en pleine largeur.
+    const parClasse = {};
+    classesObjs.forEach(cl=>{
+      parClasse[cl.id] = (grilles[cl.id]||[]).filter(c=>c.jour===j.n).sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
+    });
+    const compte = {};
+    classesObjs.forEach(cl=> parClasse[cl.id].forEach(c=>{
+      if(c.type==="seance") return; // les séances ne sont jamais fusionnées : leur contenu diffère par classe
+      const sig = signatureCreneau(c);
+      compte[sig] = compte[sig] || { def:c, n:0 };
+      compte[sig].n++;
+    }));
+    const sigsCommunes = new Set(Object.entries(compte).filter(([,v])=>v.n===classesObjs.length).map(([k])=>k));
+
+    Array.from(sigsCommunes).map(sig=>compte[sig].def)
+      .sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut))
+      .forEach(c=>{
+        const carte = document.createElement("div");
+        carte.className = "creneau-card creneau-commun " + c.type;
+        carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div>
+          <div class="creneau-titre">${(c.libelle && c.libelle.trim()) ? c.libelle : PC.TYPES_CRENEAU[c.type].label}</div>
+          <div class="classes-tags">${classesObjs.map(cl=>`<span>${cl.nom}</span>`).join("")}</div>`;
+        body.appendChild(carte);
+      });
+    // Retire les créneaux communs de chaque file par classe (déjà affichés ci-dessus).
+    classesObjs.forEach(cl=>{
+      parClasse[cl.id] = parClasse[cl.id].filter(c=> !(c.type!=="seance" && sigsCommunes.has(signatureCreneau(c))));
+    });
+
+    // ---- 2) Le reste (séances + créneaux propres à une seule classe) :
+    // une colonne par classe, côte à côte, pour les temporalités qui se
+    // superposent sans être identiques (ex. deux CE2 en récréation à des
+    // horaires différents).
+    const rangee = document.createElement("div");
+    rangee.className = "classes-row";
+    classesObjs.forEach(cl=>{
+      const creneauxJour = parClasse[cl.id];
       if(!creneauxJour.length) return;
       const groupe = document.createElement("div");
       groupe.className = "niveau-group";
-      groupe.innerHTML = `<div class="niveau-label">${niveau}</div>`;
+      groupe.innerHTML = `<div class="niveau-label">${cl.nom}</div>`;
       creneauxJour.forEach(c=>{
         const carte = document.createElement("div");
         if(c.type === "seance"){
-          const aff = (affectations[niveau]||{})[PC.cleCreneau(iso,c.id)];
-          const item = aff && aff.seanceId ? itemPourCle(niveau, c.domaineCle, aff.seanceId) : null;
+          const aff = (affectations[cl.id]||{})[PC.cleCreneau(iso,c.id)];
+          const item = aff && aff.seanceId ? itemPourCle(cl.niveau, c.domaineCle, aff.seanceId) : null;
           carte.className = "creneau-card seance" + (item ? "" : " vide");
-          const domaineLabel = (banque[niveau] && banque[niveau][c.domaineCle]) ? banque[niveau][c.domaineCle].label : c.domaineCle;
+          const domaineLabel = (banque[cl.niveau] && banque[cl.niveau][c.domaineCle]) ? banque[cl.niveau][c.domaineCle].label : c.domaineCle;
           carte.style.borderLeftColor = couleurDomaine(c.domaineCle);
           carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div>
             <div class="creneau-titre">${item ? (item.titre || item.type || "Séance") : "— aucune séance disponible"}</div>
             <div class="creneau-domaine">${domaineLabel}${item && item.numero ? " · n°"+item.numero : ""}</div>`;
-          carte.addEventListener("click", ()=> ouvrirDrawer(niveau, iso, c, item));
+          carte.addEventListener("click", ()=> ouvrirDrawer(cl.id, iso, c, item));
         } else {
           carte.className = "creneau-card " + c.type;
           carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div><div class="creneau-titre">${(c.libelle && c.libelle.trim()) ? c.libelle : PC.TYPES_CRENEAU[c.type].label}</div>`;
         }
         groupe.appendChild(carte);
       });
-      col.appendChild(groupe);
+      rangee.appendChild(groupe);
     });
+    if(rangee.children.length) body.appendChild(rangee);
+
+    col.appendChild(body);
     grid.appendChild(col);
   });
 
@@ -292,21 +349,22 @@ function renderSemaine(){
 }
 
 /* ---------------- Drawer : déroulé de séance ---------------- */
-async function ouvrirDrawer(niveau, iso, creneau, itemResume){
+async function ouvrirDrawer(classeId, iso, creneau, itemResume){
+  const cl = PC.classeById(config, classeId);
   const overlay = $("drawerOverlay"), drawer = $("drawer"), body = $("drawerBody");
   overlay.classList.add("open"); drawer.classList.add("open");
-  $("drawerCrumb").textContent = `${niveau} · ${PC.formatDateLong(PC.parseISO(iso))} · ${creneau.debut}–${creneau.fin}`;
+  $("drawerCrumb").textContent = `${cl.nom} · ${PC.formatDateLong(PC.parseISO(iso))} · ${creneau.debut}–${creneau.fin}`;
   body.innerHTML = '<p style="color:var(--ink-soft);">Chargement du déroulé…</p>';
 
-  const domaineLabel = (banque[niveau] && banque[niveau][creneau.domaineCle]) ? banque[niveau][creneau.domaineCle].label : creneau.domaineCle;
+  const domaineLabel = (banque[cl.niveau] && banque[cl.niveau][creneau.domaineCle]) ? banque[cl.niveau][creneau.domaineCle].label : creneau.domaineCle;
 
   if(!itemResume){
-    renderDrawerVide(niveau, iso, creneau, domaineLabel);
+    renderDrawerVide(classeId, iso, creneau, domaineLabel);
     return;
   }
   try{
     const item = await PC.chargerDerouleDeItem(itemResume);
-    renderDrawerSeance(niveau, iso, creneau, domaineLabel, item);
+    renderDrawerSeance(classeId, iso, creneau, domaineLabel, item);
   }catch(e){
     body.innerHTML = `<p style="color:var(--danger);">Impossible de charger le déroulé (${e.message}).</p>`;
   }
@@ -319,7 +377,8 @@ function fermerDrawer(){
 $("drawerClose").addEventListener("click", fermerDrawer);
 $("drawerOverlay").addEventListener("click", fermerDrawer);
 
-function renderDrawerSeance(niveau, iso, creneau, domaineLabel, item){
+function renderDrawerSeance(classeId, iso, creneau, domaineLabel, item){
+  const cl = PC.classeById(config, classeId);
   const body = $("drawerBody");
   const phases = (item.deroule||[]).map(p=>`
     <tr>
@@ -331,7 +390,7 @@ function renderDrawerSeance(niveau, iso, creneau, domaineLabel, item){
   body.innerHTML = `
     <h2>${item.titre || "Séance"}</h2>
     <div class="drawer-meta">
-      <span>${niveau}</span><span>${domaineLabel}</span>${item.numero?`<span>N° ${item.numero}</span>`:""}${item.type?`<span>${item.type}</span>`:""}
+      <span>${cl.nom}</span><span>${domaineLabel}</span>${item.numero?`<span>N° ${item.numero}</span>`:""}${item.type?`<span>${item.type}</span>`:""}
     </div>
     ${item.objectif_commun?`<div class="drawer-block"><h4>Objectif</h4><p>${item.objectif_commun}</p></div>`:""}
     ${item.problematique?`<div class="drawer-block"><h4>Problématique</h4><p>${item.problematique}</p></div>`:""}
@@ -341,24 +400,26 @@ function renderDrawerSeance(niveau, iso, creneau, domaineLabel, item){
       <table class="deroule"><thead><tr><th>Phase</th><th>Modalité / matériel</th><th>Déroulement</th><th>Aménagement</th></tr></thead>
       <tbody>${phases || '<tr><td colspan="4" style="color:var(--ink-soft);">Aucun déroulé renseigné.</td></tr>'}</tbody></table>
     </div>
-    ${renderChoixManuel(niveau, iso, creneau)}
+    ${renderChoixManuel(classeId, iso, creneau)}
   `;
-  brancherChoixManuel(niveau, iso, creneau);
+  brancherChoixManuel(classeId, iso, creneau);
 }
 
-function renderDrawerVide(niveau, iso, creneau, domaineLabel){
+function renderDrawerVide(classeId, iso, creneau, domaineLabel){
+  const cl = PC.classeById(config, classeId);
   const body = $("drawerBody");
   body.innerHTML = `
     <h2>Créneau libre</h2>
-    <div class="drawer-meta"><span>${niveau}</span><span>${domaineLabel}</span></div>
+    <div class="drawer-meta"><span>${cl.nom}</span><span>${domaineLabel}</span></div>
     <p style="color:var(--ink-soft);">Aucune séance disponible dans ce domaine n'a pu être affectée automatiquement (banque épuisée). Choisissez-en une manuellement, ou ajoutez de nouvelles séances dans « Séquences &amp; séances ».</p>
-    ${renderChoixManuel(niveau, iso, creneau)}
+    ${renderChoixManuel(classeId, iso, creneau)}
   `;
-  brancherChoixManuel(niveau, iso, creneau);
+  brancherChoixManuel(classeId, iso, creneau);
 }
 
-function renderChoixManuel(niveau, iso, creneau){
-  const bucket = banque[niveau] && banque[niveau][creneau.domaineCle];
+function renderChoixManuel(classeId, iso, creneau){
+  const cl = PC.classeById(config, classeId);
+  const bucket = banque[cl.niveau] && banque[cl.niveau][creneau.domaineCle];
   const options = bucket ? bucket.items.map(it=>`<option value="${it.id}">${it.titre||it.type||it.id} (n°${it.numero||"?"})</option>`).join("") : "";
   return `
     <div class="drawer-manual">
@@ -367,17 +428,18 @@ function renderChoixManuel(niveau, iso, creneau){
       <button class="btn" id="btn-affecter-manuel">Affecter</button>
     </div>`;
 }
-function brancherChoixManuel(niveau, iso, creneau){
+function brancherChoixManuel(classeId, iso, creneau){
   const btn = $("btn-affecter-manuel");
   if(!btn) return;
   btn.addEventListener("click", ()=>{
+    const cl = PC.classeById(config, classeId);
     const sel = $("choix-manuel");
     const id = sel.value;
     if(!id) return;
-    const bucket = banque[niveau] && banque[niveau][creneau.domaineCle];
+    const bucket = banque[cl.niveau] && banque[cl.niveau][creneau.domaineCle];
     const item = bucket.items.find(it=>it.id===id);
-    affectations[niveau] = affectations[niveau] || {};
-    affectations[niveau][PC.cleCreneau(iso, creneau.id)] = {
+    affectations[classeId] = affectations[classeId] || {};
+    affectations[classeId][PC.cleCreneau(iso, creneau.id)] = {
       seanceId: id, source: item.source, fichier: item.fichier || null, domaineCle: creneau.domaineCle, manuel: true
     };
     PC.sauverAffectations(affectations);

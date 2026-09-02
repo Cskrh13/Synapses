@@ -30,6 +30,14 @@
 
   const NIVEAUX = ["CP", "CE1", "CE2", "CM1", "CM2"];
 
+  // Catalogue des niveaux disponibles pour créer une classe (configuration
+  // générale). Une classe est une entité propre (ex. "CE2 A", "CE2 B") : deux
+  // classes peuvent partager le même niveau pédagogique sans partager le
+  // même emploi du temps ni la même récréation.
+  const NIVEAUX_DISPONIBLES = ["TPS", "PS", "MS", "GS", "CP", "CE1", "CE2", "CM1", "CM2"];
+
+  const PALETTE_CLASSES = ["#2E5EAA", "#B5502E", "#2A7F72", "#6B4E8E", "#B5871E", "#B23A5C", "#3F8C4B", "#8C5E2A", "#5B5F6B", "#1E2A4A"];
+
   const JOURS = [
     { n: 1, nom: "Lundi" },
     { n: 2, nom: "Mardi" },
@@ -1047,11 +1055,29 @@
         // sans jamais écraser une config existante.
         if (!c.joursTravailles || !c.joursTravailles.length) c.joursTravailles = [1, 2, 3, 4, 5];
         if (!Array.isArray(c.recreations)) c.recreations = [
-          { label: "Récréation matin", debut: "10:00", fin: "10:15" }
+          { label: "Récréation matin", debut: "10:00", fin: "10:15", classes: [] }
         ];
         if (!Array.isArray(c.pauses)) c.pauses = [
-          { label: "Pause méridienne", debut: "12:00", fin: "13:30" }
+          { label: "Pause méridienne", debut: "12:00", fin: "13:30", classes: [] }
         ];
+        // Ancien modèle "niveauxActifs" (CP/CE1/CE2…) -> nouveau modèle
+        // "classes" (entités propres, ex. deux CE2 distincts). On migre une
+        // seule fois : chaque niveau actif devient une classe portant ce
+        // niveau comme nom par défaut.
+        if (!Array.isArray(c.classes)) {
+          c.classes = (c.niveauxActifs || []).map((n, i) => ({
+            id: uid("cls"), nom: n, niveau: n, couleur: PALETTE_CLASSES[i % PALETTE_CLASSES.length]
+          }));
+        }
+        c.classes.forEach((cl, i) => {
+          if (!cl.id) cl.id = uid("cls");
+          if (!cl.couleur) cl.couleur = PALETTE_CLASSES[i % PALETTE_CLASSES.length];
+          if (!cl.nom) cl.nom = cl.niveau || "Classe";
+        });
+        // Migration des récréations/pauses sans champ `classes` : réputées
+        // s'appliquer à toutes les classes (comportement historique).
+        c.recreations.forEach(r => { if (!Array.isArray(r.classes)) r.classes = []; });
+        c.pauses.forEach(p => { if (!Array.isArray(p.classes)) p.classes = []; });
 
         return c;
 
@@ -1076,22 +1102,28 @@
       vacances:
         [],
 
-      niveauxActifs:
+      // Classes créées par l'enseignant (configuration générale). Chaque
+      // classe = { id, nom, niveau, couleur }. Remplace l'ancien
+      // "niveauxActifs" : deux classes du même niveau (ex. deux CE2)
+      // peuvent avoir des récréations et des grilles horaires différentes.
+      classes:
         [],
 
       // Jours de la semaine travaillés (1=lundi … 5=vendredi).
       joursTravailles:
         [1, 2, 3, 4, 5],
 
-      // Récréations et pauses méridiennes "génériques" : appliquées à tous
-      // les niveaux actifs, sur tous les jours travaillés, via
-      // appliquerCreneauxFixes(). Plusieurs entrées = plusieurs récréations
-      // (ex. matin + après-midi) ou deux services de pause méridienne.
+      // Récréations et pauses méridiennes : pensées à l'échelle de l'école,
+      // donc définies une seule fois ici, avec la liste des classes
+      // concernées par chaque service (`classes: []` = toutes les classes).
+      // Plusieurs entrées = plusieurs récréations (matin/après-midi) ou
+      // plusieurs services de pause méridienne (par ex. un service par
+      // groupe de classes).
       recreations:
-        [{ label: "Récréation matin", debut: "10:00", fin: "10:15" }],
+        [{ label: "Récréation matin", debut: "10:00", fin: "10:15", classes: [] }],
 
       pauses:
-        [{ label: "Pause méridienne", debut: "12:00", fin: "13:30" }]
+        [{ label: "Pause méridienne", debut: "12:00", fin: "13:30", classes: [] }]
 
     };
 
@@ -1105,6 +1137,97 @@
       JSON.stringify(c)
     );
 
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Classes (configuration générale)
+  // ------------------------------------------------------------------------
+
+  function chargerClasses(config) {
+    config = config || chargerConfig();
+    return config.classes || [];
+  }
+
+  function creerClasse(config, nom, niveau) {
+    const cl = {
+      id: uid("cls"),
+      nom: (nom || niveau || "Classe").trim(),
+      niveau: niveau || "",
+      couleur: PALETTE_CLASSES[config.classes.length % PALETTE_CLASSES.length]
+    };
+    config.classes.push(cl);
+    return cl;
+  }
+
+  function supprimerClasse(config, classeId, grilles, affectations) {
+    config.classes = config.classes.filter(c => c.id !== classeId);
+    config.recreations.forEach(r => { r.classes = (r.classes || []).filter(id => id !== classeId); });
+    config.pauses.forEach(p => { p.classes = (p.classes || []).filter(id => id !== classeId); });
+    if (grilles) delete grilles[classeId];
+    if (affectations) delete affectations[classeId];
+  }
+
+  function classeById(config, classeId) {
+    return (config.classes || []).find(c => c.id === classeId) || null;
+  }
+
+  /** Identifiants des classes concernées par un service (récréation/pause) :
+   *  `def.classes` vide ou absent = toutes les classes de la config. */
+  function classesDuService(config, def) {
+    if (def.classes && def.classes.length) return def.classes;
+    return (config.classes || []).map(c => c.id);
+  }
+
+
+  // ------------------------------------------------------------------------
+  // Export / import de la configuration du planning (fichier .json)
+  // ------------------------------------------------------------------------
+  // Contient : classes, jours travaillés, récréations/pauses, rentrée,
+  // nombre de semaines et vacances — c'est-à-dire tout ce qui se règle
+  // dans les onglets "Configuration générale" et "Jours travaillés &
+  // horaires fixes". Les grilles horaires détaillées par classe ne sont
+  // PAS incluses ici (elles se gèrent séparément, onglet par onglet) afin
+  // de garder ce fichier court et facilement partageable entre collègues.
+  function exporterConfigJSON(config) {
+    const payload = {
+      type: "synapses-planning-config",
+      version: 1,
+      exporteLe: new Date().toISOString(),
+      rentree: config.rentree,
+      semaines: config.semaines,
+      vacances: config.vacances,
+      classes: config.classes,
+      joursTravailles: config.joursTravailles,
+      recreations: config.recreations,
+      pauses: config.pauses
+    };
+    const blob = new Blob([JSON.stringify(payload, null, 2)], { type: "application/json" });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement("a");
+    a.href = url;
+    a.download = "synapses-planning-config.json";
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
+  }
+
+  /** Fusionne un fichier de configuration importé dans la config courante.
+   *  Remplace entièrement classes / jours / récréations / pauses / calendrier
+   *  (import "franc" plutôt que fusion silencieuse, pour rester prévisible). */
+  function importerConfigJSON(config, payload) {
+    if (!payload || typeof payload !== "object") throw new Error("Fichier de configuration invalide.");
+    if (Array.isArray(payload.classes)) config.classes = payload.classes.map(c => ({
+      id: c.id || uid("cls"), nom: c.nom || c.niveau || "Classe", niveau: c.niveau || "", couleur: c.couleur || PALETTE_CLASSES[0]
+    }));
+    if (typeof payload.rentree === "string") config.rentree = payload.rentree;
+    if (typeof payload.semaines === "number") config.semaines = payload.semaines;
+    if (Array.isArray(payload.vacances)) config.vacances = payload.vacances;
+    if (Array.isArray(payload.joursTravailles) && payload.joursTravailles.length) config.joursTravailles = payload.joursTravailles;
+    if (Array.isArray(payload.recreations)) config.recreations = payload.recreations.map(r => ({ label: r.label || "Récréation", debut: r.debut, fin: r.fin, classes: r.classes || [] }));
+    if (Array.isArray(payload.pauses)) config.pauses = payload.pauses.map(p => ({ label: p.label || "Pause méridienne", debut: p.debut, fin: p.fin, classes: p.classes || [] }));
+    return config;
   }
 
 
@@ -1156,8 +1279,8 @@
   // être proprement retirée si le nombre d'occurrences ou les jours
   // travaillés changent ensuite.
   //
-  function upsertCreneauFixe(liste, niveau, jour, type, index, def) {
-    const id = "fixe_" + niveau + "_" + jour + "_" + type + "_" + index;
+  function upsertCreneauFixe(liste, classeId, jour, type, index, def) {
+    const id = "fixe_" + classeId + "_" + jour + "_" + type + "_" + index;
     let c = liste.find(x => x.id === id);
     if (!c) {
       c = { id: id, jour: jour, debut: def.debut, fin: def.fin, type: type, libelle: def.label || "", domaineCle: "" };
@@ -1170,29 +1293,45 @@
     return c;
   }
 
-  function appliquerCreneauxFixes(config, grilles, niveaux) {
-    niveaux = (niveaux && niveaux.length) ? niveaux : NIVEAUX;
+  /**
+   * Applique les récréations / pauses méridiennes (pensées à l'échelle de
+   * l'école, définies une seule fois dans la configuration générale) à la
+   * grille de chaque classe concernée. Une classe absente de `def.classes`
+   * (ou `def.classes` vide = toutes les classes) ne reçoit pas ce créneau :
+   * c'est ce qui permet à deux CE2 de ne pas partager la même récréation.
+   */
+  function appliquerCreneauxFixes(config, grilles, classeIds) {
+    const toutesLesClasses = (config.classes || []).map(c => c.id);
+    classeIds = (classeIds && classeIds.length) ? classeIds : toutesLesClasses;
     const jours = (config.joursTravailles && config.joursTravailles.length) ? config.joursTravailles : [1, 2, 3, 4, 5];
     const recreations = config.recreations || [];
     const pauses = config.pauses || [];
 
-    niveaux.forEach(niveau => {
-      grilles[niveau] = grilles[niveau] || [];
+    classeIds.forEach(classeId => {
+      grilles[classeId] = grilles[classeId] || [];
 
       jours.forEach(j => {
-        recreations.forEach((def, idx) => upsertCreneauFixe(grilles[niveau], niveau, j, "recreation", idx, def));
-        pauses.forEach((def, idx) => upsertCreneauFixe(grilles[niveau], niveau, j, "pause", idx, def));
+        recreations.forEach((def, idx) => {
+          if (!classesDuService(config, def).includes(classeId)) return;
+          upsertCreneauFixe(grilles[classeId], classeId, j, "recreation", idx, def);
+        });
+        pauses.forEach((def, idx) => {
+          if (!classesDuService(config, def).includes(classeId)) return;
+          upsertCreneauFixe(grilles[classeId], classeId, j, "pause", idx, def);
+        });
       });
 
       // Retire les occurrences fixes devenues obsolètes : jour non
-      // travaillé, ou index au-delà du nombre de récréations/pauses défini.
-      grilles[niveau] = grilles[niveau].filter(c => {
-        if (!c.id || c.id.indexOf("fixe_" + niveau + "_") !== 0) return true;
-        const parts = c.id.split("_"); // ["fixe", niveau, jour, type, index]
+      // travaillé, classe retirée du service, ou index au-delà du nombre
+      // de récréations/pauses défini.
+      grilles[classeId] = grilles[classeId].filter(c => {
+        if (!c.id || c.id.indexOf("fixe_" + classeId + "_") !== 0) return true;
+        const parts = c.id.split("_"); // ["fixe", classeId, jour, type, index]
         const jr = +parts[2], typ = parts[3], idx = +parts[4];
         if (jours.indexOf(jr) === -1) return false;
-        const nb = (typ === "recreation" ? recreations : pauses).length;
-        return idx < nb;
+        const liste = (typ === "recreation" ? recreations : pauses);
+        if (idx >= liste.length) return false;
+        return classesDuService(config, liste[idx]).includes(classeId);
       });
     });
 
@@ -1385,17 +1524,18 @@
     const jourDate = parseISO(iso);
     const jourSemaine = (jourDate.getDay() + 6) % 7 + 1; // 1=lundi
 
-    const niveaux = (config.niveauxActifs && config.niveauxActifs.length) ? config.niveauxActifs : NIVEAUX;
+    const classes = (config.classes && config.classes.length) ? config.classes : [];
 
     const parOrigine = new Map();
     jour.groupes.forEach(g => { if (g.origine) parOrigine.set(g.origine, g); });
 
     const originesVues = new Set();
 
-    niveaux.forEach(niveau => {
-      const grille = (grilles[niveau] || []).filter(c => c.jour === jourSemaine);
+    classes.forEach(classe => {
+      const classeId = classe.id;
+      const grille = (grilles[classeId] || []).filter(c => c.jour === jourSemaine);
       grille.forEach(c => {
-        const origine = niveau + "__" + c.id;
+        const origine = classeId + "__" + c.id;
         if (jour.exclusions.indexOf(origine) !== -1) return; // retiré à la main : on respecte ce choix
         originesVues.add(origine);
 
@@ -1409,26 +1549,26 @@
           } else {
             jour.groupes.push({
               id: uid("grp"), debut: c.debut, fin: c.fin, origine: origine, modifie: false,
-              adulte: null, titre: titre, domaineCle: "", niveau: "", seanceRef: null,
+              adulte: null, titre: titre, domaineCle: "", niveau: classe.nom, classeId: classeId, seanceRef: null,
               eleves: [], remarque: "", fixe: true
             });
           }
           return;
         }
 
-        const aff = (affectations[niveau] || {})[cleCreneau(iso, c.id)];
-        const bucket = (banque[niveau] && banque[niveau][c.domaineCle]) || null;
+        const aff = (affectations[classeId] || {})[cleCreneau(iso, c.id)];
+        const bucket = (banque[classe.niveau] && banque[classe.niveau][c.domaineCle]) || null;
         const item = (aff && aff.seanceId && bucket) ? bucket.items.find(it => it.id === aff.seanceId) : null;
         const titre = (item && (item.titre || item.type)) || (bucket ? bucket.label : c.domaineCle);
 
         if (existant) {
           existant.debut = c.debut; existant.fin = c.fin; existant.titre = titre;
-          existant.domaineCle = c.domaineCle; existant.niveau = niveau;
+          existant.domaineCle = c.domaineCle; existant.niveau = classe.nom; existant.classeId = classeId;
           existant.seanceRef = item ? { id: item.id, source: item.source, fichier: item.fichier || null } : null;
         } else {
           jour.groupes.push({
             id: uid("grp"), debut: c.debut, fin: c.fin, origine: origine, modifie: false,
-            adulte: { type: "enseignant", nom: "" }, titre: titre, domaineCle: c.domaineCle, niveau: niveau,
+            adulte: { type: "enseignant", nom: "" }, titre: titre, domaineCle: c.domaineCle, niveau: classe.nom, classeId: classeId,
             seanceRef: item ? { id: item.id, source: item.source, fichier: item.fichier || null } : null,
             eleves: [], remarque: "", fixe: false
           });
@@ -1706,7 +1846,7 @@
    * Les affectations marquées manuel:true sont conservées.
    */
   async function genererAffectations(
-    niveaux,
+    classes,
     config,
     grilles,
     affectationsExistantes
@@ -1730,8 +1870,10 @@
       );
 
 
-    niveaux.forEach(
-      niveau => {
+    classes.forEach(
+      classe => {
+
+        const niveau = classe.id; // clé de grilles/affectations = identifiant de la classe
 
         affectations[niveau] =
           affectations[niveau] ||
@@ -1791,8 +1933,8 @@
 
           const bucket =
             (
-              banque[niveau] &&
-              banque[niveau][domaineCle]
+              banque[classe.niveau] &&
+              banque[classe.niveau][domaineCle]
             ) ||
             {
               items: []
@@ -2007,6 +2149,17 @@
     // Configuration
     chargerConfig,
     sauverConfig,
+    exporterConfigJSON,
+    importerConfigJSON,
+
+    // Classes (configuration générale)
+    NIVEAUX_DISPONIBLES,
+    PALETTE_CLASSES,
+    chargerClasses,
+    creerClasse,
+    supprimerClasse,
+    classeById,
+    classesDuService,
 
     // Grilles
     chargerGrilles,
