@@ -1,0 +1,87 @@
+{
+  "id": "piaget",
+  "nom": "Jean Piaget",
+  "type": "pedagogue",
+  "periode": "1896–1980",
+  "description_courte": "Psychologue et épistémologue suisse dont les travaux sur le développement cognitif ont fortement influencé la pédagogie et la psychologie de l’enfant.",
+  "description": "Psychologue et épistémologue suisse dont les travaux sur le développement cognitif ont fortement influencé la pédagogie et la psychologie de l’enfant.",
+  "courants": [
+    "constructivisme"
+  ],
+  "concepts": [
+    "assimilation",
+    "accommodation",
+    "equilibration",
+    "developpement"
+  ],
+  "pratiques": [
+    "conflit-cognitif",
+    "manipulation",
+    "recherche",
+    "verbalisation"
+  ],
+  "influences": [
+    "biologie",
+    "épistémologie",
+    "psychologie du développement"
+  ],
+  "ouvrages": [
+    "La naissance de l’intelligence chez l’enfant"
+  ],
+  "biographie": "Psychologue et épistémologue suisse dont les travaux sur le développement cognitif ont fortement influencé la pédagogie et la psychologie de l’enfant.",
+  "travail": {
+    "principe_directeur": "Tenir compte des connaissances antérieures et concevoir des situations qui permettent à l’élève d’agir, de confronter ses représentations et de restructurer ses connaissances.",
+    "pour_sequence": [
+      "Tenir compte des connaissances antérieures et concevoir des situations qui permettent à l’élève d’agir, de confronter ses représentations et de restructurer ses connaissances."
+    ],
+    "pour_seance": [
+      "Tenir compte des connaissances antérieures et concevoir des situations qui permettent à l’élève d’agir, de confronter ses représentations et de restructurer ses connaissances."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "conflit-cognitif",
+      "manipulation",
+      "recherche",
+      "verbalisation"
+    ],
+    "points_de_vigilance": [
+      "Ne pas transformer les stades piagétiens en prescriptions scolaires rigides ; la recherche contemporaine a largement discuté et nuancé plusieurs aspects de son modèle."
+    ],
+    "instruction_generation": "Tenir compte des connaissances antérieures et concevoir des situations qui permettent à l’élève d’agir, de confronter ses représentations et de restructurer ses connaissances."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Ne pas transformer les stades piagétiens en prescriptions scolaires rigides ; la recherche contemporaine a largement discuté et nuancé plusieurs aspects de son modèle."
+  },
+  "relations": {
+    "courants": [
+      "constructivisme"
+    ],
+    "proche_de": [
+      "vygotski",
+      "bruner"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

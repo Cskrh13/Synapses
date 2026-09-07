@@ -42,11 +42,332 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .toolbar .chip-toggle{display:flex;gap:6px;flex-wrap:wrap;}
 .toolbar .chip-toggle button{border:1px solid var(--line);background:var(--panel);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;}
 .toolbar .chip-toggle button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
-.week-nav{display:flex;align-items:center;gap:10px;margin-left:auto;}
-.week-nav button{border:1px solid var(--line);background:var(--panel);border-radius:8px;padding:6px 12px;font-weight:700;}
-.week-nav .label{font-family:'IBM Plex Mono',monospace;font-size:13px;color:var(--ink-soft);min-width:170px;text-align:center;}
-.empty-state{background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);padding:32px;text-align:center;color:var(--ink-soft);}
-.week-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:12px;}
+/* =========================================================
+   PLANNING HEBDOMADAIRE — AFFICHAGE
+   ========================================================= */
+
+/* Barre supérieure :
+   les classes restent à gauche, la navigation des semaines est centrée. */
+.toolbar{
+  position:relative;
+  display:block;
+  width:100%;
+  margin-bottom:18px;
+}
+
+.toolbar .chip-toggle{
+  display:flex;
+  gap:6px;
+  flex-wrap:wrap;
+  width:100%;
+  padding-right:0;
+}
+
+.toolbar .chip-toggle button{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:20px;
+  padding:6px 14px;
+  font-size:13px;
+  font-weight:600;
+  white-space:nowrap;
+}
+
+.toolbar .chip-toggle button.active{
+  background:var(--navy);
+  color:#fff;
+  border-color:var(--navy);
+}
+
+/* Navigation des semaines réellement centrée dans la page. */
+.week-nav{
+  position:static;
+  transform:none;
+  width:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:10px;
+  margin-top:12px;
+}
+
+.week-nav button{
+  border:1px solid var(--line);
+  background:var(--panel);
+  border-radius:8px;
+  padding:6px 12px;
+  font-weight:700;
+  min-width:38px;
+}
+
+.week-nav button:hover{
+  background:var(--panel-raised);
+}
+
+.week-nav .label{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:13px;
+  color:var(--ink-soft);
+  min-width:210px;
+  text-align:center;
+  white-space:nowrap;
+}
+
+.empty-state{
+  background:var(--panel);
+  border:1px dashed var(--line);
+  border-radius:var(--radius);
+  padding:32px;
+  text-align:center;
+  color:var(--ink-soft);
+}
+
+/* ---------------------------------------------------------
+   SEMAINE
+   ---------------------------------------------------------
+   auto-fit + minmax :
+   les journées restent lisibles et passent automatiquement
+   à la ligne lorsque la largeur disponible devient insuffisante.
+   --------------------------------------------------------- */
+
+.week-grid{
+  width:100%;
+  max-width:100%;
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,360px),1fr));
+  gap:14px;
+  align-items:start;
+}
+
+.day-col{
+  width:100%;
+  min-width:0;
+  max-width:100%;
+  overflow:hidden;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:var(--radius);
+  padding:12px;
+  min-height:120px;
+}
+
+.day-col h3{
+  font-size:15px;
+  margin-bottom:2px;
+}
+
+.day-col .day-date{
+  font-size:11.5px;
+  color:var(--ink-soft);
+  font-family:'IBM Plex Mono',monospace;
+  margin-bottom:10px;
+}
+
+.day-col-head{
+  display:block;
+  text-decoration:none;
+  color:inherit;
+  border-radius:6px;
+  margin:-4px -4px 6px;
+  padding:4px;
+}
+
+.day-col-head:hover{
+  background:var(--panel-raised);
+}
+
+.day-col-head .zoom-hint{
+  font-size:11px;
+  opacity:.55;
+}
+
+.day-body{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  min-width:0;
+}
+
+/* ---------------------------------------------------------
+   LIGNE DE CRÉNEAUX
+   --------------------------------------------------------- */
+
+.creneaux-row{
+  display:flex;
+  flex-wrap:wrap;
+  align-items:flex-start;
+  gap:8px;
+  width:100%;
+  max-width:100%;
+}
+
+/* Une brique indépendante.
+   Elle peut prendre toute la largeur lorsqu'elle est seule. */
+.creneau-card{
+  flex:1 1 260px;
+  min-width:0;
+  max-width:100%;
+  border-radius:8px;
+  padding:8px 10px;
+  margin:0;
+  font-size:12.5px;
+  border:1px solid var(--line);
+  overflow-wrap:anywhere;
+  word-break:normal;
+}
+
+/* Lorsqu'il existe plusieurs créneaux simultanés, ils deviennent
+   naturellement des colonnes côte à côte. */
+.creneaux-row.has-overlap .creneau-card{
+  flex:1 1 calc(50% - 4px);
+}
+
+/* Si 3 créneaux sont simultanés, on permet 3 colonnes. */
+.creneaux-row.has-overlap.many .creneau-card{
+  flex-basis:calc(33.333% - 6px);
+}
+
+/* Brique partagée : une seule brique, avec les classes à l'intérieur. */
+.creneau-commun{
+  flex:1 1 100%;
+  width:100%;
+  max-width:100%;
+  margin:0;
+}
+
+.creneau-card .classes-tags{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  margin-top:5px;
+}
+
+.creneau-card .classes-tags span{
+  font-size:9.5px;
+  font-weight:700;
+  padding:2px 7px;
+  border-radius:20px;
+  background:var(--panel);
+  border:1px solid var(--line);
+  color:var(--ink-soft);
+}
+
+.creneau-card.seance{
+  cursor:pointer;
+  background:var(--panel-raised);
+  border-left:4px solid var(--accent-sky);
+}
+
+.creneau-card.seance:hover{
+  background:#fff;
+  box-shadow:0 1px 4px rgba(0,0,0,.08);
+}
+
+.creneau-card.seance.vide{
+  border-left-color:var(--danger);
+}
+
+.creneau-card.recreation,
+.creneau-card.pause,
+.creneau-card.autre{
+  background:#F1EFE9;
+  color:var(--ink-soft);
+  border-left:4px solid var(--ink-soft);
+  font-style:italic;
+}
+
+.creneau-heure{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:10.5px;
+  color:var(--ink-soft);
+}
+
+.creneau-titre{
+  font-weight:600;
+  margin-top:1px;
+  line-height:1.35;
+}
+
+.creneau-domaine{
+  font-size:10.5px;
+  color:var(--ink-soft);
+  margin-top:2px;
+}
+
+/* ---------------------------------------------------------
+   GROUPES DE CRÉNEAUX
+   --------------------------------------------------------- */
+
+.creneaux-sequence{
+  display:flex;
+  flex-direction:column;
+  gap:8px;
+  width:100%;
+}
+
+.creneaux-sequence > .creneaux-row{
+  width:100%;
+}
+
+/* ---------------------------------------------------------
+   RESPONSIVE
+   --------------------------------------------------------- */
+
+@media (max-width:1100px){
+
+  .week-grid{
+    grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));
+  }
+
+  .toolbar .chip-toggle{
+    padding-right:0;
+    padding-bottom:48px;
+  }
+
+  .week-nav{
+    top:auto;
+    bottom:0;
+    transform:translateX(-50%);
+  }
+}
+
+@media (max-width:700px){
+
+  main{
+    padding:18px 12px 70px;
+  }
+
+  .toolbar{
+    display:block;
+  }
+
+  .toolbar .chip-toggle{
+    padding:0;
+    width:100%;
+    margin-bottom:12px;
+  }
+
+  .week-nav{
+    position:static;
+    transform:none;
+    width:100%;
+    justify-content:center;
+  }
+
+  .week-nav .label{
+    min-width:0;
+    font-size:11.5px;
+  }
+
+  .week-grid{
+    grid-template-columns:1fr;
+  }
+
+  .creneaux-row.has-overlap .creneau-card,
+  .creneaux-row.has-overlap.many .creneau-card{
+    flex:1 1 100%;
+  }
+}
 .day-col{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px;min-height:120px;}
 .day-col h3{font-size:14px;margin-bottom:2px;}
 .day-col .day-date{font-size:11.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-bottom:10px;}
@@ -168,6 +489,8 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
   <div class="drawer-body" id="drawerBody"></div>
 </aside>
 
+<script src="../fata-morgana/synapses-crypto.js"></script>
+<script src="../fata-morgana/synapses-coffre.js"></script>
 <script src="planning-core.js"></script>
 <script>
 /* =========================================================
@@ -189,6 +512,21 @@ const SYNAPSES_BUILD = {
 
 "use strict";
 const PC = window.PlanningCore;
+
+/*
+ * Coffre Synapses — lecture locale uniquement.
+ * Le contenu réel provient exclusivement du fichier .synapses ouvert par
+ * l'utilisateur. Aucun élève, besoin, objectif ou autre donnée individuelle
+ * n'est créé ici et rien n'est placé dans localStorage.
+ */
+let coffre = null;
+try { coffre = new SynapsesCoffre.Coffre(); } catch (e) { coffre = null; }
+function coffreDisponible(){ return !!coffre; }
+function coffreOuvert(){ return !!(coffre && coffre.ouvert); }
+function lireElevesDuCoffre(){
+  return coffreOuvert() ? coffre.listerEleves() : [];
+}
+
 const $ = id => document.getElementById(id);
 
 let config = PC.chargerConfig();
@@ -243,109 +581,497 @@ function itemPourCle(classeNiveau, domaineCle, seanceId){
 function signatureCreneau(c){
   return c.debut + "|" + c.fin + "|" + c.type + "|" + (c.type === "seance" ? "" : (c.libelle || c.type));
 }
-
 function renderSemaine(){
+
   renderWeekNav();
+
   const content = $("content");
   content.innerHTML = "";
+
   const sem = semaines[semaineIdx];
+
   if(!sem){
-    content.innerHTML = '<div class="empty-state">Aucune configuration de rentrée / semaines n\'est encore définie. Rendez-vous sur la page « Planning — Gestion ».</div>';
+    content.innerHTML =
+      '<div class="empty-state">' +
+      'Aucune configuration de rentrée / semaines n\'est encore définie. ' +
+      'Rendez-vous sur la page « Planning — Gestion ».' +
+      '</div>';
     return;
   }
+
   if(!classesAffichees.length){
-    content.innerHTML = '<div class="empty-state">Sélectionnez au moins une classe à afficher.</div>';
+    content.innerHTML =
+      '<div class="empty-state">' +
+      'Sélectionnez au moins une classe à afficher.' +
+      '</div>';
     return;
   }
-  const classesObjs = classesAffichees.map(id=>PC.classeById(config,id)).filter(Boolean);
+
+  const classesObjs =
+    classesAffichees
+      .map(id => PC.classeById(config,id))
+      .filter(Boolean);
 
   const grid = document.createElement("div");
   grid.className = "week-grid";
 
-  PC.JOURS.forEach(j=>{
-    const jourDate = PC.addDays(sem.lundi, j.n-1);
-    const iso = PC.dateISO(jourDate);
-    const col = document.createElement("div");
-    col.className = "day-col";
-    col.innerHTML = `
-      <a class="day-col-head" href="planning-jour.html?date=${iso}" title="Ouvrir le cahier journal de ce jour">
-        <h3>${j.nom} <span class="zoom-hint">🔍</span></h3>
-        <div class="day-date">${PC.formatDateShort(jourDate)}</div>
-      </a>`;
 
-    const body = document.createElement("div");
+  /* =========================================================
+     UNE JOURNÉE
+     ========================================================= */
+
+  PC.JOURS.forEach(j => {
+
+    const jourDate =
+      PC.addDays(
+        sem.lundi,
+        j.n - 1
+      );
+
+    const iso =
+      PC.dateISO(jourDate);
+
+    const col =
+      document.createElement("div");
+
+    col.className = "day-col";
+
+    col.innerHTML = `
+      <a
+        class="day-col-head"
+        href="planning-jour.html?date=${iso}"
+        title="Ouvrir le cahier journal de ce jour"
+      >
+        <h3>
+          ${j.nom}
+          <span class="zoom-hint">🔍</span>
+        </h3>
+
+        <div class="day-date">
+          ${PC.formatDateShort(jourDate)}
+        </div>
+      </a>
+    `;
+
+
+    const body =
+      document.createElement("div");
+
     body.className = "day-body";
 
-    // ---- 1) Créneaux "communs" : partagés à l'identique par TOUTES les
-    // classes affichées (récréations/pauses école entière) -> une seule
-    // brique, fusionnée, en pleine largeur.
-    const parClasse = {};
-    classesObjs.forEach(cl=>{
-      parClasse[cl.id] = (grilles[cl.id]||[]).filter(c=>c.jour===j.n).sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
-    });
-    const compte = {};
-    classesObjs.forEach(cl=> parClasse[cl.id].forEach(c=>{
-      if(c.type==="seance") return; // les séances ne sont jamais fusionnées : leur contenu diffère par classe
-      const sig = signatureCreneau(c);
-      compte[sig] = compte[sig] || { def:c, n:0 };
-      compte[sig].n++;
-    }));
-    const sigsCommunes = new Set(Object.entries(compte).filter(([,v])=>v.n===classesObjs.length).map(([k])=>k));
 
-    Array.from(sigsCommunes).map(sig=>compte[sig].def)
-      .sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut))
-      .forEach(c=>{
-        const carte = document.createElement("div");
-        carte.className = "creneau-card creneau-commun " + c.type;
-        carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div>
-          <div class="creneau-titre">${(c.libelle && c.libelle.trim()) ? c.libelle : PC.TYPES_CRENEAU[c.type].label}</div>
-          <div class="classes-tags">${classesObjs.map(cl=>`<span>${cl.nom}</span>`).join("")}</div>`;
-        body.appendChild(carte);
+    /* =======================================================
+       RÉCUPÉRATION DES CRÉNEAUX
+       ======================================================= */
+
+    const tousLesCreneaux = [];
+
+    classesObjs.forEach(cl => {
+
+      const grille =
+        (grilles[cl.id] || [])
+          .filter(c => c.jour === j.n)
+          .map(c => ({
+            creneau: c,
+            classe: cl
+          }));
+
+      grille.forEach(x =>
+        tousLesCreneaux.push(x)
+      );
+
+    });
+
+
+    /* =======================================================
+       FUSION DES CRÉNEAUX PARTAGÉS
+       =======================================================
+       Deux créneaux sont partagés lorsqu'ils ont exactement
+       le même horaire, le même type et le même libellé.
+
+       IMPORTANT :
+       On ne fusionne pas les séances : deux classes peuvent
+       avoir une séance différente dans le même créneau.
+       ======================================================= */
+
+    const groupes = new Map();
+
+    tousLesCreneaux.forEach(({creneau,classe}) => {
+
+      const partageable =
+        creneau.type !== "seance";
+
+      const cle =
+        partageable
+          ? signatureCreneau(creneau)
+          : (
+              "seance|" +
+              classe.id +
+              "|" +
+              creneau.id
+            );
+
+      if(!groupes.has(cle)){
+        groupes.set(cle,{
+          creneau: creneau,
+          classes: [],
+          membres: []
+        });
+      }
+
+      const groupe =
+        groupes.get(cle);
+
+      groupe.membres.push({
+        creneau,
+        classe
       });
-    // Retire les créneaux communs de chaque file par classe (déjà affichés ci-dessus).
-    classesObjs.forEach(cl=>{
-      parClasse[cl.id] = parClasse[cl.id].filter(c=> !(c.type!=="seance" && sigsCommunes.has(signatureCreneau(c))));
+
+      if(!groupe.classes.some(
+        cl => cl.id === classe.id
+      )){
+        groupe.classes.push(classe);
+      }
+
     });
 
-    // ---- 2) Le reste (séances + créneaux propres à une seule classe) :
-    // une colonne par classe, côte à côte, pour les temporalités qui se
-    // superposent sans être identiques (ex. deux CE2 en récréation à des
-    // horaires différents).
-    const rangee = document.createElement("div");
-    rangee.className = "classes-row";
-    classesObjs.forEach(cl=>{
-      const creneauxJour = parClasse[cl.id];
-      if(!creneauxJour.length) return;
-      const groupe = document.createElement("div");
-      groupe.className = "niveau-group";
-      groupe.innerHTML = `<div class="niveau-label">${cl.nom}</div>`;
-      creneauxJour.forEach(c=>{
-        const carte = document.createElement("div");
-        if(c.type === "seance"){
-          const aff = (affectations[cl.id]||{})[PC.cleCreneau(iso,c.id)];
-          const item = aff && aff.seanceId ? itemPourCle(cl.niveau, c.domaineCle, aff.seanceId) : null;
-          carte.className = "creneau-card seance" + (item ? "" : " vide");
-          const domaineLabel = (banque[cl.niveau] && banque[cl.niveau][c.domaineCle]) ? banque[cl.niveau][c.domaineCle].label : c.domaineCle;
-          carte.style.borderLeftColor = couleurDomaine(c.domaineCle);
-          carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div>
-            <div class="creneau-titre">${item ? (item.titre || item.type || "Séance") : "— aucune séance disponible"}</div>
-            <div class="creneau-domaine">${domaineLabel}${item && item.numero ? " · n°"+item.numero : ""}</div>`;
-          carte.addEventListener("click", ()=> ouvrirDrawer(cl.id, iso, c, item));
-        } else {
-          carte.className = "creneau-card " + c.type;
-          carte.innerHTML = `<div class="creneau-heure">${c.debut}–${c.fin}</div><div class="creneau-titre">${(c.libelle && c.libelle.trim()) ? c.libelle : PC.TYPES_CRENEAU[c.type].label}</div>`;
+
+    /* =======================================================
+       CRÉATION DES GROUPES D'AFFICHAGE
+       ======================================================= */
+
+    const blocs =
+      Array.from(groupes.values())
+        .sort((a,b) =>
+          PC.heureVersMin(a.creneau.debut) -
+          PC.heureVersMin(b.creneau.debut)
+        );
+
+
+    /* =======================================================
+       REGROUPEMENT PAR CHEVAUCHEMENT
+       =======================================================
+       Les créneaux qui se chevauchent sont placés dans la même
+       rangée et deviennent donc des briques côte à côte.
+
+       Les créneaux qui ne se chevauchent pas restent dans des
+       rangées indépendantes.
+       ======================================================= */
+
+    const ranges = [];
+
+    blocs.forEach(bloc => {
+
+      const debut =
+        PC.heureVersMin(
+          bloc.creneau.debut
+        );
+
+      const fin =
+        PC.heureVersMin(
+          bloc.creneau.fin
+        );
+
+      let rangee = null;
+
+      for(let i=0; i<ranges.length; i++){
+
+        const derniereFin =
+          Math.max(
+            ...ranges[i].map(x =>
+              PC.heureVersMin(
+                x.creneau.fin
+              )
+            )
+          );
+
+        if(debut < derniereFin){
+
+          rangee = ranges[i];
+          break;
+
         }
-        groupe.appendChild(carte);
-      });
-      rangee.appendChild(groupe);
+
+      }
+
+      if(!rangee){
+
+        rangee = [];
+        ranges.push(rangee);
+
+      }
+
+      rangee.push(bloc);
+
     });
-    if(rangee.children.length) body.appendChild(rangee);
+
+
+    /* =======================================================
+       AFFICHAGE DES RANGÉES
+       ======================================================= */
+
+    const sequence =
+      document.createElement("div");
+
+    sequence.className =
+      "creneaux-sequence";
+
+
+    ranges.forEach(rangee => {
+
+      const row =
+        document.createElement("div");
+
+      row.className =
+        "creneaux-row";
+
+
+      if(rangee.length > 1){
+
+        row.classList.add(
+          "has-overlap"
+        );
+
+        if(rangee.length >= 3){
+
+          row.classList.add(
+            "many"
+          );
+
+        }
+
+      }
+
+
+      rangee.forEach(bloc => {
+
+        const c =
+          bloc.creneau;
+
+        const carte =
+          document.createElement("div");
+
+
+        /* =================================================
+           CRÉNEAU PARTAGÉ
+           ================================================= */
+
+        if(
+          c.type !== "seance" &&
+          bloc.classes.length > 1
+        ){
+
+          carte.className =
+            "creneau-card creneau-commun " +
+            c.type;
+
+          carte.innerHTML = `
+            <div class="creneau-heure">
+              ${c.debut}–${c.fin}
+            </div>
+
+            <div class="creneau-titre">
+              ${
+                (c.libelle && c.libelle.trim())
+                  ? c.libelle
+                  : PC.TYPES_CRENEAU[c.type].label
+              }
+            </div>
+
+            <div class="classes-tags">
+              ${
+                bloc.classes
+                  .map(cl =>
+                    `<span>${cl.nom}</span>`
+                  )
+                  .join("")
+              }
+            </div>
+          `;
+
+        }
+
+
+        /* =================================================
+           CRÉNEAU SIMPLE
+           ================================================= */
+
+        else {
+
+          const membre =
+            bloc.membres[0];
+
+          const cl =
+            membre.classe;
+
+          const creneau =
+            membre.creneau;
+
+
+          if(creneau.type === "seance"){
+
+            const aff =
+              (affectations[cl.id] || {})[
+                PC.cleCreneau(
+                  iso,
+                  creneau.id
+                )
+              ];
+
+            const item =
+              aff && aff.seanceId
+                ? itemPourCle(
+                    cl.niveau,
+                    creneau.domaineCle,
+                    aff.seanceId
+                  )
+                : null;
+
+
+            carte.className =
+              "creneau-card seance" +
+              (item ? "" : " vide");
+
+
+            const domaineLabel =
+              (
+                banque[cl.niveau] &&
+                banque[cl.niveau][
+                  creneau.domaineCle
+                ]
+              )
+                ? banque[cl.niveau][
+                    creneau.domaineCle
+                  ].label
+                : creneau.domaineCle;
+
+
+            carte.style.borderLeftColor =
+              couleurDomaine(
+                creneau.domaineCle
+              );
+
+
+            carte.innerHTML = `
+              <div class="creneau-heure">
+                ${creneau.debut}–${creneau.fin}
+              </div>
+
+              <div class="creneau-titre">
+                ${
+                  item
+                    ? (
+                        item.titre ||
+                        item.type ||
+                        "Séance"
+                      )
+                    : "— aucune séance disponible"
+                }
+              </div>
+
+              <div class="creneau-domaine">
+                ${domaineLabel}
+                ${
+                  item && item.numero
+                    ? " · n°" + item.numero
+                    : ""
+                }
+              </div>
+
+              <div class="classes-tags">
+                <span>${cl.nom}</span>
+              </div>
+            `;
+
+
+            carte.addEventListener(
+              "click",
+              () =>
+                ouvrirDrawer(
+                  cl.id,
+                  iso,
+                  creneau,
+                  item
+                )
+            );
+
+          }
+
+
+          /* ===============================================
+             AUTRE / RÉCRÉATION / PAUSE
+             =============================================== */
+
+          else {
+
+            carte.className =
+              "creneau-card " +
+              creneau.type;
+
+
+            carte.innerHTML = `
+              <div class="creneau-heure">
+                ${creneau.debut}–${creneau.fin}
+              </div>
+
+              <div class="creneau-titre">
+                ${
+                  (
+                    creneau.libelle &&
+                    creneau.libelle.trim()
+                  )
+                    ? creneau.libelle
+                    : PC.TYPES_CRENEAU[
+                        creneau.type
+                      ].label
+                }
+              </div>
+
+              <div class="classes-tags">
+                <span>${cl.nom}</span>
+              </div>
+            `;
+
+          }
+
+        }
+
+
+        row.appendChild(carte);
+
+      });
+
+
+      sequence.appendChild(row);
+
+    });
+
+
+    if(sequence.children.length){
+
+      body.appendChild(
+        sequence
+      );
+
+    }
+    else {
+
+      body.innerHTML =
+        '<div class="empty-state" style="padding:18px;">' +
+        'Aucun créneau pour cette journée.' +
+        '</div>';
+
+    }
+
 
     col.appendChild(body);
     grid.appendChild(col);
+
   });
 
+
   content.appendChild(grid);
+
 }
 
 /* ---------------- Drawer : déroulé de séance ---------------- */
@@ -463,7 +1189,7 @@ window.addEventListener("storage", (e)=>{
     affectations = PC.chargerAffectations();
     semaines = PC.calculerSemaines(config);
     if(semaineIdx >= semaines.length) semaineIdx = Math.max(0, semaines.length-1);
-    renderNiveauxToggle();
+    renderClassesToggle();
     renderSemaine();
   }
 });
@@ -471,7 +1197,7 @@ window.addEventListener("storage", (e)=>{
 /* ---------------- Initialisation ---------------- */
 (async function init(){
   semaines = PC.calculerSemaines(config);
-  renderNiveauxToggle();
+  renderClassesToggle();
   try{
     banque = await PC.chargerBanque();
   }catch(e){ /* le planning reste affichable, sans détail de séance */ }

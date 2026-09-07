@@ -1,0 +1,103 @@
+{
+  "id": "connac",
+  "nom": "Sylvain Connac",
+  "type": "pedagogue",
+  "periode": "XXIe siècle",
+  "description_courte": "Enseignant-chercheur français travaillant sur la coopération, les pratiques de classe coopérative, l’hétérogénéité et les conditions qui permettent à la coopération de soutenir réellement les apprentissages.",
+  "description": "Enseignant-chercheur français travaillant sur la coopération, les pratiques de classe coopérative, l’hétérogénéité et les conditions qui permettent à la coopération de soutenir réellement les apprentissages.",
+  "courants": [
+    "cooperation",
+    "freinet",
+    "education-inclusive"
+  ],
+  "concepts": [
+    "coopération",
+    "entraide",
+    "tutorat",
+    "hétérogénéité",
+    "apprentissages"
+  ],
+  "pratiques": [
+    "tutorat",
+    "entraide",
+    "travail de groupe",
+    "conseil coopératif",
+    "coévaluation"
+  ],
+  "influences": [
+    "freinet",
+    "ouri",
+    "vygotski"
+  ],
+  "ouvrages": [
+    "La coopération, ça s’apprend",
+    "Apprendre avec les pédagogies coopératives"
+  ],
+  "biographie": "Enseignant-chercheur français travaillant sur la coopération, les pratiques de classe coopérative, l’hétérogénéité et les conditions qui permettent à la coopération de soutenir réellement les apprentissages.",
+  "travail": {
+    "principe_directeur": "Ne pas simplement faire travailler les élèves ensemble : enseigner les compétences coopératives et concevoir des tâches où l’interaction aide effectivement à apprendre.",
+    "pour_sequence": [
+      "Choisir la forme de coopération adaptée à l’objectif : aide, tutorat, travail en équipe, discussion, conseil.",
+      "Prévoir une évaluation des apprentissages individuels en plus de la production collective."
+    ],
+    "pour_seance": [
+      "Enseigner les gestes coopératifs : demander de l’aide, expliquer, vérifier, reformuler, écouter."
+    ],
+    "pour_programmation": [
+      "Installer progressivement les dispositifs coopératifs et observer leurs effets sur l’accès aux apprentissages de chacun."
+    ],
+    "adaptations": [
+      "tutorat",
+      "entraide",
+      "coévaluation",
+      "conseil coopératif",
+      "groupes"
+    ],
+    "points_de_vigilance": [
+      "La coopération peut augmenter les écarts si certains élèves prennent systématiquement les tâches cognitives les plus riches. Les rôles et la régulation sont donc déterminants."
+    ],
+    "instruction_generation": "Former les élèves à coopérer et choisir le dispositif coopératif en fonction de l’apprentissage visé, pas seulement de la convivialité du groupe."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [
+      "Nouvelle édition enrichie de La coopération, ça s’apprend publiée en août 2026."
+    ],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "ESF Sciences Humaines",
+      "OCCE",
+      "Cairn.info"
+    ],
+    "note": "La publication 2026 de Connac réaffirme une approche très opérationnelle de la coopération, avec des dispositifs de l’élémentaire au lycée."
+  },
+  "relations": {
+    "courants": [
+      "cooperation",
+      "freinet",
+      "education-inclusive"
+    ],
+    "proche_de": [
+      "freinet",
+      "ouri",
+      "meirieu"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "ESF Sciences Humaines",
+      "OCCE",
+      "Cairn.info"
+    ]
+  }
+}

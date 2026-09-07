@@ -1,0 +1,97 @@
+{
+  "id": "descoeudres",
+  "nom": "Alice Descoeudres",
+  "type": "pedagogue",
+  "periode": "1877–1963",
+  "description_courte": "Pédagogue et psychologue suisse associée à l’Éducation nouvelle, attentive à l’observation de l’enfant, aux différences individuelles et à l’éducation des enfants en difficulté.",
+  "description": "Pédagogue et psychologue suisse associée à l’Éducation nouvelle, attentive à l’observation de l’enfant, aux différences individuelles et à l’éducation des enfants en difficulté.",
+  "courants": [
+    "education-nouvelle",
+    "education-specialisee"
+  ],
+  "concepts": [
+    "observation",
+    "individualisation",
+    "enfant en difficulté",
+    "activité",
+    "autonomie"
+  ],
+  "pratiques": [
+    "observation fine",
+    "individualisation",
+    "activités concrètes",
+    "remédiation"
+  ],
+  "influences": [
+    "claparede",
+    "education-nouvelle",
+    "montessori"
+  ],
+  "ouvrages": [
+    "Le développement de l’enfant de deux à sept ans",
+    "L’éducation des enfants anormaux"
+  ],
+  "biographie": "Pédagogue et psychologue suisse associée à l’Éducation nouvelle, attentive à l’observation de l’enfant, aux différences individuelles et à l’éducation des enfants en difficulté.",
+  "travail": {
+    "principe_directeur": "Faire de l’observation des besoins et des possibilités réelles de l’élève un préalable à l’adaptation pédagogique.",
+    "pour_sequence": [
+      "Décrire précisément ce que l’élève sait faire, ce qui fait obstacle et les aides déjà efficaces avant de choisir une adaptation.",
+      "Prévoir plusieurs voies d’accès à un même objectif."
+    ],
+    "pour_seance": [
+      "Réduire la charge inutile, rendre les consignes accessibles et vérifier la compréhension avant d’augmenter la difficulté."
+    ],
+    "pour_programmation": [
+      "Installer des outils d’observation réguliers pour suivre les progrès sans enfermer l’élève dans une catégorie."
+    ],
+    "adaptations": [
+      "supports accessibles",
+      "étayage",
+      "manipulation",
+      "observation",
+      "différenciation"
+    ],
+    "points_de_vigilance": [
+      "Les catégories historiques liées au handicap ont évolué. Ne pas reprendre les terminologies anciennes comme des catégories contemporaines ; privilégier les concepts actuels d’accessibilité et de besoins éducatifs."
+    ],
+    "instruction_generation": "Observer les obstacles rencontrés par l’élève, puis adapter l’accès à l’objectif sans abaisser automatiquement l’objectif lui-même."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Université de Genève",
+      "INSEI",
+      "Cairn.info"
+    ],
+    "note": "Cette fiche est particulièrement utile pour relier l’histoire de l’Éducation nouvelle à la question actuelle de l’école inclusive."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "montessori",
+      "piaget",
+      "vygotski"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Université de Genève",
+      "INSEI",
+      "Cairn.info"
+    ]
+  }
+}

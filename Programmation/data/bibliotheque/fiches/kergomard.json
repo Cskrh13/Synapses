@@ -1,0 +1,95 @@
+{
+  "id": "kergomard",
+  "nom": "Pauline Kergomard",
+  "type": "pedagogue",
+  "periode": "1838–1925",
+  "description_courte": "Inspectrice générale, elle contribue à transformer l’école maternelle française en défendant une éducation adaptée au jeune enfant, articulant jeu, activité, langage, observation et développement.",
+  "description": "Inspectrice générale, elle contribue à transformer l’école maternelle française en défendant une éducation adaptée au jeune enfant, articulant jeu, activité, langage, observation et développement.",
+  "courants": [
+    "education-nouvelle",
+    "maternelle"
+  ],
+  "concepts": [
+    "école maternelle",
+    "jeu",
+    "développement",
+    "activité",
+    "observation"
+  ],
+  "pratiques": [
+    "jeu éducatif",
+    "conversation",
+    "manipulation",
+    "activités de vie"
+  ],
+  "influences": [
+    "froebel",
+    "education-nouvelle"
+  ],
+  "ouvrages": [
+    "L’Éducation maternelle dans l’école"
+  ],
+  "biographie": "Inspectrice générale, elle contribue à transformer l’école maternelle française en défendant une éducation adaptée au jeune enfant, articulant jeu, activité, langage, observation et développement.",
+  "travail": {
+    "principe_directeur": "Construire pour les jeunes enfants un milieu éducatif qui ne soit ni une mini-école élémentaire ni une simple garderie : le jeu, le langage et l’activité y deviennent des moyens d’apprendre.",
+    "pour_sequence": [
+      "Partir d’une situation vécue ou d’un objet réel et faire émerger progressivement le langage, les catégorisations et les connaissances.",
+      "Alterner exploration, verbalisation, reprise collective et institutionnalisation."
+    ],
+    "pour_seance": [
+      "Observer avant d’intervenir ; relancer par une question, un objet ou une reformulation plutôt que multiplier les consignes."
+    ],
+    "pour_programmation": [
+      "Programmer des situations riches et récurrentes plutôt qu’une succession d’exercices isolés."
+    ],
+    "adaptations": [
+      "objets réels",
+      "jeux",
+      "langage oral",
+      "motricité",
+      "manipulation"
+    ],
+    "points_de_vigilance": [
+      "Éviter l’anachronisme : les conceptions de Kergomard appartiennent à l’histoire de la maternelle et ne constituent pas à elles seules un modèle actuel. Croiser avec les programmes et la recherche contemporaine."
+    ],
+    "instruction_generation": "Pour la maternelle, privilégier des situations vécues, manipulées, verbalisées et reprises, en gardant un objectif d’apprentissage explicite."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Ministère de l’Éducation nationale",
+      "Musée national de l’Éducation",
+      "INSEI"
+    ],
+    "note": "Kergomard est une référence historique majeure pour comprendre la construction de l’école maternelle française."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "froebel",
+      "montessori",
+      "tortel"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Ministère de l’Éducation nationale",
+      "Musée national de l’Éducation",
+      "INSEI"
+    ]
+  }
+}

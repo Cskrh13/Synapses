@@ -1,0 +1,97 @@
+{
+  "id": "parkhurst",
+  "nom": "Helen Parkhurst",
+  "type": "pedagogue",
+  "periode": "1886–1973",
+  "description_courte": "Pédagogue américaine, créatrice du Dalton Plan, qui articule liberté responsable, coopération et organisation du travail par contrats ou assignments.",
+  "description": "Pédagogue américaine, créatrice du Dalton Plan, qui articule liberté responsable, coopération et organisation du travail par contrats ou assignments.",
+  "courants": [
+    "education-nouvelle",
+    "pedagogie-active"
+  ],
+  "concepts": [
+    "autonomie",
+    "responsabilité",
+    "contrat",
+    "coopération",
+    "organisation du travail"
+  ],
+  "pratiques": [
+    "plan de travail",
+    "assignment",
+    "laboratoire",
+    "coopération",
+    "auto-organisation"
+  ],
+  "influences": [
+    "montessori",
+    "dewey",
+    "education-nouvelle"
+  ],
+  "ouvrages": [
+    "Education on the Dalton Plan (1922)"
+  ],
+  "biographie": "Pédagogue américaine, créatrice du Dalton Plan, qui articule liberté responsable, coopération et organisation du travail par contrats ou assignments.",
+  "travail": {
+    "principe_directeur": "Rendre une part du travail explicite, planifiable et progressivement autonome, tout en maintenant un cadre collectif et un accompagnement enseignant.",
+    "pour_sequence": [
+      "Transformer une partie de la séquence en plan de travail avec objectifs, ressources, échéances et critères de réussite.",
+      "Prévoir des moments de regroupement pour mutualiser les stratégies et réguler les difficultés."
+    ],
+    "pour_seance": [
+      "Donner un choix réel mais borné entre plusieurs tâches ou modalités.",
+      "Prévoir un point de contrôle intermédiaire plutôt qu’attendre le produit final."
+    ],
+    "pour_programmation": [
+      "Faire évoluer progressivement la responsabilité de l’élève ; ne pas confondre autonomie et abandon des élèves à eux-mêmes."
+    ],
+    "adaptations": [
+      "plan de travail",
+      "choix borné",
+      "contrat",
+      "tutorat",
+      "régulation"
+    ],
+    "points_de_vigilance": [
+      "Le Dalton Plan a plusieurs interprétations contemporaines. Distinguer le modèle historique de ses adaptations actuelles et vérifier les effets selon les contextes."
+    ],
+    "instruction_generation": "Organiser le travail autonome par étapes explicites : but, ressources, choix bornés, échéance, régulation et retour réflexif."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Dalton International",
+      "INSEI"
+    ],
+    "note": "Parkhurst est une figure féminine importante de l’Éducation nouvelle et une référence utile pour penser l’autonomie organisée."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle",
+      "pedagogie-active"
+    ],
+    "proche_de": [
+      "montessori",
+      "dewey",
+      "cousinet"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Dalton International",
+      "INSEI"
+    ]
+  }
+}

@@ -1,0 +1,103 @@
+{
+  "id": "meirieu",
+  "nom": "Philippe Meirieu",
+  "type": "pedagogue",
+  "periode": "1949–",
+  "description_courte": "Chercheur et essayiste français en sciences de l’éducation, il travaille notamment sur l’éducabilité, la différenciation, l’apprentissage, l’autorité et les conditions pédagogiques de l’émancipation.",
+  "description": "Chercheur et essayiste français en sciences de l’éducation, il travaille notamment sur l’éducabilité, la différenciation, l’apprentissage, l’autorité et les conditions pédagogiques de l’émancipation.",
+  "courants": [
+    "pedagogie-differenciee",
+    "education-inclusive",
+    "pedagogie-reflexive"
+  ],
+  "concepts": [
+    "éducabilité",
+    "différenciation",
+    "autorité",
+    "apprentissage",
+    "émancipation"
+  ],
+  "pratiques": [
+    "situation-problème",
+    "différenciation",
+    "pédagogie explicite",
+    "métacognition",
+    "coopération"
+  ],
+  "influences": [
+    "rousseau",
+    "freinet",
+    "vygotski",
+    "dewey"
+  ],
+  "ouvrages": [
+    "Apprendre… oui, mais comment ?",
+    "Le choix d’éduquer",
+    "Pédagogie : le devoir de résister"
+  ],
+  "biographie": "Chercheur et essayiste français en sciences de l’éducation, il travaille notamment sur l’éducabilité, la différenciation, l’apprentissage, l’autorité et les conditions pédagogiques de l’émancipation.",
+  "travail": {
+    "principe_directeur": "Construire des situations qui rendent possible l’activité intellectuelle de tous, en combinant exigence commune, étayage et différenciation.",
+    "pour_sequence": [
+      "Définir un objectif commun puis anticiper plusieurs obstacles possibles et les aides correspondantes.",
+      "Prévoir une situation-problème qui rende nécessaire le savoir visé."
+    ],
+    "pour_seance": [
+      "Expliciter la tâche, les critères de réussite et les procédures possibles ; retirer progressivement les aides."
+    ],
+    "pour_programmation": [
+      "Programmer les adaptations avant la séance et analyser ensuite lesquelles ont réellement permis l’accès au savoir."
+    ],
+    "adaptations": [
+      "différenciation",
+      "étayage",
+      "situation-problème",
+      "métacognition",
+      "accessibilité"
+    ],
+    "points_de_vigilance": [
+      "Meirieu est un auteur contemporain majeur mais ses propositions sont des élaborations théoriques et pratiques, pas des protocoles expérimentaux garantissant un effet. Croiser avec la recherche empirique."
+    ],
+    "instruction_generation": "Conserver un objectif d’apprentissage commun, anticiper les obstacles et prévoir des aides graduées permettant à chacun d’entrer dans l’activité."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Université Lumière Lyon 2",
+      "Cairn.info",
+      "INSEI"
+    ],
+    "note": "Cette fiche constitue un pont entre l’histoire des pédagogies et les problématiques contemporaines d’école inclusive et de différenciation."
+  },
+  "relations": {
+    "courants": [
+      "pedagogie-differenciee",
+      "education-inclusive"
+    ],
+    "proche_de": [
+      "vygotski",
+      "freinet",
+      "tortel",
+      "connac"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Université Lumière Lyon 2",
+      "Cairn.info",
+      "INSEI"
+    ]
+  }
+}

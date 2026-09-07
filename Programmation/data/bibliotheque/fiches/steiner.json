@@ -1,0 +1,95 @@
+{
+  "id": "steiner",
+  "nom": "Rudolf Steiner",
+  "type": "pedagogue",
+  "periode": "1861–1925",
+  "description_courte": "Philosophe et fondateur de la première école Waldorf en 1919, dont la pédagogie est historiquement liée à l’anthroposophie et accorde une place importante aux arts, au rythme et aux activités pratiques.",
+  "description": "Philosophe et fondateur de la première école Waldorf en 1919, dont la pédagogie est historiquement liée à l’anthroposophie et accorde une place importante aux arts, au rythme et aux activités pratiques.",
+  "courants": [
+    "steiner-waldorf",
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "rythme",
+    "arts",
+    "activité manuelle",
+    "développement",
+    "imaginaire"
+  ],
+  "pratiques": [
+    "arts",
+    "récit",
+    "activités manuelles",
+    "rythmes scolaires",
+    "expérience sensible"
+  ],
+  "influences": [
+    "education-nouvelle",
+    "anthroposophie"
+  ],
+  "ouvrages": [
+    "La première école Waldorf (1919)",
+    "Étude de l’homme comme base de la pédagogie"
+  ],
+  "biographie": "Philosophe et fondateur de la première école Waldorf en 1919, dont la pédagogie est historiquement liée à l’anthroposophie et accorde une place importante aux arts, au rythme et aux activités pratiques.",
+  "travail": {
+    "principe_directeur": "Prévoir, lorsque cela sert l’objectif, des modalités d’apprentissage qui articulent langage, expérience sensible, activité artistique et pratique.",
+    "pour_sequence": [
+      "Utiliser les arts ou le faire comme moyens de représentation et de mémorisation lorsque cela renforce le contenu disciplinaire.",
+      "Structurer les transitions et les rythmes de travail."
+    ],
+    "pour_seance": [
+      "Varier les canaux de représentation sans supposer qu’un canal serait naturellement supérieur pour un type d’élève."
+    ],
+    "pour_programmation": [
+      "Distinguer les pratiques pédagogiques observables des fondements anthroposophiques de l’approche historique."
+    ],
+    "adaptations": [
+      "arts",
+      "rythme",
+      "manipulation",
+      "récit",
+      "activité pratique"
+    ],
+    "points_de_vigilance": [
+      "La pédagogie Waldorf est historiquement fondée sur l’anthroposophie. Il faut distinguer les pratiques pédagogiques évaluables de ses présupposés spirituels et ne pas présenter ceux-ci comme des résultats scientifiques."
+    ],
+    "instruction_generation": "Articuler, quand c’est pertinent, expérience sensible, pratique et représentation, tout en séparant clairement les choix pédagogiques des fondements anthroposophiques."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Fédération Pédagogie Steiner-Waldorf",
+      "INSEI"
+    ],
+    "note": "La fiche doit conserver une distance critique : Waldorf est un courant historique identifiable, pas une méthode scientifiquement validée en bloc."
+  },
+  "relations": {
+    "courants": [
+      "steiner-waldorf"
+    ],
+    "proche_de": [
+      "froebel",
+      "montessori",
+      "education-nouvelle"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Fédération Pédagogie Steiner-Waldorf",
+      "INSEI"
+    ]
+  }
+}

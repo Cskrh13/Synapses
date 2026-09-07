@@ -1,0 +1,100 @@
+{
+  "id": "neill",
+  "nom": "Alexander S. Neill",
+  "type": "pedagogue",
+  "periode": "1883–1973",
+  "description_courte": "Pédagogue écossais fondateur de Summerhill, connu pour une conception libertaire de l’éducation centrée sur l’autonomie, la responsabilité et la participation des élèves aux règles de vie.",
+  "description": "Pédagogue écossais fondateur de Summerhill, connu pour une conception libertaire de l’éducation centrée sur l’autonomie, la responsabilité et la participation des élèves aux règles de vie.",
+  "courants": [
+    "education-nouvelle",
+    "education-libertaire"
+  ],
+  "concepts": [
+    "autonomie",
+    "liberté",
+    "responsabilité",
+    "démocratie",
+    "règles"
+  ],
+  "pratiques": [
+    "assemblée",
+    "choix",
+    "régulation collective",
+    "auto-discipline"
+  ],
+  "influences": [
+    "rousseau",
+    "education-nouvelle"
+  ],
+  "ouvrages": [
+    "A Dominie’s Five",
+    "Summerhill: A Radical Approach to Child Rearing"
+  ],
+  "biographie": "Pédagogue écossais fondateur de Summerhill, connu pour une conception libertaire de l’éducation centrée sur l’autonomie, la responsabilité et la participation des élèves aux règles de vie.",
+  "travail": {
+    "principe_directeur": "Faire de certaines règles de vie et de certains choix de travail des objets de responsabilité partagée, dans un cadre adulte clair.",
+    "pour_sequence": [
+      "Distinguer les espaces où l’élève peut choisir de ceux où les contraintes sont non négociables.",
+      "Prévoir des moments de régulation collective."
+    ],
+    "pour_seance": [
+      "Rendre explicites les règles, leurs raisons et les procédures de recours."
+    ],
+    "pour_programmation": [
+      "Ne pas confondre autonomie et absence de guidage ; maintenir des objectifs d’apprentissage et un cadre protecteur."
+    ],
+    "adaptations": [
+      "conseil",
+      "choix",
+      "règles",
+      "responsabilité",
+      "démocratie scolaire"
+    ],
+    "points_de_vigilance": [
+      "Summerhill constitue une expérience institutionnelle particulière. Ses principes ne doivent pas être transposés intégralement à une classe ordinaire sans analyser le cadre juridique, institutionnel et pédagogique."
+    ],
+    "instruction_generation": "Distinguer liberté, choix et responsabilité ; offrir des marges de décision réelles à l’intérieur d’un cadre explicite."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "INSEI",
+      "Éduscol — école inclusive",
+      "Ministère de l’Éducation nationale",
+      "Réseau Canopé",
+      "Cairn.info"
+    ],
+    "note": "Neill est utile pour penser la démocratie scolaire et les limites du contrôle adulte, mais ses positions doivent être contextualisées."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "rousseau",
+      "freire",
+      "ouri"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "Éduscol — école inclusive",
+      "Ministère de l’Éducation nationale",
+      "Réseau Canopé",
+      "Cairn.info"
+    ]
+  }
+}

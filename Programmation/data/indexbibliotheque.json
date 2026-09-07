@@ -1,0 +1,1110 @@
+{
+  "meta": {
+    "id": "indexbibliotheque",
+    "version": "1.2",
+    "statut": "bibliotheque_pedagogique_vivante",
+    "description": "Index de la bibliothèque pédagogique : 27 fiches, courants, concepts, filiations et liens de veille.",
+    "derniere_mise_a_jour": "2026-09-06"
+  },
+  "architecture": {
+    "repertoire_fiches": "Programmation/data/bibliotheque/fiches/",
+    "interface": "Programmation/bibliotheque.html",
+    "veille": "Programmation/veillepedagogie.html",
+    "principe": "Chaque fiche est lisible par un humain et exploitable par Synapses. Le champ Travail traduit la pensée en leviers de préparation ; le champ Culture/Recherche assure la contextualisation et la veille.",
+    "frise": "La chronologie est présentée verticalement, par grandes périodes, avec un court repère permettant de comprendre pourquoi chaque jalon compte. Elle complète, sans la remplacer, la lecture des filiations.",
+    "nombre_fiches_pedagogues": 27,
+    "principe_equilibre": "La bibliothèque distingue pensée historique, traduction pratique, recherche actuelle et veille. Une fiche n’est pas une preuve d’efficacité d’une méthode.",
+    "relations": {
+      "influence": "A contribue explicitement ou de manière documentée à la pensée ou aux pratiques de B.",
+      "prolongement": "B reprend une idée, une question ou une pratique de A en la transformant ou en la développant.",
+      "convergence": "A et B développent des idées proches sans qu'une influence directe soit établie.",
+      "dialogue": "Les deux pensées peuvent être mises en regard, sans supposer une filiation directe.",
+      "fondement_theorique": "Un auteur ou un courant fournit des concepts qui éclairent une approche pédagogique ; ce n'est pas nécessairement une méthode pédagogique."
+    }
+  },
+  "types": [
+    "pedagogue",
+    "courant",
+    "concept",
+    "influence",
+    "recherche"
+  ],
+  "pedagogues": [
+    {
+      "id": "rousseau",
+      "nom": "Jean-Jacques Rousseau",
+      "type": "pedagogue",
+      "periode": "1712–1778",
+      "debut": 1762,
+      "fiche": "bibliotheque/fiches/rousseau.json",
+      "tags": [
+        "philosophie",
+        "nature",
+        "experience",
+        "education-nouvelle"
+      ]
+    },
+    {
+      "id": "pestalozzi",
+      "nom": "Johann Heinrich Pestalozzi",
+      "type": "pedagogue",
+      "periode": "1746–1827",
+      "debut": 1801,
+      "fiche": "bibliotheque/fiches/pestalozzi.json",
+      "tags": [
+        "education",
+        "experience",
+        "developpement",
+        "education-nouvelle"
+      ]
+    },
+    {
+      "id": "froebel",
+      "nom": "Friedrich Fröbel",
+      "type": "pedagogue",
+      "periode": "1782–1852",
+      "debut": 1837,
+      "fiche": "bibliotheque/fiches/froebel.json",
+      "tags": [
+        "jeu",
+        "maternelle",
+        "activite",
+        "education-nouvelle"
+      ]
+    },
+    {
+      "id": "kergomard",
+      "nom": "Pauline Kergomard",
+      "type": "pedagogue",
+      "periode": "1838–1925",
+      "debut": 1881,
+      "fiche": "bibliotheque/fiches/kergomard.json",
+      "tags": [
+        "maternelle",
+        "jeu",
+        "développement",
+        "langage",
+        "éducation nouvelle"
+      ]
+    },
+    {
+      "id": "dewey",
+      "nom": "John Dewey",
+      "type": "pedagogue",
+      "periode": "1859–1952",
+      "debut": 1897,
+      "fiche": "bibliotheque/fiches/dewey.json",
+      "tags": [
+        "experience",
+        "enquete",
+        "democratie",
+        "pragmatisme"
+      ]
+    },
+    {
+      "id": "ellen-key",
+      "nom": "Ellen Key",
+      "type": "pedagogue",
+      "periode": "1849–1926",
+      "debut": 1899,
+      "fiche": "bibliotheque/fiches/ellen-key.json",
+      "tags": [
+        "enfant",
+        "individualité",
+        "éducation nouvelle",
+        "éducation des filles"
+      ]
+    },
+    {
+      "id": "montessori",
+      "nom": "Maria Montessori",
+      "type": "pedagogue",
+      "periode": "1870–1952",
+      "debut": 1907,
+      "fiche": "bibliotheque/fiches/montessori.json",
+      "tags": [
+        "autonomie",
+        "environnement",
+        "manipulation",
+        "education-nouvelle"
+      ]
+    },
+    {
+      "id": "decroly",
+      "nom": "Ovide Decroly",
+      "type": "pedagogue",
+      "periode": "1871–1932",
+      "debut": 1907,
+      "fiche": "bibliotheque/fiches/decroly.json",
+      "tags": [
+        "centres-d-interet",
+        "globalisation",
+        "observation",
+        "education-nouvelle"
+      ]
+    },
+    {
+      "id": "ferriere",
+      "nom": "Adolphe Ferrière",
+      "type": "pedagogue",
+      "periode": "1879–1960",
+      "debut": 1910,
+      "fiche": "bibliotheque/fiches/ferriere.json",
+      "tags": [
+        "éducation nouvelle",
+        "école active",
+        "autonomie",
+        "coopération"
+      ]
+    },
+    {
+      "id": "descoeudres",
+      "nom": "Alice Descoeudres",
+      "type": "pedagogue",
+      "periode": "1877–1963",
+      "debut": 1913,
+      "fiche": "bibliotheque/fiches/descoeudres.json",
+      "tags": [
+        "éducation nouvelle",
+        "inclusion",
+        "individualisation",
+        "observation"
+      ]
+    },
+    {
+      "id": "kilpatrick",
+      "nom": "William Heard Kilpatrick",
+      "type": "pedagogue",
+      "periode": "1871–1965",
+      "debut": 1918,
+      "fiche": "bibliotheque/fiches/kilpatrick.json",
+      "tags": [
+        "projet",
+        "éducation nouvelle",
+        "expérience",
+        "enquête"
+      ]
+    },
+    {
+      "id": "parkhurst",
+      "nom": "Helen Parkhurst",
+      "type": "pedagogue",
+      "periode": "1886–1973",
+      "debut": 1919,
+      "fiche": "bibliotheque/fiches/parkhurst.json",
+      "tags": [
+        "dalton",
+        "autonomie",
+        "responsabilité",
+        "coopération"
+      ]
+    },
+    {
+      "id": "steiner",
+      "nom": "Rudolf Steiner",
+      "type": "pedagogue",
+      "periode": "1861–1925",
+      "debut": 1919,
+      "fiche": "bibliotheque/fiches/steiner.json",
+      "tags": [
+        "Waldorf",
+        "arts",
+        "rythme",
+        "anthroposophie"
+      ]
+    },
+    {
+      "id": "washburne",
+      "nom": "Carleton Washburne",
+      "type": "pedagogue",
+      "periode": "1889–1968",
+      "debut": 1920,
+      "fiche": "bibliotheque/fiches/washburne.json",
+      "tags": [
+        "Winnetka",
+        "individualisation",
+        "maîtrise",
+        "différenciation"
+      ]
+    },
+    {
+      "id": "neill",
+      "nom": "Alexander S. Neill",
+      "type": "pedagogue",
+      "periode": "1883–1973",
+      "debut": 1921,
+      "fiche": "bibliotheque/fiches/neill.json",
+      "tags": [
+        "Summerhill",
+        "liberté",
+        "démocratie",
+        "autonomie"
+      ]
+    },
+    {
+      "id": "piaget",
+      "nom": "Jean Piaget",
+      "type": "pedagogue",
+      "periode": "1896–1980",
+      "debut": 1923,
+      "fiche": "bibliotheque/fiches/piaget.json",
+      "tags": [
+        "constructivisme",
+        "developpement",
+        "assimilation",
+        "accommodation"
+      ]
+    },
+    {
+      "id": "freinet",
+      "nom": "Célestin Freinet",
+      "type": "pedagogue",
+      "periode": "1896–1966",
+      "debut": 1924,
+      "fiche": "bibliotheque/fiches/freinet.json",
+      "tags": [
+        "cooperation",
+        "tâtonnement",
+        "expression",
+        "travail"
+      ]
+    },
+    {
+      "id": "cousinet",
+      "nom": "Roger Cousinet",
+      "type": "pedagogue",
+      "periode": "1881–1973",
+      "debut": 1925,
+      "fiche": "bibliotheque/fiches/cousinet.json",
+      "tags": [
+        "éducation nouvelle",
+        "travail de groupe",
+        "autonomie",
+        "coopération"
+      ]
+    },
+    {
+      "id": "elise-freinet",
+      "nom": "Élise Freinet",
+      "type": "pedagogue",
+      "periode": "1898–1983",
+      "debut": 1926,
+      "fiche": "bibliotheque/fiches/elise-freinet.json",
+      "tags": [
+        "freinet",
+        "art enfantin",
+        "expression",
+        "créativité"
+      ]
+    },
+    {
+      "id": "tortel",
+      "nom": "Germaine Tortel",
+      "type": "pedagogue",
+      "periode": "1896–1975",
+      "debut": 1933,
+      "fiche": "bibliotheque/fiches/tortel.json",
+      "tags": [
+        "maternelle",
+        "questionnement",
+        "projet",
+        "dessin"
+      ]
+    },
+    {
+      "id": "vygotski",
+      "nom": "Lev Vygotski",
+      "type": "pedagogue",
+      "periode": "1896–1934",
+      "debut": 1934,
+      "fiche": "bibliotheque/fiches/vygotski.json",
+      "tags": [
+        "socioconstructivisme",
+        "interaction",
+        "langage",
+        "etayage"
+      ]
+    },
+    {
+      "id": "bruner",
+      "nom": "Jerome Bruner",
+      "type": "pedagogue",
+      "periode": "1915–2016",
+      "debut": 1960,
+      "fiche": "bibliotheque/fiches/bruner.json",
+      "tags": [
+        "etayage",
+        "decouverte",
+        "representation",
+        "curriculum"
+      ]
+    },
+    {
+      "id": "ouri",
+      "nom": "Fernand Oury",
+      "type": "pedagogue",
+      "periode": "1920–1998",
+      "debut": 1967,
+      "fiche": "bibliotheque/fiches/ouri.json",
+      "tags": [
+        "pedagogie-institutionnelle",
+        "groupe",
+        "institutions",
+        "cooperation"
+      ]
+    },
+    {
+      "id": "freire",
+      "nom": "Paulo Freire",
+      "type": "pedagogue",
+      "periode": "1921–1997",
+      "debut": 1970,
+      "fiche": "bibliotheque/fiches/freire.json",
+      "tags": [
+        "dialogue",
+        "conscientisation",
+        "emancipation",
+        "education-populaire"
+      ]
+    },
+    {
+      "id": "meirieu",
+      "nom": "Philippe Meirieu",
+      "type": "pedagogue",
+      "periode": "1949–",
+      "debut": 1984,
+      "fiche": "bibliotheque/fiches/meirieu.json",
+      "tags": [
+        "différenciation",
+        "éducabilité",
+        "inclusion",
+        "apprentissage"
+      ]
+    },
+    {
+      "id": "ranciere",
+      "nom": "Jacques Rancière",
+      "type": "pedagogue",
+      "periode": "1940–",
+      "debut": 1987,
+      "fiche": "bibliotheque/fiches/ranciere.json",
+      "tags": [
+        "émancipation",
+        "égalité",
+        "pédagogies critiques",
+        "autonomie intellectuelle"
+      ]
+    },
+    {
+      "id": "connac",
+      "nom": "Sylvain Connac",
+      "type": "pedagogue",
+      "periode": "XXIe siècle",
+      "debut": 2000,
+      "fiche": "bibliotheque/fiches/connac.json",
+      "tags": [
+        "coopération",
+        "inclusion",
+        "tutorat",
+        "hétérogénéité"
+      ]
+    }
+  ],
+  "courants": [
+    {
+      "id": "education-nouvelle",
+      "nom": "Éducation nouvelle",
+      "debut": 1880,
+      "fin": null,
+      "description": "Mouvements plaçant l'activité, l'expérience, l'observation et le développement de l'enfant au cœur de l'éducation."
+    },
+    {
+      "id": "pedagogie-active",
+      "nom": "Pédagogies actives",
+      "debut": 1890,
+      "fin": null,
+      "description": "Approches privilégiant l'activité cognitive et pratique de l'élève, l'enquête, la résolution de problèmes et l'expérience."
+    },
+    {
+      "id": "montessori",
+      "nom": "Pédagogie Montessori",
+      "debut": 1907,
+      "fin": null,
+      "description": "Approche fondée sur l'environnement préparé, la manipulation, l'autonomie et une progression individualisée."
+    },
+    {
+      "id": "freinet",
+      "nom": "Pédagogie Freinet",
+      "debut": 1924,
+      "fin": null,
+      "description": "Pédagogie coopérative centrée sur le travail, l'expression, le tâtonnement expérimental et la vie collective de la classe."
+    },
+    {
+      "id": "pedagogie-institutionnelle",
+      "nom": "Pédagogie institutionnelle",
+      "debut": 1960,
+      "fin": null,
+      "description": "Approche travaillant les institutions de la classe, les groupes, la parole et les conditions sociales d'apprentissage."
+    },
+    {
+      "id": "constructivisme",
+      "nom": "Constructivisme",
+      "debut": 1930,
+      "fin": null,
+      "description": "Conception de l'apprentissage comme construction progressive des connaissances par l'activité du sujet."
+    },
+    {
+      "id": "socioconstructivisme",
+      "nom": "Socioconstructivisme",
+      "debut": 1930,
+      "fin": null,
+      "description": "Approche mettant l'accent sur les interactions sociales, le langage et la médiation dans la construction des connaissances."
+    },
+    {
+      "id": "education-populaire",
+      "nom": "Éducation populaire et pédagogies critiques",
+      "debut": 1960,
+      "fin": null,
+      "description": "Courants articulant éducation, participation, pouvoir d'agir, dialogue et transformation sociale."
+    },
+    {
+      "id": "maternelle",
+      "nom": "Pédagogies de l’école maternelle",
+      "debut": 1881,
+      "fin": null,
+      "description": "Courants et élaborations centrés sur les spécificités du jeune enfant, le jeu, le langage, l’activité et l’entrée progressive dans les apprentissages scolaires."
+    },
+    {
+      "id": "education-specialisee",
+      "nom": "Éducation spécialisée et adaptation pédagogique",
+      "debut": 1900,
+      "fin": null,
+      "description": "Traditions de recherche et de pratiques visant l’adaptation de l’environnement et des situations aux besoins d’élèves rencontrant des obstacles particuliers."
+    },
+    {
+      "id": "steiner-waldorf",
+      "nom": "Pédagogie Steiner-Waldorf",
+      "debut": 1919,
+      "fin": null,
+      "description": "Courant issu de la première école Waldorf fondée en 1919, historiquement lié à l’anthroposophie et donnant une place importante aux arts, aux rythmes et aux activités pratiques."
+    },
+    {
+      "id": "education-libertaire",
+      "nom": "Pédagogies libertaires",
+      "debut": 1920,
+      "fin": null,
+      "description": "Courants qui mettent fortement l’accent sur l’autonomie, la liberté, la responsabilité et la participation des élèves à la vie collective."
+    },
+    {
+      "id": "cooperation",
+      "nom": "Pédagogies coopératives",
+      "debut": 1920,
+      "fin": null,
+      "description": "Approches qui font de la coopération un objet d’apprentissage et un mode d’organisation du travail scolaire."
+    },
+    {
+      "id": "pedagogie-differenciee",
+      "nom": "Pédagogie différenciée",
+      "debut": 1970,
+      "fin": null,
+      "description": "Courant de réflexion sur l’organisation de situations communes permettant des accès différenciés aux apprentissages."
+    },
+    {
+      "id": "education-inclusive",
+      "nom": "Éducation inclusive",
+      "debut": 1990,
+      "fin": null,
+      "description": "Approches contemporaines centrées sur l’accessibilité, la participation et la réduction des obstacles à l’apprentissage et à la scolarisation."
+    },
+    {
+      "id": "pedagogies-critiques",
+      "nom": "Pédagogies critiques",
+      "debut": 1960,
+      "fin": null,
+      "description": "Courants qui interrogent les rapports entre éducation, pouvoir, culture, émancipation et transformation sociale."
+    }
+  ],
+  "frise": [
+    {
+      "annee": 1762,
+      "titre": "Rousseau publie Émile ou De l’éducation",
+      "id": "rousseau",
+      "type": "œuvre",
+      "repere": "L’enfant, son expérience et son développement deviennent des objets centraux de réflexion éducative."
+    },
+    {
+      "annee": 1801,
+      "titre": "Pestalozzi : Comment Gertrude instruit ses enfants",
+      "id": "pestalozzi",
+      "type": "œuvre",
+      "repere": "Une éducation attentive au développement de l’enfant et à l’activité concrète."
+    },
+    {
+      "annee": 1837,
+      "titre": "Fröbel ouvre le premier Kindergarten",
+      "id": "froebel",
+      "type": "institution",
+      "repere": "Le jeu, l’activité et un environnement pensé pour le jeune enfant prennent une place nouvelle."
+    },
+    {
+      "annee": 1881,
+      "titre": "Pauline Kergomard et l’école maternelle française",
+      "id": "kergomard",
+      "type": "institution",
+      "repere": "Une conception de l’école maternelle centrée sur le jeune enfant, le jeu, le langage et l’activité."
+    },
+    {
+      "annee": 1899,
+      "titre": "Ellen Key publie Le Siècle de l’enfant",
+      "id": "ellen-key",
+      "type": "œuvre",
+      "repere": "Une critique de l’éducation autoritaire et une défense de la considération portée à l’enfant."
+    },
+    {
+      "annee": 1907,
+      "titre": "Maria Montessori ouvre la première Casa dei Bambini",
+      "id": "montessori",
+      "type": "institution",
+      "repere": "L’environnement préparé et l’autonomie deviennent des leviers majeurs de l’organisation pédagogique."
+    },
+    {
+      "annee": 1907,
+      "titre": "Ovide Decroly développe ses premières expériences pédagogiques",
+      "id": "decroly",
+      "type": "jalon",
+      "repere": "Observation, besoins de l’enfant, centres d’intérêt et activité donnent une autre organisation des apprentissages."
+    },
+    {
+      "annee": 1910,
+      "titre": "Adolphe Ferrière contribue à structurer l’Éducation nouvelle",
+      "id": "ferriere",
+      "type": "mouvement",
+      "repere": "Les expériences dispersées de l’Éducation nouvelle sont mises en réseau et théorisées comme mouvement international."
+    },
+    {
+      "annee": 1919,
+      "titre": "Helen Parkhurst expérimente le Plan Dalton",
+      "id": "parkhurst",
+      "type": "organisation",
+      "repere": "L’organisation du travail cherche à développer autonomie, responsabilité et coopération."
+    },
+    {
+      "annee": 1924,
+      "titre": "Célestin Freinet développe les techniques de l’École moderne",
+      "id": "freinet",
+      "type": "mouvement",
+      "repere": "Expression, coopération, travail et tâtonnement expérimental structurent une pédagogie populaire."
+    },
+    {
+      "annee": 1934,
+      "titre": "Vygotski : Pensée et langage",
+      "id": "vygotski",
+      "type": "œuvre",
+      "repere": "Les interactions sociales et le langage deviennent essentiels pour comprendre le développement et les apprentissages."
+    },
+    {
+      "annee": 1960,
+      "titre": "Bruner : The Process of Education",
+      "id": "bruner",
+      "type": "œuvre",
+      "repere": "Les idées de structuration des savoirs, de découverte et d’étayage influencent durablement la réflexion sur l’enseignement."
+    },
+    {
+      "annee": 1967,
+      "titre": "Fernand Oury et la pédagogie institutionnelle",
+      "id": "ouri",
+      "type": "mouvement",
+      "repere": "Les règles, institutions, groupes et espaces de parole deviennent des objets pédagogiques."
+    },
+    {
+      "annee": 1970,
+      "titre": "Paulo Freire : Pédagogie des opprimés",
+      "id": "freire",
+      "type": "œuvre",
+      "repere": "Le dialogue, la conscientisation et l’émancipation placent les rapports de pouvoir au cœur de la réflexion éducative."
+    },
+    {
+      "annee": 1989,
+      "titre": "Philippe Meirieu : la différenciation et l’éducabilité",
+      "id": "meirieu",
+      "type": "recherche",
+      "repere": "La réflexion pédagogique française travaille plus fortement l’hétérogénéité, les obstacles et les conditions d’apprentissage."
+    },
+    {
+      "annee": 1994,
+      "titre": "L’inclusion devient un horizon international",
+      "id": "connac",
+      "type": "repère",
+      "repere": "Les politiques éducatives internationales déplacent progressivement la question : adapter l’élève ou rendre l’environnement scolaire accessible ?"
+    }
+  ],
+  "relations": [
+    [
+      "rousseau",
+      "influence",
+      "education-nouvelle"
+    ],
+    [
+      "pestalozzi",
+      "influence",
+      "education-nouvelle"
+    ],
+    [
+      "froebel",
+      "influence",
+      "education-nouvelle"
+    ],
+    [
+      "dewey",
+      "appartient_a",
+      "pedagogie-active"
+    ],
+    [
+      "montessori",
+      "appartient_a",
+      "education-nouvelle"
+    ],
+    [
+      "decroly",
+      "appartient_a",
+      "education-nouvelle"
+    ],
+    [
+      "freinet",
+      "appartient_a",
+      "education-nouvelle"
+    ],
+    [
+      "freinet",
+      "appartient_a",
+      "pedagogie-active"
+    ],
+    [
+      "ouri",
+      "developpe",
+      "pedagogie-institutionnelle"
+    ],
+    [
+      "piaget",
+      "eclaire",
+      "constructivisme"
+    ],
+    [
+      "vygotski",
+      "eclaire",
+      "socioconstructivisme"
+    ],
+    [
+      "bruner",
+      "eclaire",
+      "socioconstructivisme"
+    ],
+    [
+      "freire",
+      "developpe",
+      "education-populaire"
+    ]
+  ],
+  "arbre_filiations": {
+    "titre": "Qui influence qui ?",
+    "sous_titre": "Une carte de lecture pour débuter : les flèches indiquent une relation précise. Elles ne signifient pas que l’auteur « applique » simplement la pensée de l’autre.",
+    "etapes": [
+      {
+        "id": "sources",
+        "label": "Précurseurs et premières critiques de l’école",
+        "nodes": [
+          {
+            "id": "rousseau",
+            "titre": "Jean-Jacques Rousseau",
+            "type": "précurseur",
+            "courant": "Éducation nouvelle"
+          },
+          {
+            "id": "pestalozzi",
+            "titre": "Johann Heinrich Pestalozzi",
+            "type": "prolongement",
+            "courant": "Éducation nouvelle"
+          },
+          {
+            "id": "froebel",
+            "titre": "Friedrich Fröbel",
+            "type": "prolongement",
+            "courant": "Éducation nouvelle"
+          },
+          {
+            "id": "ellen-key",
+            "titre": "Ellen Key",
+            "type": "critique sociale",
+            "courant": "Éducation nouvelle"
+          },
+          {
+            "id": "kergomard",
+            "titre": "Pauline Kergomard",
+            "type": "maternelle",
+            "courant": "Éducation nouvelle"
+          }
+        ]
+      },
+      {
+        "id": "nouvelle",
+        "label": "Éducation nouvelle et école active",
+        "nodes": [
+          {
+            "id": "ferriere",
+            "titre": "Adolphe Ferrière",
+            "type": "structuration",
+            "courant": "Éducation nouvelle"
+          },
+          {
+            "id": "montessori",
+            "titre": "Maria Montessori",
+            "type": "développement",
+            "courant": "Montessori"
+          },
+          {
+            "id": "decroly",
+            "titre": "Ovide Decroly",
+            "type": "développement",
+            "courant": "Pédagogies actives"
+          },
+          {
+            "id": "dewey",
+            "titre": "John Dewey",
+            "type": "développement",
+            "courant": "Pédagogies actives"
+          },
+          {
+            "id": "parkhurst",
+            "titre": "Helen Parkhurst",
+            "type": "prolongement",
+            "courant": "Plan Dalton"
+          },
+          {
+            "id": "steiner",
+            "titre": "Rudolf Steiner",
+            "type": "fondation",
+            "courant": "Steiner-Waldorf"
+          }
+        ]
+      },
+      {
+        "id": "cooperation",
+        "label": "Coopération, groupes et projets",
+        "nodes": [
+          {
+            "id": "cousinet",
+            "titre": "Roger Cousinet",
+            "type": "travail de groupe",
+            "courant": "Pédagogies coopératives"
+          },
+          {
+            "id": "kilpatrick",
+            "titre": "William H. Kilpatrick",
+            "type": "projet",
+            "courant": "Pédagogies actives"
+          },
+          {
+            "id": "washburne",
+            "titre": "Carleton Washburne",
+            "type": "individualisation",
+            "courant": "Plan Winnetka"
+          },
+          {
+            "id": "freinet",
+            "titre": "Célestin Freinet",
+            "type": "prolongement",
+            "courant": "Pédagogie Freinet"
+          },
+          {
+            "id": "elise-freinet",
+            "titre": "Élise Freinet",
+            "type": "expression",
+            "courant": "Pédagogie Freinet"
+          },
+          {
+            "id": "tortel",
+            "titre": "Germaine Tortel",
+            "type": "maternelle",
+            "courant": "Pédagogie d’initiation"
+          },
+          {
+            "id": "ouri",
+            "titre": "Fernand Oury",
+            "type": "institutionnalisation",
+            "courant": "Pédagogie institutionnelle"
+          }
+        ]
+      },
+      {
+        "id": "sciences",
+        "label": "Psychologie du développement et médiation",
+        "nodes": [
+          {
+            "id": "descoeudres",
+            "titre": "Alice Descoeudres",
+            "type": "observation / adaptation",
+            "courant": "Éducation nouvelle"
+          },
+          {
+            "id": "piaget",
+            "titre": "Jean Piaget",
+            "type": "éclairage",
+            "courant": "Constructivisme"
+          },
+          {
+            "id": "vygotski",
+            "titre": "Lev Vygotski",
+            "type": "éclairage",
+            "courant": "Socioconstructivisme"
+          },
+          {
+            "id": "bruner",
+            "titre": "Jerome Bruner",
+            "type": "prolongement",
+            "courant": "Socioconstructivisme"
+          },
+          {
+            "id": "meirieu",
+            "titre": "Philippe Meirieu",
+            "type": "traduction pédagogique",
+            "courant": "Pédagogie différenciée"
+          },
+          {
+            "id": "connac",
+            "titre": "Sylvain Connac",
+            "type": "recherche / pratique",
+            "courant": "Pédagogies coopératives"
+          }
+        ]
+      },
+      {
+        "id": "critiques",
+        "label": "Émancipation, démocratie et pédagogies critiques",
+        "nodes": [
+          {
+            "id": "neill",
+            "titre": "Alexander S. Neill",
+            "type": "libertaire",
+            "courant": "Pédagogies libertaires"
+          },
+          {
+            "id": "freire",
+            "titre": "Paulo Freire",
+            "type": "développement",
+            "courant": "Pédagogies critiques"
+          },
+          {
+            "id": "ranciere",
+            "titre": "Jacques Rancière",
+            "type": "philosophie",
+            "courant": "Pédagogies critiques"
+          }
+        ]
+      }
+    ],
+    "liens": [
+      [
+        "rousseau",
+        "pestalozzi",
+        "influence / prolongement"
+      ],
+      [
+        "pestalozzi",
+        "froebel",
+        "prolongement"
+      ],
+      [
+        "froebel",
+        "montessori",
+        "influence indirecte"
+      ],
+      [
+        "rousseau",
+        "education-nouvelle",
+        "source"
+      ],
+      [
+        "pestalozzi",
+        "education-nouvelle",
+        "source"
+      ],
+      [
+        "froebel",
+        "education-nouvelle",
+        "source"
+      ],
+      [
+        "education-nouvelle",
+        "pedagogie-active",
+        "convergence"
+      ],
+      [
+        "education-nouvelle",
+        "montessori",
+        "développement"
+      ],
+      [
+        "education-nouvelle",
+        "decroly",
+        "développement"
+      ],
+      [
+        "pedagogie-active",
+        "freinet",
+        "prolongement"
+      ],
+      [
+        "pedagogie-active",
+        "dewey",
+        "développement"
+      ],
+      [
+        "freinet",
+        "ouri",
+        "prolongement / dialogue"
+      ],
+      [
+        "piaget",
+        "constructivisme",
+        "fondement théorique"
+      ],
+      [
+        "vygotski",
+        "socioconstructivisme",
+        "fondement théorique"
+      ],
+      [
+        "bruner",
+        "socioconstructivisme",
+        "prolongement"
+      ],
+      [
+        "freire",
+        "education-populaire",
+        "développement"
+      ],
+      [
+        "rousseau",
+        "ellen-key",
+        "influence / dialogue"
+      ],
+      [
+        "froebel",
+        "kergomard",
+        "influence / prolongement"
+      ],
+      [
+        "rousseau",
+        "ferriere",
+        "source indirecte"
+      ],
+      [
+        "dewey",
+        "parkhurst",
+        "influence"
+      ],
+      [
+        "montessori",
+        "parkhurst",
+        "influence / collaboration"
+      ],
+      [
+        "dewey",
+        "kilpatrick",
+        "collaboration / prolongement"
+      ],
+      [
+        "dewey",
+        "cousinet",
+        "convergence"
+      ],
+      [
+        "freinet",
+        "elise-freinet",
+        "co-construction du mouvement"
+      ],
+      [
+        "dewey",
+        "tortel",
+        "éclairage / convergence"
+      ],
+      [
+        "cousinet",
+        "freinet",
+        "convergence"
+      ],
+      [
+        "parkhurst",
+        "washburne",
+        "convergence sur l’organisation du travail"
+      ],
+      [
+        "education-nouvelle",
+        "steiner-waldorf",
+        "proximité historique / divergence théorique"
+      ],
+      [
+        "rousseau",
+        "neill",
+        "influence revendiquée"
+      ],
+      [
+        "vygotski",
+        "meirieu",
+        "éclairage théorique"
+      ],
+      [
+        "freinet",
+        "connac",
+        "prolongement coopératif"
+      ],
+      [
+        "ouri",
+        "connac",
+        "prolongement coopératif"
+      ],
+      [
+        "freire",
+        "ranciere",
+        "dialogue philosophique"
+      ],
+      [
+        "freire",
+        "meirieu",
+        "convergence / tension"
+      ],
+      [
+        "descoeudres",
+        "education-inclusive",
+        "préfiguration historique"
+      ]
+    ],
+    "legende_relations": [
+      {
+        "type": "influence",
+        "label": "INFLUENCE",
+        "definition": "A contribue explicitement ou de manière documentée à la pensée ou aux pratiques de B."
+      },
+      {
+        "type": "prolongement",
+        "label": "PROLONGEMENT",
+        "definition": "B reprend une idée, une question ou une pratique de A en la transformant ou en la développant."
+      },
+      {
+        "type": "convergence",
+        "label": "CONVERGENCE",
+        "definition": "A et B développent des idées proches sans qu'une influence directe soit établie."
+      },
+      {
+        "type": "dialogue",
+        "label": "DIALOGUE",
+        "definition": "Les deux pensées peuvent être mises en regard, sans supposer une filiation directe."
+      },
+      {
+        "type": "fondement_theorique",
+        "label": "ÉCLAIRAGE THÉORIQUE",
+        "definition": "Un auteur ou un courant fournit des concepts qui éclairent une approche pédagogique ; ce n'est pas nécessairement une méthode pédagogique."
+      }
+    ]
+  }
+}

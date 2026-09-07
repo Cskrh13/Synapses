@@ -1,0 +1,87 @@
+{
+  "id": "vygotski",
+  "nom": "Lev Vygotski",
+  "type": "pedagogue",
+  "periode": "1896–1934",
+  "description_courte": "Psychologue soviétique dont les travaux soulignent le rôle du langage, de la culture et des interactions sociales dans le développement et les apprentissages.",
+  "description": "Psychologue soviétique dont les travaux soulignent le rôle du langage, de la culture et des interactions sociales dans le développement et les apprentissages.",
+  "courants": [
+    "socioconstructivisme"
+  ],
+  "concepts": [
+    "zone-proximale-de-developpement",
+    "langage",
+    "mediation",
+    "interaction"
+  ],
+  "pratiques": [
+    "etayage",
+    "travail-a-deux",
+    "dialogue",
+    "modelisation"
+  ],
+  "influences": [
+    "marxisme",
+    "psychologie culturelle-historique",
+    "linguistique"
+  ],
+  "ouvrages": [
+    "Pensée et langage"
+  ],
+  "biographie": "Psychologue soviétique dont les travaux soulignent le rôle du langage, de la culture et des interactions sociales dans le développement et les apprentissages.",
+  "travail": {
+    "principe_directeur": "Prévoir des interactions structurées, un guidage temporaire, des échanges verbaux et une progression allant de l’aide vers l’autonomie.",
+    "pour_sequence": [
+      "Prévoir des interactions structurées, un guidage temporaire, des échanges verbaux et une progression allant de l’aide vers l’autonomie."
+    ],
+    "pour_seance": [
+      "Prévoir des interactions structurées, un guidage temporaire, des échanges verbaux et une progression allant de l’aide vers l’autonomie."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "etayage",
+      "travail-a-deux",
+      "dialogue",
+      "modelisation"
+    ],
+    "points_de_vigilance": [
+      "Le terme « zone proximale de développement » est souvent simplifié ; il faut distinguer les formulations de Vygotski des modèles ultérieurs d’étayage."
+    ],
+    "instruction_generation": "Prévoir des interactions structurées, un guidage temporaire, des échanges verbaux et une progression allant de l’aide vers l’autonomie."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Le terme « zone proximale de développement » est souvent simplifié ; il faut distinguer les formulations de Vygotski des modèles ultérieurs d’étayage."
+  },
+  "relations": {
+    "courants": [
+      "socioconstructivisme"
+    ],
+    "proche_de": [
+      "bruner",
+      "piaget"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

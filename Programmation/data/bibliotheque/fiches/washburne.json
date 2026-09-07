@@ -1,0 +1,94 @@
+{
+  "id": "washburne",
+  "nom": "Carleton Washburne",
+  "type": "pedagogue",
+  "periode": "1889–1968",
+  "description_courte": "Pédagogue américain associé aux Winnetka Public Schools, il développe une organisation de l’enseignement combinant objectifs communs, progression individualisée et activités sociales.",
+  "description": "Pédagogue américain associé aux Winnetka Public Schools, il développe une organisation de l’enseignement combinant objectifs communs, progression individualisée et activités sociales.",
+  "courants": [
+    "pedagogie-active",
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "individualisation",
+    "progression",
+    "maîtrise",
+    "coopération",
+    "curriculum"
+  ],
+  "pratiques": [
+    "travail individualisé",
+    "fiches auto-instructives",
+    "rythmes différenciés",
+    "activités collectives"
+  ],
+  "influences": [
+    "dewey",
+    "education-nouvelle",
+    "kilpatrick"
+  ],
+  "ouvrages": [
+    "Winnetka Plan"
+  ],
+  "biographie": "Pédagogue américain associé aux Winnetka Public Schools, il développe une organisation de l’enseignement combinant objectifs communs, progression individualisée et activités sociales.",
+  "travail": {
+    "principe_directeur": "Articuler une progression individualisée sur certains apprentissages avec des expériences collectives qui construisent culture commune et coopération.",
+    "pour_sequence": [
+      "Distinguer les objectifs qui nécessitent une progression individualisée de ceux qui gagnent à être appris collectivement.",
+      "Construire des critères de maîtrise observables."
+    ],
+    "pour_seance": [
+      "Permettre à l’élève d’avancer à son rythme sur une partie du travail, avec des points de régulation."
+    ],
+    "pour_programmation": [
+      "Éviter que l’individualisation devienne une juxtaposition permanente de parcours sans moments de culture commune."
+    ],
+    "adaptations": [
+      "plan de travail",
+      "maîtrise",
+      "progression",
+      "différenciation",
+      "collectif"
+    ],
+    "points_de_vigilance": [
+      "Le modèle historique de Winnetka ne doit pas être assimilé sans précaution aux dispositifs contemporains de personnalisation."
+    ],
+    "instruction_generation": "Combiner parcours individualisés sur des compétences ciblées et temps collectifs de construction de culture commune."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Winnetka Public Schools",
+      "INSEI"
+    ],
+    "note": "Washburne est une référence historique intéressante pour penser la différenciation sans abandonner le collectif."
+  },
+  "relations": {
+    "courants": [
+      "pedagogie-active"
+    ],
+    "proche_de": [
+      "parkhurst",
+      "dewey",
+      "kilpatrick"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Winnetka Public Schools",
+      "INSEI"
+    ]
+  }
+}

@@ -1,0 +1,104 @@
+{
+  "id": "ferriere",
+  "nom": "Adolphe Ferrière",
+  "type": "pedagogue",
+  "periode": "1879–1960",
+  "description_courte": "Pédagogue suisse, théoricien et animateur international de l’Éducation nouvelle, il contribue à formaliser les principes de l’école active et à diffuser le mouvement.",
+  "description": "Pédagogue suisse, théoricien et animateur international de l’Éducation nouvelle, il contribue à formaliser les principes de l’école active et à diffuser le mouvement.",
+  "courants": [
+    "education-nouvelle",
+    "pedagogie-active"
+  ],
+  "concepts": [
+    "école active",
+    "intérêt",
+    "autonomie",
+    "coopération",
+    "activité"
+  ],
+  "pratiques": [
+    "travail par projets",
+    "activité choisie",
+    "coopération",
+    "observation"
+  ],
+  "influences": [
+    "rousseau",
+    "dewey",
+    "montessori",
+    "education-nouvelle"
+  ],
+  "ouvrages": [
+    "L’École active",
+    "Transformons l’école"
+  ],
+  "biographie": "Pédagogue suisse, théoricien et animateur international de l’Éducation nouvelle, il contribue à formaliser les principes de l’école active et à diffuser le mouvement.",
+  "travail": {
+    "principe_directeur": "Penser l’activité de l’élève comme une activité intellectuelle et sociale organisée, et non comme une simple occupation.",
+    "pour_sequence": [
+      "Identifier l’activité cognitive attendue avant de choisir la forme de travail.",
+      "Donner aux élèves une tâche qui exige recherche, choix, justification ou coopération."
+    ],
+    "pour_seance": [
+      "Faire expliciter les démarches plutôt que mesurer uniquement la quantité de travail produite."
+    ],
+    "pour_programmation": [
+      "Alterner temps d’initiative, enseignement explicite et mise en commun."
+    ],
+    "adaptations": [
+      "enquête",
+      "projet",
+      "coopération",
+      "choix",
+      "conseil"
+    ],
+    "points_de_vigilance": [
+      "Ferrière a parfois été présenté comme représentant de toute l’Éducation nouvelle ; distinguer son propre cadre théorique de la diversité du mouvement."
+    ],
+    "instruction_generation": "Construire une activité qui exige réellement de penser, choisir, chercher ou coopérer, puis expliciter les apprentissages réalisés."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "INSEI",
+      "Éduscol — école inclusive",
+      "Ministère de l’Éducation nationale",
+      "Réseau Canopé",
+      "Cairn.info"
+    ],
+    "note": "Ferrière est utile pour comprendre la structuration internationale de l’Éducation nouvelle au début du XXe siècle."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle",
+      "pedagogie-active"
+    ],
+    "proche_de": [
+      "dewey",
+      "montessori",
+      "decroly",
+      "cousinet"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "Éduscol — école inclusive",
+      "Ministère de l’Éducation nationale",
+      "Réseau Canopé",
+      "Cairn.info"
+    ]
+  }
+}

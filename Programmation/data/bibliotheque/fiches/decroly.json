@@ -1,0 +1,87 @@
+{
+  "id": "decroly",
+  "nom": "Ovide Decroly",
+  "type": "pedagogue",
+  "periode": "1871–1932",
+  "description_courte": "Médecin et pédagogue belge, promoteur des centres d’intérêt, de l’observation et de l’approche globale des activités scolaires.",
+  "description": "Médecin et pédagogue belge, promoteur des centres d’intérêt, de l’observation et de l’approche globale des activités scolaires.",
+  "courants": [
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "centres-d-interet",
+    "globalisation",
+    "observation",
+    "besoins"
+  ],
+  "pratiques": [
+    "observation",
+    "association",
+    "expression",
+    "projet"
+  ],
+  "influences": [
+    "pestalozzi",
+    "education-nouvelle",
+    "médecine"
+  ],
+  "ouvrages": [
+    "La fonction de globalisation et l’enseignement"
+  ],
+  "biographie": "Médecin et pédagogue belge, promoteur des centres d’intérêt, de l’observation et de l’approche globale des activités scolaires.",
+  "travail": {
+    "principe_directeur": "Construire des situations à partir de besoins, de questions ou d’objets d’étude authentiques et articuler observation, mise en relation et expression.",
+    "pour_sequence": [
+      "Construire des situations à partir de besoins, de questions ou d’objets d’étude authentiques et articuler observation, mise en relation et expression."
+    ],
+    "pour_seance": [
+      "Construire des situations à partir de besoins, de questions ou d’objets d’étude authentiques et articuler observation, mise en relation et expression."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "observation",
+      "association",
+      "expression",
+      "projet"
+    ],
+    "points_de_vigilance": [
+      "La notion de globalisation doit être replacée dans son contexte historique et ne doit pas être confondue avec des méthodes contemporaines de lecture globale."
+    ],
+    "instruction_generation": "Construire des situations à partir de besoins, de questions ou d’objets d’étude authentiques et articuler observation, mise en relation et expression."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "La notion de globalisation doit être replacée dans son contexte historique et ne doit pas être confondue avec des méthodes contemporaines de lecture globale."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "montessori",
+      "dewey"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

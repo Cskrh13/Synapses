@@ -1,0 +1,83 @@
+{
+  "id": "froebel",
+  "nom": "Friedrich Fröbel",
+  "type": "pedagogue",
+  "periode": "1782–1852",
+  "description_courte": "Pédagogue allemand, fondateur du Kindergarten et penseur du jeu comme activité éducative fondamentale du jeune enfant.",
+  "description": "Pédagogue allemand, fondateur du Kindergarten et penseur du jeu comme activité éducative fondamentale du jeune enfant.",
+  "courants": [
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "jeu",
+    "activite",
+    "expression"
+  ],
+  "pratiques": [
+    "jeu-guide",
+    "manipulation",
+    "activites-symboliques"
+  ],
+  "influences": [
+    "pestalozzi",
+    "romantisme allemand"
+  ],
+  "ouvrages": [
+    "L’éducation de l’homme"
+  ],
+  "biographie": "Pédagogue allemand, fondateur du Kindergarten et penseur du jeu comme activité éducative fondamentale du jeune enfant.",
+  "travail": {
+    "principe_directeur": "Pour la maternelle, prévoir des situations de jeu, de manipulation, d’expression et de construction qui permettent une activité autonome mais pensée par l’adulte.",
+    "pour_sequence": [
+      "Pour la maternelle, prévoir des situations de jeu, de manipulation, d’expression et de construction qui permettent une activité autonome mais pensée par l’adulte."
+    ],
+    "pour_seance": [
+      "Pour la maternelle, prévoir des situations de jeu, de manipulation, d’expression et de construction qui permettent une activité autonome mais pensée par l’adulte."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "jeu-guide",
+      "manipulation",
+      "activites-symboliques"
+    ],
+    "points_de_vigilance": [
+      "Son héritage concerne particulièrement l’éducation préscolaire et l’histoire du jeu éducatif."
+    ],
+    "instruction_generation": "Pour la maternelle, prévoir des situations de jeu, de manipulation, d’expression et de construction qui permettent une activité autonome mais pensée par l’adulte."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Son héritage concerne particulièrement l’éducation préscolaire et l’histoire du jeu éducatif."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "montessori",
+      "decroly"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

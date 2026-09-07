@@ -1,0 +1,83 @@
+{
+  "id": "pestalozzi",
+  "nom": "Johann Heinrich Pestalozzi",
+  "type": "pedagogue",
+  "periode": "1746–1827",
+  "description_courte": "Pédagogue suisse qui articule tête, cœur et main et accorde une place importante à l’expérience concrète.",
+  "description": "Pédagogue suisse qui articule tête, cœur et main et accorde une place importante à l’expérience concrète.",
+  "courants": [
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "experience",
+    "observation",
+    "activite"
+  ],
+  "pratiques": [
+    "manipulation",
+    "progression",
+    "concret-vers-abstrait"
+  ],
+  "influences": [
+    "rousseau",
+    "humanisme"
+  ],
+  "ouvrages": [
+    "Comment Gertrude instruit ses enfants"
+  ],
+  "biographie": "Pédagogue suisse qui articule tête, cœur et main et accorde une place importante à l’expérience concrète.",
+  "travail": {
+    "principe_directeur": "Partir du concret, faire observer et manipuler, puis conduire progressivement vers la représentation et la conceptualisation.",
+    "pour_sequence": [
+      "Partir du concret, faire observer et manipuler, puis conduire progressivement vers la représentation et la conceptualisation."
+    ],
+    "pour_seance": [
+      "Partir du concret, faire observer et manipuler, puis conduire progressivement vers la représentation et la conceptualisation."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "manipulation",
+      "progression",
+      "concret-vers-abstrait"
+    ],
+    "points_de_vigilance": [
+      "Étudier son œuvre comme un jalon historique de l’éducation nouvelle ; distinguer ses formulations historiques des usages contemporains."
+    ],
+    "instruction_generation": "Partir du concret, faire observer et manipuler, puis conduire progressivement vers la représentation et la conceptualisation."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Étudier son œuvre comme un jalon historique de l’éducation nouvelle ; distinguer ses formulations historiques des usages contemporains."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "froebel",
+      "montessori"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

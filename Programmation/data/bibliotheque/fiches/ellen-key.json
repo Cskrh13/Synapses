@@ -1,0 +1,102 @@
+{
+  "id": "ellen-key",
+  "nom": "Ellen Key",
+  "type": "pedagogue",
+  "periode": "1849–1926",
+  "description_courte": "Essayiste et penseuse suédoise qui place l’enfant, son développement et la transformation du milieu éducatif au centre d’une critique de l’école traditionnelle.",
+  "description": "Essayiste et penseuse suédoise qui place l’enfant, son développement et la transformation du milieu éducatif au centre d’une critique de l’école traditionnelle.",
+  "courants": [
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "enfant",
+    "individualité",
+    "développement",
+    "milieu éducatif",
+    "culture"
+  ],
+  "pratiques": [
+    "respect des rythmes",
+    "observation",
+    "éducation esthétique",
+    "aménagement du milieu"
+  ],
+  "influences": [
+    "rousseau",
+    "education-nouvelle"
+  ],
+  "ouvrages": [
+    "Le Siècle de l’enfant (1900)"
+  ],
+  "biographie": "Essayiste et penseuse suédoise qui place l’enfant, son développement et la transformation du milieu éducatif au centre d’une critique de l’école traditionnelle.",
+  "travail": {
+    "principe_directeur": "Prendre l’enfant comme sujet de développement et interroger ce que l’organisation scolaire lui permet réellement de vivre, d’explorer et de comprendre.",
+    "pour_sequence": [
+      "Identifier ce qui, dans la séquence, soutient réellement l’activité et la progression de l’élève plutôt que la seule conformité au dispositif.",
+      "Prévoir des choix limités et signifiants lorsque cela augmente l’engagement sans diluer l’objectif."
+    ],
+    "pour_seance": [
+      "Observer les signes d’intérêt, de fatigue, de retrait ou de surcharge et ajuster le rythme sans perdre l’exigence cognitive."
+    ],
+    "pour_programmation": [
+      "Interroger régulièrement l’équilibre entre exigences communes, différenciation et prise en compte des besoins individuels."
+    ],
+    "adaptations": [
+      "rythme",
+      "choix",
+      "supports culturels",
+      "espaces de retrait",
+      "expression personnelle"
+    ],
+    "points_de_vigilance": [
+      "Ne pas transformer la critique de l’école de Key en principe de laisser-faire. Ses positions sont historiques et doivent être replacées dans les débats de son époque, notamment sur le genre et la famille."
+    ],
+    "instruction_generation": "Concevoir la séquence à partir de l’élève comme sujet : préserver l’exigence, mais prévoir des marges de choix, d’expression et d’ajustement du rythme."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [
+      "Veille sur les usages contemporains de la notion de respect de l’enfant et de l’éducation centrée sur l’élève."
+    ],
+    "recherches_recentes": [],
+    "debats": [
+      "Tension entre individualisation, autonomie et cadre collectif."
+    ],
+    "sources": [
+      "INSEI",
+      "Éduscol — école inclusive",
+      "Ministère de l’Éducation nationale",
+      "Réseau Canopé",
+      "Cairn.info"
+    ],
+    "note": "Key est une figure importante de l’histoire des idées éducatives, mais son œuvre relève aussi de la philosophie sociale et des débats sur l’enfance et la condition des femmes."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "rousseau",
+      "montessori",
+      "dewey"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "Éduscol — école inclusive",
+      "Ministère de l’Éducation nationale",
+      "Réseau Canopé",
+      "Cairn.info"
+    ]
+  }
+}

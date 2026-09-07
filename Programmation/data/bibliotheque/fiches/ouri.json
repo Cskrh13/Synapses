@@ -1,0 +1,87 @@
+{
+  "id": "ouri",
+  "nom": "Fernand Oury",
+  "type": "pedagogue",
+  "periode": "1920–1998",
+  "description_courte": "Instituteur et fondateur, avec Aïda Vasquez, de la pédagogie institutionnelle.",
+  "description": "Instituteur et fondateur, avec Aïda Vasquez, de la pédagogie institutionnelle.",
+  "courants": [
+    "pedagogie-institutionnelle"
+  ],
+  "concepts": [
+    "institution",
+    "groupe",
+    "parole",
+    "cadre"
+  ],
+  "pratiques": [
+    "conseil",
+    "institutions",
+    "regles",
+    "analyse-du-groupe"
+  ],
+  "influences": [
+    "freinet",
+    "psychanalyse",
+    "psychologie sociale"
+  ],
+  "ouvrages": [
+    "De la classe coopérative à la pédagogie institutionnelle"
+  ],
+  "biographie": "Instituteur et fondateur, avec Aïda Vasquez, de la pédagogie institutionnelle.",
+  "travail": {
+    "principe_directeur": "Penser la classe comme un collectif institué : expliciter les règles, donner des espaces de parole, réguler les relations et utiliser les institutions comme supports d’apprentissage.",
+    "pour_sequence": [
+      "Penser la classe comme un collectif institué : expliciter les règles, donner des espaces de parole, réguler les relations et utiliser les institutions comme supports d’apprentissage."
+    ],
+    "pour_seance": [
+      "Penser la classe comme un collectif institué : expliciter les règles, donner des espaces de parole, réguler les relations et utiliser les institutions comme supports d’apprentissage."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "conseil",
+      "institutions",
+      "regles",
+      "analyse-du-groupe"
+    ],
+    "points_de_vigilance": [
+      "Les références à la psychanalyse et à la dynamique de groupe demandent une lecture contextualisée ; éviter les transpositions simplistes."
+    ],
+    "instruction_generation": "Penser la classe comme un collectif institué : expliciter les règles, donner des espaces de parole, réguler les relations et utiliser les institutions comme supports d’apprentissage."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Les références à la psychanalyse et à la dynamique de groupe demandent une lecture contextualisée ; éviter les transpositions simplistes."
+  },
+  "relations": {
+    "courants": [
+      "pedagogie-institutionnelle"
+    ],
+    "proche_de": [
+      "freinet",
+      "vygotski"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

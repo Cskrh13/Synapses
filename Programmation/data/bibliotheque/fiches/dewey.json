@@ -1,0 +1,88 @@
+{
+  "id": "dewey",
+  "nom": "John Dewey",
+  "type": "pedagogue",
+  "periode": "1859–1952",
+  "description_courte": "Philosophe et psychologue américain du pragmatisme, pour qui l’expérience, l’enquête et la démocratie constituent des dimensions centrales de l’éducation.",
+  "description": "Philosophe et psychologue américain du pragmatisme, pour qui l’expérience, l’enquête et la démocratie constituent des dimensions centrales de l’éducation.",
+  "courants": [
+    "pedagogie-active"
+  ],
+  "concepts": [
+    "experience",
+    "enquete",
+    "probleme",
+    "democratie"
+  ],
+  "pratiques": [
+    "investigation",
+    "probleme",
+    "projet",
+    "discussion"
+  ],
+  "influences": [
+    "pragmatisme",
+    "psychologie",
+    "philosophie sociale"
+  ],
+  "ouvrages": [
+    "The School and Society",
+    "Experience and Education"
+  ],
+  "biographie": "Philosophe et psychologue américain du pragmatisme, pour qui l’expérience, l’enquête et la démocratie constituent des dimensions centrales de l’éducation.",
+  "travail": {
+    "principe_directeur": "Construire des situations-problèmes authentiques, faire enquêter, verbaliser les stratégies, confronter les résultats puis institutionnaliser les savoirs.",
+    "pour_sequence": [
+      "Construire des situations-problèmes authentiques, faire enquêter, verbaliser les stratégies, confronter les résultats puis institutionnaliser les savoirs."
+    ],
+    "pour_seance": [
+      "Construire des situations-problèmes authentiques, faire enquêter, verbaliser les stratégies, confronter les résultats puis institutionnaliser les savoirs."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "investigation",
+      "probleme",
+      "projet",
+      "discussion"
+    ],
+    "points_de_vigilance": [
+      "Ne pas réduire Dewey au « faire » : l’expérience éducative suppose continuité, réflexion, guidage et mise en relation."
+    ],
+    "instruction_generation": "Construire des situations-problèmes authentiques, faire enquêter, verbaliser les stratégies, confronter les résultats puis institutionnaliser les savoirs."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Ne pas réduire Dewey au « faire » : l’expérience éducative suppose continuité, réflexion, guidage et mise en relation."
+  },
+  "relations": {
+    "courants": [
+      "pedagogie-active"
+    ],
+    "proche_de": [
+      "freinet",
+      "bruner"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

@@ -1,0 +1,91 @@
+{
+  "id": "bruner",
+  "nom": "Jerome Bruner",
+  "type": "pedagogue",
+  "periode": "1915–2016",
+  "description_courte": "Psychologue américain qui a travaillé sur les représentations, la découverte guidée, le curriculum et l’étayage.",
+  "description": "Psychologue américain qui a travaillé sur les représentations, la découverte guidée, le curriculum et l’étayage.",
+  "courants": [
+    "socioconstructivisme",
+    "pedagogie-active"
+  ],
+  "concepts": [
+    "etayage",
+    "representation",
+    "curriculum",
+    "spirale"
+  ],
+  "pratiques": [
+    "questionnement",
+    "guidage",
+    "decouverte-guidee",
+    "revisitation"
+  ],
+  "influences": [
+    "psychologie cognitive",
+    "vygotski",
+    "piaget",
+    "pragmatisme"
+  ],
+  "ouvrages": [
+    "The Process of Education",
+    "Actual Minds, Possible Worlds"
+  ],
+  "biographie": "Psychologue américain qui a travaillé sur les représentations, la découverte guidée, le curriculum et l’étayage.",
+  "travail": {
+    "principe_directeur": "Structurer les apprentissages par une progression accessible, multiplier les représentations, guider la recherche et revenir régulièrement sur les notions avec une complexité croissante.",
+    "pour_sequence": [
+      "Structurer les apprentissages par une progression accessible, multiplier les représentations, guider la recherche et revenir régulièrement sur les notions avec une complexité croissante."
+    ],
+    "pour_seance": [
+      "Structurer les apprentissages par une progression accessible, multiplier les représentations, guider la recherche et revenir régulièrement sur les notions avec une complexité croissante."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "questionnement",
+      "guidage",
+      "decouverte-guidee",
+      "revisitation"
+    ],
+    "points_de_vigilance": [
+      "La « pédagogie de la découverte » ne signifie pas découverte sans guidage ; les travaux de Bruner ont évolué au fil de sa carrière."
+    ],
+    "instruction_generation": "Structurer les apprentissages par une progression accessible, multiplier les représentations, guider la recherche et revenir régulièrement sur les notions avec une complexité croissante."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "La « pédagogie de la découverte » ne signifie pas découverte sans guidage ; les travaux de Bruner ont évolué au fil de sa carrière."
+  },
+  "relations": {
+    "courants": [
+      "socioconstructivisme",
+      "pedagogie-active"
+    ],
+    "proche_de": [
+      "vygotski",
+      "dewey"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

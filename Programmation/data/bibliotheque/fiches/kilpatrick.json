@@ -1,0 +1,98 @@
+{
+  "id": "kilpatrick",
+  "nom": "William Heard Kilpatrick",
+  "type": "pedagogue",
+  "periode": "1871–1965",
+  "description_courte": "Pédagogue américain lié à John Dewey, connu pour avoir formulé la méthode des projets comme organisation d’activités autour d’un but intentionnel.",
+  "description": "Pédagogue américain lié à John Dewey, connu pour avoir formulé la méthode des projets comme organisation d’activités autour d’un but intentionnel.",
+  "courants": [
+    "pedagogie-active",
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "projet",
+    "intention",
+    "expérience",
+    "résolution de problème",
+    "motivation"
+  ],
+  "pratiques": [
+    "pédagogie de projet",
+    "production",
+    "enquête",
+    "planification"
+  ],
+  "influences": [
+    "dewey",
+    "parkhurst",
+    "education-nouvelle"
+  ],
+  "ouvrages": [
+    "The Project Method (1918)"
+  ],
+  "biographie": "Pédagogue américain lié à John Dewey, connu pour avoir formulé la méthode des projets comme organisation d’activités autour d’un but intentionnel.",
+  "travail": {
+    "principe_directeur": "Un projet pédagogique doit être porté par une intention réelle, mais l’enseignant conserve la responsabilité de garantir les apprentissages et leur structuration.",
+    "pour_sequence": [
+      "Partir d’un problème ou d’une réalisation authentique, puis expliciter les savoirs nécessaires au projet.",
+      "Prévoir des points d’arrêt où l’enseignant institutionnalise les notions rencontrées."
+    ],
+    "pour_seance": [
+      "Questionner le but du projet : qu’est-ce que l’élève doit comprendre ou savoir faire à la fin ?"
+    ],
+    "pour_programmation": [
+      "Réserver les projets aux objectifs qui bénéficient réellement d’une temporalité longue et d’une production intégrée."
+    ],
+    "adaptations": [
+      "projet",
+      "enquête",
+      "production",
+      "intention",
+      "institutionnalisation"
+    ],
+    "points_de_vigilance": [
+      "Les conceptions de Kilpatrick ont évolué et sa méthode des projets ne doit pas être confondue avec toutes les formes contemporaines d’apprentissage par projet. Les effets dépendent fortement de l’accompagnement."
+    ],
+    "instruction_generation": "Utiliser le projet comme structure d’activité, mais conserver des étapes explicites d’enseignement, de verbalisation et d’institutionnalisation."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [
+      "Travaux contemporains sur le project-based learning et la tension entre intentions des élèves et guidage enseignant."
+    ],
+    "debats": [],
+    "sources": [
+      "Teachers College Record",
+      "ERIC",
+      "INSEI"
+    ],
+    "note": "La recherche contemporaine sur le project-based learning invite à examiner les tensions entre autonomie des élèves et guidage enseignant."
+  },
+  "relations": {
+    "courants": [
+      "pedagogie-active"
+    ],
+    "proche_de": [
+      "dewey",
+      "parkhurst",
+      "cousinet"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Teachers College Record",
+      "ERIC",
+      "INSEI"
+    ]
+  }
+}

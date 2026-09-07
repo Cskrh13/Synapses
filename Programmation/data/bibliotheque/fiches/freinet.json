@@ -1,0 +1,93 @@
+{
+  "id": "freinet",
+  "nom": "Célestin Freinet",
+  "type": "pedagogue",
+  "periode": "1896–1966",
+  "description_courte": "Instituteur français, figure majeure de l’École moderne, qui développe une pédagogie du travail, de la coopération, de l’expression et du tâtonnement expérimental.",
+  "description": "Instituteur français, figure majeure de l’École moderne, qui développe une pédagogie du travail, de la coopération, de l’expression et du tâtonnement expérimental.",
+  "courants": [
+    "education-nouvelle",
+    "pedagogie-active",
+    "freinet"
+  ],
+  "concepts": [
+    "cooperation",
+    "tâtonnement-experimental",
+    "expression",
+    "travail",
+    "autonomie"
+  ],
+  "pratiques": [
+    "texte-libre",
+    "conseil-cooperatif",
+    "correspondance",
+    "plan-de-travail",
+    "recherche"
+  ],
+  "influences": [
+    "education-nouvelle",
+    "experience d’instituteur",
+    "contexte social et politique"
+  ],
+  "ouvrages": [
+    "L’Éducation du travail",
+    "Les Dits de Mathieu"
+  ],
+  "biographie": "Instituteur français, figure majeure de l’École moderne, qui développe une pédagogie du travail, de la coopération, de l’expression et du tâtonnement expérimental.",
+  "travail": {
+    "principe_directeur": "Donner une fonction réelle aux apprentissages, ménager une phase de recherche et de tâtonnement, organiser la coopération et faire émerger une formalisation collective.",
+    "pour_sequence": [
+      "Donner une fonction réelle aux apprentissages, ménager une phase de recherche et de tâtonnement, organiser la coopération et faire émerger une formalisation collective."
+    ],
+    "pour_seance": [
+      "Donner une fonction réelle aux apprentissages, ménager une phase de recherche et de tâtonnement, organiser la coopération et faire émerger une formalisation collective."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "texte-libre",
+      "conseil-cooperatif",
+      "correspondance",
+      "plan-de-travail",
+      "recherche"
+    ],
+    "points_de_vigilance": [
+      "Ne pas assimiler Freinet à l’absence de guidage ou d’enseignement explicite ; distinguer les techniques historiques de leurs adaptations actuelles."
+    ],
+    "instruction_generation": "Donner une fonction réelle aux apprentissages, ménager une phase de recherche et de tâtonnement, organiser la coopération et faire émerger une formalisation collective."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Ne pas assimiler Freinet à l’absence de guidage ou d’enseignement explicite ; distinguer les techniques historiques de leurs adaptations actuelles."
+  },
+  "relations": {
+    "courants": [
+      "freinet"
+    ],
+    "proche_de": [
+      "dewey",
+      "ouri"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

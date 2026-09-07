@@ -1,0 +1,87 @@
+{
+  "id": "freire",
+  "nom": "Paulo Freire",
+  "type": "pedagogue",
+  "periode": "1921–1997",
+  "description_courte": "Pédagogue brésilien associé à l’éducation populaire et aux pédagogies critiques, centré sur le dialogue, la conscientisation et l’émancipation.",
+  "description": "Pédagogue brésilien associé à l’éducation populaire et aux pédagogies critiques, centré sur le dialogue, la conscientisation et l’émancipation.",
+  "courants": [
+    "education-populaire"
+  ],
+  "concepts": [
+    "dialogue",
+    "conscientisation",
+    "emancipation",
+    "pouvoir-d-agir"
+  ],
+  "pratiques": [
+    "dialogue",
+    "problematization",
+    "enquete",
+    "expression"
+  ],
+  "influences": [
+    "philosophie politique",
+    "éducation populaire",
+    "théologie de la libération"
+  ],
+  "ouvrages": [
+    "Pédagogie des opprimés"
+  ],
+  "biographie": "Pédagogue brésilien associé à l’éducation populaire et aux pédagogies critiques, centré sur le dialogue, la conscientisation et l’émancipation.",
+  "travail": {
+    "principe_directeur": "Créer des espaces de dialogue, partir des expériences des élèves et problématiser les savoirs sans renoncer aux objectifs d’apprentissage.",
+    "pour_sequence": [
+      "Créer des espaces de dialogue, partir des expériences des élèves et problématiser les savoirs sans renoncer aux objectifs d’apprentissage."
+    ],
+    "pour_seance": [
+      "Créer des espaces de dialogue, partir des expériences des élèves et problématiser les savoirs sans renoncer aux objectifs d’apprentissage."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "dialogue",
+      "problematization",
+      "enquete",
+      "expression"
+    ],
+    "points_de_vigilance": [
+      "Freire est une pensée politique et pédagogique située. Ses concepts doivent être contextualisés plutôt que transformés en techniques neutres."
+    ],
+    "instruction_generation": "Créer des espaces de dialogue, partir des expériences des élèves et problématiser les savoirs sans renoncer aux objectifs d’apprentissage."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Freire est une pensée politique et pédagogique située. Ses concepts doivent être contextualisés plutôt que transformés en techniques neutres."
+  },
+  "relations": {
+    "courants": [
+      "education-populaire"
+    ],
+    "proche_de": [
+      "dewey",
+      "freinet"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

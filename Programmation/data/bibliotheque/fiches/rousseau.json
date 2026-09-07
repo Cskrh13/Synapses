@@ -1,0 +1,82 @@
+{
+  "id": "rousseau",
+  "nom": "Jean-Jacques Rousseau",
+  "type": "pedagogue",
+  "periode": "1712–1778",
+  "description_courte": "Philosophe des Lumières dont la réflexion sur l’éducation a profondément marqué l’histoire des idées pédagogiques.",
+  "description": "Philosophe des Lumières dont la réflexion sur l’éducation a profondément marqué l’histoire des idées pédagogiques.",
+  "courants": [
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "experience",
+    "developpement",
+    "interet"
+  ],
+  "pratiques": [
+    "observation",
+    "experience",
+    "progression"
+  ],
+  "influences": [
+    "philosophie des Lumières"
+  ],
+  "ouvrages": [
+    "Emile ou De l’éducation"
+  ],
+  "biographie": "Philosophe des Lumières dont la réflexion sur l’éducation a profondément marqué l’histoire des idées pédagogiques.",
+  "travail": {
+    "principe_directeur": "Mettre l’expérience et l’activité de l’enfant au centre, différer certaines abstractions et penser la progression à partir du développement.",
+    "pour_sequence": [
+      "Mettre l’expérience et l’activité de l’enfant au centre, différer certaines abstractions et penser la progression à partir du développement."
+    ],
+    "pour_seance": [
+      "Mettre l’expérience et l’activité de l’enfant au centre, différer certaines abstractions et penser la progression à partir du développement."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "observation",
+      "experience",
+      "progression"
+    ],
+    "points_de_vigilance": [
+      "Lire Rousseau comme une source historique majeure, sans assimiler ses positions du XVIIIe siècle aux pratiques contemporaines."
+    ],
+    "instruction_generation": "Mettre l’expérience et l’activité de l’enfant au centre, différer certaines abstractions et penser la progression à partir du développement."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Lire Rousseau comme une source historique majeure, sans assimiler ses positions du XVIIIe siècle aux pratiques contemporaines."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "montessori",
+      "dewey"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

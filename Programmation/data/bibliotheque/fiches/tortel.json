@@ -1,0 +1,98 @@
+{
+  "id": "tortel",
+  "nom": "Germaine Tortel",
+  "type": "pedagogue",
+  "periode": "1896–1975",
+  "description_courte": "Inspectrice des écoles maternelles et créatrice de la pédagogie d’initiation, elle met au centre l’expression de l’enfant, le questionnement, les projets et la construction progressive de la pensée.",
+  "description": "Inspectrice des écoles maternelles et créatrice de la pédagogie d’initiation, elle met au centre l’expression de l’enfant, le questionnement, les projets et la construction progressive de la pensée.",
+  "courants": [
+    "education-nouvelle",
+    "maternelle"
+  ],
+  "concepts": [
+    "pédagogie d’initiation",
+    "expression",
+    "questionnement",
+    "projet",
+    "dessin enfantin"
+  ],
+  "pratiques": [
+    "situation-problème",
+    "projet",
+    "verbalisation",
+    "dessin collectif",
+    "écoute"
+  ],
+  "influences": [
+    "dewey",
+    "education-nouvelle",
+    "freinet"
+  ],
+  "ouvrages": [
+    "Propos sur l’art enfantin",
+    "L’enfant émerveillé"
+  ],
+  "biographie": "Inspectrice des écoles maternelles et créatrice de la pédagogie d’initiation, elle met au centre l’expression de l’enfant, le questionnement, les projets et la construction progressive de la pensée.",
+  "travail": {
+    "principe_directeur": "Partir des premières productions et questions de l’enfant pour conduire une recherche collective qui fait progresser la pensée.",
+    "pour_sequence": [
+      "Construire une séquence autour d’une question authentique et d’une trace évolutive des hypothèses des élèves.",
+      "Faire alterner production, verbalisation, confrontation et reprise."
+    ],
+    "pour_seance": [
+      "Utiliser le dessin, le langage ou la manipulation comme révélateurs de représentations initiales."
+    ],
+    "pour_programmation": [
+      "Programmer des retours successifs sur une même question afin de rendre visible le cheminement des élèves."
+    ],
+    "adaptations": [
+      "dessin",
+      "langage",
+      "projet",
+      "situation-problème",
+      "traces évolutives"
+    ],
+    "points_de_vigilance": [
+      "Ne pas réduire Tortel à une pédagogie de la libre expression : son approche comporte une forte exigence de construction intellectuelle et d’intervention enseignante."
+    ],
+    "instruction_generation": "Utiliser les productions initiales comme point de départ, puis organiser une progression de questionnement et de conceptualisation."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Académie de Versailles — Mission maternelle",
+      "Association Sur les pas de Germaine Tortel",
+      "Musée national de l’Éducation"
+    ],
+    "note": "Les ressources académiques consacrées à Tortel mettent en avant l’expression, l’écoute, le projet, le langage et la situation-problème."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "freinet",
+      "dewey",
+      "kergomard"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Académie de Versailles — Mission maternelle",
+      "Association Sur les pas de Germaine Tortel",
+      "Musée national de l’Éducation"
+    ]
+  }
+}

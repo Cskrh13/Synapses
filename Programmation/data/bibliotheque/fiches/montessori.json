@@ -1,0 +1,89 @@
+{
+  "id": "montessori",
+  "nom": "Maria Montessori",
+  "type": "pedagogue",
+  "periode": "1870–1952",
+  "description_courte": "Médecin et pédagogue italienne, fondatrice d’une approche centrée sur l’environnement préparé, l’autonomie et la manipulation.",
+  "description": "Médecin et pédagogue italienne, fondatrice d’une approche centrée sur l’environnement préparé, l’autonomie et la manipulation.",
+  "courants": [
+    "education-nouvelle",
+    "montessori"
+  ],
+  "concepts": [
+    "autonomie",
+    "environnement-prepare",
+    "auto-correction",
+    "motivation"
+  ],
+  "pratiques": [
+    "manipulation",
+    "travail-autonome",
+    "presentation-individuelle",
+    "progression-individualisee"
+  ],
+  "influences": [
+    "rousseau",
+    "pestalozzi",
+    "psychologie du développement"
+  ],
+  "ouvrages": [
+    "Il Metodo della pedagogia scientifica"
+  ],
+  "biographie": "Médecin et pédagogue italienne, fondatrice d’une approche centrée sur l’environnement préparé, l’autonomie et la manipulation.",
+  "travail": {
+    "principe_directeur": "Préparer l’environnement, proposer des tâches clairement définies et autocorrectives, favoriser l’autonomie progressive et observer finement l’activité de l’élève.",
+    "pour_sequence": [
+      "Préparer l’environnement, proposer des tâches clairement définies et autocorrectives, favoriser l’autonomie progressive et observer finement l’activité de l’élève."
+    ],
+    "pour_seance": [
+      "Préparer l’environnement, proposer des tâches clairement définies et autocorrectives, favoriser l’autonomie progressive et observer finement l’activité de l’élève."
+    ],
+    "pour_programmation": [
+      "Choisir quelques principes cohérents avec les objectifs disciplinaires plutôt que chercher à reproduire intégralement une méthode."
+    ],
+    "adaptations": [
+      "manipulation",
+      "travail-autonome",
+      "presentation-individuelle",
+      "progression-individualisee"
+    ],
+    "points_de_vigilance": [
+      "Distinguer la pensée originale de Montessori des adaptations commerciales ou simplifiées de la « méthode Montessori ». Vérifier les affirmations contemporaines par la recherche."
+    ],
+    "instruction_generation": "Préparer l’environnement, proposer des tâches clairement définies et autocorrectives, favoriser l’autonomie progressive et observer finement l’activité de l’élève."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [],
+    "note": "Distinguer la pensée originale de Montessori des adaptations commerciales ou simplifiées de la « méthode Montessori ». Vérifier les affirmations contemporaines par la recherche."
+  },
+  "relations": {
+    "courants": [
+      "montessori",
+      "education-nouvelle"
+    ],
+    "proche_de": [
+      "decroly",
+      "freinet"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "education inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "INSEI",
+      "eduscol",
+      "education.gouv.fr"
+    ]
+  }
+}

@@ -1,0 +1,98 @@
+{
+  "id": "cousinet",
+  "nom": "Roger Cousinet",
+  "type": "pedagogue",
+  "periode": "1881–1973",
+  "description_courte": "Pédagogue français de l’Éducation nouvelle, promoteur de la méthode de travail libre par groupes et d’une conception de l’apprentissage par l’activité sociale des élèves.",
+  "description": "Pédagogue français de l’Éducation nouvelle, promoteur de la méthode de travail libre par groupes et d’une conception de l’apprentissage par l’activité sociale des élèves.",
+  "courants": [
+    "education-nouvelle",
+    "pedagogie-active"
+  ],
+  "concepts": [
+    "travail libre",
+    "groupe",
+    "socialisation",
+    "activité",
+    "autonomie"
+  ],
+  "pratiques": [
+    "travail par groupes",
+    "choix du travail",
+    "recherche",
+    "entraide"
+  ],
+  "influences": [
+    "dewey",
+    "freinet",
+    "parkhurst",
+    "education-nouvelle"
+  ],
+  "ouvrages": [
+    "Une méthode de travail libre par groupes"
+  ],
+  "biographie": "Pédagogue français de l’Éducation nouvelle, promoteur de la méthode de travail libre par groupes et d’une conception de l’apprentissage par l’activité sociale des élèves.",
+  "travail": {
+    "principe_directeur": "Organiser des groupes qui disposent d’un problème ou d’une tâche réelle, de ressources et d’un cadre de régulation, plutôt que des groupes simplement chargés de répartir des exercices.",
+    "pour_sequence": [
+      "Attribuer aux groupes une production ou une enquête qui nécessite une véritable interdépendance.",
+      "Prévoir des rôles souples et une restitution qui rende visibles les démarches."
+    ],
+    "pour_seance": [
+      "Enseigner explicitement les règles de coopération et observer les interactions."
+    ],
+    "pour_programmation": [
+      "Programmer des apprentissages progressifs du travail collectif, avec des moments d’individualisation."
+    ],
+    "adaptations": [
+      "groupes",
+      "entraide",
+      "recherche",
+      "production collective",
+      "autonomie"
+    ],
+    "points_de_vigilance": [
+      "Le travail de groupe ne produit pas automatiquement de la coopération ni des apprentissages. Il nécessite une conception de tâche et une régulation précises."
+    ],
+    "instruction_generation": "Concevoir le groupe comme un milieu d’apprentissage : interdépendance réelle, ressources, rôles, production et régulation."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "CEMÉA",
+      "Éditions Fabert",
+      "INSEI"
+    ],
+    "note": "Les travaux de Cousinet sont particulièrement pertinents pour penser la coopération sans la confondre avec la simple juxtaposition d’élèves."
+  },
+  "relations": {
+    "courants": [
+      "education-nouvelle",
+      "pedagogie-active"
+    ],
+    "proche_de": [
+      "freinet",
+      "dewey",
+      "parkhurst"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "CEMÉA",
+      "Éditions Fabert",
+      "INSEI"
+    ]
+  }
+}

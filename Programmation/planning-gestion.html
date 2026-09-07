@@ -62,9 +62,20 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 .niveau-tabs button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
 .jour-block{border:1px solid var(--line);border-radius:var(--radius);padding:14px 16px;margin-bottom:12px;background:var(--panel-raised);}
 .jour-block h4{font-size:14px;margin-bottom:10px;}
-.creneau-row{display:grid;grid-template-columns:90px 90px 150px 1fr 1fr auto;gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line);}
+.creneau-row{display:grid;grid-template-columns:88px 88px 130px 1fr 1fr 1fr auto;gap:8px;align-items:center;padding:6px 0;border-top:1px dashed var(--line);}
 .creneau-row:first-of-type{border-top:none;}
-.creneau-row input,.creneau-row select{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:13px;}
+.creneau-row input,.creneau-row select{border:1px solid var(--line);border-radius:6px;padding:6px 8px;font-size:13px;width:100%;}
+
+/* ---- Atelier IA (grille horaire) ---- */
+.ia-atelier{margin-top:22px;padding-top:18px;border-top:1px solid var(--line);}
+.ia-atelier h3{font-size:15px;margin-bottom:4px;}
+.ia-atelier textarea{width:100%;border:1px solid var(--line);border-radius:var(--radius-sm);padding:10px 12px;font-size:12.5px;font-family:'IBM Plex Mono',monospace;background:var(--panel-raised);color:var(--ink);resize:vertical;}
+.ia-atelier textarea#ia-prompt{min-height:150px;color:var(--ink-soft);}
+.ia-atelier textarea#ia-resultat{min-height:120px;}
+.ia-atelier .ia-row{display:flex;gap:10px;flex-wrap:wrap;margin-top:8px;align-items:center;}
+.ia-atelier .ia-status{font-size:13px;color:var(--ink-soft);}
+.ia-atelier .ia-status.err{color:var(--danger);font-weight:600;}
+.ia-atelier .ia-status.ok{color:var(--ok);font-weight:600;}
 .badge-type{font-size:11px;font-weight:700;padding:2px 8px;border-radius:20px;color:#fff;white-space:nowrap;}
 .empty-hint{color:var(--ink-soft);font-size:13px;font-style:italic;padding:8px 0;}
 .summary-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:10px;margin-top:12px;}
@@ -72,6 +83,7 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 .summary-item b{display:block;font-size:13.5px;margin-bottom:2px;}
 .summary-item .warn{color:var(--danger);font-weight:600;}
 .summary-item .ok{color:var(--ok);font-weight:600;}
+#grille-save-status.warn{color:var(--danger);font-weight:600;}
 .toast{position:fixed;bottom:20px;left:50%;transform:translateX(-50%);background:var(--navy);color:#fff;padding:10px 18px;border-radius:8px;font-size:13.5px;opacity:0;pointer-events:none;transition:opacity .2s;z-index:99;}
 .toast.show{opacity:1;}
 
@@ -88,6 +100,7 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 .coffre-modal p.hint{margin-top:2px;}
 .coffre-modal .field{margin-top:12px;}
 .coffre-modal input[type="password"],.coffre-modal input[type="file"]{width:100%;}
+.coffre-modal .security-note{margin-top:10px;padding:9px 10px;border-radius:7px;background:var(--panel-raised);border:1px solid var(--line);font-size:11.5px;color:var(--ink-soft);}
 .coffre-modal .row{margin-top:18px;justify-content:flex-end;}
 
 /* ---- Onglets de la page ---- */
@@ -119,6 +132,24 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
     font-weight: 600;
     letter-spacing: .04em;
 }
+
+/* ---- Affectation : grille créneaux × élèves ---- */
+.affg-scroll{overflow-x:auto;border:1px solid var(--line);border-radius:var(--radius);}
+table.affg{border-collapse:collapse;font-size:12.5px;white-space:nowrap;width:100%;}
+table.affg th,table.affg td{padding:7px 8px;border-bottom:1px solid var(--line);border-right:1px dashed var(--line);}
+table.affg thead th{background:var(--panel-raised);font-size:11px;color:var(--ink-soft);text-transform:uppercase;letter-spacing:.03em;position:sticky;top:0;z-index:2;text-align:center;}
+table.affg th.affg-horaire-head{
+  position:sticky;left:0;background:var(--panel-raised);z-index:3;text-align:left;min-width:105px;
+  box-shadow:2px 0 0 var(--line);
+}
+table.affg td.affg-creneau-cell{text-align:left;vertical-align:top;min-width:150px;white-space:normal;}
+table.affg .affg-horaire{font-family:'IBM Plex Mono',monospace;font-size:11px;color:var(--ink-soft);}
+table.affg .affg-creneau-libelle{font-size:11px;color:var(--ink-soft);margin-top:2px;}
+table.affg .affg-eleve-line{display:flex;align-items:center;justify-content:center;gap:6px;margin:2px 0;padding:2px 4px;border-radius:5px;}
+table.affg .affg-eleve-initial{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;min-width:22px;text-align:center;}
+table.affg input[type="checkbox"]{width:16px;height:16px;cursor:pointer;flex:0 0 auto;}
+table.affg .affg-eleve-line.exclu{background:#FBEEE9;opacity:.7;}
+table.affg .affg-vide{color:var(--ink-soft);font-size:11px;text-align:center;opacity:.7;}
 </style>
 </head>
 <body>
@@ -148,9 +179,11 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
   <!-- =============== COFFRE : OUVERTURE / FERMETURE =============== -->
   <div class="coffre-bar">
     <div class="etat"><span class="coffre-dot" id="coffre-dot"></span><span id="coffre-etat-txt">Coffre fermé</span></div>
-    <p class="hint">Ouvrez le coffre pour charger la liste des élèves dans les classes (configuration générale). Rien n'est jamais écrit sur le disque : les élèves chargés disparaissent au rafraîchissement, à la fermeture de l'onglet ou en fermant le coffre.</p>
+    <p class="hint">Ouvrez le coffre pour charger la liste des élèves dans les classes et gérer leurs affectations individuelles. Les changements (affectations de créneaux, etc.) ne restent qu'en mémoire tant que vous n'avez pas cliqué sur « Enregistrer le coffre » : ils disparaissent sinon au rafraîchissement, à la fermeture de l'onglet ou en fermant le coffre.</p>
     <button class="btn primary" id="btn-coffre-ouvrir">🔓 Ouvrir le coffre</button>
+    <button class="btn primary" id="btn-coffre-enregistrer" style="display:none;">💾 Enregistrer le coffre (.synapses)</button>
     <button class="btn danger" id="btn-coffre-fermer" style="display:none;">🔒 Fermer le coffre</button>
+    <span class="hint" id="coffre-modif-txt" style="display:none;color:var(--danger);font-weight:600;">● Modifications non enregistrées</span>
   </div>
 
   <div class="coffre-modal-overlay" id="coffre-modal-overlay">
@@ -164,10 +197,33 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
     </div>
   </div>
 
+  <div class="coffre-modal-overlay" id="coffre-export-modal-overlay">
+    <div class="coffre-modal">
+      <h3>Enregistrer le coffre</h3>
+      <p class="hint">Ressaisissez le mot de passe pour chiffrer et télécharger le fichier <code>.synapses</code> à jour. Le mot de passe n'est jamais conservé en mémoire d'une action à l'autre.</p>
+      <div class="field"><label>Nom du fichier</label><input type="text" id="coffre-export-nom"></div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="coffre-export-mdp"></div>
+      <div class="row"><button class="btn" data-close-coffre-export-modal="1">Annuler</button><button class="btn primary" id="btn-coffre-export-confirmer">Télécharger</button></div>
+      <p class="hint" id="coffre-export-erreur" style="color:var(--danger);display:none;"></p>
+    </div>
+  </div>
+
+  <div class="coffre-modal-overlay" id="planning-crypto-modal-overlay">
+    <div class="coffre-modal">
+      <h3 id="planning-crypto-title">Protéger le planning</h3>
+      <p class="hint" id="planning-crypto-message">Le planning complet peut contenir des identifiants d'élèves. Il sera chiffré avant d'être enregistré.</p>
+      <div class="field"><label id="planning-crypto-label">Mot de passe</label><input type="password" id="planning-crypto-mdp" autocomplete="new-password"></div>
+      <div class="security-note">🔐 Chiffrement local avec AES-256-GCM. Le mot de passe n'est jamais enregistré dans le fichier ni dans le stockage local.</div>
+      <div class="row"><button class="btn" id="btn-planning-crypto-annuler">Annuler</button><button class="btn primary" id="btn-planning-crypto-confirmer">Continuer</button></div>
+      <p class="hint" id="planning-crypto-erreur" style="color:var(--danger);display:none;"></p>
+    </div>
+  </div>
+
   <div class="page-tabs" id="page-tabs">
     <button data-tab="tab-general" class="active">Configuration générale</button>
     <button data-tab="tab-horaires">Jours travaillés &amp; horaires fixes</button>
     <button data-tab="tab-grille">Grille horaire type</button>
+    <button data-tab="tab-affectation">Affectation</button>
     <button data-tab="tab-generation">Génération</button>
     <button data-tab="tab-import">Importer / exporter</button>
   </div>
@@ -215,14 +271,29 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
       </div>
       <div class="summary-grid" id="classes-list" style="margin-top:16px;"></div>
 
-      <div id="classe-eleves-bloc" style="display:none;margin-top:20px;padding-top:16px;border-top:1px solid var(--line);">
-        <h3 style="font-size:14px;margin-bottom:8px;">Charger les élèves du coffre dans une classe</h3>
-        <p class="hint" style="margin-top:0;">Cette association (élève ↔ classe) reste en mémoire uniquement, comme le reste du coffre : elle n'est jamais enregistrée sur le disque.</p>
+      <div style="margin-top:22px;padding-top:16px;border-top:1px solid var(--line);">
+        <h3 style="font-size:15px;margin-bottom:8px;">Dispositifs</h3>
+        <p class="hint" style="margin-top:0;">Un dispositif est une entité de gestion indépendante d'une classe. Il peut être de type ULIS, SEGPA ou RASED, ne possède pas de niveau propre et peut être rattaché à une ou plusieurs classes.</p>
         <div class="row">
-          <div class="field"><label>Classe</label><select id="classe-cible-eleves"></select></div>
-          <button class="btn" id="btn-charger-eleves-classe">Charger les élèves du coffre dans cette classe</button>
+          <div class="field"><label>Nom du dispositif</label><input type="text" id="dispositif-nom" placeholder="Ex. : ULIS 1" style="width:180px;"></div>
+          <div class="field"><label>Type</label><select id="dispositif-type"><option value="ULIS">ULIS</option><option value="SEGPA">SEGPA</option><option value="RASED">RASED</option></select></div>
+          <button class="btn primary" id="btn-add-dispositif">+ Créer le dispositif</button>
+        </div>
+        <div class="summary-grid" id="dispositifs-list" style="margin-top:16px;"></div>
+      </div>
+
+      <div id="classe-eleves-bloc" style="display:none;margin-top:20px;padding-top:16px;border-top:1px solid var(--line);">
+        <h3 style="font-size:14px;margin-bottom:8px;">Charger les élèves du coffre</h3>
+        <p class="hint" style="margin-top:0;">Charge en une seule fois tous les élèves du coffre, chacun dans sa classe de référence (association élève ↔ classe utilisée uniquement pour charger le roster dans cette page). Les affectations de créneaux, elles, sont enregistrées dans le planning individuel de chaque élève, dans le coffre.</p>
+        <div class="row">
+          <button class="btn primary" id="btn-charger-tous-eleves">Charger tous les élèves du coffre</button>
         </div>
         <div class="summary-grid" id="classe-eleves-list" style="margin-top:12px;"></div>
+
+        <div class="row" style="margin-top:16px;padding-top:14px;border-top:1px solid var(--line);">
+          <div class="field"><label>Classe</label><select id="classe-cible-eleves"></select></div>
+          <button class="btn primary" id="btn-enregistrer-eleves-config">Enregistrer les créneaux des élèves</button>
+        </div>
       </div>
     </section>
   </div>
@@ -269,7 +340,68 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
       <h2>Grille horaire type (hebdomadaire)</h2>
       <p class="hint">Définissez, pour chaque classe, les créneaux du lundi au vendredi : séances (rattachées à un domaine — remplies automatiquement à la génération), récréations, pauses ou autres rituels. Cette grille se répète sur toutes les semaines de classe.</p>
       <div class="niveau-tabs" id="grille-classe-tabs"></div>
+
+      <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:14px;">
+        <span class="hint" style="margin:0;">Classe affichée : <strong id="grille-classe-nom-actions">—</strong></span>
+        <div class="row" style="gap:8px;align-items:center;">
+          <span id="grille-save-status" class="hint" style="margin:0;"></span>
+          <button class="btn primary" id="btn-save-grille">💾 Enregistrer le planning</button>
+          <button class="btn danger" id="btn-reset-grille">🗑️ Réinitialiser l'emploi du temps</button>
+          <div class="field" style="min-width:190px;">
+            <select id="grille-telecharger-format">
+              <option value="">⬇ Télécharger…</option>
+              <option value="doc">Word (.doc)</option>
+              <option value="pdf">PDF (.pdf)</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
       <div id="grille-body"></div>
+
+      <div class="ia-atelier">
+        <h3>🤖 Atelier IA — Récupérer les horaires depuis un fichier</h3>
+        <p class="hint" style="margin-top:0;">
+          Copiez le prompt ci-dessous, collez-le dans votre IA habituelle (avec le fichier Excel, PDF, Word ou une photo/scan de l'emploi du temps en pièce jointe), puis collez la réponse obtenue dans la seconde zone. La grille de la classe sélectionnée ci-dessus (<strong id="ia-classe-nom">—</strong>) sera remplie automatiquement — vous gardez la main pour tout ajuster ensuite créneau par créneau.
+        </p>
+
+        <div class="field">
+          <label for="ia-prompt">1. Prompt à copier dans votre IA</label>
+          <textarea id="ia-prompt" readonly></textarea>
+        </div>
+        <div class="ia-row">
+          <button class="btn" id="btn-ia-regenerer">🔄 Régénérer le prompt</button>
+          <button class="btn primary" id="btn-ia-copier">📋 Copier le prompt</button>
+        </div>
+
+        <div class="field" style="margin-top:18px;">
+          <label for="ia-resultat">2. Réponse de l'IA à coller ici (JSON de préférence, une liste simple fonctionne aussi)</label>
+          <textarea id="ia-resultat" placeholder='Ex. : [{"jour":"Lundi","debut":"09:00","fin":"09:45","type":"seance","nom":"Français"}, ...]'></textarea>
+        </div>
+        <div class="ia-row">
+          <button class="btn primary" id="btn-ia-remplir">✅ Remplir la grille avec ce résultat</button>
+          <span class="ia-status" id="ia-status"></span>
+        </div>
+        <p class="hint" style="margin-top:10px;">
+          Chaque ligne reconnue crée ou met à jour un créneau (jour + heure de début identiques). Le titre saisi ou récupéré est toujours ajouté <strong>sous forme de texte</strong> dans le créneau : vous pouvez le modifier librement ensuite, comme n'importe quel créneau rempli à la main.
+          <strong>Ce texte prime toujours</strong> sur les séances déjà existantes dans la banque (fichiers ou « Séquences &amp; séances ») : rien n'est réassigné automatiquement à une séance existante, ni ici ni lors de la génération du planning. C'est volontairement à vous de décider, ensuite, si un créneau doit être relié à une séquence/séance précise — l'outil ne le fait jamais à votre place.
+        </p>
+      </div>
+    </section>
+  </div>
+
+  <!-- =============== ONGLET : AFFECTATION =============== -->
+  <div class="tab-panel" id="tab-affectation">
+    <section class="card">
+      <h2>Affectation des élèves — semaine complète</h2>
+      <p class="hint">Sélectionnez une classe pour afficher tous ses créneaux du lundi au vendredi. Les créneaux sont ceux de la grille horaire type et ne sont pas modifiables ici. Pour chaque élève chargé dans la classe, chaque cellule indique s'il est affecté ou non au créneau.</p>
+      <div class="row" style="margin-bottom:14px;">
+        <div class="field"><label>Classe</label><select id="affg-classe"></select></div>
+        <button class="btn primary" id="btn-enregistrer-eleves">Enregistrer les élèves et leurs créneaux</button>
+        <span id="affg-save-status" class="hint" style="margin:0;"></span>
+      </div>
+      <div id="affg-sans-coffre" class="empty-hint" style="display:none;"></div>
+      <div id="affg-wrap"></div>
     </section>
   </div>
 
@@ -278,13 +410,39 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
     <section class="card">
       <h2>Génération du planning</h2>
       <p class="hint">Répartit automatiquement, pour chaque créneau de type « Séance », la prochaine séance disponible du domaine choisi (fichiers du dépôt + séances créées dans « Séquences &amp; séances »). Les créneaux déjà modifiés à la main dans la page d'affichage <strong>ne sont jamais écrasés</strong>.</p>
-      <button class="btn primary" id="btn-generer">Générer / mettre à jour le planning</button>
-      <span id="gen-status" style="margin-left:12px;color:var(--ink-soft);font-size:13.5px;"></span>
-      <div class="summary-grid" id="summary"></div>
+      <div class="row" style="align-items:center;gap:10px;flex-wrap:wrap;">
+        <button class="btn primary" id="btn-generer">Répartir les élèves</button>
+        <label class="field" style="margin:0;">
+          <span>Choisir un dispositif</span>
+          <select id="generation-dispositif" style="min-width:190px;"></select>
+        </label>
+        <button class="btn" id="btn-generer-dispositif">Synchroniser le dispositif avec le cahier journal</button>
+        <span id="gen-status" style="color:var(--ink-soft);font-size:13.5px;"></span>
+      </div>
+      <p class="hint" style="margin-top:14px;">
+        <strong>Répartir les élèves :</strong> répartit automatiquement les élèves sur les créneaux de leur classe à partir de leur planning individuel enregistré dans le coffre.
+        <strong>Choisir un dispositif :</strong> la grille du dispositif est saisie comme celle d'une classe : chaque créneau définit directement un temps de l'emploi du temps ULIS.
+        Le bouton ci-dessous ne reconstruit plus la grille à partir des « trous » des classes : il synchronise cette grille vers le cahier journal.
+        Les affectations individuelles des élèves déterminent ensuite les élèves présents sur ces créneaux.
+      </p>
+
+      <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line);">
+        <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:10px;">
+          <p class="hint" style="margin:0;max-width:640px;">
+            Élèves affectés au dispositif choisi ci-dessus, créneau par créneau. Cocher un élève l'affecte au dispositif à ce créneau et le retire de l'affectation de sa classe de référence ; décocher fait l'inverse. Par défaut, la case est cochée pour chaque créneau où l'élève n'est <strong>pas</strong> déjà affecté à sa classe de référence.
+          </p>
+          <div class="row" style="gap:8px;align-items:center;">
+            <span id="gend-save-status" class="hint" style="margin:0;"></span>
+            <button class="btn primary" id="btn-enregistrer-gend">Enregistrer ces affectations</button>
+          </div>
+        </div>
+        <div id="gend-sans-dispositif" class="empty-hint" style="display:none;"></div>
+        <div id="gend-wrap"></div>
+      </div>
     </section>
   </div>
 
-  <!-- =============== ONGLET : IMPORT / EXPORT JSON =============== -->
+  <!-- =============== ONGLET : IMPORT / EXPORT =============== -->
   <div class="tab-panel" id="tab-import">
     <section class="card">
       <h2>Configuration (classes, jours, récréations, calendrier)</h2>
@@ -301,16 +459,16 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
       <h2>Planning complet</h2>
       <p class="hint">
         Sauvegardez l'intégralité du planning (configuration, grilles horaires, affectations
-        et cahier journal jour par jour) dans un fichier <code>.json</code> que vous pouvez
-        conserver, transférer sur un autre poste ou déposer sur une clé USB. Ce fichier ne
-        contient aucune donnée nominative : seuls des identifiants Synapses (ELEVE-xxxx)
-        peuvent y apparaître si des groupes de journal ont été renseignés.
+        et cahier journal jour par jour) dans un fichier <code>.synapses</code>. Comme il peut
+        contenir des identifiants d'élèves, <strong>le fichier est toujours chiffré et protégé
+        par un mot de passe</strong>, exactement comme le coffre élèves. Le contenu est
+        illisible hors de Synapses.
       </p>
       <div class="row" style="align-items:center;gap:14px;">
-        <button class="btn primary" id="btn-export-json">⬇ Exporter en .json</button>
-        <button class="btn" id="btn-import-json-browse">📁 Importer un fichier .json…</button>
-        <input type="file" id="import-json-file" accept=".json,application/json" style="display:none;">
-        <span id="import-json-status" class="hint" style="margin:0;">Aucun fichier importé.</span>
+        <button class="btn primary" id="btn-export-json">🔐 Exporter le planning chiffré</button>
+        <button class="btn" id="btn-import-json-browse">📁 Ouvrir un planning .synapses…</button>
+        <input type="file" id="import-json-file" accept=".synapses" style="display:none;">
+        <span id="import-json-status" class="hint" style="margin:0;">Aucun planning importé.</span>
       </div>
     </section>
   </div>
@@ -318,8 +476,12 @@ table.vac td{padding:6px 8px;border-top:1px solid var(--line);}
 
 <div class="toast" id="toast"></div>
 
-<script src="synapses-crypto.js"></script>
-<script src="synapses-coffre.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+
+
+<script src="../fata-morgana/synapses-crypto.js"></script>
+<script src="../fata-morgana/synapses-coffre.js"></script>
 <script src="planning-core.js"></script>
 <script>
 /* =========================================================
@@ -348,6 +510,8 @@ let config = PC.chargerConfig();
 let grilles = PC.chargerGrilles();
 let banque = {}; // rempli au chargement
 let grilleClasseCourant = null;
+function entiteGrilleById(id){ return (config.classes||[]).find(x=>x.id===id) || (config.dispositifs||[]).find(x=>x.id===id) || null; }
+function estDispositifId(id){ return (config.dispositifs||[]).some(x=>x.id===id); }
 
 /* ---------------- Onglets ---------------- */
 document.querySelectorAll("#page-tabs button").forEach(b=>{
@@ -356,21 +520,62 @@ document.querySelectorAll("#page-tabs button").forEach(b=>{
     document.querySelectorAll(".tab-panel").forEach(x=>x.classList.remove("active"));
     b.classList.add("active");
     $(b.dataset.tab).classList.add("active");
+    if (b.dataset.tab === "tab-grille") renderGrilleTabs();
+    if (b.dataset.tab === "tab-affectation") { renderAffgClasseSelect(); renderAffgGrille(); }
+    if (b.dataset.tab === "tab-generation") { renderGenerationDispositifs(); renderGenDispositifGrille(); }
   });
 });
 
 /* ---------------- Coffre : ouverture / fermeture ---------------- */
-const coffre = new SynapsesCoffre.Coffre();
+// Défense en profondeur : si synapses-coffre.js / synapses-crypto.js n'ont
+// pas pu être chargés (fichier absent du déploiement, mauvais chemin, 404…),
+// on ne doit JAMAIS laisser une ReferenceError ici interrompre tout le reste
+// du script — sinon aucun bouton de la page ne répond, y compris ceux qui
+// n'ont rien à voir avec le coffre (classes, vacances, grille horaire…).
+const coffreDisponible = (typeof SynapsesCoffre !== "undefined");
+if(!coffreDisponible){
+  console.error("SynapsesCoffre est introuvable : synapses-coffre.js (et/ou synapses-crypto.js) n'a pas été chargé. Vérifiez que ces fichiers sont bien présents à côté de planning-gestion.html.");
+}
+const coffre = coffreDisponible ? new SynapsesCoffre.Coffre() : null;
+
+// Nom du fichier .synapses actuellement ouvert (pour pré-remplir l'export)
+// et indicateur de modifications du coffre non encore réenregistrées sur
+// disque. Le mot de passe, lui, n'est JAMAIS conservé au-delà de l'appel
+// qui en a besoin (voir §2 de la synthèse projet).
+let coffreNomFichier = "coffre.synapses";
+let coffreModifie = false;
+
+/** À appeler après toute écriture dans coffre.donnees (e.planning, etc.) :
+ *  signale qu'un export est nécessaire avant de fermer le coffre en
+ *  toute sécurité. */
+function marquerCoffreModifie(){
+  coffreModifie = true;
+  const t = $("coffre-modif-txt");
+  if(t) t.style.display = "";
+}
+
 function majEtatCoffre(){
+  if(!coffreDisponible){
+    $("coffre-etat-txt").textContent = "Coffre indisponible (fichier synapses-coffre.js manquant)";
+    $("btn-coffre-ouvrir").disabled = true;
+    $("btn-coffre-ouvrir").title = "synapses-coffre.js n'a pas pu être chargé — vérifiez le déploiement.";
+    return;
+  }
   const ouvert = coffre.ouvert;
   $("coffre-dot").classList.toggle("ouvert", ouvert);
   $("coffre-etat-txt").textContent = ouvert ? "Coffre ouvert (en mémoire, session en cours)" : "Coffre fermé";
   $("btn-coffre-ouvrir").style.display = ouvert ? "none" : "";
+  $("btn-coffre-enregistrer").style.display = ouvert ? "" : "none";
   $("btn-coffre-fermer").style.display = ouvert ? "" : "none";
+  if(!ouvert) $("coffre-modif-txt").style.display = "none";
   $("classe-eleves-bloc").style.display = ouvert ? "" : "none";
   if(ouvert) renderClasseElevesSelect();
+  if(typeof renderAffectationEleveSelect === "function"){ renderAffectationEleveSelect(); renderAffectationListe(); }
+  if(typeof renderAffgGrille === "function") renderAffgGrille();
+  if(typeof renderGenDispositifGrille === "function") renderGenDispositifGrille();
 }
 $("btn-coffre-ouvrir").addEventListener("click", ()=>{
+  if(!coffreDisponible){ toast("Le coffre est indisponible : synapses-coffre.js n'a pas pu être chargé."); return; }
   $("coffre-erreur").style.display = "none";
   $("coffre-fichier").value = ""; $("coffre-mdp").value = "";
   $("coffre-modal-overlay").classList.add("open");
@@ -382,6 +587,9 @@ $("btn-coffre-confirmer").addEventListener("click", async ()=>{
   if(!fichier || !mdp){ $("coffre-erreur").textContent = "Choisissez un fichier .synapses et saisissez le mot de passe."; $("coffre-erreur").style.display=""; return; }
   try{
     await coffre.ouvrir(fichier, mdp);
+    coffreNomFichier = fichier.name || "coffre.synapses";
+    coffreModifie = false;
+    $("coffre-mdp").value = "";
     $("coffre-modal-overlay").classList.remove("open");
     majEtatCoffre();
     toast("Coffre ouvert.");
@@ -391,12 +599,60 @@ $("btn-coffre-confirmer").addEventListener("click", async ()=>{
   }
 });
 $("btn-coffre-fermer").addEventListener("click", ()=>{
-  coffre.purger();
+  if(coffreModifie){
+    const continuer = confirm(
+      "Des modifications (affectations d'élèves, etc.) n'ont pas été enregistrées dans le fichier .synapses et seront définitivement perdues.\n\n"+
+      "Cliquez sur « Annuler » pour revenir en arrière et utiliser d'abord « 💾 Enregistrer le coffre », ou sur « OK » pour fermer sans enregistrer."
+    );
+    if(!continuer) return;
+  }
+  if(coffre) coffre.purger();
+  coffreModifie = false;
   majEtatCoffre();
   renderClasses(); // les libellés "N élèves chargés" redeviennent 0
   toast("Coffre fermé — données retirées de la mémoire.");
 });
-window.addEventListener("beforeunload", ()=>{ coffre.purger(); });
+
+/* ---------------- Enregistrement du coffre (export .synapses) ----------------
+ * Le bouton "Enregistrer les élèves et leurs créneaux" (et les autres actions
+ * qui modifient e.planning) n'écrivent que dans coffre.donnees, EN MÉMOIRE.
+ * Cette étape est nécessaire pour que la session en cours (autres onglets,
+ * grille du dispositif...) voie tout de suite les changements, mais elle
+ * n'est pas suffisante : sans réenregistrer le fichier .synapses chiffré,
+ * rien ne survit à la fermeture du coffre. C'est ce que fait ce bloc, via
+ * Coffre.telecharger() (synapses-coffre.js). */
+$("btn-coffre-enregistrer").addEventListener("click", ()=>{
+  if(!coffre || !coffre.ouvert){ toast("Ouvrez le coffre d'abord."); return; }
+  $("coffre-export-erreur").style.display = "none";
+  $("coffre-export-nom").value = coffreNomFichier;
+  $("coffre-export-mdp").value = "";
+  $("coffre-export-modal-overlay").classList.add("open");
+});
+document.querySelectorAll("[data-close-coffre-export-modal]").forEach(b=> b.addEventListener("click", ()=> $("coffre-export-modal-overlay").classList.remove("open")));
+$("btn-coffre-export-confirmer").addEventListener("click", async ()=>{
+  const nom = $("coffre-export-nom").value.trim() || "coffre.synapses";
+  const mdp = $("coffre-export-mdp").value;
+  if(!mdp){ $("coffre-export-erreur").textContent = "Saisissez le mot de passe du coffre."; $("coffre-export-erreur").style.display=""; return; }
+  try{
+    await coffre.telecharger(mdp, nom);
+    coffreNomFichier = nom;
+    coffreModifie = false;
+    $("coffre-export-mdp").value = "";
+    $("coffre-export-modal-overlay").classList.remove("open");
+    $("coffre-modif-txt").style.display = "none";
+    toast("Coffre enregistré : fichier " + nom + " téléchargé.");
+  }catch(e){
+    $("coffre-export-erreur").textContent = e.message || "Enregistrement impossible.";
+    $("coffre-export-erreur").style.display = "";
+  }
+});
+window.addEventListener("beforeunload", ()=>{ if(coffre) coffre.purger(); });
+// Filet de sécurité redondant : 'pagehide' se déclenche de façon plus
+// fiable que 'beforeunload' sur mobile (Safari iOS notamment) et lors
+// d'une mise en cache arrière (bfcache). Contrairement à
+// 'visibilitychange', il ne se déclenche PAS à chaque changement d'onglet,
+// donc il ne purge pas le coffre pendant une utilisation normale.
+window.addEventListener("pagehide", ()=>{ if(coffre) coffre.purger(); });
 
 /* ---------------- Configuration générale ---------------- */
 function renderConfig(){
@@ -406,6 +662,7 @@ function renderConfig(){
   renderJoursTravailles();
   renderRecreations();
   renderPauses();
+  renderDispositifs();
 }
 function renderVacances(){
   const body = $("vac-body");
@@ -416,7 +673,12 @@ function renderVacances(){
     body.appendChild(tr);
   });
   body.querySelectorAll("button[data-i]").forEach(b=>{
-    b.addEventListener("click", ()=>{ config.vacances.splice(+b.dataset.i,1); renderVacances(); });
+    b.addEventListener("click", ()=>{
+      config.vacances.splice(+b.dataset.i,1);
+      PC.sauverConfig(config);
+      renderVacances();
+      renderSummary();
+    });
   });
 }
 $("btn-add-vac").addEventListener("click", ()=>{
@@ -424,8 +686,11 @@ $("btn-add-vac").addEventListener("click", ()=>{
   if(!debut || !fin){ toast("Indiquez une date de début et de fin."); return; }
   config.vacances = config.vacances || [];
   config.vacances.push({ libelle: $("vac-libelle").value.trim(), debut, fin });
+  PC.sauverConfig(config);
   $("vac-libelle").value=""; $("vac-debut").value=""; $("vac-fin").value="";
   renderVacances();
+  renderSummary();
+  toast("Période de vacances enregistrée.");
 });
 $("btn-save-config").addEventListener("click", ()=>{
   config.rentree = $("cfg-rentree").value;
@@ -520,11 +785,12 @@ $("btn-appliquer-fixes").addEventListener("click", ()=>{
   if(!config.classes.length){ toast("Créez au moins une classe avant d'appliquer."); return; }
   if(!(config.joursTravailles||[]).length){ toast("Cochez au moins un jour travaillé."); return; }
   PC.sauverConfig(config);
-  PC.appliquerCreneauxFixes(config, grilles, config.classes.map(c=>c.id));
+  const statsFixes = PC.appliquerCreneauxFixes(config, grilles, config.classes.map(c=>c.id));
   PC.sauverGrilles(grilles);
-  $("fixes-status").textContent = "Appliqué le " + new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}) + ".";
-  toast("Récréations et pauses appliquées à la grille.");
-  renderGrilleBody();
+  const nbFixes = statsFixes?.total ?? config.classes.reduce((n, cl) => n + (grilles[cl.id] || []).filter(c => c.id?.startsWith("fixe_" + cl.id + "_")).length, 0);
+  $("fixes-status").textContent = nbFixes + " créneau(x) fixe(s) présent(s) dans les grilles — appliqué le " + new Date().toLocaleTimeString("fr-FR",{hour:"2-digit",minute:"2-digit"}) + ".";
+  toast(nbFixes + " créneau(x) fixe(s) appliqué(s) aux classes.");
+  renderGrilleTabs();
   renderSummary();
 });
 
@@ -536,24 +802,92 @@ function renderClasseNiveauSelect(sel){
 }
 renderClasseNiveauSelect($("classe-niveau"));
 
+function renderDispositifs(){
+  const wrap = $("dispositifs-list");
+  if(!wrap) return;
+  wrap.innerHTML = "";
+  (config.dispositifs||[]).forEach(d=>{
+    const nbClasses = (config.classes||[]).filter(cl=>(cl.dispositifs||[]).includes(d.id)).length;
+    const div = document.createElement("div");
+    div.className = "classe-card";
+    div.innerHTML = `
+      <span class="swatch" style="background:${d.couleur || "#5B5F6B"};"></span>
+      <div class="infos"><b>${escapeHTMLTexte(d.nom)}</b><span class="niveau">${escapeHTMLTexte(d.type)} · ${nbClasses} classe(s) rattachée(s)</span></div>
+      <button class="btn sm danger" data-del-dispositif="${d.id}">Supprimer</button>
+    `;
+    div.querySelector("[data-del-dispositif]").addEventListener("click", ()=>{
+      if(!confirm(`Supprimer le dispositif « ${d.nom} » ? Sa grille horaire sera perdue.`)) return;
+      config.dispositifs = (config.dispositifs||[]).filter(x=>x.id!==d.id);
+      (config.classes||[]).forEach(cl=>cl.dispositifs=(cl.dispositifs||[]).filter(id=>id!==d.id));
+      delete grilles[d.id];
+      PC.sauverConfig(config); PC.sauverGrilles(grilles);
+      renderDispositifs(); renderClasses(); renderGrilleTabs(); renderSummary();
+    });
+    wrap.appendChild(div);
+  });
+  if(!wrap.children.length) wrap.innerHTML='<div class="empty-hint">Aucun dispositif créé pour l’instant.</div>';
+}
+
+$("btn-add-dispositif").addEventListener("click", ()=>{
+  const nom = $("dispositif-nom").value.trim();
+  const type = $("dispositif-type").value;
+  if(!nom){ toast("Indiquez un nom de dispositif."); return; }
+  config.dispositifs = config.dispositifs || [];
+  if(config.dispositifs.some(d=>d.nom.toLowerCase()===nom.toLowerCase())){
+    toast("Un dispositif portant ce nom existe déjà."); return;
+  }
+  const couleurs = ["#6B4E8E","#3F8C4B","#B5871E"];
+  config.dispositifs.push({id:PC.uid("disp"),nom,type,couleur:couleurs[config.dispositifs.length%couleurs.length]});
+  PC.sauverConfig(config);
+  $("dispositif-nom").value="";
+  renderDispositifs(); renderClasses(); renderGrilleTabs(); renderSummary();
+  toast("Dispositif créé.");
+});
+
 function renderClasses(){
   const wrap = $("classes-list");
   wrap.innerHTML = "";
   config.classes.forEach(cl=>{
     const nbEleves = (elevesParClasse[cl.id]||[]).length;
+    const dispositifs = (config.dispositifs||[]).filter(d => (cl.dispositifs||[]).includes(d.id));
     const div = document.createElement("div");
     div.className = "classe-card";
     div.innerHTML = `
       <span class="swatch" style="background:${cl.couleur};"></span>
-      <div class="infos"><b>${cl.nom}</b><span class="niveau">${cl.niveau}${nbEleves?" · "+nbEleves+" élève(s) chargé(s)":""}</span></div>
-      <button class="btn sm danger" data-del-classe="${cl.id}">Supprimer</button>
+      <div class="infos">
+        <b>${escapeHTMLTexte(cl.nom)}</b>
+        <span class="niveau">${escapeHTMLTexte(cl.niveau)}${nbEleves?" · "+nbEleves+" élève(s) chargé(s)":""}</span>
+        <span class="niveau">Dispositifs : ${dispositifs.length ? dispositifs.map(d=>escapeHTMLTexte(d.nom)).join(", ") : "aucun"}</span>
+      </div>
+      <div class="row" style="gap:6px;align-items:center;">
+        <select data-dispositifs="${cl.id}" multiple size="${Math.min(3,Math.max(1,(config.dispositifs||[]).length))}" style="min-width:150px;">
+          ${(config.dispositifs||[]).map(d=>`<option value="${d.id}" ${(cl.dispositifs||[]).includes(d.id)?"selected":""}>${escapeHTMLTexte(d.nom)} (${escapeHTMLTexte(d.type)})</option>`).join("")}
+        </select>
+        <button class="btn sm danger" data-del-classe="${cl.id}">Supprimer</button>
+      </div>
     `;
+    div.querySelector("[data-dispositifs]").addEventListener("change", ev=>{
+      cl.dispositifs = Array.from(ev.target.selectedOptions).map(o=>o.value);
+      PC.sauverConfig(config);
+      renderClasses();
+    });
     div.querySelector("[data-del-classe]").addEventListener("click", ()=>{
       if(!confirm(`Supprimer la classe « ${cl.nom} » ? Sa grille horaire sera perdue.`)) return;
       PC.supprimerClasse(config, cl.id, grilles, PC.chargerAffectations());
+      if(coffre && coffre.ouvert){
+        let touche=false;
+        (coffre.donnees.eleves||[]).forEach(e=>{
+          if(!Array.isArray(e.planning)) return;
+          const avant=e.planning.length;
+          e.planning=e.planning.filter(p=>p.classeId!==cl.id);
+          if(e.planning.length!==avant) touche=true;
+        });
+        if(touche) marquerCoffreModifie();
+      }
       delete elevesParClasse[cl.id];
       PC.sauverConfig(config); PC.sauverGrilles(grilles);
-      renderClasses(); renderRecreations(); renderPauses(); renderGrilleTabs(); renderSummary(); renderClasseElevesSelect();
+      renderClasses(); renderDispositifs(); renderRecreations(); renderPauses(); renderGrilleTabs(); renderSummary(); renderClasseElevesSelect();
+      if(typeof renderAffectationTab === "function") renderAffectationTab();
     });
     wrap.appendChild(div);
   });
@@ -565,7 +899,8 @@ $("btn-add-classe").addEventListener("click", ()=>{
   PC.creerClasse(config, nom, $("classe-niveau").value);
   PC.sauverConfig(config);
   $("classe-nom").value = "";
-  renderClasses(); renderRecreations(); renderPauses(); renderGrilleTabs(); renderSummary(); renderClasseElevesSelect();
+  renderClasses(); renderDispositifs(); renderRecreations(); renderPauses(); renderGrilleTabs(); renderSummary(); renderClasseElevesSelect();
+  if(typeof renderAffectationTab === "function") renderAffectationTab();
 });
 
 function renderClasseElevesSelect(){
@@ -573,17 +908,56 @@ function renderClasseElevesSelect(){
   if(!sel) return;
   sel.innerHTML = config.classes.map(cl=>`<option value="${cl.id}">${cl.nom}</option>`).join("") || '<option value="">Aucune classe</option>';
 }
-$("btn-charger-eleves-classe").addEventListener("click", ()=>{
+
+// Cherche, pour une classe donnée, les élèves du coffre dont la classe de
+// référence (e.classe) correspond au nom ou au niveau de cette classe.
+// Ne renvoie AUCUN élève en secours si aucune correspondance n'est trouvée :
+// il ne faut jamais transformer une absence de classe renseignée en
+// affectation à une classe.
+function chargerElevesPourClasse(cl){
+  const elevesDuCoffre = coffre.listerEleves();
+  const normaliserClasse = (v) => String(v ?? "")
+    .trim()
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "")
+    .replace(/\s+/g, " ")
+    .toLowerCase();
+  const nomClasse = normaliserClasse(cl.nom);
+  const niveauClasse = normaliserClasse(cl.niveau);
+  const eleves = elevesDuCoffre.filter(e=>{
+    // synapses-coffre.listerEleves() expose la classe de référence sous e.classe.
+    // On conserve aussi e.identite.classe pour la compatibilité avec d'anciens
+    // coffres dans lesquels cette information pouvait être recopiée dans identité.
+    const classeEleve = normaliserClasse(e.classe || (e.identite && e.identite.classe));
+    return classeEleve && (classeEleve === nomClasse || (niveauClasse && classeEleve === niveauClasse));
+  });
+  return eleves.map(e=>({
+    identifiantSynapses: e.identifiantSynapses,
+    nom: (e.identite && (e.identite.prenom || e.identite.nom)) || e.identifiantSynapses
+  }));
+}
+
+$("btn-charger-tous-eleves").addEventListener("click", ()=>{
   if(!coffre.ouvert){ toast("Ouvrez le coffre d'abord."); return; }
-  const classeId = $("classe-cible-eleves").value;
-  if(!classeId){ toast("Créez une classe d'abord."); return; }
-  const cl = PC.classeById(config, classeId);
-  const eleves = (coffre.donnees.eleves||[]).filter(e=> (e.classe||"").toLowerCase() === (cl.nom||"").toLowerCase() || (e.classe||"").toLowerCase() === (cl.niveau||"").toLowerCase());
-  const aCharger = eleves.length ? eleves : (coffre.donnees.eleves||[]); // à défaut de correspondance de classe, propose toute la liste
-  elevesParClasse[classeId] = aCharger.map(e=>({ identifiantSynapses: e.identifiantSynapses, nom: (e.identite && (e.identite.prenom || e.identite.nom)) || e.identifiantSynapses }));
+  if(!config.classes.length){ toast("Créez au moins une classe d'abord."); return; }
+
+  let totalCharges = 0, classesAvecEleves = 0;
+  config.classes.forEach(cl=>{
+    const eleves = chargerElevesPourClasse(cl);
+    elevesParClasse[cl.id] = eleves;
+    if(eleves.length){ totalCharges += eleves.length; classesAvecEleves++; }
+  });
+
   renderClasses();
   renderClasseElevesListe();
-  toast(elevesParClasse[classeId].length + " élève(s) chargé(s) dans « " + cl.nom + " » (en mémoire uniquement).");
+  if(typeof renderAffgGrille === "function" && $("affg-classe") && $("affg-classe").value) renderAffgGrille();
+  if(typeof renderGenDispositifGrille === "function") renderGenDispositifGrille();
+
+  if(!totalCharges){
+    toast("Aucun élève du coffre ne correspond à une classe créée ici.");
+  } else {
+    toast(totalCharges + " élève(s) chargé(s) dans " + classesAvecEleves + " classe(s).");
+  }
 });
 function renderClasseElevesListe(){
   const wrap = $("classe-eleves-list");
@@ -601,19 +975,59 @@ function renderClasseElevesListe(){
 }
 
 /* ---------------- Grille horaire par classe ---------------- */
+// La grille horaire type n'est plus enregistrée automatiquement à chaque
+// modification : les changements restent en mémoire (variable `grilles`)
+// jusqu'à un clic explicite sur « Enregistrer le planning ».
+let grilleNonEnregistree = false;
+function marquerGrilleModifiee(){
+  grilleNonEnregistree = true;
+  const st = $("grille-save-status");
+  if(st){ st.textContent = "Modifications non enregistrées."; st.classList.add("warn"); }
+}
+function marquerGrilleEnregistree(){
+  grilleNonEnregistree = false;
+  const st = $("grille-save-status");
+  if(st){ st.textContent = "Planning enregistré."; st.classList.remove("warn"); }
+}
+$("btn-save-grille").addEventListener("click", ()=>{
+  PC.sauverGrilles(grilles);
+  marquerGrilleEnregistree();
+  toast("Planning enregistré.");
+});
+window.addEventListener("beforeunload", (e)=>{
+  if(!grilleNonEnregistree) return;
+  e.preventDefault();
+  e.returnValue = "";
+});
+
 function renderGrilleTabs(){
   const wrap = $("grille-classe-tabs");
   wrap.innerHTML = "";
   const classes = config.classes || [];
-  if(!classes.length){ wrap.innerHTML = '<span class="empty-hint">Créez au moins une classe dans « Configuration générale ».</span>'; $("grille-body").innerHTML=""; return; }
-  if(!classes.some(c=>c.id===grilleClasseCourant)) grilleClasseCourant = classes[0].id;
-  classes.forEach(cl=>{
+  const dispositifs = config.dispositifs || [];
+  const entites = classes.concat(dispositifs);
+  if(!entites.length){
+    wrap.innerHTML = '<span class="empty-hint">Créez au moins une classe ou un dispositif dans « Configuration générale ».</span>';
+    $("grille-body").innerHTML="";
+    return;
+  }
+  if(!entites.some(x=>x.id===grilleClasseCourant)) grilleClasseCourant = entites[0].id;
+  entites.forEach(ent=>{
     const b = document.createElement("button");
-    b.textContent = cl.nom; b.className = cl.id===grilleClasseCourant ? "active" : "";
-    b.addEventListener("click", ()=>{ grilleClasseCourant = cl.id; renderGrilleTabs(); renderGrilleBody(); });
+    b.textContent = estDispositifId(ent.id) ? `${ent.nom} · ${ent.type}` : ent.nom;
+    b.className = ent.id===grilleClasseCourant ? "active" : "";
+    b.addEventListener("click", ()=>{
+      grilleClasseCourant = ent.id;
+      renderGrilleTabs();
+      renderGrilleBody();
+    });
     wrap.appendChild(b);
   });
   renderGrilleBody();
+  const iaAtelier = document.querySelector(".ia-atelier");
+  if(iaAtelier) iaAtelier.style.display = estDispositifId(grilleClasseCourant) ? "none" : "";
+  if(typeof refreshIaAtelier === "function") refreshIaAtelier();
+  if(typeof refreshGrilleClasseNomActions === "function") refreshGrilleClasseNomActions();
 }
 
 function domainesDisponibles(classeId){
@@ -622,12 +1036,33 @@ function domainesDisponibles(classeId){
   return Object.entries(parNiveau).map(([cle,b])=>({cle,label:b.label,count:b.items.length}));
 }
 
+// Titres des séances déjà existantes dans la banque pour un domaine donné
+// (proposées en suggestion dans le champ "Titre de la séance", mais un
+// titre libre — non présent dans cette liste — reste toujours accepté).
+function titresPourDomaine(classeId, domaineCle){
+  const cl = PC.classeById(config, classeId);
+  const bucket = cl && banque[cl.niveau] && banque[cl.niveau][domaineCle];
+  if(!bucket) return [];
+  const vus = new Set();
+  const titres = [];
+  bucket.items.forEach(it=>{
+    const t = (it.titre || "").trim();
+    if(t && !vus.has(t)){ vus.add(t); titres.push(t); }
+  });
+  return titres;
+}
+function escapeAttr(s){ return (s==null?"":String(s)).replace(/&/g,"&amp;").replace(/"/g,"&quot;"); }
+function datalistOptionsHTML(titres){
+  return titres.map(t=>`<option value="${escapeAttr(t)}"></option>`).join("");
+}
+
 function renderGrilleBody(){
   const wrap = $("grille-body");
   wrap.innerHTML = "";
   if(!grilleClasseCourant) return;
   grilles[grilleClasseCourant] = grilles[grilleClasseCourant] || [];
-  const domaines = domainesDisponibles(grilleClasseCourant);
+  const estDispositif = estDispositifId(grilleClasseCourant);
+  const domaines = estDispositif ? [] : domainesDisponibles(grilleClasseCourant);
 
   PC.JOURS.forEach(j=>{
     const bloc = document.createElement("div");
@@ -637,85 +1072,925 @@ function renderGrilleBody(){
       <button class="btn sm" data-add="${j.n}">+ Ajouter un créneau</button>`;
     const list = bloc.querySelector(".creneaux-list");
     if(!creneauxJour.length) list.innerHTML = '<div class="empty-hint">Aucun créneau ce jour.</div>';
-    creneauxJour
-      .sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut))
-      .forEach(c=> list.appendChild(renderCreneauRow(c, domaines)));
+    creneauxJour.sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut))
+      .forEach(c=>list.appendChild(renderCreneauRow(c, domaines, estDispositif)));
     wrap.appendChild(bloc);
   });
 
   wrap.querySelectorAll("button[data-add]").forEach(b=>{
     b.addEventListener("click", ()=>{
-      grilles[grilleClasseCourant].push({ id:PC.uid("cr"), jour:+b.dataset.add, debut:"09:00", fin:"09:30", type:"seance", domaineCle: domaines[0]?domaines[0].cle:"" });
-      PC.sauverGrilles(grilles);
+      const nouveau = {id:PC.uid("cr"),jour:+b.dataset.add,debut:"09:00",fin:"09:30",type:"seance",domaineCle:(domaines[0]?domaines[0].cle:""),titre:"",libelle:""};
+      grilles[grilleClasseCourant].push(nouveau);
+      marquerGrilleModifiee();
       renderGrilleBody();
+
     });
   });
 }
 
-function renderCreneauRow(c, domaines){
+function renderCreneauRow(c, domaines, estDispositif){
   const row = document.createElement("div");
   row.className = "creneau-row";
   const typeOpts = Object.entries(PC.TYPES_CRENEAU).map(([k,v])=>`<option value="${k}" ${c.type===k?"selected":""}>${v.label}</option>`).join("");
-  const domOpts = domaines.length
-    ? domaines.map(d=>`<option value="${d.cle}" ${c.domaineCle===d.cle?"selected":""}>${d.label} (${d.count})</option>`).join("")
-    : `<option value="">Aucun domaine disponible</option>`;
+  const nom = c.type==="seance" ? (c.titre||"") : (c.libelle||"");
   row.innerHTML = `
-    <input type="time" value="${c.debut}" data-f="debut">
-    <input type="time" value="${c.fin}" data-f="fin">
-    <select data-f="type">${typeOpts}</select>
-    <select data-f="domaineCle" style="${c.type==="seance"?"":"display:none;"}">${domOpts}</select>
-    <input type="text" data-f="libelle" placeholder="Préciser (ex. Réunion, RDV, sieste…)" value="${(c.libelle||"").replace(/"/g,"&quot;")}" style="${c.type==="seance"?"display:none;":""}">
-    <button class="btn sm danger" data-del="1">✕</button>
+    <input type="time" value="${c.debut}" data-f="debut" aria-label="Heure de début">
+    <input type="time" value="${c.fin}" data-f="fin" aria-label="Heure de fin">
+    <select data-f="type" aria-label="Type">${typeOpts}</select>
+    <input type="text" data-f="nom" placeholder="Nom du créneau" value="${escapeAttr(nom)}">
+    <button class="btn sm danger" data-del="1">Supprimer</button>
   `;
   row.querySelectorAll("[data-f]").forEach(input=>{
     input.addEventListener("change", ()=>{
-      c[input.dataset.f] = input.value;
-      if(input.dataset.f==="type") renderGrilleBody(); // active/désactive le select domaine + champ libellé
-      PC.sauverGrilles(grilles);
+      if(input.dataset.f==="nom"){
+        if(c.type==="seance"){
+          c.titre=input.value;
+          if(input.value.trim()) c.domaineCle=trouverDomaineCle(grilleClasseCourant,input.value);
+          else if(!c.domaineCle && domaines.length) c.domaineCle=domaines[0].cle;
+        }else c.libelle=input.value;
+      }else{
+        c[input.dataset.f]=input.value;
+        if(input.dataset.f==="type" && c.type==="seance" && !c.domaineCle && domaines.length) c.domaineCle=domaines[0].cle;
+      }
+      marquerGrilleModifiee();
+      if(input.dataset.f==="type") renderGrilleBody();
+
     });
   });
   row.querySelector("[data-del]").addEventListener("click", ()=>{
     grilles[grilleClasseCourant] = grilles[grilleClasseCourant].filter(x=>x.id!==c.id);
-    PC.sauverGrilles(grilles);
+    marquerGrilleModifiee();
     renderGrilleBody();
   });
   return row;
 }
 
-/* ---------------- Résumé / génération ---------------- */
-function renderSummary(){
-  const wrap = $("summary");
-  wrap.innerHTML = "";
-  const semaines = PC.calculerSemaines(config);
-  (config.classes||[]).forEach(cl=>{
-    const grille = (grilles[cl.id]||[]).filter(c=>c.type==="seance");
-    const besoinsParDomaine = {};
-    grille.forEach(c=>{ besoinsParDomaine[c.domaineCle] = (besoinsParDomaine[c.domaineCle]||0) + semaines.length; });
-    Object.entries(besoinsParDomaine).forEach(([cle,besoin])=>{
-      const dispo = (banque[cl.niveau] && banque[cl.niveau][cle]) ? banque[cl.niveau][cle].items.length : 0;
-      const label = (banque[cl.niveau] && banque[cl.niveau][cle]) ? banque[cl.niveau][cle].label : cle;
-      const div = document.createElement("div");
-      div.className = "summary-item";
-      div.innerHTML = `<b>${cl.nom} · ${label}</b>${dispo} séance(s) disponible(s) pour ${besoin} créneau(x) sur ${semaines.length} semaine(s) — <span class="${dispo>=besoin?'ok':'warn'}">${dispo>=besoin?'suffisant':'insuffisant'}</span>`;
-      wrap.appendChild(div);
+/* ---------------- Réinitialisation de l'emploi du temps d'une classe ---------------- */
+
+function refreshGrilleClasseNomActions(){
+  const cl = entiteGrilleById(grilleClasseCourant);
+  $("grille-classe-nom-actions").textContent = cl ? cl.nom : "—";
+}
+
+$("btn-reset-grille").addEventListener("click", ()=>{
+  if(!grilleClasseCourant){ toast("Sélectionnez d'abord une classe ou un dispositif."); return; }
+  const cl = entiteGrilleById(grilleClasseCourant);
+  const nom = cl ? cl.nom : "cette entité";
+  const confirme = confirm(
+    `Réinitialiser l'emploi du temps de « ${nom} » ?\n\n` +
+    "Tous les créneaux de cette classe seront supprimés (séances, titres saisis ou importés, récréations, pauses, autres rituels).\n" +
+    "Seules les informations de la configuration générale (jours travaillés, récréations et pauses définies dans « Jours travaillés & horaires fixes ») seront remises en place automatiquement.\n\n" +
+    "Cliquez ensuite sur « Enregistrer le planning » pour valider ce changement."
+  );
+  if(!confirme) return;
+  grilles[grilleClasseCourant] = [];
+  if(!estDispositifId(grilleClasseCourant)) PC.appliquerCreneauxFixes(config, grilles, [grilleClasseCourant]);
+  marquerGrilleModifiee();
+  renderGrilleBody();
+  toast(`Emploi du temps de « ${nom} » réinitialisé — pensez à l'enregistrer.`);
+});
+
+/* ---------------- Téléchargement de l'emploi du temps (Word / PDF) ---------------- */
+
+function slugify(str){
+  return (str||"").toString().toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[^a-z0-9]+/g,"-").replace(/(^-|-$)/g,"").slice(0,60) || "classe";
+}
+function escapeHTMLTexte(s){
+  return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");
+}
+
+function libelleCreneauExport(c, domaines){
+  if(c.type === "seance"){
+    const dom = domaines.find(d=>d.cle===c.domaineCle);
+    const domLabel = dom ? dom.label : (c.domaineCle || "Séance");
+    const titre = (c.titre||"").trim();
+    return titre ? `${domLabel} — ${titre}` : domLabel;
+  }
+  const libelle = (c.libelle && c.libelle.trim()) ? c.libelle.trim() : null;
+  const typeLabel = (PC.TYPES_CRENEAU[c.type] || {}).label || c.type;
+  return libelle || typeLabel;
+}
+
+// [ [jourNom, "HH:MM–HH:MM", texte], ... ], uniquement pour les jours
+// travaillés (config générale), un jour sans créneau reste visible avec
+// une ligne "Aucun créneau" plutôt que de disparaître silencieusement.
+function construireLignesGrillePourExport(classeId){
+  const domaines = domainesDisponibles(classeId);
+  const joursActifs = (config.joursTravailles && config.joursTravailles.length) ? config.joursTravailles.map(Number) : [1,2,3,4,5];
+  const grille = grilles[classeId] || [];
+  const lignes = [];
+  PC.JOURS.filter(j=>joursActifs.includes(j.n)).forEach(j=>{
+    const creneaux = grille.filter(c=>c.jour===j.n).sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
+    if(!creneaux.length){ lignes.push([j.nom, "—", "Aucun créneau"]); return; }
+    creneaux.forEach(c=> lignes.push([j.nom, `${c.debut}–${c.fin}`, libelleCreneauExport(c, domaines)]));
+  });
+  return lignes;
+}
+
+function telechargerGrillePDF(classeId){
+  const cl = entiteGrilleById(classeId);
+  if(!cl) return;
+  if(!(window.jspdf && window.jspdf.jsPDF)){
+    alert("La bibliothèque PDF (jsPDF) n'a pas pu être chargée (connexion internet nécessaire au premier chargement de la page). Réessayez, ou choisissez le format Word.");
+    return;
+  }
+  const JsPDF = window.jspdf.jsPDF;
+  const doc = new JsPDF({ unit:"pt", format:"a4", orientation:"portrait" });
+  const navy = [30,42,74], accent = [46,94,170], line = [222,219,210], inkSoft = [91,95,107];
+
+  doc.setFillColor(navy[0],navy[1],navy[2]);
+  doc.rect(0, 0, doc.internal.pageSize.getWidth(), 58, "F");
+  doc.setTextColor(255,255,255);
+  doc.setFont("helvetica","bold"); doc.setFontSize(16);
+  doc.text("Emploi du temps — " + cl.nom, 36, 34);
+  doc.setFont("helvetica","normal"); doc.setFontSize(10);
+  doc.text(estDispositifId(classeId) ? ("Dispositif " + cl.type) : ("Niveau " + cl.niveau), 36, 49);
+
+  const lignes = construireLignesGrillePourExport(classeId);
+  doc.autoTable({
+    startY: 72,
+    head: [["Jour","Horaire","Séance / créneau"]],
+    body: lignes,
+    theme: "grid",
+    styles: { font:"helvetica", fontSize:9.5, cellPadding:6, textColor:[32,36,46], lineColor: line, lineWidth:0.5 },
+    headStyles: { fillColor: accent, textColor:255, fontStyle:"bold" },
+    columnStyles: { 0:{cellWidth:78}, 1:{cellWidth:88} },
+    didParseCell: (data)=>{
+      if(data.section==="body" && data.column.index===2 && data.cell.raw==="Aucun créneau"){
+        data.cell.styles.textColor = inkSoft;
+        data.cell.styles.fontStyle = "italic";
+      }
+    }
+  });
+
+  doc.save(slugify(cl.nom) + "-emploi-du-temps.pdf");
+}
+
+function telechargerGrilleDoc(classeId){
+  const cl = entiteGrilleById(classeId);
+  if(!cl) return;
+  const lignes = construireLignesGrillePourExport(classeId);
+  const rowsHTML = lignes.map(([jour,horaire,texte])=>
+    `<tr>
+      <td style="padding:5px 9px;border:1px solid #DEDBD2;">${escapeHTMLTexte(jour)}</td>
+      <td style="padding:5px 9px;border:1px solid #DEDBD2;">${escapeHTMLTexte(horaire)}</td>
+      <td style="padding:5px 9px;border:1px solid #DEDBD2;${texte==="Aucun créneau"?"color:#5B5F6B;font-style:italic;":""}">${escapeHTMLTexte(texte)}</td>
+    </tr>`
+  ).join("");
+  const html = `<!DOCTYPE html><html><head><meta charset="UTF-8">
+<style>
+  body{font-family:Calibri,Arial,sans-serif;color:#20242E;}
+  h1{font-size:20px;color:#1E2A4A;margin-bottom:2px;}
+  p.sub{color:#5B5F6B;margin-top:0;font-size:12px;}
+  table{border-collapse:collapse;width:100%;margin-top:14px;}
+  th{background:#1E2A4A;color:#fff;padding:6px 9px;text-align:left;font-size:12px;}
+  td{font-size:12px;}
+</style></head>
+<body>
+  <h1>Emploi du temps — ${escapeHTMLTexte(cl.nom)}</h1>
+  <p class="sub">${estDispositifId(classeId) ? ("Dispositif " + escapeHTMLTexte(cl.type||"")) : ("Niveau " + escapeHTMLTexte(cl.niveau))} — généré depuis Synapses, Grand Planificateur pédagogique.</p>
+  <table>
+    <thead><tr><th>Jour</th><th>Horaire</th><th>Séance / créneau</th></tr></thead>
+    <tbody>${rowsHTML}</tbody>
+  </table>
+</body></html>`;
+
+  const blob = new Blob(["\ufeff", html], { type: "application/msword" });
+  const a = document.createElement("a");
+  a.href = URL.createObjectURL(blob);
+  a.download = slugify(cl.nom) + "-emploi-du-temps.doc";
+  a.click();
+  URL.revokeObjectURL(a.href);
+}
+
+$("grille-telecharger-format").addEventListener("change", (e)=>{
+  const format = e.target.value;
+  e.target.value = "";
+  if(!format) return;
+  if(!grilleClasseCourant){ toast("Sélectionnez d'abord une classe."); return; }
+  if(format === "pdf") telechargerGrillePDF(grilleClasseCourant);
+  else if(format === "doc") telechargerGrilleDoc(grilleClasseCourant);
+  toast("Téléchargement lancé.");
+});
+
+/* ---------------- Atelier IA : import d'un emploi du temps ---------------- */
+
+function genererPromptIa(){
+  const cl = PC.classeById(config, grilleClasseCourant);
+  if(!cl) return "Sélectionnez une classe pour importer sa grille horaire.";
+  return (
+`Tu es un assistant qui extrait un emploi du temps scolaire à partir d'un document joint (Excel, PDF, Word, photo ou scan).
+
+Classe concernée : ${cl.nom} (niveau ${cl.niveau}).
+
+Renvoie UNIQUEMENT un tableau JSON. Chaque objet représente un créneau horaire récurrent de la semaine :
+
+[
+  {"jour":"Lundi","debut":"09:00","fin":"09:45","type":"seance","nom":"Lecture"},
+  {"jour":"Lundi","debut":"09:45","fin":"10:00","type":"recreation","nom":"Récréation"}
+]
+
+Règles impératives :
+- "jour" : Lundi, Mardi, Mercredi, Jeudi ou Vendredi.
+- "debut" et "fin" : HH:MM, format 24 heures.
+- "type" : "seance", "recreation", "pause" ou "autre".
+- "nom" : nom/libellé visible du créneau, sans inventer de séance précise.
+- NE FOURNIS PAS de champ "matiere", "domaine" ou "domaineCle" : le domaine reste une donnée interne à Synapses et sera déterminé plus tard lors de la génération.
+- NE FAIS AUCUNE affectation d'élève et ne renseigne aucun élève.
+- Ne fusionne pas deux créneaux différents.
+- Ne crée pas de créneau absent du document.
+- Pour une séance, "nom" peut être la matière ou l'intitulé général visible (ex. "Français", "Mathématiques", "Lecture"). Le rattachement à une séance précise se fera dans le cahier journal.
+- Pour une récréation, pause ou autre temps non pédagogique, indique son libellé dans "nom".
+
+Réponds uniquement avec le tableau JSON, sans commentaire ni bloc de code.`
+  );
+}
+
+function refreshIaAtelier(){
+  const cl = PC.classeById(config, grilleClasseCourant);
+  $("ia-classe-nom").textContent = cl ? cl.nom : "—";
+  $("ia-prompt").value = genererPromptIa();
+}
+
+$("btn-ia-regenerer").addEventListener("click", ()=>{
+  $("ia-prompt").value = genererPromptIa();
+  toast("Prompt régénéré.");
+});
+
+$("btn-ia-copier").addEventListener("click", async ()=>{
+  const txt = $("ia-prompt").value;
+  try{
+    await navigator.clipboard.writeText(txt);
+    toast("Prompt copié dans le presse-papiers.");
+  }catch(e){
+    $("ia-prompt").select();
+    document.execCommand("copy");
+    toast("Prompt copié (sélection manuelle).");
+  }
+});
+
+// Nom de jour (français, insensible aux accents/majuscules) -> numéro PC.JOURS
+function jourVersNumero(nomJour){
+  if(!nomJour) return null;
+  const norm = String(nomJour).toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+  const trouve = PC.JOURS.find(j=>{
+    const jn = j.nom.toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"");
+    return jn === norm || jn.startsWith(norm) || norm.startsWith(jn);
+  });
+  return trouve ? trouve.n : null;
+}
+
+// Heure tolérante : "9h", "9h00", "09:00", "9.00" -> "09:00"
+function normaliserHeure(h){
+  if(!h) return null;
+  const m = String(h).trim().match(/^(\d{1,2})\s*[:h.]\s*(\d{0,2})/i);
+  if(!m) return null;
+  const hh = String(Math.min(23, parseInt(m[1],10))).padStart(2,"0");
+  const mm = String(m[2] ? parseInt(m[2],10) : 0).padStart(2,"0");
+  return `${hh}:${mm}`;
+}
+
+function normaliserTexte(s){
+  return String(s||"").toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g,"").trim();
+}
+
+function trouverDomaineCle(classeId, matiereTexte){
+  const domaines = domainesDisponibles(classeId);
+  if(!matiereTexte) return domaines[0] ? domaines[0].cle : "";
+  const cible = normaliserTexte(matiereTexte);
+  let meilleur = domaines.find(d=> normaliserTexte(d.label) === cible);
+  if(!meilleur) meilleur = domaines.find(d=> normaliserTexte(d.label).includes(cible) || cible.includes(normaliserTexte(d.label)));
+  return meilleur ? meilleur.cle : (domaines[0] ? domaines[0].cle : "");
+}
+
+const MOTS_CLES_NON_SEANCE = {
+  recreation: "recre",
+  pause: /pause|cantine|meridienne|repas/i
+};
+
+function typeCreneauDepuisMatiere(matiereTexte){
+  const t = normaliserTexte(matiereTexte);
+  if(!t) return "seance";
+  if(t.includes("recre")) return "recreation";
+  if(MOTS_CLES_NON_SEANCE.pause.test(t)) return "pause";
+  return "seance";
+}
+
+// Accepte du JSON strict, ou (repli) des lignes du type :
+// "Lundi 09:00-09:45 Lecture : Découverte du texte support"
+function parserResultatIa(texte){
+  const brut=(texte||"").trim();
+  if(!brut) return [];
+  const sansCloture=brut.replace(/^```(?:json)?/i,"").replace(/```$/,"").trim();
+  try{
+    const data=JSON.parse(sansCloture);
+    if(Array.isArray(data)) return data.map(l=>({
+      jour:l.jour, debut:l.debut, fin:l.fin,
+      type:l.type || typeCreneauDepuisMatiere(l.matiere||""),
+      nom:l.nom || l.titre || l.seance || l.matiere || ""
+    }));
+  }catch(e){}
+  const resultats=[];
+  const lignes=brut.split(/\r?\n/).map(l=>l.trim()).filter(Boolean);
+  const re=/^([A-Za-zÀ-ÿ]+)\s+(\d{1,2}[:h.]\d{0,2})\s*[-–à]\s*(\d{1,2}[:h.]\d{0,2})\s*[-—:]?\s*(.*)$/i;
+  lignes.forEach(l=>{
+    const m=l.match(re); if(!m) return;
+    const reste=m[4]||"";
+    resultats.push({jour:m[1],debut:m[2],fin:m[3],type:typeCreneauDepuisMatiere(reste),nom:reste.trim()});
+  });
+  return resultats;
+}
+
+$("btn-ia-remplir").addEventListener("click", ()=>{
+  const statusEl = $("ia-status");
+  statusEl.className = "ia-status";
+  if(!grilleClasseCourant){ statusEl.textContent = "Sélectionnez d'abord une classe."; statusEl.classList.add("err"); return; }
+
+  const lignes = parserResultatIa($("ia-resultat").value);
+  if(!lignes.length){
+    statusEl.textContent = "Aucune ligne exploitable détectée dans le texte collé (vérifiez le format JSON).";
+    statusEl.classList.add("err");
+    return;
+  }
+
+  grilles[grilleClasseCourant] = grilles[grilleClasseCourant] || [];
+  let ajoutes = 0, mis_a_jour = 0, ignores = 0;
+
+  lignes.forEach(l=>{
+    const jourN = jourVersNumero(l.jour);
+    const debut = normaliserHeure(l.debut);
+    const fin = normaliserHeure(l.fin);
+    if(jourN===null || !debut || !fin){ ignores++; return; }
+
+    const type = ["seance","recreation","pause","autre"].includes(l.type) ? l.type : typeCreneauDepuisMatiere(l.nom);
+    const nom = (l.nom || "").trim();
+    const domaineCle = type==="seance" ? trouverDomaineCle(grilleClasseCourant, nom) : "";
+
+    const existant = grilles[grilleClasseCourant].find(c=> c.jour===jourN && c.debut===debut);
+    if(existant){
+      existant.fin = fin;
+      existant.type = type;
+      if(type==="seance"){ existant.domaineCle = domaineCle; existant.titre = nom; }
+      else { existant.libelle = nom || PC.TYPES_CRENEAU[type].label; }
+      mis_a_jour++;
+    } else {
+      const nouveau = { id: PC.uid("cr"), jour: jourN, debut, fin, type, domaineCle:"" };
+      if(type==="seance"){ nouveau.domaineCle = domaineCle; nouveau.titre = nom; }
+      else { nouveau.libelle = nom || PC.TYPES_CRENEAU[type].label; }
+      grilles[grilleClasseCourant].push(nouveau);
+      ajoutes++;
+    }
+  });
+
+  marquerGrilleModifiee();
+  renderGrilleBody();
+
+  statusEl.textContent = `${ajoutes} créneau(x) ajouté(s), ${mis_a_jour} mis à jour${ignores? `, ${ignores} ligne(s) ignorée(s) (jour/heure non reconnu)` : ""} — pensez à enregistrer le planning.`;
+  statusEl.classList.add(ignores && !ajoutes && !mis_a_jour ? "err" : "ok");
+  toast("Grille mise à jour depuis le résultat de l'IA.");
+});
+
+/* ---------------- Affectation élève ↔ créneau ---------------- */
+function elevePlanning(e){
+  return Array.isArray(e && e.planning) ? e.planning : [];
+}
+function eleveEstAffecteAuCreneau(e, classeId, creneauId){
+  return elevePlanning(e).some(p=>p.classeId===classeId && p.creneauId===creneauId);
+}
+function coffreEleveById(id){
+  if(!coffre || !coffre.ouvert) return null;
+  return (coffre.donnees.eleves||[]).find(e=>e.identifiantSynapses===id) || null;
+}
+function enregistrerElevesClasse(classeId, etat){
+  if(!coffre || !coffre.ouvert) throw new Error("Ouvrez le coffre avant d'enregistrer.");
+  const cl = PC.classeById(config, classeId);
+  const roster = elevesParClasse[classeId] || [];
+  if(!cl) throw new Error("Classe introuvable.");
+  if(!roster.length) throw new Error("Aucun élève chargé dans cette classe.");
+
+  // IMPORTANT :
+  // `grilles[classeId]` est le planning TYPE de la classe.
+  // Il est uniquement LU ici et n'est JAMAIS modifié.
+  const creneaux = (grilles[classeId]||[]).slice();
+  let enregistres=0;
+
+  roster.forEach(ref=>{
+    const e = coffreEleveById(ref.identifiantSynapses);
+    if(!e) return;
+
+    if(!Array.isArray(e.planning)) e.planning=[];
+
+    // On ne remplace QUE les créneaux de CETTE classe dans le planning
+    // individuel de l'élève. Les autres classes sont conservées.
+    e.planning = e.planning.filter(p => p.classeId !== classeId);
+
+    creneaux.forEach(c=>{
+      const cle=ref.identifiantSynapses+"::"+c.id;
+      const coche = etat ? etat[cle] === true : true;
+      if(!coche) return;
+
+      // Écriture uniquement dans e.planning, donc dans le .synapse.
+      e.planning.push({
+        classeId: cl.id,
+        classeNom: cl.nom,
+        creneauId: c.id,
+        jour: c.jour,
+        debut: c.debut,
+        fin: c.fin,
+        domaineCle: c.domaineCle||""
+      });
+      enregistres++;
     });
   });
-  if(!wrap.children.length) wrap.innerHTML = '<div class="empty-hint">Aucun créneau de type « Séance » configuré pour l\'instant.</div>';
+
+  return enregistres;
+}
+
+$("btn-enregistrer-eleves-config").addEventListener("click",()=>{
+  const classeId=$("classe-cible-eleves").value;
+  try{
+    const n=enregistrerElevesClasse(classeId);
+    if(n>0) marquerCoffreModifie();
+    $("affg-save-status").textContent=`${n} affectation(s) enregistrée(s) en mémoire — pensez à « 💾 Enregistrer le coffre » pour les conserver.`;
+    toast("Planning individuel initialisé : tous les créneaux sont cochés.");
+    if($("affg-classe").value===classeId) renderAffgGrille();
+  }catch(e){ toast(e.message||String(e)); }
+});
+
+function initialesEleve(ref){
+  const nom=String(ref?.nom||"").trim();
+  if(!nom) return "?";
+  const morceaux=nom.split(/\s+/).filter(Boolean);
+  if(morceaux.length===1) return morceaux[0].slice(0,2).toUpperCase();
+  return (morceaux[0][0]+morceaux[morceaux.length-1][0]).toUpperCase();
+}
+
+let affgEtatEnCours={};
+
+function renderAffgClasseSelect(){
+  const sel=$("affg-classe");
+  const prev=sel.value;
+  sel.innerHTML=(config.classes||[]).map(cl=>`<option value="${cl.id}">${escapeHTMLTexte(cl.nom)}</option>`).join("")||'<option value="">Aucune classe</option>';
+  if(prev && config.classes.some(c=>c.id===prev)) sel.value=prev;
+}
+
+function renderAffgGrille(){
+  const wrap=$("affg-wrap"),hint=$("affg-sans-coffre");
+  const classeId=$("affg-classe").value;
+  wrap.innerHTML="";
+  affgEtatEnCours={};
+
+  if(!classeId){hint.style.display="";hint.textContent="Créez et sélectionnez une classe.";return;}
+  if(!coffre||!coffre.ouvert){hint.style.display="";hint.textContent="Ouvrez le coffre pour charger les élèves et enregistrer leur planning individuel.";return;}
+
+  const roster=elevesParClasse[classeId]||[];
+  if(!roster.length){hint.style.display="";hint.textContent="Aucun élève chargé dans cette classe.";return;}
+  hint.style.display="none";
+
+  // Lecture seule : les créneaux de la classe servent uniquement de référence.
+  const creneaux=(grilles[classeId]||[]).slice().sort(
+    (a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut)||PC.heureVersMin(a.fin)-PC.heureVersMin(b.fin)
+  );
+  if(!creneaux.length){wrap.innerHTML='<div class="empty-hint">Aucun créneau dans la grille horaire type de cette classe.</div>';return;}
+
+  // Regroupement des lignes par heure de DÉBUT uniquement.
+  // (Un regroupement sur debut::fin faisait perdre des créneaux dès que la
+  // durée différait d'un jour à l'autre : le créneau se retrouvait alors
+  // sur une autre ligne, et la cellule du jour concerné restait vide sur
+  // la ligne "attendue" alors que la donnée existait bien ailleurs.)
+  const horaires=[],map=new Map();
+  creneaux.forEach(c=>{
+    const cle=c.debut;
+    if(!map.has(cle)){const h={cle,debut:c.debut,fins:new Set(),parJour:{}};map.set(cle,h);horaires.push(h);}
+    map.get(cle).fins.add(c.fin);
+    if(!map.get(cle).parJour[c.jour]) map.get(cle).parJour[c.jour]=[];
+    map.get(cle).parJour[c.jour].push(c);
+  });
+  horaires.sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
+
+  // Pour chaque élève, on lit UNIQUEMENT son planning individuel.
+  const presenceParEleve={};
+  roster.forEach(ref=>{
+    const e=coffreEleveById(ref.identifiantSynapses);
+    const existants=Array.isArray(e?.planning)
+      ? e.planning.filter(p=>p.classeId===classeId)
+      : [];
+    presenceParEleve[ref.identifiantSynapses]={
+      e,
+      aDejaUnPlanning:existants.length>0,
+      ids:new Set(existants.map(p=>p.creneauId))
+    };
+  });
+
+  const table=document.createElement("table");table.className="affg";
+  const thead=document.createElement("thead"),hr=document.createElement("tr");
+  hr.innerHTML='<th class="affg-horaire-head">Horaire</th>'+PC.JOURS.map(j=>`<th>${escapeHTMLTexte(j.nom)}</th>`).join("");
+  thead.appendChild(hr);table.appendChild(thead);
+
+  horaires.forEach(h=>{
+    const tr=document.createElement("tr");
+    const th=document.createElement("th");th.className="affg-horaire-head";
+    const finsTriees=[...h.fins].sort((a,b)=>PC.heureVersMin(a)-PC.heureVersMin(b));
+    const finLabel=finsTriees.length===1?finsTriees[0]:finsTriees[0]+"…";
+    th.innerHTML=`<span class="affg-horaire">${escapeHTMLTexte(h.debut)}–${escapeHTMLTexte(finLabel)}</span>`;
+    tr.appendChild(th);
+
+    PC.JOURS.forEach(j=>{
+      const td=document.createElement("td");td.className="affg-creneau-cell";
+      const liste=h.parJour[j.n]||[];
+
+      if(!liste.length){td.innerHTML='<div class="affg-vide">—</div>';tr.appendChild(td);return;}
+
+      liste.forEach(c=>{
+        const nom=c.type==="seance"?(c.titre||""):(c.libelle||"");
+        if(nom){
+          const lib=document.createElement("div");lib.className="affg-creneau-libelle";lib.textContent=nom;td.appendChild(lib);
+        }
+
+        roster.forEach(ref=>{
+          const info=presenceParEleve[ref.identifiantSynapses];
+          if(!info.e)return;
+
+          const cle=ref.identifiantSynapses+"::"+c.id;
+
+          // Par défaut : coché si aucun planning individuel n'a encore
+          // été enregistré pour cette classe.
+          const coche=info.aDejaUnPlanning ? info.ids.has(c.id) : true;
+          affgEtatEnCours[cle]=coche;
+
+          const line=document.createElement("label");
+          line.className="affg-eleve-line"+(coche?"":" exclu");
+
+          const initiale=document.createElement("span");
+          initiale.className="affg-eleve-initial";
+          initiale.textContent=initialesEleve(ref);
+
+          const cb=document.createElement("input");
+          cb.type="checkbox";cb.checked=coche;
+          cb.setAttribute("aria-label",`${ref.nom} — ${j.nom} ${c.debut}–${c.fin}`);
+          cb.addEventListener("change",()=>{
+            affgEtatEnCours[cle]=cb.checked;
+            line.classList.toggle("exclu",!cb.checked);
+            $("affg-save-status").textContent="Modifications en attente d'enregistrement.";
+          });
+
+          line.appendChild(initiale);line.appendChild(cb);td.appendChild(line);
+        });
+      });
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+
+  const scroll=document.createElement("div");scroll.className="affg-scroll";
+  scroll.appendChild(table);wrap.appendChild(scroll);
+}
+
+$("affg-classe").addEventListener("change",renderAffgGrille);
+$("btn-enregistrer-eleves").addEventListener("click",()=>{
+  const status=$("affg-save-status");status.textContent="";
+  try{
+    const classeId=$("affg-classe").value;
+    const n=enregistrerElevesClasse(classeId,affgEtatEnCours);
+    if(n>0) marquerCoffreModifie();
+    status.textContent=`${n} créneau(x) enregistré(s) en mémoire. Les cases décochées ont été retirées du planning individuel des élèves — pensez à « 💾 Enregistrer le coffre » pour les conserver dans le fichier .synapses.`;
+    renderAffgGrille();
+    toast("Les plannings individuels ont été mis à jour dans le coffre (en mémoire).");
+  }catch(e){status.textContent=e.message||String(e);toast(status.textContent);}
+});
+
+/* ---------------- Résumé / génération ---------------- */
+// Anciennement : liste texte « X séance(s) disponible(s) pour Y créneau(x) ».
+// Remplacée par la grille d'affectation du dispositif (onglet Génération),
+// mais on conserve ce nom de fonction car il est appelé à de nombreux points
+// de rafraîchissement globaux (création/suppression de classe ou de
+// dispositif, ouverture du coffre, etc.).
+function renderSummary(){
+  if(typeof renderGenDispositifGrille === "function") renderGenDispositifGrille();
+}
+
+function renderGenerationDispositifs(){
+  const sel=$("generation-dispositif");
+  if(!sel) return;
+  const prev=sel.value;
+  const dispositifs=config.dispositifs||[];
+  sel.innerHTML=dispositifs.length
+    ? dispositifs.map(d=>`<option value="${d.id}">${escapeHTMLTexte(d.nom)} (${escapeHTMLTexte(d.type||"")})</option>`).join("")
+    : '<option value="">Aucun dispositif</option>';
+  if(prev && dispositifs.some(d=>d.id===prev)) sel.value=prev;
 }
 
 $("btn-generer").addEventListener("click", async ()=>{
-  if(!config.rentree){ toast("Renseignez une date de rentrée avant de générer."); return; }
+  if(!config.rentree){ toast("Renseignez une date de rentrée avant de répartir."); return; }
   if(!config.classes.length){ toast("Créez au moins une classe."); return; }
-  $("gen-status").textContent = "Génération en cours…";
+  if(!coffre || !coffre.ouvert){ toast("Ouvrez le coffre avant de répartir les élèves."); return; }
+  $("gen-status").textContent="Répartition des élèves en cours…";
   try{
-    const affectationsExistantes = PC.chargerAffectations();
-    const nouvelles = await PC.genererAffectations(config.classes, config, grilles, affectationsExistantes);
+    const affectationsExistantes=PC.chargerAffectations();
+    const nouvelles=await PC.genererAffectations(config.classes,config,grilles,affectationsExistantes);
     PC.sauverAffectations(nouvelles);
-    $("gen-status").textContent = "Planning généré. Consultez la page « Planning — Affichage ».";
-    toast("Planning généré avec succès.");
+    const stats=PC.repartirElevesSemaineAuto(config,grilles,nouvelles,coffre);
+    $("gen-status").textContent=
+      `${stats.ajouts} affectation(s) d'élève · ${stats.groupes} groupe(s) automatique(s).`;
+    toast("Répartition des élèves terminée.");
   }catch(e){
-    $("gen-status").textContent = "Erreur : " + e.message;
+    $("gen-status").textContent="Erreur : "+(e.message||e);
+    toast("Répartition impossible.");
   }
+});
+
+/**
+ * Synchronise l'emploi du temps du dispositif avec le cahier journal.
+ * La grille du dispositif est désormais saisie manuellement, exactement
+ * comme une grille de classe. La source de vérité est donc la grille, et non
+ * une génération automatique à partir des créneaux libres des classes.
+ */
+async function synchroniserDispositifDansJournal(dispositifId){
+  const disp=(config.dispositifs||[]).find(d=>d.id===dispositifId);
+  if(!disp) throw new Error("Dispositif introuvable.");
+  const grille=grilles[dispositifId]||[];
+  if(!grille.length) throw new Error("La grille du dispositif est vide. Saisissez d'abord ses créneaux dans l'onglet Planning.");
+  try{ if(!Object.keys(banque).length) banque=await PC.chargerBanque(); }catch(e){}
+  const journal=PC.chargerJournal();
+  const semaines=PC.calculerSemaines(config);
+  const joursTravail=new Set((config.joursTravailles||[1,2,3,4,5]).map(Number));
+  let jours=0;
+  semaines.forEach(sem=>{
+    PC.JOURS.forEach(j=>{
+      if(!joursTravail.has(j.n)) return;
+      const iso=PC.dateISO(PC.addDays(sem.lundi,j.n-1));
+      PC.genererJournalDepuisGrille(iso,config,grilles,affectations,banque,coffre);
+      jours++;
+    });
+  });
+  return {dispositif:disp.nom, jours, creneaux:grille.length};
+}
+
+$("btn-generer-dispositif").addEventListener("click",async()=>{
+  const dispositifId=$("generation-dispositif").value;
+  if(!dispositifId){ toast("Choisissez un dispositif."); return; }
+  try{
+    $("gen-status").textContent="Synchronisation du dispositif avec le cahier journal…";
+    const stats=await synchroniserDispositifDansJournal(dispositifId);
+    $("gen-status").textContent=
+      `${stats.creneaux} créneau(x) de ${stats.dispositif} synchronisé(s) avec le cahier journal.`;
+    toast("Emploi du temps du dispositif synchronisé.");
+    renderGenDispositifGrille();
+  }catch(e){
+    $("gen-status").textContent="Erreur : "+(e.message||e);
+    toast("Synchronisation impossible.");
+  }
+});
+
+/* ---------------- Grille d'affectation du dispositif (onglet Génération) ----------------
+ * Reprend le même principe visuel que la grille de l'onglet Affectation :
+ * lignes = horaires du dispositif, colonnes = jours, cases = initiales des
+ * élèves rattachés aux classes liées au dispositif, avec une case à cocher.
+ *
+ * Cochée  = élève affecté au DISPOSITIF sur ce créneau
+ *         => retiré du planning individuel de sa classe de référence.
+ * Décochée= élève affecté à sa CLASSE DE RÉFÉRENCE sur ce créneau
+ *         => retiré du dispositif (réinséré dans le planning de la classe).
+ *
+ * Par défaut (avant toute modification manuelle), la case est cochée
+ * exactement quand l'élève n'a AUCUNE affectation à sa classe de référence
+ * qui chevauche ce créneau — c'est-à-dire les « non-affectations » de la
+ * classe de référence, comme demandé.
+ */
+let gendEtatEnCours = {};        // clé "idEleve::creneauId" -> booléen souhaité
+let gendEtatOriginal = {};       // même clé -> état observé au moment du rendu
+let gendClasseRefParEleve = {};  // idEleve -> objet classe (classe de référence)
+
+function normaliserTexteClasseGend(v){
+  return String(v ?? "").trim().normalize("NFD").replace(/[\u0300-\u036f]/g,"").replace(/\s+/g," ").toLowerCase();
+}
+function classeReferenceParmiGend(e, classesEligibles){
+  const valeur = normaliserTexteClasseGend(e.classe || (e.identite && e.identite.classe));
+  if(!valeur) return null;
+  return classesEligibles.find(cl=>
+    valeur===normaliserTexteClasseGend(cl.nom) || (cl.niveau && valeur===normaliserTexteClasseGend(cl.niveau))
+  ) || null;
+}
+// L'élève a-t-il, dans son planning individuel, une affectation à sa classe
+// de référence qui chevauche ce créneau du dispositif ?
+function eleveEnClasseSurCreneauGend(e, classeRefId, c){
+  const planning = Array.isArray(e.planning) ? e.planning : [];
+  const dMin = PC.heureVersMin(c.debut), fMin = PC.heureVersMin(c.fin);
+  return planning.some(p =>
+    p.classeId===classeRefId &&
+    Number(p.jour)===Number(c.jour) &&
+    PC.chevaucheMin(PC.heureVersMin(p.debut), PC.heureVersMin(p.fin), dMin, fMin)
+  );
+}
+// Créneau(x) de la grille de la classe de référence qui chevauchent ce
+// créneau du dispositif (utilisé pour réaffecter l'élève à sa classe).
+function creneauxClasseChevauchantGend(classeId, c){
+  return (grilles[classeId]||[]).filter(cc=>
+    Number(cc.jour)===Number(c.jour) &&
+    PC.chevaucheMin(PC.heureVersMin(cc.debut), PC.heureVersMin(cc.fin), PC.heureVersMin(c.debut), PC.heureVersMin(c.fin))
+  );
+}
+
+function renderGenDispositifGrille(){
+  const wrap = $("gend-wrap"), hint = $("gend-sans-dispositif");
+  if(!wrap || !hint) return;
+  const dispId = $("generation-dispositif").value;
+  wrap.innerHTML = "";
+  gendEtatEnCours = {}; gendEtatOriginal = {}; gendClasseRefParEleve = {};
+  const stEl = $("gend-save-status");
+  if(stEl){ stEl.textContent=""; stEl.classList.remove("warn"); }
+
+  if(!dispId){ hint.style.display=""; hint.textContent="Créez et sélectionnez un dispositif ci-dessus."; return; }
+  if(!coffre || !coffre.ouvert){ hint.style.display=""; hint.textContent="Ouvrez le coffre pour afficher les élèves du dispositif."; return; }
+
+  const classesLiees = (config.classes||[]).filter(cl=>(cl.dispositifs||[]).includes(dispId));
+  if(!classesLiees.length){ hint.style.display=""; hint.textContent="Ce dispositif n'est rattaché à aucune classe."; return; }
+
+  const creneaux = (grilles[dispId]||[]).filter(c=>c.type==="seance"||c.type==="autre");
+  if(!creneaux.length){
+    hint.style.display="";
+    hint.textContent="Aucun créneau dans la grille du dispositif : ajoutez d'abord ses créneaux dans « Planning » puis enregistrez le planning.";
+    return;
+  }
+
+  const elevesDuCoffre = coffre.listerEleves ? coffre.listerEleves() : [];
+  const roster = [];
+  elevesDuCoffre.forEach(e=>{
+    const cl = classeReferenceParmiGend(e, classesLiees);
+    if(!cl) return;
+    gendClasseRefParEleve[e.identifiantSynapses] = cl;
+    const identite = e.identite || {};
+    const prenom = String(identite.prenom || "").trim();
+    const nom = String(identite.nom || "").trim();
+    roster.push({
+      identifiantSynapses: e.identifiantSynapses,
+      prenom,
+      nom,
+      libelle: [nom, prenom].filter(Boolean).join(" ") || e.identifiantSynapses
+    });
+  });
+  if(!roster.length){
+    hint.style.display="";
+    hint.textContent="Aucun élève du coffre n'est rattaché aux classes liées à ce dispositif.";
+    return;
+  }
+  hint.style.display="none";
+
+  // Regroupement des lignes par heure de DÉBUT uniquement (même correctif
+  // que la grille de l'onglet Affectation : deux jours dont les créneaux ne
+  // finissent pas exactement à la même heure ne doivent pas se retrouver
+  // sur deux lignes différentes).
+  const horaires = [], map = new Map();
+  creneaux.forEach(c=>{
+    const cle=c.debut;
+    if(!map.has(cle)){const h={cle,debut:c.debut,fins:new Set(),parJour:{}};map.set(cle,h);horaires.push(h);}
+    map.get(cle).fins.add(c.fin);
+    if(!map.get(cle).parJour[c.jour]) map.get(cle).parJour[c.jour]=[];
+    map.get(cle).parJour[c.jour].push(c);
+  });
+  horaires.sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
+
+  const table=document.createElement("table"); table.className="affg";
+  const thead=document.createElement("thead"), hr=document.createElement("tr");
+  hr.innerHTML='<th class="affg-horaire-head">Horaire</th>'+PC.JOURS.map(j=>`<th>${escapeHTMLTexte(j.nom)}</th>`).join("");
+  thead.appendChild(hr); table.appendChild(thead);
+
+  horaires.forEach(h=>{
+    const tr=document.createElement("tr");
+    const th=document.createElement("th"); th.className="affg-horaire-head";
+    const finsTriees=[...h.fins].sort((a,b)=>PC.heureVersMin(a)-PC.heureVersMin(b));
+    const finLabel=finsTriees.length===1?finsTriees[0]:finsTriees[0]+"…";
+    th.innerHTML=`<span class="affg-horaire">${escapeHTMLTexte(h.debut)}–${escapeHTMLTexte(finLabel)}</span>`;
+    tr.appendChild(th);
+
+    PC.JOURS.forEach(j=>{
+      const td=document.createElement("td"); td.className="affg-creneau-cell";
+      const liste=h.parJour[j.n]||[];
+      if(!liste.length){ td.innerHTML='<div class="affg-vide">—</div>'; tr.appendChild(td); return; }
+
+      liste.forEach(c=>{
+        const nom = c.libelle || "";
+        if(nom){
+          const lib=document.createElement("div"); lib.className="affg-creneau-libelle"; lib.textContent=nom; td.appendChild(lib);
+        }
+
+        roster.forEach(ref=>{
+          const e=coffreEleveById(ref.identifiantSynapses);
+          if(!e) return;
+          const cl=gendClasseRefParEleve[ref.identifiantSynapses];
+          if(!cl) return;
+
+          const cle=ref.identifiantSynapses+"::"+c.id;
+          const enClasse=eleveEnClasseSurCreneauGend(e, cl.id, c);
+          // Coché par défaut = présent au dispositif = PAS déjà affecté à sa
+          // classe de référence sur ce créneau (complémentaire des
+          // "non-affectations" de la classe de référence).
+          const coche=!enClasse;
+          gendEtatOriginal[cle]=coche;
+          gendEtatEnCours[cle]=coche;
+
+          const line=document.createElement("label");
+          line.className="affg-eleve-line"+(coche?"":" exclu");
+
+          const initiale=document.createElement("span");
+          initiale.className="affg-eleve-initial";
+          initiale.textContent=initialesEleve(ref);
+
+          const cb=document.createElement("input");
+          cb.type="checkbox"; cb.checked=coche;
+          cb.setAttribute("aria-label", `${ref.nom} — ${j.nom} ${c.debut}–${c.fin}`);
+          cb.addEventListener("change", ()=>{
+            gendEtatEnCours[cle]=cb.checked;
+            line.classList.toggle("exclu", !cb.checked);
+            const st=$("gend-save-status");
+            if(st){ st.textContent="Modifications en attente d'enregistrement."; st.classList.add("warn"); }
+          });
+
+          const identiteLabel=document.createElement("span");
+          identiteLabel.className="affg-eleve-name";
+          identiteLabel.textContent=ref.libelle;
+          line.appendChild(initiale);
+          line.appendChild(identiteLabel);
+          line.appendChild(cb);
+          td.appendChild(line);
+        });
+      });
+      tr.appendChild(td);
+    });
+    table.appendChild(tr);
+  });
+
+  const scroll=document.createElement("div"); scroll.className="affg-scroll";
+  scroll.appendChild(table); wrap.appendChild(scroll);
+}
+
+$("generation-dispositif").addEventListener("change", renderGenDispositifGrille);
+
+$("btn-enregistrer-gend").addEventListener("click", ()=>{
+  if(!coffre || !coffre.ouvert){ toast("Ouvrez le coffre d'abord."); return; }
+  const dispId=$("generation-dispositif").value;
+  if(!dispId){ toast("Choisissez un dispositif."); return; }
+  const creneaux=(grilles[dispId]||[]);
+  let bascules=0;
+
+  Object.keys(gendEtatEnCours).forEach(cle=>{
+    const avant=gendEtatOriginal[cle];
+    const apres=gendEtatEnCours[cle];
+    if(avant===apres) return;
+
+    const idx=cle.lastIndexOf("::");
+    const idEleve=cle.slice(0,idx), creneauId=cle.slice(idx+2);
+    const e=coffreEleveById(idEleve);
+    if(!e) return;
+    const cl=gendClasseRefParEleve[idEleve];
+    if(!cl) return;
+    const c=creneaux.find(x=>x.id===creneauId);
+    if(!c) return;
+
+    if(!Array.isArray(e.planning)) e.planning=[];
+
+    if(apres){
+      // Coché = affecté au dispositif => retiré du planning de la classe de
+      // référence pour tout créneau qui chevauche celui-ci.
+      e.planning = e.planning.filter(p=>{
+        if(p.classeId!==cl.id) return true;
+        if(Number(p.jour)!==Number(c.jour)) return true;
+        const chevauche=PC.chevaucheMin(
+          PC.heureVersMin(p.debut), PC.heureVersMin(p.fin),
+          PC.heureVersMin(c.debut), PC.heureVersMin(c.fin)
+        );
+        return !chevauche;
+      });
+    } else {
+      // Décoché = renvoyé dans sa classe de référence : réaffectation à
+      // tous les créneaux de la grille de cette classe qui chevauchent le
+      // créneau du dispositif.
+      creneauxClasseChevauchantGend(cl.id, c).forEach(cc=>{
+        const dejaPresent = e.planning.some(p=>p.classeId===cl.id && p.creneauId===cc.id);
+        if(dejaPresent) return;
+        e.planning.push({
+          classeId: cl.id,
+          classeNom: cl.nom,
+          creneauId: cc.id,
+          jour: cc.jour,
+          debut: cc.debut,
+          fin: cc.fin,
+          domaineCle: cc.domaineCle||""
+        });
+      });
+    }
+    bascules++;
+  });
+
+  if(bascules>0) marquerCoffreModifie();
+  renderGenDispositifGrille();
+  const st=$("gend-save-status");
+  if(st){
+    st.classList.remove("warn");
+    st.textContent = bascules ? `${bascules} affectation(s) mise(s) à jour en mémoire — pensez à « 💾 Enregistrer le coffre ».` : "Aucune modification à enregistrer.";
+  }
+  toast(bascules ? `${bascules} affectation(s) mise(s) à jour.` : "Aucune modification en attente.");
 });
 
 /* ---------------- Import / export de la configuration ---------------- */
@@ -742,50 +2017,78 @@ $("import-config-file").addEventListener("change", async ()=>{
   }
 });
 
-/* ---------------- Import / export du planning complet (JSON) ---------------- */
-$("btn-export-json").addEventListener("click", ()=>{
-  const journal = PC.chargerJournal();
-  const affectationsActuelles = PC.chargerAffectations();
-  PC.telechargerPlanningJSON(config, grilles, affectationsActuelles, journal);
-  toast("Export téléchargé.");
-});
+/* ---------------- Import / export du planning complet (chiffré) ---------------- */
+let planningCryptoMode = null;
+
+function ouvrirModalCryptoPlanning(mode){
+  planningCryptoMode = mode;
+  $("planning-crypto-title").textContent = mode === "export" ? "Protéger le planning" : "Ouvrir le planning protégé";
+  $("planning-crypto-message").textContent = mode === "export"
+    ? "Le planning complet peut contenir des identifiants d'élèves. Il sera chiffré avant d'être enregistré."
+    : "Saisissez le mot de passe utilisé lors de l'export. Le contenu ne sera déchiffré qu'en mémoire. Le mot de passe n'est jamais conservé.";
+  $("planning-crypto-mdp").value = "";
+  $("planning-crypto-erreur").style.display = "none";
+  $("planning-crypto-modal-overlay").classList.add("open");
+  setTimeout(()=>$("planning-crypto-mdp").focus(),50);
+}
+
+function fermerModalCryptoPlanning(){
+  planningCryptoMode = null;
+  $("planning-crypto-mdp").value = "";
+  $("planning-crypto-modal-overlay").classList.remove("open");
+}
+
+$("btn-export-json").addEventListener("click", ()=> ouvrirModalCryptoPlanning("export"));
 $("btn-import-json-browse").addEventListener("click", ()=> $("import-json-file").click());
+$("btn-planning-crypto-annuler").addEventListener("click", fermerModalCryptoPlanning);
+$("planning-crypto-mdp").addEventListener("keydown", e=>{
+  if(e.key === "Enter") $("btn-planning-crypto-confirmer").click();
+  if(e.key === "Escape") fermerModalCryptoPlanning();
+});
+
+$("btn-planning-crypto-confirmer").addEventListener("click", async ()=>{
+  const mdp = $("planning-crypto-mdp").value;
+  const mode = planningCryptoMode;
+  if(!mdp){ $("planning-crypto-erreur").textContent = "Saisissez le mot de passe."; $("planning-crypto-erreur").style.display=""; return; }
+  try{
+    if(mode === "export"){
+      const journal = PC.chargerJournal();
+      const affectationsActuelles = PC.chargerAffectations();
+      await PC.telechargerPlanningJSON(config, grilles, affectationsActuelles, journal, mdp);
+      fermerModalCryptoPlanning();
+      toast("Planning .synapses chiffré exporté.");
+    }else if(mode === "import"){
+      const f = $("import-json-file").files[0];
+      if(!f) throw new Error("Choisissez d'abord un fichier de planning.");
+      const enveloppe = await PC.lireFichierJSON(f);
+      if(!enveloppe || enveloppe.format !== "synapses-planning-secure"){
+        throw new Error("Ce fichier n'est pas un planning .synapses protégé. Les anciens exports JSON en clair ne sont plus acceptés.");
+      }
+      const paquet = await PC.dechiffrerPlanningJSON(enveloppe, mdp);
+      const applique = PC.appliquerPaquetPlanning(paquet);
+      $("import-json-status").textContent = "Importé (" + f.name + ") : " + applique.join(", ") + ".";
+      fermerModalCryptoPlanning();
+      toast("Planning .synapses déchiffré et importé.");
+      setTimeout(()=> location.reload(), 900);
+    }
+  }catch(e){
+    $("planning-crypto-erreur").textContent = e.message || "Opération impossible.";
+    $("planning-crypto-erreur").style.display = "";
+  }
+});
+
 $("import-json-file").addEventListener("change", async ()=>{
   const f = $("import-json-file").files[0];
   if(!f) return;
   try{
-    const paquet = await PC.lireFichierJSON(f);
-    const applique = PC.appliquerPaquetPlanning(paquet);
-    $("import-json-status").textContent = "Importé (" + f.name + ") : " + applique.join(", ") + ".";
-    toast("Import réussi — la page va se recharger.");
-    setTimeout(()=> location.reload(), 900);
+    const enveloppe = await PC.lireFichierJSON(f);
+    if(!enveloppe || enveloppe.format !== "synapses-planning-secure"){
+      throw new Error("Ce fichier n'est pas un planning .synapses protégé. Les anciens exports JSON en clair ne sont plus acceptés.");
+    }
+    ouvrirModalCryptoPlanning("import");
   }catch(e){
-    $("import-json-status").textContent = "Import impossible : " + e.message;
-    toast("Import impossible : " + e.message);
-  }finally{
+    $("import-json-status").textContent = "Import impossible : " + (e.message || e);
+    toast("Import impossible : " + (e.message || e));
     $("import-json-file").value = "";
   }
 });
-
-/* ---------------- Initialisation ---------------- */
-(async function init(){
-  majEtatCoffre();
-  renderConfig();
-  renderClasses();
-  renderClasseElevesSelect();
-  try{
-    banque = await PC.chargerBanque();
-  }catch(e){
-    toast("Impossible de charger le référentiel de séances.");
-  }
-  renderGrilleTabs();
-  renderSummary();
-})();
-</script>
-
-<footer class="synapses-footer">
-    <div>Synapses — Grand Planificateur pédagogique</div>
-    <div>© 2026 Cskrh13 / Vincent · v0.9.0-test · 27/08/2026</div>
-</footer>
-</body>
-</html>

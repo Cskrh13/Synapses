@@ -32,12 +32,11 @@ canvas.dragging{cursor:grabbing}
 /* ===== Header (charte Synapses) ===== */
 header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--navy);color:#fff;border-bottom:3px solid var(--accent-sky)}
 .header-top{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:12px 22px;flex-wrap:wrap}
-.brand{display:flex;align-items:center;gap:12px}
+.brand{display:flex;align-items:center;gap:12px;text-decoration:none;color:#fff}
 .brand-mark{width:38px;height:38px;border-radius:8px;background:linear-gradient(160deg,var(--accent-sky),#5486d6);display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:700;font-size:16px;color:#fff;flex-shrink:0}
 .brand-text{display:flex;flex-direction:column;line-height:1.15}
 .brand-text .top{font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;color:#B9C6E5;font-weight:600}
 .brand-text .bottom{font-family:'Fraunces',serif;font-weight:600;font-size:16px}
-#subtitle{font-size:12.5px;color:#B9C6E5;margin-top:2px}
 .btn-back{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.28);color:#fff;text-decoration:none;font-size:13px;font-weight:500;padding:9px 14px;border-radius:7px;white-space:nowrap}
 .btn-back:hover{background:rgba(255,255,255,.18)}
 
@@ -72,7 +71,6 @@ header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--n
 .side{position:absolute;z-index:11;pointer-events:none}
 .card{background:rgba(255,255,255,.94);border:1px solid var(--line);border-radius:var(--radius);box-shadow:0 10px 30px rgba(28,45,61,.08);backdrop-filter:blur(6px);padding:16px 17px;pointer-events:auto}
 #legend{right:20px;bottom:20px;width:210px}
-#help{left:20px;bottom:20px;width:300px}
 .card h3{font-size:11px;margin:0 0 11px;text-transform:uppercase;letter-spacing:.08em;color:var(--ink-soft);font-family:'Inter',sans-serif;font-weight:700}
 .legendrow{display:flex;align-items:center;gap:9px;margin:8px 0;font-size:12.5px;color:var(--ink)}
 .dot{width:11px;height:11px;border-radius:50%;display:inline-block;flex-shrink:0}
@@ -81,10 +79,10 @@ header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--n
 .navrow{margin:7px 0;font-size:12px;color:var(--ink-soft);line-height:1.45}
 
 /* ===== Barre de zoom / navigation caméra ===== */
-.bottom{position:absolute;z-index:12;left:50%;bottom:16px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(24,40,55,.1);backdrop-filter:blur(8px)}
-.bottom button{font-size:16px;line-height:1;padding:8px 11px;border:0;background:transparent;border-radius:999px;color:var(--ink-soft);cursor:pointer}
-.bottom button:hover{background:#eef1f4;color:var(--ink)}
-.bottom button.active{background:var(--accent-sky);color:#fff}
+.zoombar{position:absolute;z-index:12;left:50%;bottom:16px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px 8px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.94);box-shadow:0 8px 24px rgba(24,40,55,.1);backdrop-filter:blur(8px)}
+.zoombar button{font-size:16px;line-height:1;padding:8px 11px;border:0;background:transparent;border-radius:999px;color:var(--ink-soft);cursor:pointer}
+.zoombar button:hover{background:#eef1f4;color:var(--ink)}
+.zoombar button.active{background:var(--accent-sky);color:#fff}
 #zoomRange{width:120px;accent-color:var(--accent-sky)}
 #relationMenu{position:absolute;z-index:13;left:50%;bottom:66px;transform:translateX(-50%);display:none;gap:6px;padding:6px;border:1px solid var(--line);border-radius:10px;background:rgba(255,255,255,.96);box-shadow:0 8px 24px rgba(24,40,55,.12);backdrop-filter:blur(8px)}
 #relationMenu.open{display:flex}
@@ -113,6 +111,11 @@ header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--n
 #error h2{margin:0 0 12px;color:var(--navy);font-size:20px}
 .errorText{white-space:pre-wrap;font:12px/1.6 'IBM Plex Mono',monospace;color:#8a3a3a}
 
+/* ===== Infobulle au survol d'une boule ===== */
+#nodeTooltip{position:absolute;z-index:35;pointer-events:none;display:none;max-width:280px;background:var(--navy);color:#fff;border-radius:7px;padding:8px 12px;font:500 13px 'Inter',sans-serif;line-height:1.35;box-shadow:0 10px 24px rgba(20,32,50,.28);transform:translate(-50%,calc(-100% - 14px))}
+#nodeTooltip .tt-type{display:block;font:600 10px 'Inter',sans-serif;text-transform:uppercase;letter-spacing:.06em;color:#B9C6E5;margin-bottom:2px}
+#nodeTooltip::after{content:"";position:absolute;left:50%;top:100%;transform:translateX(-50%);border:6px solid transparent;border-top-color:var(--navy)}
+
 /* ===== Footer ===== */
 .synapses-footer{flex:0 0 auto;position:relative;z-index:19;padding:9px 22px;text-align:center;font:12px 'Inter',sans-serif;color:var(--ink-soft);background:var(--panel);border-top:1px solid var(--line)}
 .synapses-footer div:first-child{font-weight:600;letter-spacing:.03em;color:var(--ink)}
@@ -121,9 +124,8 @@ header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--n
   .header-top{padding:10px 14px}
   .toolbar{padding:12px 14px 14px}
   .tb-label{min-width:auto;width:100%}
-  #help{display:none}
   #legend{right:12px;bottom:70px;width:180px}
-  .bottom{bottom:8px}
+  .zoombar{bottom:8px}
   #panel{right:8px;top:8px;width:calc(100vw - 16px)}
 }
 </style>
@@ -133,16 +135,13 @@ header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--n
 
 <header class="site-header">
   <div class="header-top">
-    <div class="brand">
+    <a class="brand" href="index.html">
       <span class="brand-mark" aria-hidden="true">RÉ</span>
       <span class="brand-text">
         <span class="top">Synapses</span>
         <span class="bottom">Cartographie des compétences</span>
       </span>
-    </div>
-    <div>
-      <div id="subtitle">Chargement des données pédagogiques…</div>
-    </div>
+    </a>
     <a id="backProgramming" class="btn-back" href="Programmation/sequences.html">← Retour à la programmation</a>
   </div>
 </header>
@@ -174,22 +173,12 @@ header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--n
   <div class="legendrow"><span class="lineSample" style="opacity:.55"></span>Séquence → séance</div>
 </div>
 
-<div class="side card" id="help">
-  <h3>Navigation</h3>
-  <div class="navrow">Clic gauche maintenu : tourner les sphères</div>
-  <div class="navrow">Clic droit maintenu : déplacer horizontalement et verticalement</div>
-  <div class="navrow">Molette : zoomer / dézoomer</div><div class="navrow">Double-clic sur une boule : zoomer dessus</div>
-  <div class="navrow">Clic sur une compétence : charge ses séquences et séances liées</div>
-  <div class="navrow">Fermer la fiche : décharge les séquences/séances affichées</div>
-  <div class="navrow"><strong>Spirale :</strong> TPS → PS → MS → GS → CP → CE1 → CE2 → CM1 → CM2 → 6e</div>
-</div>
-
 <div id="relationMenu">
 <button id="showImmediatePre">Prérequis immédiats</button>
 <button id="showAncestors">Chemin des antécédents</button>
 <button id="clearRelations">Effacer</button>
 </div>
-<div class="bottom">
+<div class="zoombar">
   <button id="home" title="Recentrer">⌂</button>
   <button id="minus" title="Zoom arrière">−</button>
   <input id="zoomRange" type="range" min="0.015" max="2.4" step="0.005" value="0.015" aria-label="Zoom">
@@ -200,6 +189,7 @@ header.site-header{position:relative;z-index:20;flex:0 0 auto;background:var(--n
 
 <aside id="panel"><div class="panelCard"><span class="close" id="close">×</span><div id="panelContent"></div></div></aside>
 <div id="error"><h2>Impossible de charger la cartographie</h2><div class="errorText" id="errorText"></div></div>
+<div id="nodeTooltip"></div>
 <canvas id="graph" aria-label="Cartographie des compétences"></canvas>
 </div>
 
@@ -740,10 +730,21 @@ function update(){
   const sea=state.nodes.filter(n=>n.type==="seance"&&visible(n)).length;
   const pre=state.links.filter(l=>l.type==="prerequis"&&state.nodes.find(n=>n.id===l.source&&visible(n))&&state.nodes.find(n=>n.id===l.target&&visible(n))).length;
   $("status").textContent=`${comps} compétences · ${seq} séquences · ${sea} séances · ${pre} prérequis`;
-  $("subtitle").textContent=state.activeCompetenceSatellite
-    ? `${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cliquez une compétence pour ses séquences/séances`
-    : `${LEVEL_ORDER.filter(l=>state.levels.has(l)).length} niveaux scolaires · cliquez une compétence pour charger ses séquences et séances`;
 }
+/* ---------- Infobulle au survol ---------- */
+const TYPE_LABEL={competence:"Compétence",sequence:"Séquence",seance:"Séance"};
+function updateNodeTooltip(node,clientX,clientY){
+  const tt=$("nodeTooltip");
+  if(!node){tt.style.display="none";return;}
+  const p=state.projected.find(pr=>pr.node.id===node.id);
+  if(!p){tt.style.display="none";return;}
+  tt.innerHTML=`<span class="tt-type">${TYPE_LABEL[node.type]||node.type}${node.niveau?" · "+node.niveau:""}</span>${node.label||""}`;
+  tt.style.left=p.x+"px";
+  tt.style.top=p.y+"px";
+  tt.style.display="block";
+}
+function hideNodeTooltip(){ $("nodeTooltip").style.display="none"; }
+
 function hit(clientX,clientY){
   const rect=$("graph").getBoundingClientRect();
   const x=clientX-rect.left,y=clientY-rect.top;
@@ -849,8 +850,13 @@ canvas.addEventListener("pointerdown",e=>{
 });
 canvas.addEventListener("pointermove",e=>{
   if(!state.dragging){
-    state.hover=hit(e.clientX,e.clientY)?.id||null;draw();return;
+    const n=hit(e.clientX,e.clientY);
+    state.hover=n?.id||null;
+    draw();
+    updateNodeTooltip(n,e.clientX,e.clientY);
+    return;
   }
+  hideNodeTooltip();
   const dx=e.clientX-state.lastX,dy=e.clientY-state.lastY;
   if(Math.abs(dx)+Math.abs(dy)>2) state.moved=true;
   if(state.panning){
@@ -863,8 +869,15 @@ canvas.addEventListener("pointermove",e=>{
 });
 canvas.addEventListener("dblclick",e=>{
   state.openingSpin=false;
-  const n=hit(e.clientX,e.clientY);
-  if(n){const p=projectNode(n);state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,1.8));state.panX+=vw()/2-p.x;state.panY+=vh()/2-p.y;$("zoomRange").value=state.zoom;draw();}
+  const n=hit(e.clientX,e.clientY) || (state.selected && state.nodes.find(x=>x.id===state.selected));
+  if(!n) return;
+  state.zoom=Math.min(state.maxZoom,Math.max(state.zoom,1.8));
+  state.panX=0; state.panY=0;
+  const p=projectNode(n);
+  state.panX=vw()/2-p.x;
+  state.panY=vh()/2-p.y;
+  $("zoomRange").value=state.zoom;
+  draw();
 });
 canvas.addEventListener("pointerup",e=>{
   if(!state.dragging)return;
@@ -887,8 +900,9 @@ canvas.addEventListener("wheel",e=>{
   state.panX=(mx-cx)*(1-k)+k*state.panX;
   state.panY=(my-cy)*(1-k)+k*state.panY;
   state.zoom=newZoom;
-  $("zoomRange").value=state.zoom;draw();
+  $("zoomRange").value=state.zoom;draw();hideNodeTooltip();
 },{passive:false});
+canvas.addEventListener("pointerleave",()=>{state.hover=null;draw();hideNodeTooltip();});
 $("showImmediatePre").onclick=()=>showRelations("immediate");
 $("showAncestors").onclick=()=>showRelations("ancestors");
 $("clearRelations").onclick=()=>showRelations(null);

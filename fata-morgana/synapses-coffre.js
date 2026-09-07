@@ -118,7 +118,18 @@
         transversal: null,   // { compteRendu }  — description transversale à tous les domaines
         dateMaj: null,
         historique: []       // instantanés datés successifs, mêmes trois variables
-      }
+      },
+      // Planning individuel (onglet « Affectation » de Planning — Gestion) :
+      // créneaux récurrents d'une classe (grille horaire hebdomadaire)
+      // auxquels l'élève est manuellement affecté, par ex. pour une
+      // inclusion partielle en classe ordinaire. Principe de
+      // confidentialité (§2/§12 de la synthèse projet) : cette donnée est
+      // propre à l'élève, elle ne doit donc JAMAIS être enregistrée
+      // ailleurs que dans son coffre (pas dans le localStorage du
+      // planning, qui ne doit contenir que des données non nominatives).
+      // Chaque entrée : { classeId, classeNom, creneauId, jour, debut,
+      // fin, domaineCle, dateAffectation }.
+      planning: []
     };
   }
 
@@ -206,13 +217,38 @@
     // (suivi-individuel.js, grille-analyse.js, parcours-eleve.js, ...)
     // ------------------------------------------------------------------
 
+    /**
+     * Liste les élèves du coffre pour les modules internes de l'application
+     * (Planning, séquences, cartographie…), qui ont besoin des VRAIES
+     * données pédagogiques de chaque élève — pas seulement de son identité.
+     *
+     * Inclut désormais, en plus de l'identité/âge/classe :
+     *  - besoins, adaptations, objectifs actifs (chaîne d'analyse §4-8) ;
+     *  - equivalenceScolaire.francais/mathematiques (niveau d'équivalence
+     *    scolaire disciplinaire, §"Analyse & IA") ;
+     *  - accompagnements (ex. AESH) et parcoursScolaire.
+     *
+     * Ceci reste strictement un instantané EN MÉMOIRE : rien n'est jamais
+     * transmis à un serveur ni persisté hors du fichier .synapses (voir §1-2
+     * de la synthèse projet). Les identifiants d'élèves utilisés par ces
+     * modules restent ELEVE-xxxx ; l'identité nominative (e.identite) n'est
+     * là que pour l'affichage local et ne doit pas être envoyée à un moteur
+     * IA (voir grille-analyse.js / MoteurAnalyse.anonymiser()).
+     */
     listerEleves() {
       this._assertOuvert();
       return this._data.eleves.map((e) => ({
         identifiantSynapses: e.identifiantSynapses,
         identite: e.identite,
         age: e.age,
-        classe: e.classe
+        classe: e.classe,
+        parcoursScolaire: e.parcoursScolaire || {},
+        accompagnements: e.accompagnements || [],
+        besoins: e.besoins || [],
+        adaptations: e.adaptations || [],
+        objectifs: e.objectifs || [],
+        equivalenceScolaire: e.equivalenceScolaire || { francais: null, mathematiques: null, transversal: null },
+        planning: e.planning || [] // compat. coffres antérieurs à ce champ
       }));
     }
 
@@ -241,6 +277,67 @@
       const e = this.getEleve(identifiantSynapses);
       e.classe = (typeof classe === 'string' && classe.trim() !== '') ? classe.trim() : null;
       return e;
+    }
+
+    /**
+     * Affecte l'élève à un créneau récurrent d'une classe (onglet
+     * « Affectation » de Planning — Gestion), par ex. pour une inclusion
+     * partielle en classe ordinaire. Conformément au principe de
+     * confidentialité (§2/§12 de la synthèse projet), cette donnée
+     * individuelle est enregistrée UNIQUEMENT ici, dans le coffre de
+     * l'élève — jamais dans le stockage du planning (localStorage), qui
+     * ne doit contenir que des données non nominatives (classes, grilles
+     * horaires génériques).
+     * @param {string} identifiantSynapses
+     * @param {object} affectation - { classeId, classeNom, creneauId,
+     *   jour, debut, fin, domaineCle }. jour/debut/fin/domaineCle sont
+     *   recopiés au moment de l'affectation, pour rester lisibles même si
+     *   la grille de la classe est modifiée par la suite.
+     * @returns {boolean} false si l'élève est déjà affecté à ce créneau
+     *   (même classeId + creneauId) — aucun doublon n'est jamais créé.
+     */
+    affecterCreneau(identifiantSynapses, affectation) {
+      const e = this.getEleve(identifiantSynapses);
+      if (!Array.isArray(e.planning)) e.planning = []; // compat. coffres antérieurs
+      const a = affectation || {};
+      if (!a.classeId || !a.creneauId) {
+        throw new Error('classeId et creneauId sont requis pour affecter un créneau.');
+      }
+      const dejaPresent = e.planning.some(
+        (p) => p.classeId === a.classeId && p.creneauId === a.creneauId
+      );
+      if (dejaPresent) return false;
+      e.planning.push({
+        classeId: a.classeId,
+        classeNom: a.classeNom || '',
+        creneauId: a.creneauId,
+        jour: a.jour != null ? Number(a.jour) : null,
+        debut: a.debut || '',
+        fin: a.fin || '',
+        domaineCle: a.domaineCle || '',
+        dateAffectation: nowIso()
+      });
+      return true;
+    }
+
+    /** Retire une affectation créneau précédemment enregistrée dans le
+     *  coffre de l'élève (même classeId + creneauId). */
+    retirerCreneau(identifiantSynapses, classeId, creneauId) {
+      const e = this.getEleve(identifiantSynapses);
+      if (!Array.isArray(e.planning)) { e.planning = []; return false; }
+      const idx = e.planning.findIndex(
+        (p) => p.classeId === classeId && p.creneauId === creneauId
+      );
+      if (idx === -1) return false;
+      e.planning.splice(idx, 1);
+      return true;
+    }
+
+    /** Liste les affectations créneau enregistrées dans le coffre de l'élève. */
+    listerAffectationsCreneaux(identifiantSynapses) {
+      const e = this.getEleve(identifiantSynapses);
+      if (!Array.isArray(e.planning)) e.planning = [];
+      return e.planning.slice();
     }
 
     getEleve(identifiantSynapses) {

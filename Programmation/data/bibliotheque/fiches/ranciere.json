@@ -1,0 +1,96 @@
+{
+  "id": "ranciere",
+  "nom": "Jacques Rancière",
+  "type": "pedagogue",
+  "periode": "1940–",
+  "description_courte": "Philosophe français, auteur du Maître ignorant, qui interroge la relation pédagogique à partir de l’émancipation intellectuelle et de l’égalité des intelligences.",
+  "description": "Philosophe français, auteur du Maître ignorant, qui interroge la relation pédagogique à partir de l’émancipation intellectuelle et de l’égalité des intelligences.",
+  "courants": [
+    "pedagogies-critiques",
+    "education-populaire"
+  ],
+  "concepts": [
+    "émancipation",
+    "égalité des intelligences",
+    "explication",
+    "autonomie intellectuelle"
+  ],
+  "pratiques": [
+    "recherche autonome",
+    "questionnement",
+    "explication différée",
+    "lecture",
+    "débat"
+  ],
+  "influences": [
+    "joseph-jacotot",
+    "freire",
+    "education-populaire"
+  ],
+  "ouvrages": [
+    "Le Maître ignorant (1987)"
+  ],
+  "biographie": "Philosophe français, auteur du Maître ignorant, qui interroge la relation pédagogique à partir de l’émancipation intellectuelle et de l’égalité des intelligences.",
+  "travail": {
+    "principe_directeur": "Interroger ce qui, dans la situation d’enseignement, entretient ou réduit la dépendance intellectuelle de l’élève à l’enseignant.",
+    "pour_sequence": [
+      "Prévoir des temps où l’élève doit chercher, comparer, expliquer ou produire avant la validation magistrale.",
+      "Faire expliciter les preuves et les démarches plutôt que seulement demander la bonne réponse."
+    ],
+    "pour_seance": [
+      "Résister à la tentation de donner immédiatement l’explication qui remplace l’activité intellectuelle de l’élève."
+    ],
+    "pour_programmation": [
+      "Maintenir cependant l’enseignement des savoirs et la responsabilité professionnelle de l’enseignant ; l’émancipation n’est pas l’absence de transmission."
+    ],
+    "adaptations": [
+      "autonomie intellectuelle",
+      "questionnement",
+      "lecture",
+      "débat",
+      "explication"
+    ],
+    "points_de_vigilance": [
+      "Rancière relit Joseph Jacotot dans une perspective philosophique. Il ne faut pas transformer l’égalité des intelligences en affirmation psychométrique ou neuroscientifique."
+    ],
+    "instruction_generation": "Créer des situations où l’élève doit réellement exercer son intelligence avant que l’enseignant n’apporte une explication ou une validation."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Cairn.info",
+      "Fayard",
+      "Institut FSU"
+    ],
+    "note": "Rancière est particulièrement utile pour la réflexion sur l’autorité pédagogique, l’explication et l’émancipation, plus que comme méthode de classe."
+  },
+  "relations": {
+    "courants": [
+      "pedagogies-critiques"
+    ],
+    "proche_de": [
+      "freire",
+      "dewey",
+      "meirieu"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Cairn.info",
+      "Fayard",
+      "Institut FSU"
+    ]
+  }
+}

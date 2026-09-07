@@ -70,6 +70,24 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .day-title{font-size:20px;text-transform:capitalize;}
 .day-actions{margin-left:auto;display:flex;gap:8px;flex-wrap:wrap;}
 
+/* -------- Onglets du cahier journal -------- */
+.journal-tabs{display:flex;gap:6px;margin:0 0 14px;border-bottom:1px solid var(--line);}
+.journal-tabs button{border:1px solid var(--line);border-bottom:none;background:var(--panel-raised);color:var(--ink-soft);padding:8px 14px;border-radius:8px 8px 0 0;font-weight:700;font-size:12.5px;}
+.journal-tabs button.active{background:var(--panel);color:var(--ink);border-color:var(--accent-sky);}
+.journal-tab-panel{display:none;}
+.journal-tab-panel.active{display:block;}
+.classe-filter-bar{display:flex;gap:6px;flex-wrap:wrap;margin:0 0 16px;}
+.classe-filter-bar button{border:1px solid var(--line);background:var(--panel-raised);color:var(--ink-soft);padding:7px 15px;border-radius:20px;font-weight:700;font-size:12.5px;}
+.classe-filter-bar button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+.classe-filter-bar button .n{font-weight:500;opacity:.8;margin-left:4px;}
+.ia-panel{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:18px;}
+.ia-panel-head{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;margin-bottom:14px;}
+.ia-panel h2{font-size:18px;margin-bottom:5px;}
+.ia-panel p{margin:0;color:var(--ink-soft);font-size:13px;max-width:820px;}
+.ia-actions{display:flex;gap:7px;flex-wrap:wrap;flex-shrink:0;}
+.prompt-ia{width:100%;min-height:440px;resize:vertical;border:1px solid var(--line);border-radius:8px;padding:12px;font-family:"IBM Plex Mono",monospace;font-size:12px;line-height:1.55;background:#fff;color:var(--ink);}
+@media(max-width:700px){.ia-panel-head{flex-direction:column;}.ia-actions{width:100%;}}
+
 /* -------- État vide / guidage -------- */
 .empty-journal{background:var(--panel);border:1px dashed var(--line);border-radius:var(--radius);padding:36px 28px;text-align:center;color:var(--ink-soft);}
 .empty-journal h3{color:var(--ink);margin-bottom:8px;}
@@ -78,14 +96,239 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 /* -------- Tableau cahier journal -------- */
 .journal-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
 .journal-table > tbody > tr > td{border-top:1px solid var(--line);vertical-align:top;padding:0;}
+
 .bloc-row-head{display:flex;align-items:center;gap:10px;padding:8px 12px;background:var(--panel-raised);}
 .bloc-row-head input.bloc-label{font-family:'Fraunces',serif;font-weight:600;font-size:14px;border:1px solid transparent;background:transparent;border-radius:6px;padding:3px 6px;width:140px;}
 .bloc-row-head input.bloc-label:hover,.bloc-row-head input.bloc-label:focus{border-color:var(--line);background:#fff;}
 .bloc-row-head input.bloc-heure{font-family:'IBM Plex Mono',monospace;font-size:12.5px;border:1px solid var(--line);border-radius:6px;padding:3px 6px;width:64px;background:#fff;}
 .bloc-row-head .sep{color:var(--ink-soft);}
 .bloc-row-head .spacer{flex:1;}
-.bloc-groupes{display:flex;gap:10px;padding:10px 12px 14px;flex-wrap:wrap;}
-.groupe-card{flex:1 1 220px;min-width:220px;background:var(--panel-raised);border:1px solid var(--line);border-radius:8px;padding:10px 12px;}
+
+.bloc-groupes{
+  display:flex;
+  gap:10px;
+  padding:10px 12px 14px;
+  flex-wrap:wrap;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+.groupe-card{
+  flex:1 1 220px;
+  min-width:0;
+  max-width:100%;
+  background:var(--panel-raised);
+  border:1px solid var(--line);
+  border-radius:8px;
+  padding:10px 12px;
+  box-sizing:border-box;
+}
+
+/* -------- Nouvelle présentation des briques -------- */
+.journal-lanes{
+  display:flex;
+  flex-direction:column;
+  width:100%;
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+.journal-lane{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(min(100%,320px),1fr));
+  gap:10px;
+  width:100%;
+  max-width:100%;
+  padding:10px 12px;
+  box-sizing:border-box;
+  align-items:start;
+}
+
+.journal-block{
+  min-width:0;
+  max-width:100%;
+  background:var(--panel);
+  border:1px solid var(--line);
+  border-radius:9px;
+  overflow:hidden;
+  box-sizing:border-box;
+}
+
+.journal-block-head{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  padding:7px 9px;
+  background:var(--panel-raised);
+  border-bottom:1px solid var(--line);
+}
+
+.journal-block-head input.bloc-label{
+  font-family:'Fraunces',serif;
+  font-weight:600;
+  font-size:13px;
+  border:1px solid transparent;
+  background:transparent;
+  border-radius:6px;
+  padding:3px 5px;
+  width:105px;
+  min-width:80px;
+}
+
+.journal-block-head input.bloc-label:hover,
+.journal-block-head input.bloc-label:focus{
+  border-color:var(--line);
+  background:#fff;
+}
+
+.journal-block-head input.bloc-heure{
+  font-family:'IBM Plex Mono',monospace;
+  font-size:12px;
+  font-weight:600;
+  line-height:1.2;
+  border:1px solid var(--line);
+  border-radius:6px;
+  padding:4px 6px;
+  width:82px;
+  min-width:82px;
+  height:30px;
+  box-sizing:border-box;
+  background:#fff;
+  color:var(--ink);
+  text-align:center;
+  overflow:visible;
+}
+
+/* Chrome / Edge : réserver assez de place aux heures ET aux minutes. */
+.journal-block-head input.bloc-heure::-webkit-datetime-edit{
+  padding:0;
+}
+.journal-block-head input.bloc-heure::-webkit-datetime-edit-fields-wrapper{
+  padding:0;
+}
+.journal-block-head input.bloc-heure::-webkit-datetime-edit-hour-field,
+.journal-block-head input.bloc-heure::-webkit-datetime-edit-minute-field{
+  padding:0 1px;
+}
+.journal-block-head input.bloc-heure::-webkit-calendar-picker-indicator{
+  margin-left:3px;
+  padding:0;
+  width:13px;
+  height:13px;
+}
+
+.journal-block-head .sep{color:var(--ink-soft);}
+.journal-block-head .spacer{flex:1;}
+
+.journal-block-body{
+  min-width:0;
+  max-width:100%;
+}
+
+.groupe-commun{
+  margin:10px;
+  border:1px solid var(--line);
+  border-radius:8px;
+  background:var(--panel-raised);
+  overflow:hidden;
+  min-width:0;
+  max-width:calc(100% - 20px);
+  box-sizing:border-box;
+}
+
+.groupe-commun-head{
+  display:flex;
+  align-items:center;
+  gap:7px;
+  flex-wrap:wrap;
+  padding:8px 9px;
+  background:#F1EFE9;
+  border-bottom:1px solid var(--line);
+}
+
+.groupe-commun-title{
+  font-size:13px;
+  font-weight:700;
+  min-width:0;
+}
+
+.groupe-commun-classes{
+  display:flex;
+  flex-wrap:wrap;
+  gap:4px;
+  min-width:0;
+}
+
+.groupe-commun-classes span{
+  display:inline-flex;
+  align-items:center;
+  border:1px solid var(--line);
+  border-radius:14px;
+  background:#fff;
+  padding:2px 7px;
+  font-size:10px;
+  font-weight:700;
+  color:var(--ink-soft);
+}
+
+.groupe-commun-body{
+  padding:0 10px;
+  min-width:0;
+}
+
+.groupe-commun-body > .groupe-card{
+  width:100%;
+  max-width:100%;
+  margin:0;
+  border:0;
+  border-radius:0;
+  background:transparent;
+  padding:8px 0;
+}
+
+.groupe-commun-body > .groupe-card + .groupe-card{
+  border-top:1px dashed var(--line);
+}
+
+.groupe-commun.fixe{
+  background:#F1EFE9;
+  color:var(--ink-soft);
+  font-style:italic;
+}
+
+.journal-block-add{
+  display:flex;
+  padding:8px 10px 10px;
+}
+
+.journal-block-add .add-groupe-btn{
+  width:100%;
+  min-width:0;
+  min-height:34px;
+}
+
+.journal-table,
+.journal-table td,
+.journal-lanes,
+.journal-lane,
+.journal-block,
+.journal-block-head,
+.journal-block-body,
+.bloc-groupes,
+.groupe-commun,
+.groupe-commun-body,
+.groupe-card{
+  max-width:100%;
+  box-sizing:border-box;
+}
+
+@media(max-width:700px){
+  .journal-lane{
+    grid-template-columns:1fr;
+  }
+}
 .groupe-card.fixe{background:#F1EFE9;font-style:italic;color:var(--ink-soft);}
 .groupe-card .row1{display:flex;gap:6px;align-items:center;margin-bottom:6px;}
 .groupe-card select.adulte-type{border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:12px;font-weight:700;background:#fff;}
@@ -127,10 +370,238 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .synapses-footer{margin-top:40px;padding:18px 24px;text-align:center;font-size:11px;color:var(--ink-soft);border-top:1px solid var(--line);}
 .synapses-footer div:first-child{font-weight:600;letter-spacing:.04em;}
 
+/* =========================================================
+   IMPRESSION — cahier journal
+   Une vue dédiée est générée avant window.print().
+   ========================================================= */
+
+.print-journal{display:none;}
+
 @media print{
-  header.site-header,.onboarding,.day-actions,.coffre-widget,.add-groupe-btn,.add-bloc-row,.card-foot,.synapses-footer,select.add-eleve{display:none !important;}
-  body{background:#fff;}
-  .journal-table{border:1px solid #999;}
+
+  @page{
+    size:A4 portrait;
+    margin:10mm 9mm 10mm 9mm;
+  }
+
+  html,body{
+    width:100%;
+    min-width:0;
+    background:#fff !important;
+  }
+
+  body{
+    margin:0 !important;
+    color:#111 !important;
+    font-size:10.5pt;
+  }
+
+  /* Tout ce qui sert à la navigation/édition disparaît. */
+  header.site-header,
+  .onboarding,
+  .day-toolbar,
+  #content,
+  .journal-bottom,
+  .synapses-footer,
+  .toast,
+  .modal-overlay{
+    display:none !important;
+  }
+
+  /* Vue imprimable uniquement. */
+  .print-journal{
+    display:block !important;
+    width:100%;
+    max-width:100%;
+    margin:0;
+    padding:0;
+    color:#111;
+    font-family:Arial,Helvetica,sans-serif;
+  }
+
+  .print-head{
+    display:flex;
+    align-items:flex-end;
+    justify-content:space-between;
+    gap:15px;
+    padding:0 0 7px;
+    margin-bottom:8px;
+    border-bottom:2px solid #222;
+  }
+
+  .print-title{
+    font-family:Georgia,'Times New Roman',serif;
+    font-size:19pt;
+    font-weight:700;
+    line-height:1.1;
+  }
+
+  .print-date{
+    font-size:10.5pt;
+    font-weight:600;
+    text-align:right;
+    white-space:nowrap;
+  }
+
+  .print-schedule{
+    display:flex;
+    flex-direction:column;
+    gap:6px;
+    width:100%;
+  }
+
+  /* Chaque ligne contient les créneaux qui se chevauchent.
+     Les créneaux successifs restent donc verticalement. */
+  .print-lane{
+    display:grid;
+    grid-template-columns:repeat(var(--print-cols,1),minmax(0,1fr));
+    gap:6px;
+    width:100%;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+
+  .print-block{
+    min-width:0;
+    border:1px solid #999;
+    border-radius:5px;
+    background:#fff;
+    overflow:hidden;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+
+  .print-block-head{
+    display:flex;
+    align-items:center;
+    gap:7px;
+    padding:4px 6px;
+    background:#eee;
+    border-bottom:1px solid #aaa;
+    font-weight:700;
+  }
+
+  .print-time{
+    font-family:'Courier New',monospace;
+    font-size:9.5pt;
+    white-space:nowrap;
+  }
+
+  .print-label{
+    font-size:9.5pt;
+    min-width:0;
+    overflow:hidden;
+    text-overflow:ellipsis;
+  }
+
+  .print-common{
+    padding:5px 6px 6px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+
+  .print-common-title{
+    font-weight:700;
+    font-size:10.5pt;
+    margin-bottom:3px;
+  }
+
+  .print-classes{
+    display:flex;
+    flex-wrap:wrap;
+    gap:3px;
+    margin-bottom:4px;
+  }
+
+  .print-class{
+    font-size:8.5pt;
+    font-weight:700;
+    border:1px solid #aaa;
+    border-radius:10px;
+    padding:1px 5px;
+  }
+
+  .print-group{
+    padding:4px 0;
+    border-top:1px solid #ddd;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+
+  .print-group:first-child{
+    border-top:0;
+  }
+
+  .print-group-title{
+    font-weight:700;
+    font-size:9.5pt;
+  }
+
+  .print-group-meta{
+    font-size:8.5pt;
+    color:#333;
+    margin-top:2px;
+  }
+
+  .print-students{
+    font-size:8.2pt;
+    margin-top:3px;
+    line-height:1.25;
+  }
+
+  .print-note{
+    font-size:8.2pt;
+    margin-top:3px;
+    font-style:italic;
+  }
+
+  .print-fixed{
+    padding:6px;
+    font-weight:700;
+    font-style:italic;
+    background:#f1f1f1;
+  }
+
+  .print-bottom{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:8px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+
+  .print-bottom-box{
+    border:1px solid #aaa;
+    border-radius:5px;
+    padding:5px 6px;
+    min-height:34px;
+    break-inside:avoid;
+    page-break-inside:avoid;
+  }
+
+  .print-bottom-label{
+    font-size:8pt;
+    font-weight:700;
+    text-transform:uppercase;
+    letter-spacing:.04em;
+    margin-bottom:2px;
+  }
+
+  .print-bottom-text{
+    font-size:8.8pt;
+    white-space:pre-wrap;
+  }
+
+  /* Évite qu'un bloc soit coupé entre deux pages. */
+  .print-block,
+  .print-lane,
+  .print-group,
+  .print-common,
+  .print-bottom{
+    orphans:3;
+    widows:3;
+  }
 }
 </style>
 </head>
@@ -210,29 +681,59 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     <div class="day-actions">
       <button class="btn" id="btn-generer-jour">↺ Resynchroniser avec la grille</button>
       <button class="btn" id="btn-repartir-eleves">🎯 Répartir les élèves</button>
+      <button class="btn" id="btn-import-sequences">📥 Importer séquences / séances</button>
+      <input type="file" id="import-sequences-file" accept=".json,application/json" style="display:none;">
       <button class="btn" id="btn-print">🖨 Imprimer</button>
       <a class="btn" href="planning-affichage.html">← Retour à la semaine</a>
     </div>
   </div>
 
-  <div id="content"></div>
-
-  <div class="journal-bottom">
-    <div class="field">
-      <label for="j-remarque">Remarque</label>
-      <textarea id="j-remarque" placeholder="Ex. Accueil observateur…"></textarea>
-    </div>
-    <div class="field">
-      <label for="j-devoirs">Devoirs</label>
-      <textarea id="j-devoirs"></textarea>
-    </div>
+  <div class="journal-tabs" id="journal-tabs">
+    <button type="button" class="active" data-journal-tab="tab-journee">Journée</button>
+    <button type="button" data-journal-tab="tab-ia-devoirs">Prompt IA — devoirs</button>
   </div>
+
+  <section class="journal-tab-panel active" id="tab-journee">
+    <div class="classe-filter-bar" id="classe-filter-bar"></div>
+    <div id="content"></div>
+
+    <div class="journal-bottom">
+      <div class="field">
+        <label for="j-remarque">Remarque</label>
+        <textarea id="j-remarque" placeholder="Ex. Accueil observateur…"></textarea>
+      </div>
+      <div class="field">
+        <label for="j-devoirs">Devoirs</label>
+        <textarea id="j-devoirs"></textarea>
+      </div>
+    </div>
+  </section>
+
+  <section class="journal-tab-panel" id="tab-ia-devoirs">
+    <div class="ia-panel">
+      <div class="ia-panel-head">
+        <div>
+          <h2>Prompt IA pour les devoirs</h2>
+          <p>Le prompt est construit à partir des séances suivies aujourd'hui et, lorsque le coffre est ouvert, des besoins et objectifs actifs des élèves.</p>
+        </div>
+        <div class="ia-actions">
+          <button type="button" class="btn primary" id="btn-generer-prompt-ia">✨ Générer le prompt</button>
+          <button type="button" class="btn" id="btn-copier-prompt-ia">Copier</button>
+        </div>
+      </div>
+      <textarea id="prompt-ia" class="prompt-ia" spellcheck="false" placeholder="Cliquez sur « Générer le prompt ». "></textarea>
+      <div id="prompt-ia-status" class="hint"></div>
+    </div>
+  </section>
 </main>
 
 <div class="toast" id="toast"></div>
 
-<script src="planning-core.js"></script>
+<script src="../fata-morgana/synapses-crypto.js"></script>
 <script src="../fata-morgana/synapses-coffre.js"></script>
+<script src="planning-core.js"></script>
+
+
 <script>
 "use strict";
 const PC = window.PlanningCore;
@@ -249,6 +750,14 @@ let affectations = PC.chargerAffectations();
 let banque = {};
 let iso = (new URLSearchParams(location.search).get("date")) || PC.dateISO(new Date());
 let jour = null;
+// Filtre d'affichage du cahier journal (onglet "Journée") : il n'existe
+// volontairement PAS d'option "Toutes les classes" — on affiche toujours
+// une seule classe (ou le dispositif ULIS / un autre dispositif) à la
+// fois. La valeur est encodée "cls:<id>" pour une classe de
+// config.classes, ou "disp:<id>" pour un dispositif de config.dispositifs.
+// N'affecte que le RENDU — jour.groupes (donnée réellement enregistrée)
+// n'est jamais tronqué par ce filtre.
+let classeFiltreCourante = null;
 
 /* ---------------- Coffre (repris du modèle sequences.html) ---------------- */
 let coffre = null;
@@ -256,10 +765,16 @@ try{ coffre = new SynapsesCoffre.Coffre(); }catch(e){ coffre = null; }
 function coffreDisponible(){ return !!coffre; }
 function coffreOuvert(){ return !!(coffre && coffre.ouvert); }
 function eleveLabel(e){
-  // Ne renvoie que le numéro d'anonymat : ce libellé alimente les groupes
-  // du jour, qui sont enregistrés dans localStorage (non chiffré). Le
-  // nom/prénom réel de l'élève ne doit jamais en sortir.
-  return e.identifiantSynapses;
+  // N'affiche que les INITIALES de l'élève, calculées à la volée à partir
+  // de son identité (coffre ouvert, en mémoire uniquement) : ce libellé
+  // n'est jamais stocké — seul l'identifiant d'anonymat (identifiantSynapses)
+  // est enregistré dans les groupes du jour, dans localStorage (non chiffré).
+  // Le nom/prénom réel de l'élève ne doit jamais en sortir.
+  const nom = ((e.identite && (e.identite.prenom || e.identite.nom)) || "").trim();
+  if(!nom) return e.identifiantSynapses;
+  const morceaux = nom.split(/\s+/).filter(Boolean);
+  if(morceaux.length === 1) return morceaux[0].slice(0,2).toUpperCase();
+  return (morceaux[0][0] + morceaux[morceaux.length-1][0]).toUpperCase();
 }
 function updateCoffreWidget(){
   const status = $("coffre-status"), btn = $("btn-coffre-toggle");
@@ -316,6 +831,12 @@ if($("btn-coffre-toggle")){
     }
   });
   window.addEventListener('beforeunload', ()=>{ if(coffre) coffre.purger(); });
+  // Filet de sécurité redondant : 'pagehide' se déclenche de façon plus
+  // fiable que 'beforeunload' sur mobile (Safari iOS notamment) et lors
+  // d'une mise en cache arrière (bfcache). Contrairement à
+  // 'visibilitychange', il ne se déclenche PAS à chaque changement d'onglet,
+  // donc il ne purge pas le coffre pendant une utilisation normale.
+  window.addEventListener('pagehide', ()=>{ if(coffre) coffre.purger(); });
 }
 
 /* ---------------- Onboarding ---------------- */
@@ -349,6 +870,64 @@ function optionsElevesDisponibles(groupe){
     .map(e=>`<option value="${escapeAttr(e.identifiantSynapses)}">${escapeHTML(eleveLabel(e))}</option>`).join("");
 }
 
+/* ---------------- Filtre d'affichage par classe / dispositif ---------------- */
+// Options disponibles pour le filtre : une entrée par classe de
+// config.classes, PLUS une entrée par dispositif de config.dispositifs
+// (ex. ULIS). Chaque option est identifiée par une clé "cls:<id>" ou
+// "disp:<id>". Il n'y a jamais d'option "Toutes les classes" : on affiche
+// toujours une seule de ces entités à la fois.
+function optionsFiltreClasse(){
+  const classes = (config.classes || []).map(cl=>({ cle: "cls:"+cl.id, nom: cl.nom }));
+  const dispositifs = (config.dispositifs || []).map(d=>({ cle: "disp:"+d.id, nom: d.nom }));
+  return classes.concat(dispositifs);
+}
+
+function matchFiltreClasse(g){
+  if(!classeFiltreCourante) return true; // aucune option disponible (config vide)
+  if(classeFiltreCourante.startsWith("disp:")){
+    const dispositifId = classeFiltreCourante.slice(5);
+    return (g.dispositifId||"") === dispositifId;
+  }
+  const classeId = classeFiltreCourante.slice(4);
+  if((g.classeId||"") === classeId) return true;
+  // Les groupes non rattachés à une classe précise (AESH, autonomie,
+  // groupes de besoin ULIS sans classe d'origine unique, briques ajoutées
+  // à la main) concernent potentiellement des élèves de plusieurs classes :
+  // on les garde visibles quel que soit l'onglet de classe sélectionné —
+  // sauf s'ils appartiennent déjà à un dispositif (ceux-là ne s'affichent
+  // que sous leur propre onglet, voir ci-dessus).
+  if(!g.classeId && !g.dispositifId) return true;
+  return false;
+}
+
+function renderClasseFilterBar(){
+  const bar = $("classe-filter-bar");
+  if(!bar) return;
+  const options = optionsFiltreClasse();
+  if(!options.length){ bar.innerHTML = ""; classeFiltreCourante = null; return; }
+  if(!classeFiltreCourante || !options.some(o=>o.cle===classeFiltreCourante)){
+    // Jamais de "Toutes les classes" : on retombe toujours sur la première
+    // entrée disponible (classe si elle existe, sinon dispositif).
+    classeFiltreCourante = options[0].cle;
+  }
+
+  const nb = cle => (jour && jour.groupes ? jour.groupes : []).filter(g=>{
+    if(cle.startsWith("disp:")) return (g.dispositifId||"") === cle.slice(5);
+    return (g.classeId||"") === cle.slice(4);
+  }).length;
+
+  const boutons = options.map(o=>
+    `<button type="button" data-classe-filtre="${escapeAttr(o.cle)}" class="${classeFiltreCourante===o.cle?"active":""}">${escapeHTML(o.nom)}<span class="n">(${nb(o.cle)})</span></button>`
+  );
+  bar.innerHTML = boutons.join("");
+  bar.querySelectorAll("[data-classe-filtre]").forEach(b=>{
+    b.addEventListener("click", ()=>{
+      classeFiltreCourante = b.dataset.classeFiltre;
+      renderJour();
+    });
+  });
+}
+
 function renderJour(){
   $("date-picker").value = iso;
   $("day-title").textContent = PC.formatDateLong(PC.parseISO(iso));
@@ -363,6 +942,8 @@ function renderJour(){
   const content = $("content");
   content.innerHTML = "";
 
+  renderClasseFilterBar();
+
   if(!jour.groupes.length){
     content.innerHTML = `
       <div class="empty-journal">
@@ -371,73 +952,455 @@ function renderJour(){
         <button class="btn primary" id="btn-generer-jour-vide">↺ Resynchroniser avec la grille</button>
         <button class="btn" id="btn-ajouter-bloc-vide" style="margin-left:8px;">+ Ajouter un créneau</button>
       </div>`;
-    $("btn-generer-jour-vide").addEventListener("click", genererDepuisGrille);
-    $("btn-ajouter-bloc-vide").addEventListener("click", ()=> ajouterBloc());
+    $("btn-generer-jour-vide").addEventListener("click", ()=>genererDepuisGrille(false));
+    $("btn-ajouter-bloc-vide").addEventListener("click", ()=>ajouterBloc());
     return;
+  }
+
+  const groupesVisibles = jour.groupes.filter(matchFiltreClasse);
+
+  if(!groupesVisibles.length){
+    let nomFiltre = "cette classe";
+    if(classeFiltreCourante && classeFiltreCourante.startsWith("disp:")){
+      const d = PC.dispositifById(config, classeFiltreCourante.slice(5));
+      if(d) nomFiltre = "« "+escapeHTML(d.nom)+" »";
+    } else if(classeFiltreCourante){
+      const cl = PC.classeById(config, classeFiltreCourante.slice(4));
+      if(cl) nomFiltre = "« "+escapeHTML(cl.nom)+" »";
+    }
+    content.innerHTML = `
+      <div class="empty-journal">
+        <h3>Aucun groupe pour ${nomFiltre} ce jour-là</h3>
+        <p>Cette classe (ou ce dispositif) n'a peut-être pas cours ce jour dans sa grille horaire, ou tous ses créneaux ont été retirés du cahier journal. Vous pouvez sélectionner une autre classe ci-dessus ou ajouter un créneau à la main.</p>
+        <button class="btn" id="btn-ajouter-bloc-vide">+ Ajouter un créneau</button>
+      </div>`;
+    $("btn-ajouter-bloc-vide").addEventListener("click", ()=>ajouterBloc());
+    return;
+  }
+
+  /* =========================================================
+     PRÉSENTATION DES BRIQUES
+     =========================================================
+     Une "unité d'affichage" correspond à :
+       - même début
+       - même fin
+       - même contenu
+
+     Donc :
+       10:10-10:25 + Lecture + CP C/CP A
+       -> UNE brique commune.
+
+       10:10-10:25 + Lecture
+       10:10-10:25 + Mathématiques
+       -> DEUX briques côte à côte.
+
+     Les objets g restent indépendants dans jour.groupes.
+  ========================================================= */
+
+  function hm(h){
+    return PC.heureVersMin(h);
+  }
+
+  function chevauche(a,b){
+    return hm(a.debut) < hm(b.fin) &&
+           hm(b.debut) < hm(a.fin);
+  }
+
+  function contenuKey(g){
+    if(g.fixe){
+      return "fixe|" + String(g.titre || "").trim().toLowerCase();
+    }
+
+    const ref = g.seanceRef && g.seanceRef.id
+      ? String(g.seanceRef.id)
+      : "";
+
+    return [
+      "seance",
+      String(g.titre || "").trim().toLowerCase(),
+      String(g.domaineCle || "").trim().toLowerCase(),
+      ref
+    ].join("|");
+  }
+
+  const map = new Map();
+
+  groupesVisibles.forEach(g=>{
+    const key = [
+      g.debut,
+      g.fin,
+      contenuKey(g)
+    ].join("|");
+
+    if(!map.has(key)){
+      map.set(key,{
+        debut:g.debut,
+        fin:g.fin,
+        groupes:[]
+      });
+    }
+
+    map.get(key).groupes.push(g);
+  });
+
+  const blocs = Array.from(map.values()).sort((a,b)=>{
+    return hm(a.debut)-hm(b.debut) ||
+           hm(a.fin)-hm(b.fin);
+  });
+
+  /* =========================================================
+     ORGANISATION VERTICALE DE LA JOURNÉE
+     ---------------------------------------------------------
+     Une ligne = un groupe de créneaux qui se chevauchent.
+
+     Exemples :
+       10:10–10:25 + 10:10–10:25
+       => même ligne, côte à côte
+
+       10:10–10:25 + 10:20–10:25
+       => même ligne, côte à côte
+
+       10:10–10:25
+       10:25–10:50
+       => deux lignes, de haut en bas
+
+     On ne place donc JAMAIS un créneau plus tard dans la
+     journée sur la même ligne qu'un créneau terminé avant lui.
+     ========================================================= */
+
+  const lignes = [];
+  let ligneCourante = [];
+  let finLigne = -1;
+
+  blocs.forEach(bloc=>{
+    const debut = hm(bloc.debut);
+    const fin = hm(bloc.fin);
+
+    /*
+     * Si le nouveau bloc commence avant la fin du groupe
+     * actuellement affiché, il chevauche celui-ci :
+     * il reste sur la même ligne.
+     *
+     * Sinon, on ferme la ligne et on commence une nouvelle
+     * ligne immédiatement en dessous.
+     */
+    if(
+      ligneCourante.length &&
+      debut < finLigne
+    ){
+      ligneCourante.push(bloc);
+      finLigne = Math.max(finLigne, fin);
+    }else{
+      if(ligneCourante.length){
+        lignes.push(ligneCourante);
+      }
+
+      ligneCourante = [bloc];
+      finLigne = fin;
+    }
+  });
+
+  if(ligneCourante.length){
+    lignes.push(ligneCourante);
   }
 
   const table = document.createElement("table");
   table.className = "journal-table";
+
   const tbody = document.createElement("tbody");
 
-  PC.regrouperParBloc(jour).forEach(bloc=>{
+  lignes.forEach(ligne=>{
+    ligne.sort((a,b)=>{
+      return hm(a.debut)-hm(b.debut) ||
+             hm(a.fin)-hm(b.fin);
+    });
+
     const tr = document.createElement("tr");
     const td = document.createElement("td");
 
-    const head = document.createElement("div");
-    head.className = "bloc-row-head";
-    head.innerHTML = `
-      <input class="bloc-label" value="${escapeAttr(PC.libelleBloc(jour, bloc.debut, bloc.fin))}" data-role="label">
-      <input class="bloc-heure" value="${escapeAttr(bloc.debut)}" data-role="debut">
-      <span class="sep">–</span>
-      <input class="bloc-heure" value="${escapeAttr(bloc.fin)}" data-role="fin">
-      <span class="spacer"></span>
-      <button class="btn small danger" data-role="del-bloc">✕ Supprimer ce créneau</button>`;
-    head.querySelector('[data-role=label]').addEventListener("change", e=>{
-      jour.libellesBlocs[PC.cleBloc(bloc.debut,bloc.fin)] = e.target.value;
-      sauver();
-    });
-    head.querySelector('[data-role=debut]').addEventListener("change", e=>{
-      const ancienneCle = PC.cleBloc(bloc.debut, bloc.fin);
-      const label = jour.libellesBlocs[ancienneCle];
-      delete jour.libellesBlocs[ancienneCle];
-      bloc.groupes.forEach(g=>{ g.debut = e.target.value; g.modifie = true; });
-      if(label) jour.libellesBlocs[PC.cleBloc(e.target.value, bloc.fin)] = label;
-      sauver(); renderJour();
-    });
-    head.querySelector('[data-role=fin]').addEventListener("change", e=>{
-      const ancienneCle = PC.cleBloc(bloc.debut, bloc.fin);
-      const label = jour.libellesBlocs[ancienneCle];
-      delete jour.libellesBlocs[ancienneCle];
-      bloc.groupes.forEach(g=>{ g.fin = e.target.value; g.modifie = true; });
-      if(label) jour.libellesBlocs[PC.cleBloc(bloc.debut, e.target.value)] = label;
-      sauver(); renderJour();
-    });
-    head.querySelector('[data-role=del-bloc]').addEventListener("click", ()=>{
-      if(!confirm("Supprimer ce créneau et tous ses groupes ?")) return;
-      bloc.groupes.forEach(g=>{ if(g.origine) jour.exclusions.push(g.origine); });
-      jour.groupes = jour.groupes.filter(g=> !bloc.groupes.includes(g));
-      delete jour.libellesBlocs[PC.cleBloc(bloc.debut,bloc.fin)];
-      sauver(); renderJour();
-    });
-    td.appendChild(head);
+    const lanes = document.createElement("div");
+    lanes.className = "journal-lanes";
 
-    const groupesWrap = document.createElement("div");
-    groupesWrap.className = "bloc-groupes";
-    bloc.groupes.forEach(g=> groupesWrap.appendChild(renderGroupeCard(g)));
+    const lane = document.createElement("div");
+    lane.className = "journal-lane";
 
-    const addBtn = document.createElement("button");
-    addBtn.className = "add-groupe-btn";
-    addBtn.title = "Ajouter un groupe en parallèle sur ce créneau";
-    addBtn.textContent = "+";
-    addBtn.addEventListener("click", ()=>{
-      jour.groupes.push({ id: PC.uid("grp"), debut: bloc.debut, fin: bloc.fin, origine: null, modifie: true,
-        adulte:{type:"enseignant",nom:""}, titre:"Nouveau groupe", domaineCle:"", niveau:"", seanceRef:null, eleves:[], remarque:"", fixe:false });
-      sauver(); renderJour();
+    ligne.forEach(bloc=>{
+      const blocEl = document.createElement("div");
+      blocEl.className = "journal-block";
+
+      /* -----------------------------------------------------
+         EN-TÊTE : chaque brique possède son propre horaire.
+         Cela permet à 10:10-10:25 et 10:20-10:25 d'être
+         affichés côte à côte.
+      ----------------------------------------------------- */
+
+      const head = document.createElement("div");
+      head.className = "journal-block-head";
+
+      head.innerHTML = `
+        <input
+          class="bloc-label"
+          value="${escapeAttr(PC.libelleBloc(jour,bloc.debut,bloc.fin))}"
+          data-role="label"
+          title="Libellé du créneau"
+        >
+        <input
+          class="bloc-heure"
+          type="time"
+          value="${escapeAttr(bloc.debut)}"
+          data-role="debut"
+        >
+        <span class="sep">–</span>
+        <input
+          class="bloc-heure"
+          type="time"
+          value="${escapeAttr(bloc.fin)}"
+          data-role="fin"
+        >
+        <span class="spacer"></span>
+        <button
+          class="btn small danger"
+          data-role="del-bloc"
+          title="Supprimer cette brique et ses groupes"
+        >✕</button>
+      `;
+
+      head.querySelector('[data-role=label]').addEventListener("change",e=>{
+        jour.libellesBlocs[
+          PC.cleBloc(bloc.debut,bloc.fin)
+        ] = e.target.value;
+        sauver();
+      });
+
+      head.querySelector('[data-role=debut]').addEventListener("change",e=>{
+        const ancienneCle =
+          PC.cleBloc(bloc.debut,bloc.fin);
+
+        const label =
+          jour.libellesBlocs[ancienneCle];
+
+        delete jour.libellesBlocs[ancienneCle];
+
+        bloc.groupes.forEach(g=>{
+          g.debut = e.target.value;
+          g.modifie = true;
+        });
+
+        if(label){
+          jour.libellesBlocs[
+            PC.cleBloc(e.target.value,bloc.fin)
+          ] = label;
+        }
+
+        sauver();
+        renderJour();
+      });
+
+      head.querySelector('[data-role=fin]').addEventListener("change",e=>{
+        const ancienneCle =
+          PC.cleBloc(bloc.debut,bloc.fin);
+
+        const label =
+          jour.libellesBlocs[ancienneCle];
+
+        delete jour.libellesBlocs[ancienneCle];
+
+        bloc.groupes.forEach(g=>{
+          g.fin = e.target.value;
+          g.modifie = true;
+        });
+
+        if(label){
+          jour.libellesBlocs[
+            PC.cleBloc(bloc.debut,e.target.value)
+          ] = label;
+        }
+
+        sauver();
+        renderJour();
+      });
+
+      head.querySelector('[data-role=del-bloc]').addEventListener("click",()=>{
+        if(!confirm("Supprimer cette brique et tous ses groupes ?")) return;
+
+        bloc.groupes.forEach(g=>{
+          if(g.origine){
+            jour.exclusions.push(g.origine);
+          }
+        });
+
+        jour.groupes =
+          jour.groupes.filter(g=>!bloc.groupes.includes(g));
+
+        delete jour.libellesBlocs[
+          PC.cleBloc(bloc.debut,bloc.fin)
+        ];
+
+        sauver();
+        renderJour();
+      });
+
+      blocEl.appendChild(head);
+
+      /* -----------------------------------------------------
+         CORPS DE LA BRIQUE
+      ----------------------------------------------------- */
+
+      const body = document.createElement("div");
+      body.className = "journal-block-body";
+
+      /* Plusieurs classes + même contenu :
+         UNE seule brique avec les classes à l'intérieur. */
+      if(bloc.groupes.length > 1){
+
+        const commun =
+          document.createElement("div");
+
+        commun.className = "groupe-commun";
+
+        const classes =
+          [...new Set(
+            bloc.groupes
+              .map(g=>g.niveau || g.classeId || "Classe")
+              .filter(Boolean)
+          )];
+
+        const tousFixes =
+          bloc.groupes.every(g=>g.fixe);
+
+        const titreCommun =
+          bloc.groupes[0].titre ||
+          (tousFixes ? "Créneau fixe" : "Créneau commun");
+
+        const communHead =
+          document.createElement("div");
+
+        communHead.className =
+          "groupe-commun-head";
+
+        communHead.innerHTML = `
+          <div class="groupe-commun-title">
+            ${escapeHTML(titreCommun)}
+          </div>
+          <div class="groupe-commun-classes">
+            ${
+              classes.map(n=>
+                `<span>${escapeHTML(n)}</span>`
+              ).join("")
+            }
+          </div>
+        `;
+
+        commun.appendChild(communHead);
+
+        if(tousFixes){
+
+          commun.classList.add("fixe");
+
+          body.appendChild(commun);
+
+        }else{
+
+          /* Les groupes restent indépendants :
+             chaque carte conserve ses propres élèves,
+             adulte, remarque, suppression, etc. */
+          const communBody =
+            document.createElement("div");
+
+          communBody.className =
+            "groupe-commun-body";
+
+          bloc.groupes.forEach(g=>{
+            communBody.appendChild(
+              renderGroupeCard(g)
+            );
+          });
+
+          commun.appendChild(
+            communBody
+          );
+
+          body.appendChild(
+            commun
+          );
+        }
+
+      }else{
+
+        const groupesWrap =
+          document.createElement("div");
+
+        groupesWrap.className =
+          "bloc-groupes";
+
+        groupesWrap.appendChild(
+          renderGroupeCard(
+            bloc.groupes[0]
+          )
+        );
+
+        body.appendChild(
+          groupesWrap
+        );
+      }
+
+      /* -----------------------------------------------------
+         AJOUTER UN GROUPE
+      ----------------------------------------------------- */
+
+      const addZone =
+        document.createElement("div");
+
+      addZone.className =
+        "journal-block-add";
+
+      const addBtn =
+        document.createElement("button");
+
+      addBtn.className =
+        "add-groupe-btn";
+
+      addBtn.title =
+        "Ajouter un groupe sur cette brique";
+
+      addBtn.textContent =
+        "+ Ajouter un groupe";
+
+      addBtn.addEventListener("click",()=>{
+        if(bloc.groupes.length >= 3){ toast("Maximum de 3 groupes pour ce créneau."); return; }
+        jour.groupes.push({
+          id:PC.uid("grp"), debut:bloc.debut, fin:bloc.fin, origine:null, modifie:true,
+          adulte:{type:"enseignant",nom:""}, titre:"Nouveau groupe", domaineCle:"", niveau:"", classeId:"",
+          seanceRef:null, eleves:[], remarque:"", fixe:false
+        });
+        sauver(); renderJour();
+      });
+      if(bloc.groupes.length >= 3){
+        addBtn.disabled=true;
+        addBtn.textContent="3 groupes maximum";
+        addBtn.style.fontSize="11px";
+        addBtn.style.cursor="not-allowed";
+      }
+
+      addZone.appendChild(
+        addBtn
+      );
+
+      body.appendChild(
+        addZone
+      );
+
+      blocEl.appendChild(
+        body
+      );
+
+      lane.appendChild(
+        blocEl
+      );
     });
-    groupesWrap.appendChild(addBtn);
 
-    td.appendChild(groupesWrap);
+    lanes.appendChild(lane);
+    td.appendChild(lanes);
     tr.appendChild(td);
     tbody.appendChild(tr);
   });
@@ -445,11 +1408,23 @@ function renderJour(){
   table.appendChild(tbody);
   content.appendChild(table);
 
-  const addBlocRow = document.createElement("div");
-  addBlocRow.className = "add-bloc-row";
-  addBlocRow.innerHTML = `<button class="btn" id="btn-add-bloc">+ Ajouter un créneau</button>`;
-  content.appendChild(addBlocRow);
-  $("btn-add-bloc").addEventListener("click", ()=> ajouterBloc());
+  const addBlocRow =
+    document.createElement("div");
+
+  addBlocRow.className =
+    "add-bloc-row";
+
+  addBlocRow.innerHTML =
+    `<button class="btn" id="btn-add-bloc">+ Ajouter un créneau</button>`;
+
+  content.appendChild(
+    addBlocRow
+  );
+
+  $("btn-add-bloc").addEventListener(
+    "click",
+    ()=>ajouterBloc()
+  );
 }
 
 function ajouterBloc(){
@@ -467,94 +1442,688 @@ function renderGroupeCard(g){
   card.className = "groupe-card" + (g.fixe ? " fixe" : "");
 
   if(g.fixe){
-    card.innerHTML = `<div class="row1"><b>${escapeHTML(g.titre)}</b></div>`;
+    const eleves = (g.eleves||[]).map(id=>`<span class="eleve-chip">${escapeHTML(labelEleve(id))}</span>`).join("");
+    card.innerHTML = `<div class="row1"><b>${escapeHTML(g.titre)}</b></div>${eleves ? `<div class="eleves-chips" style="margin-top:6px;">${eleves}</div>` : ""}`;
     return card;
   }
 
   const typesOptions = PC.TYPES_ADULTE.map(t=>`<option value="${t.id}" ${g.adulte && g.adulte.type===t.id?'selected':''}>${t.label}</option>`).join("");
   const cadenas = g.modifie ? `<span title="Modifié à la main : ne sera plus écrasé par une resynchronisation" style="float:right;font-size:11px;color:var(--ink-soft);">🔒</span>` : "";
 
+  const items = [];
+  Object.entries(banque || {}).forEach(([niveau, domaines])=>{
+    Object.entries(domaines || {}).forEach(([cle, bucket])=>{
+      (bucket.items || []).forEach(it=>items.push(Object.assign({},it,{_niveau:niveau,_domaineCle:it.domaineCle||cle,_domaineLabel:bucket.label||cle})));
+    });
+  });
+  const uniques = new Map();
+  items.forEach(it=>{if(it.id && !uniques.has(it.id)) uniques.set(it.id,it);});
+  const sessionItems = Array.from(uniques.values());
+  const currentId = g.seanceRef && g.seanceRef.id ? g.seanceRef.id : "";
+  const sessionOptions = `<option value="">— Sélectionner une séance —</option>` + sessionItems.map(it=>`<option value="${escapeAttr(it.id)}" ${it.id===currentId?'selected':''}>${escapeHTML((it._niveau?it._niveau+" · ":"")+(it.seqTitre?it.seqTitre+" · ":"")+(it.titre||it.type||it.id))}</option>`).join("");
+
   card.innerHTML = `
     <input class="groupe-titre" value="${escapeAttr(g.titre)}" placeholder="Titre du groupe / séance">
     ${cadenas}
+    <select class="groupe-seance" data-role="seance" style="width:100%;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:12px;background:#fff;margin-bottom:6px;">${sessionOptions}</select>
     ${g.domaineCle ? `<span class="domaine-tag">${escapeHTML(g.niveau||"")} · ${escapeHTML(g.domaineCle)}</span>` : ""}
     <div class="row1">
       <select class="adulte-type">${typesOptions}</select>
       <input class="adulte-nom" placeholder="Nom (ex. Vincent, Yasmina…)" value="${escapeAttr(g.adulte ? g.adulte.nom : "")}">
     </div>
     <div class="eleves-chips" data-role="chips"></div>
-    <select class="add-eleve" data-role="add-eleve">
-      <option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>
-      ${optionsElevesDisponibles(g)}
-    </select>
+    <select class="add-eleve" data-role="add-eleve"><option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}</select>
     <textarea class="remarque" placeholder="Point de vigilance / remarque…">${escapeHTML(g.remarque||"")}</textarea>
     <div class="card-foot"><button data-role="del-groupe">✕ Supprimer ce groupe</button></div>`;
 
   function renderChips(){
-    const chips = card.querySelector('[data-role=chips]');
-    chips.innerHTML = "";
+    const chips=card.querySelector('[data-role=chips]');
+    chips.innerHTML="";
     (g.eleves||[]).forEach(id=>{
-      const chip = document.createElement("span");
-      chip.className = "eleve-chip";
-      chip.innerHTML = `${escapeHTML(labelEleve(id))} <button title="Retirer">✕</button>`;
-      chip.querySelector("button").addEventListener("click", ()=>{
-        g.eleves = g.eleves.filter(x=>x!==id);
-        sauver(); renderChips();
-        card.querySelector('[data-role=add-eleve]').innerHTML =
-          `<option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
+      const chip=document.createElement("span");
+      chip.className="eleve-chip";
+      chip.innerHTML=`${escapeHTML(labelEleve(id))} <button title="Retirer">✕</button>`;
+      chip.querySelector("button").addEventListener("click",()=>{
+        g.eleves=g.eleves.filter(x=>x!==id); marquerPersonnalise(); sauver(); renderChips();
+        card.querySelector('[data-role=add-eleve]').innerHTML=`<option value="">${coffreOuvert()?"+ Ajouter un élève…":"Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
       });
       chips.appendChild(chip);
     });
   }
   renderChips();
 
-  card.querySelector(".groupe-titre").addEventListener("change", e=>{ g.titre=e.target.value; g.modifie=true; sauver(); renderJour(); });
-  card.querySelector(".adulte-type").addEventListener("change", e=>{ g.adulte = g.adulte||{}; g.adulte.type=e.target.value; g.modifie=true; sauver(); });
-  card.querySelector(".adulte-nom").addEventListener("change", e=>{ g.adulte = g.adulte||{}; g.adulte.nom=e.target.value; g.modifie=true; sauver(); });
-  card.querySelector(".remarque").addEventListener("change", e=>{ g.remarque=e.target.value; sauver(); });
-  card.querySelector('[data-role=add-eleve]').addEventListener("change", e=>{
-    const id = e.target.value;
-    if(!id) return;
-    g.eleves = g.eleves || [];
-    if(!g.eleves.includes(id)) g.eleves.push(id);
-    sauver(); renderChips();
-    e.target.innerHTML = `<option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
-  });
-  card.querySelector('[data-role=del-groupe]').addEventListener("click", ()=>{
-    if(g.origine) jour.exclusions.push(g.origine);
-    jour.groupes = jour.groupes.filter(x=>x.id!==g.id);
-    sauver(); renderJour();
-  });
+  // Marque le groupe comme touché à la main. Pour un groupe créé par la
+  // répartition automatique (repartitionAuto), on pose aussi `personnalise`
+  // : c'est ce second indicateur qui le protège désormais d'être supprimé
+  // et reconstruit au prochain clic sur « Répartir les élèves » — sans lui,
+  // la structure des groupes auto (niveaux, AESH, autonomie) est toujours
+  // recalculée à neuf à chaque exécution, seuls les groupes réellement
+  // personnalisés par l'enseignant restent intacts.
+  function marquerPersonnalise(){ g.modifie = true; if(g.repartitionAuto) g.personnalise = true; }
 
+  card.querySelector(".groupe-titre").addEventListener("change",e=>{g.titre=e.target.value;marquerPersonnalise();sauver();renderJour();});
+  card.querySelector(".adulte-type").addEventListener("change",e=>{g.adulte=g.adulte||{};g.adulte.type=e.target.value;marquerPersonnalise();sauver();});
+  card.querySelector(".adulte-nom").addEventListener("change",e=>{g.adulte=g.adulte||{};g.adulte.nom=e.target.value;marquerPersonnalise();sauver();});
+  card.querySelector(".remarque").addEventListener("change",e=>{g.remarque=e.target.value;sauver();});
+  card.querySelector('[data-role=seance]').addEventListener("change",e=>{
+    const item=sessionItems.find(x=>x.id===e.target.value);
+    if(!item){g.seanceRef=null;g.domaineCle="";marquerPersonnalise();sauver();renderJour();return;}
+    g.seanceRef={id:item.id,source:item.source,fichier:item.fichier||null};
+    g.titre=item.titre||item.type||g.titre||"Séance";
+    g.domaineCle=item._domaineCle||g.domaineCle||"";
+    g.niveau=g.niveau||item._niveau||"";
+    marquerPersonnalise();sauver();renderJour();
+  });
+  card.querySelector('[data-role=add-eleve]').addEventListener("change",e=>{
+    const id=e.target.value;if(!id)return;g.eleves=g.eleves||[];if(!g.eleves.includes(id))g.eleves.push(id);marquerPersonnalise();sauver();renderChips();
+    e.target.innerHTML=`<option value="">${coffreOuvert()?"+ Ajouter un élève…":"Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
+  });
+  card.querySelector('[data-role=del-groupe]').addEventListener("click",()=>{
+    if(g.origine) jour.exclusions.push(g.origine);
+    jour.groupes=jour.groupes.filter(x=>x.id!==g.id);sauver();renderJour();
+  });
   return card;
 }
 
+/* ---------------- Onglets cahier journal ---------------- */
+document.querySelectorAll("[data-journal-tab]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    document.querySelectorAll("[data-journal-tab]").forEach(b=>b.classList.toggle("active",b===btn));
+    document.querySelectorAll(".journal-tab-panel").forEach(p=>p.classList.toggle("active",p.id===btn.dataset.journalTab));
+    if(btn.dataset.journalTab==="tab-ia-devoirs") genererPromptIA();
+  });
+});
+
+/* ---------------- Import séquences / séances ---------------- */
+$("btn-import-sequences").addEventListener("click",()=>$("import-sequences-file").click());
+$("import-sequences-file").addEventListener("change",async e=>{
+  const file=e.target.files[0]; if(!file)return;
+  try{
+    const payload=await PC.lireFichierJSON(file);
+    const r=PC.importerBibliothequeJSON(payload);
+    banque=await PC.chargerBanque();
+    toast(`Import réussi : ${r.sequences} séquence(s), ${r.seances} séance(s).`);
+    renderJour();
+  }catch(err){ toast("Import impossible : "+(err.message||err)); }
+  finally{ e.target.value=""; }
+});
+
+/* ---------------- Prompt IA pour les devoirs ---------------- */
+function genererPromptIA(){
+  const out=$("prompt-ia"); if(!out)return;
+  const map=new Map();
+  if(coffreOuvert()) coffre.listerEleves().forEach(e=>map.set(e.identifiantSynapses,e));
+  // Les créneaux fixes (récréations, pause méridienne, etc.) ne sont pas
+  // des séances d'apprentissage et ne doivent pas apparaître dans le prompt
+  // destiné à préparer les devoirs.
+  const groupes=(jour&&jour.groupes?jour.groupes:[])
+    .filter(g=>!g.fixe && g._fixeType!=='recreation' && g._fixeType!=='pause')
+    .slice()
+    .sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
+  const L=[];
+  L.push("Tu es un enseignant du premier degré. Prépare des devoirs courts, réalistes et directement liés aux apprentissages travaillés aujourd'hui.");
+  L.push(`Date : ${PC.formatDateLong(PC.parseISO(iso))}`);
+  L.push("");
+  L.push("Règles :");
+  L.push("- Adapter chaque proposition au niveau et aux besoins de l'élève.");
+  L.push("- Prendre en compte en priorité les besoins et objectifs actifs réellement renseignés.");
+  L.push("- Ne pas inventer un besoin individuel absent des données.");
+  L.push("- Ne pas proposer de devoir si aucun entraînement à la maison n'est pertinent.");
+  L.push("- Favoriser une activité autonome de 5 à 15 minutes.");
+  L.push("- Différencier les propositions lorsque les besoins sont différents.");
+  L.push("- Répondre sous forme de tableau : Élève/groupe | Devoir | Durée | Consigne famille.");
+  L.push("");
+  L.push("Séances suivies aujourd'hui :");
+  groupes.forEach(g=>{
+    const noms=(g.eleves||[]).map(id=>{const e=map.get(id);return e&&e.identite&&(e.identite.prenom||e.identite.nom)||id;});
+    const besoins=[];
+    (g.eleves||[]).forEach(id=>{
+      const e=map.get(id); if(!e)return;
+      (e.besoins||[]).forEach(b=>{const v=typeof b==="object"?(b.libelle||b.domaine||b.champ||b.hypothese||""):b;if(v)besoins.push(String(v));});
+      (e.objectifs||[]).filter(o=>!o.statut||o.statut==="actif").forEach(o=>{const v=typeof o==="object"?(o.libelle||o.domaine||o.contexte||o.champ||""):o;if(v)besoins.push(String(v));});
+    });
+    L.push(`- ${g.debut}–${g.fin} · ${g.titre||"Séance"} · ${g.niveau||"niveau non précisé"}`);
+    if(noms.length)L.push(`  Élèves : ${noms.join(", ")}`);
+    const u=[...new Set(besoins)]; if(u.length)L.push(`  Besoins/objectifs : ${u.join(" ; ")}`);
+    if(g.remarque)L.push(`  Vigilance : ${g.remarque}`);
+  });
+  if(!coffreOuvert())L.push("\nLe coffre élèves n'est pas ouvert : produire uniquement des devoirs au niveau des groupes, sans inventer de besoins individuels.");
+  out.value=L.join("\n");
+  $("prompt-ia-status").textContent=coffreOuvert()?"Prompt enrichi avec les besoins/objectifs du coffre ouvert.":"Prompt généré sans données individuelles : ouvrez le coffre pour une différenciation par élève.";
+}
+$("btn-generer-prompt-ia").addEventListener("click",genererPromptIA);
+$("btn-copier-prompt-ia").addEventListener("click",async()=>{
+  if(!$("prompt-ia").value)genererPromptIA();
+  try{await navigator.clipboard.writeText($("prompt-ia").value);}catch(e){$("prompt-ia").select();document.execCommand("copy");}
+  $("prompt-ia-status").textContent="Prompt copié.";
+});
+
 /* ---------------- Actions globales ---------------- */
 async function genererDepuisGrille(silencieux){
-  // Toujours relire l'état le plus récent (peut avoir changé dans un autre
-  // onglet : Planning — Gestion / Planning — Affichage).
+  // Toujours relire l'état le plus récent. Classes et dispositifs (ULIS
+  // compris) utilisent maintenant exactement le même mécanisme : la grille
+  // est la source des créneaux du cahier journal.
   config = PC.chargerConfig();
   grilles = PC.chargerGrilles();
   affectations = PC.chargerAffectations();
   try{
     if(!Object.keys(banque).length) banque = await PC.chargerBanque();
-  }catch(e){ /* on continue sans détail de séance */ }
-  PC.genererJournalDepuisGrille(iso, config, grilles, affectations, banque);
-  if(!silencieux) toast("Cahier journal resynchronisé avec la grille.");
+  }catch(e){}
+  PC.genererJournalDepuisGrille(iso, config, grilles, affectations, banque, coffre);
+  if(!silencieux) toast("Cahier journal resynchronisé avec les grilles (classes et dispositifs).");
   renderJour();
 }
 $("btn-generer-jour").addEventListener("click", ()=> genererDepuisGrille(false));
 
-$("btn-repartir-eleves").addEventListener("click", ()=>{
+$("btn-repartir-eleves").addEventListener("click", async ()=>{
   if(!coffreOuvert()){ toast("Ouvrez le coffre pour répartir les élèves."); openModal('modal-coffre'); return; }
-  const journal = PC.chargerJournal();
-  jour = PC.journalPourDate(iso, journal);
-  PC.repartirElevesAuto(iso, jour, coffre);
-  toast("Répartition proposée — vérifiez et ajustez si besoin.");
+  config = PC.chargerConfig();
+  grilles = PC.chargerGrilles();
+  try{
+    const affectationsExistantes=PC.chargerAffectations();
+    const nouvelles=await PC.genererAffectations(config.classes||[],config,grilles,affectationsExistantes);
+    PC.sauverAffectations(nouvelles);
+    const stats=PC.repartirElevesSemaineAuto(config,grilles,nouvelles,coffre);
+    PC.genererJournalDepuisGrille(iso,config,grilles,nouvelles,banque,coffre);
+    jour = PC.journalPourDate(iso, PC.chargerJournal());
+    toast(`${stats.ajouts} affectation(s) d'élève · ${stats.groupes} groupe(s) automatique(s).`);
+  }catch(e){
+    toast("Erreur lors de la répartition : " + (e.message || e));
+  }
   renderJour();
 });
 
-$("btn-print").addEventListener("click", ()=> window.print());
+/* ---------------- Impression ergonomique ----------------
+   La version imprimée est une vue dédiée :
+   - aucun bouton ni champ de saisie ;
+   - horaire + intitulé ;
+   - classes concernées ;
+   - adulte ;
+   - élèves ;
+   - remarques ;
+   - remarque générale et devoirs.
+
+   La vue écran n'est jamais modifiée.
+------------------------------------------------------------ */
+
+function construireVueImpression(){
+
+  const old =
+    document.getElementById("print-journal");
+
+  if(old) old.remove();
+
+  const root =
+    document.createElement("section");
+
+  root.id =
+    "print-journal";
+
+  root.className =
+    "print-journal";
+
+
+  /* ---------- En-tête ---------- */
+
+  const head =
+    document.createElement("div");
+
+  head.className =
+    "print-head";
+
+  head.innerHTML = `
+    <div class="print-title">
+      Cahier journal
+    </div>
+    <div class="print-date">
+      ${escapeHTML(
+        PC.formatDateLong(
+          PC.parseISO(iso)
+        )
+      )}
+    </div>
+  `;
+
+  root.appendChild(head);
+
+
+  /* ---------- Outils horaires ---------- */
+
+  function hm(h){
+    return PC.heureVersMin(h);
+  }
+
+  function chevauche(a,b){
+    return hm(a.debut) < hm(b.fin) &&
+           hm(b.debut) < hm(a.fin);
+  }
+
+  function contenuKey(g){
+
+    if(g.fixe){
+      return "fixe|" +
+        String(g.titre || "")
+          .trim()
+          .toLowerCase();
+    }
+
+    const ref =
+      g.seanceRef &&
+      g.seanceRef.id
+        ? String(g.seanceRef.id)
+        : "";
+
+    return [
+      "seance",
+      String(g.titre || "")
+        .trim()
+        .toLowerCase(),
+      String(g.domaineCle || "")
+        .trim()
+        .toLowerCase(),
+      ref
+    ].join("|");
+  }
+
+
+  /* ---------- Même horaire + même contenu ---------- */
+
+  const map =
+    new Map();
+
+  jour.groupes.forEach(g=>{
+
+    const key = [
+      g.debut,
+      g.fin,
+      contenuKey(g)
+    ].join("|");
+
+    if(!map.has(key)){
+      map.set(key,{
+        debut:g.debut,
+        fin:g.fin,
+        groupes:[]
+      });
+    }
+
+    map.get(key).groupes.push(g);
+
+  });
+
+
+  const blocs =
+    Array.from(map.values())
+      .sort(
+        (a,b)=>
+          hm(a.debut)-hm(b.debut) ||
+          hm(a.fin)-hm(b.fin)
+      );
+
+
+  /* ---------- Lignes de chevauchement ---------- */
+
+  const lignes = [];
+
+  blocs.forEach(bloc=>{
+
+    let placee = false;
+
+    for(const ligne of lignes){
+
+      if(!ligne.some(
+        autre=>chevauche(bloc,autre)
+      )){
+        ligne.push(bloc);
+        placee = true;
+        break;
+      }
+
+    }
+
+    if(!placee){
+      lignes.push([bloc]);
+    }
+
+  });
+
+
+  const schedule =
+    document.createElement("div");
+
+  schedule.className =
+    "print-schedule";
+
+
+  /* ---------- Une ligne après l'autre ---------- */
+
+  lignes.forEach(ligne=>{
+
+    ligne.sort(
+      (a,b)=>
+        hm(a.debut)-hm(b.debut) ||
+        hm(a.fin)-hm(b.fin)
+    );
+
+
+    const lane =
+      document.createElement("div");
+
+    lane.className =
+      "print-lane";
+
+    lane.style.setProperty(
+      "--print-cols",
+      String(ligne.length)
+    );
+
+
+    ligne.forEach(bloc=>{
+
+      const block =
+        document.createElement("article");
+
+      block.className =
+        "print-block";
+
+
+      const head =
+        document.createElement("div");
+
+      head.className =
+        "print-block-head";
+
+      const label =
+        PC.libelleBloc(
+          jour,
+          bloc.debut,
+          bloc.fin
+        ) || "";
+
+      head.innerHTML = `
+        <span class="print-time">
+          ${escapeHTML(bloc.debut)}
+          – ${escapeHTML(bloc.fin)}
+        </span>
+        <span class="print-label">
+          ${escapeHTML(label)}
+        </span>
+      `;
+
+      block.appendChild(head);
+
+
+      const tousFixes =
+        bloc.groupes.every(
+          g=>g.fixe
+        );
+
+
+      /* ---------- Brique commune ---------- */
+
+      const common =
+        document.createElement("div");
+
+      common.className =
+        "print-common";
+
+
+      const classes =
+        [...new Set(
+          bloc.groupes
+            .map(
+              g =>
+                g.niveau ||
+                g.classeId ||
+                "Classe"
+            )
+            .filter(Boolean)
+        )];
+
+
+      const titre =
+        bloc.groupes[0].titre ||
+        (tousFixes
+          ? "Créneau fixe"
+          : "Créneau commun");
+
+
+      common.innerHTML = `
+        <div class="print-common-title">
+          ${escapeHTML(titre)}
+        </div>
+
+        <div class="print-classes">
+          ${
+            classes.map(
+              c =>
+                `<span class="print-class">
+                  ${escapeHTML(c)}
+                </span>`
+            ).join("")
+          }
+        </div>
+      `;
+
+
+      /* ---------- Récréation / pause ---------- */
+
+      if(tousFixes){
+
+        common.classList.add(
+          "print-fixed"
+        );
+
+        block.appendChild(
+          common
+        );
+
+      }
+
+
+      /* ---------- Groupes indépendants ---------- */
+
+      else{
+
+        const hasDetails =
+          bloc.groupes.some(
+            g =>
+              g.adulte &&
+              (
+                g.adulte.type ||
+                g.adulte.nom
+              )
+          ) ||
+          bloc.groupes.some(
+            g =>
+              (g.eleves || []).length
+          ) ||
+          bloc.groupes.some(
+            g =>
+              String(g.remarque || "")
+                .trim()
+          );
+
+
+        /* Si plusieurs groupes partagent le contenu,
+           la liste des classes est suffisante en tête.
+           On détaille ensuite chaque groupe uniquement
+           lorsque cela apporte une information utile. */
+
+        const body =
+          document.createElement("div");
+
+        body.className =
+          "print-common";
+
+
+        body.innerHTML =
+          common.innerHTML;
+
+
+        bloc.groupes.forEach(g=>{
+
+          const group =
+            document.createElement("div");
+
+          group.className =
+            "print-group";
+
+
+          const classe =
+            g.niveau ||
+            g.classeId ||
+            "";
+
+
+          const adulte =
+            g.adulte
+              ? [
+                  g.adulte.type || "",
+                  g.adulte.nom || ""
+                ]
+                .filter(Boolean)
+                .join(" · ")
+              : "";
+
+
+          const eleves =
+            (g.eleves || [])
+              .map(id=>labelEleve(id))
+              .filter(Boolean)
+              .join(" · ");
+
+
+          group.innerHTML = `
+            <div class="print-group-title">
+              ${escapeHTML(
+                classe
+                  ? classe + " — "
+                  : ""
+              )}
+              ${escapeHTML(
+                g.titre || ""
+              )}
+            </div>
+
+            ${
+              adulte
+                ? `<div class="print-group-meta">
+                     ${escapeHTML(adulte)}
+                   </div>`
+                : ""
+            }
+
+            ${
+              eleves
+                ? `<div class="print-students">
+                     Élèves : ${escapeHTML(eleves)}
+                   </div>`
+                : ""
+            }
+
+            ${
+              String(g.remarque || "").trim()
+                ? `<div class="print-note">
+                     ${escapeHTML(g.remarque)}
+                   </div>`
+                : ""
+            }
+          `;
+
+
+          body.appendChild(
+            group
+          );
+
+        });
+
+
+        block.appendChild(
+          body
+        );
+
+      }
+
+
+      schedule.appendChild(
+        lane
+      );
+
+      lane.appendChild(
+        block
+      );
+
+    });
+
+  });
+
+
+  root.appendChild(
+    schedule
+  );
+
+
+  /* ---------- Remarque / devoirs ---------- */
+
+  if(
+    String(jour.remarque || "").trim() ||
+    String(jour.devoirs || "").trim()
+  ){
+
+    const bottom =
+      document.createElement("div");
+
+    bottom.className =
+      "print-bottom";
+
+
+    bottom.innerHTML = `
+      <div class="print-bottom-box">
+        <div class="print-bottom-label">
+          Remarque
+        </div>
+        <div class="print-bottom-text">
+          ${escapeHTML(
+            jour.remarque || ""
+          )}
+        </div>
+      </div>
+
+      <div class="print-bottom-box">
+        <div class="print-bottom-label">
+          Devoirs
+        </div>
+        <div class="print-bottom-text">
+          ${escapeHTML(
+            jour.devoirs || ""
+          )}
+        </div>
+      </div>
+    `;
+
+
+    root.appendChild(
+      bottom
+    );
+
+  }
+
+
+  document.body.appendChild(
+    root
+  );
+
+}
+
+
+$("btn-print").addEventListener(
+  "click",
+  ()=>{
+    construireVueImpression();
+    window.print();
+  }
+);
 
 $("j-remarque").addEventListener("change", e=>{ jour.remarque=e.target.value; sauver(); });
 $("j-devoirs").addEventListener("change", e=>{ jour.devoirs=e.target.value; sauver(); });

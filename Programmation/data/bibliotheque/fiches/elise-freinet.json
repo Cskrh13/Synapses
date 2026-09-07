@@ -1,0 +1,97 @@
+{
+  "id": "elise-freinet",
+  "nom": "Élise Freinet",
+  "type": "pedagogue",
+  "periode": "1898–1983",
+  "description_courte": "Artiste, enseignante et pédagogue, co-constructrice du mouvement Freinet, elle développe notamment une réflexion majeure sur l’expression artistique et la création enfantine.",
+  "description": "Artiste, enseignante et pédagogue, co-constructrice du mouvement Freinet, elle développe notamment une réflexion majeure sur l’expression artistique et la création enfantine.",
+  "courants": [
+    "freinet",
+    "education-nouvelle"
+  ],
+  "concepts": [
+    "expression",
+    "art enfantin",
+    "créativité",
+    "observation",
+    "coopération"
+  ],
+  "pratiques": [
+    "arts plastiques",
+    "expression libre",
+    "journal",
+    "correspondance",
+    "valorisation des productions"
+  ],
+  "influences": [
+    "freinet",
+    "education-nouvelle"
+  ],
+  "ouvrages": [
+    "Naissance d’une pédagogie populaire",
+    "L’enfant artiste"
+  ],
+  "biographie": "Artiste, enseignante et pédagogue, co-constructrice du mouvement Freinet, elle développe notamment une réflexion majeure sur l’expression artistique et la création enfantine.",
+  "travail": {
+    "principe_directeur": "Faire des productions des élèves de véritables objets de pensée, d’expression, de communication et de reprise collective.",
+    "pour_sequence": [
+      "Prévoir une production authentique qui a une fonction sociale ou culturelle réelle.",
+      "Organiser un temps de présentation, de verbalisation et de retour sur les choix réalisés."
+    ],
+    "pour_seance": [
+      "Ne pas évaluer uniquement le résultat esthétique ; faire verbaliser les intentions, les démarches et les découvertes."
+    ],
+    "pour_programmation": [
+      "Articuler expression, culture et apprentissages disciplinaires au lieu de réduire l’art à une activité décorative."
+    ],
+    "adaptations": [
+      "création",
+      "expression libre",
+      "portfolio",
+      "publication",
+      "correspondance"
+    ],
+    "points_de_vigilance": [
+      "L’histoire du mouvement Freinet a longtemps été racontée autour de Célestin Freinet ; la contribution d’Élise Freinet mérite d’être explicitement distinguée et documentée."
+    ],
+    "instruction_generation": "Valoriser les productions des élèves comme traces de pensée et supports de communication, puis organiser une reprise réflexive."
+  },
+  "culture_recherche": {
+    "statut": "dossier vivant",
+    "derniere_veille": "2026-09-06",
+    "actualites": [],
+    "recherches_recentes": [],
+    "debats": [],
+    "sources": [
+      "Mouvement Freinet",
+      "CEMÉA",
+      "Musée national de l’Éducation"
+    ],
+    "note": "La fiche complète la fiche Célestin Freinet en rendant visible une contribution féminine essentielle au mouvement."
+  },
+  "relations": {
+    "courants": [
+      "freinet"
+    ],
+    "proche_de": [
+      "freinet",
+      "tortel",
+      "montessori"
+    ]
+  },
+  "veille": {
+    "active": true,
+    "frequence": "mensuelle",
+    "themes": [
+      "pedagogie",
+      "recherche",
+      "éducation inclusive",
+      "formation des enseignants"
+    ],
+    "sources": [
+      "Mouvement Freinet",
+      "CEMÉA",
+      "Musée national de l’Éducation"
+    ]
+  }
+}
