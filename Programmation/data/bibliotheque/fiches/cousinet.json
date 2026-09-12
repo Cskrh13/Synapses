@@ -94,5 +94,78 @@
       "Éditions Fabert",
       "INSEI"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue français de l’Éducation nouvelle, promoteur de la méthode de travail libre par groupes et d’une conception de l’apprentissage par l’activité sociale des élèves.",
+    "texte": [
+      "Pédagogue français de l’Éducation nouvelle, promoteur de la méthode de travail libre par groupes et d’une conception de l’apprentissage par l’activité sociale des élèves.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle, pedagogie-active. Ce rattachement aide à situer Cousinet dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Une méthode de travail libre par groupes ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1881–1973",
+    "reperes": {
+      "periode": "1881–1973",
+      "courants": [
+        "education-nouvelle",
+        "pedagogie-active"
+      ],
+      "ouvrages_reference": [
+        "Une méthode de travail libre par groupes"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "travail libre",
+      "terme": "Travail libre",
+      "definition": "Organisation dans laquelle l'élève choisit lui-même, dans un cadre défini, l'activité, l'ordre ou le rythme de son travail."
+    },
+    {
+      "id": "groupe",
+      "terme": "Groupe",
+      "definition": "Unité sociale de la classe (petit groupe, classe entière) dont l'organisation conditionne fortement la nature du travail et des apprentissages."
+    },
+    {
+      "id": "socialisation",
+      "terme": "Socialisation",
+      "definition": "Processus par lequel l'enfant s'approprie les règles, les rôles et les valeurs de la vie collective."
+    },
+    {
+      "id": "activité",
+      "terme": "Activité",
+      "definition": "Principe selon lequel l'enfant apprend en agissant sur le réel plutôt qu'en recevant passivement un enseignement ; fondement commun aux pédagogies dites « actives »."
+    },
+    {
+      "id": "autonomie",
+      "terme": "Autonomie",
+      "definition": "Capacité de l'élève à agir, choisir et apprendre sans dépendre en permanence de la validation ou de la direction de l'adulte."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "travail par groupes",
+      "terme": "Travail par groupes",
+      "definition": "Organisation de la classe en sous-groupes travaillant simultanément sur des tâches, identiques ou différenciées."
+    },
+    {
+      "id": "choix du travail",
+      "terme": "Choix du travail",
+      "definition": "Pratique consistant à laisser l'élève choisir, parmi des activités proposées, celle qu'il va entreprendre à un moment donné."
+    },
+    {
+      "id": "recherche",
+      "terme": "Recherche documentaire ou expérimentale",
+      "definition": "Démarche par laquelle les élèves investiguent une question par eux-mêmes, seuls ou en groupe, avant ou à la place d'un exposé du savoir par l'enseignant."
+    },
+    {
+      "id": "entraide",
+      "terme": "Entraide",
+      "definition": "Aide mutuelle entre élèves organisée explicitement au sein de la classe."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

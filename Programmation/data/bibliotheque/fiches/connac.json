@@ -99,5 +99,85 @@
       "OCCE",
       "Cairn.info"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Enseignant-chercheur français travaillant sur la coopération, les pratiques de classe coopérative, l’hétérogénéité et les conditions qui permettent à la coopération de soutenir réellement les apprentissages.",
+    "texte": [
+      "Enseignant-chercheur français travaillant sur la coopération, les pratiques de classe coopérative, l’hétérogénéité et les conditions qui permettent à la coopération de soutenir réellement les apprentissages.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : cooperation, freinet, education-inclusive. Ce rattachement aide à situer Connac dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « La coopération, ça s’apprend », « Apprendre avec les pédagogies coopératives ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "XXIe siècle",
+    "reperes": {
+      "periode": "XXIe siècle",
+      "courants": [
+        "cooperation",
+        "freinet",
+        "education-inclusive"
+      ],
+      "ouvrages_reference": [
+        "La coopération, ça s’apprend",
+        "Apprendre avec les pédagogies coopératives"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "coopération",
+      "terme": "Coopération",
+      "definition": "Organisation du travail scolaire dans laquelle les élèves s'entraident et construisent ensemble, plutôt que d'être placés en situation de seule compétition individuelle."
+    },
+    {
+      "id": "entraide",
+      "terme": "Entraide",
+      "definition": "Soutien mutuel entre élèves, encouragé comme ressource d'apprentissage et comme valeur de la vie de classe."
+    },
+    {
+      "id": "tutorat",
+      "terme": "Tutorat",
+      "definition": "Situation dans laquelle un élève plus avancé accompagne un pair sur une tâche ou une notion, bénéfique aux deux du fait de l'explicitation qu'elle demande."
+    },
+    {
+      "id": "hétérogénéité",
+      "terme": "Hétérogénéité",
+      "definition": "Diversité des niveaux, rythmes et profils des élèves au sein d'un même groupe, que la pédagogie doit prendre en compte plutôt qu'ignorer."
+    },
+    {
+      "id": "apprentissages",
+      "terme": "Apprentissages",
+      "definition": "Ensemble des acquisitions de connaissances, savoir-faire et attitudes visées par l'enseignement."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "tutorat",
+      "terme": "Tutorat",
+      "definition": "Accompagnement d'un élève par un pair plus avancé sur une tâche ou une notion précise."
+    },
+    {
+      "id": "entraide",
+      "terme": "Entraide",
+      "definition": "Aide mutuelle entre élèves organisée explicitement au sein de la classe."
+    },
+    {
+      "id": "travail de groupe",
+      "terme": "Travail de groupe",
+      "definition": "Organisation dans laquelle plusieurs élèves réalisent ensemble une tâche commune."
+    },
+    {
+      "id": "conseil coopératif",
+      "terme": "Conseil coopératif",
+      "definition": "Instance régulière, animée par les élèves, où se discutent les projets, les responsabilités et les conflits de la classe (pratique Freinet et institutionnaliste)."
+    },
+    {
+      "id": "coévaluation",
+      "terme": "Coévaluation",
+      "definition": "Évaluation à laquelle participent conjointement l'élève et l'enseignant, ou plusieurs élèves entre eux, plutôt qu'elle ne soit exercée par le seul enseignant."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

@@ -100,5 +100,79 @@
       "Réseau Canopé",
       "Cairn.info"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue suisse, théoricien et animateur international de l’Éducation nouvelle, il contribue à formaliser les principes de l’école active et à diffuser le mouvement.",
+    "texte": [
+      "Pédagogue suisse, théoricien et animateur international de l’Éducation nouvelle, il contribue à formaliser les principes de l’école active et à diffuser le mouvement.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle, pedagogie-active. Ce rattachement aide à situer Ferrière dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « L’École active », « Transformons l’école ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1879–1960",
+    "reperes": {
+      "periode": "1879–1960",
+      "courants": [
+        "education-nouvelle",
+        "pedagogie-active"
+      ],
+      "ouvrages_reference": [
+        "L’École active",
+        "Transformons l’école"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "école active",
+      "terme": "École active",
+      "definition": "Courant qui place l'activité propre de l'élève, et non la transmission descendante, au centre de l'acte d'apprendre."
+    },
+    {
+      "id": "intérêt",
+      "terme": "Intérêt",
+      "definition": "Mobile authentique de l'enfant, que plusieurs pédagogues considèrent comme le moteur nécessaire de l'attention et de l'apprentissage, à distinguer de l'amusement superficiel."
+    },
+    {
+      "id": "autonomie",
+      "terme": "Autonomie",
+      "definition": "Capacité de l'élève à agir, choisir et apprendre sans dépendre en permanence de la validation ou de la direction de l'adulte."
+    },
+    {
+      "id": "coopération",
+      "terme": "Coopération",
+      "definition": "Organisation du travail scolaire dans laquelle les élèves s'entraident et construisent ensemble, plutôt que d'être placés en situation de seule compétition individuelle."
+    },
+    {
+      "id": "activité",
+      "terme": "Activité",
+      "definition": "Principe selon lequel l'enfant apprend en agissant sur le réel plutôt qu'en recevant passivement un enseignement ; fondement commun aux pédagogies dites « actives »."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "travail par projets",
+      "terme": "Travail par projets",
+      "definition": "Organisation de l'enseignement autour de la réalisation de projets concrets menés par les élèves."
+    },
+    {
+      "id": "activité choisie",
+      "terme": "Activité choisie",
+      "definition": "Tâche que l'élève sélectionne lui-même parmi un ensemble d'activités possibles, en fonction de son intérêt ou de son besoin du moment."
+    },
+    {
+      "id": "coopération",
+      "terme": "Coopération",
+      "definition": "Organisation du travail dans laquelle les élèves s'entraident et avancent ensemble plutôt que seuls face à la tâche."
+    },
+    {
+      "id": "observation",
+      "terme": "Observation",
+      "definition": "Recueil attentif d'informations sur l'enfant ou sur un phénomène, préalable indispensable à l'adaptation de l'action pédagogique."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

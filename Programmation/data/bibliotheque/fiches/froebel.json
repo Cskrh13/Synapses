@@ -79,5 +79,62 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue allemand, fondateur du Kindergarten et penseur du jeu comme activité éducative fondamentale du jeune enfant.",
+    "texte": [
+      "Pédagogue allemand, fondateur du Kindergarten et penseur du jeu comme activité éducative fondamentale du jeune enfant.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle. Ce rattachement aide à situer Fröbel dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « L’éducation de l’homme ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1782–1852",
+    "reperes": {
+      "periode": "1782–1852",
+      "courants": [
+        "education-nouvelle"
+      ],
+      "ouvrages_reference": [
+        "L’éducation de l’homme"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "jeu",
+      "terme": "Jeu",
+      "definition": "Activité libre et motivée par elle-même, reconnue par de nombreux pédagogues (Froebel en particulier) comme un mode d'apprentissage à part entière chez le jeune enfant."
+    },
+    {
+      "id": "activite",
+      "terme": "Activité",
+      "definition": "Principe selon lequel l'enfant apprend en agissant sur le réel plutôt qu'en recevant passivement un enseignement ; fondement commun aux pédagogies dites « actives »."
+    },
+    {
+      "id": "expression",
+      "terme": "Expression",
+      "definition": "Chez Freinet notamment, mise en mots, en images ou en gestes de ce que l'enfant vit ou pense, prise comme point de départ des apprentissages plutôt que comme simple exercice."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "jeu-guide",
+      "terme": "Jeu guidé",
+      "definition": "Situation de jeu dans laquelle l'adulte oriente discrètement l'activité de l'enfant vers un objectif d'apprentissage."
+    },
+    {
+      "id": "manipulation",
+      "terme": "Manipulation",
+      "definition": "Action directe de l'élève sur un matériel concret, considérée par de nombreux pédagogues comme un préalable nécessaire à l'abstraction."
+    },
+    {
+      "id": "activites-symboliques",
+      "terme": "Activités symboliques",
+      "definition": "Jeux ou tâches où l'enfant représente une réalité par un objet, un geste ou un rôle, support du développement de la pensée représentative."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

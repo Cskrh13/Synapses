@@ -91,5 +91,78 @@
       "Musée national de l’Éducation",
       "INSEI"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Inspectrice générale, elle contribue à transformer l’école maternelle française en défendant une éducation adaptée au jeune enfant, articulant jeu, activité, langage, observation et développement.",
+    "texte": [
+      "Inspectrice générale, elle contribue à transformer l’école maternelle française en défendant une éducation adaptée au jeune enfant, articulant jeu, activité, langage, observation et développement.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle, maternelle. Ce rattachement aide à situer Kergomard dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « L’Éducation maternelle dans l’école ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1838–1925",
+    "reperes": {
+      "periode": "1838–1925",
+      "courants": [
+        "education-nouvelle",
+        "maternelle"
+      ],
+      "ouvrages_reference": [
+        "L’Éducation maternelle dans l’école"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "école maternelle",
+      "terme": "École maternelle",
+      "definition": "Premier niveau de l'école française, dont plusieurs pédagogues (Kergomard en particulier) ont défendu la spécificité contre une simple miniaturisation de l'école élémentaire."
+    },
+    {
+      "id": "jeu",
+      "terme": "Jeu",
+      "definition": "Activité libre et motivée par elle-même, reconnue par de nombreux pédagogues (Froebel en particulier) comme un mode d'apprentissage à part entière chez le jeune enfant."
+    },
+    {
+      "id": "développement",
+      "terme": "Développement",
+      "definition": "Processus de transformation des capacités cognitives, affectives et sociales de l'enfant, dont les pédagogues discutent le rythme, les étapes et le lien avec les apprentissages scolaires."
+    },
+    {
+      "id": "activité",
+      "terme": "Activité",
+      "definition": "Principe selon lequel l'enfant apprend en agissant sur le réel plutôt qu'en recevant passivement un enseignement ; fondement commun aux pédagogies dites « actives »."
+    },
+    {
+      "id": "observation",
+      "terme": "Observation",
+      "definition": "Attitude et méthode qui consistent à regarder attentivement l'enfant ou le réel avant d'agir, fondement revendiqué par de nombreux pédagogues, de Montessori à Decroly."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "jeu éducatif",
+      "terme": "Jeu éducatif",
+      "definition": "Notion mobilisée dans la pensée de ce pédagogue ; voir les ouvrages cités et la description de la fiche pour son sens précis."
+    },
+    {
+      "id": "conversation",
+      "terme": "Conversation dirigée",
+      "definition": "Échange oral structuré entre l'enseignant et les élèves, ou entre élèves, organisé pour développer le langage et la pensée."
+    },
+    {
+      "id": "manipulation",
+      "terme": "Manipulation",
+      "definition": "Action directe de l'élève sur un matériel concret, considérée par de nombreux pédagogues comme un préalable nécessaire à l'abstraction."
+    },
+    {
+      "id": "activités de vie",
+      "terme": "Activités de vie pratique",
+      "definition": "Chez Montessori, gestes du quotidien (verser, boutonner, nettoyer...) proposés à l'enfant pour développer sa concentration, sa coordination et son autonomie."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

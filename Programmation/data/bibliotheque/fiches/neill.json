@@ -96,5 +96,79 @@
       "Réseau Canopé",
       "Cairn.info"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue écossais fondateur de Summerhill, connu pour une conception libertaire de l’éducation centrée sur l’autonomie, la responsabilité et la participation des élèves aux règles de vie.",
+    "texte": [
+      "Pédagogue écossais fondateur de Summerhill, connu pour une conception libertaire de l’éducation centrée sur l’autonomie, la responsabilité et la participation des élèves aux règles de vie.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle, education-libertaire. Ce rattachement aide à situer Neill dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « A Dominie’s Five », « Summerhill: A Radical Approach to Child Rearing ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1883–1973",
+    "reperes": {
+      "periode": "1883–1973",
+      "courants": [
+        "education-nouvelle",
+        "education-libertaire"
+      ],
+      "ouvrages_reference": [
+        "A Dominie’s Five",
+        "Summerhill: A Radical Approach to Child Rearing"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "autonomie",
+      "terme": "Autonomie",
+      "definition": "Capacité de l'élève à agir, choisir et apprendre sans dépendre en permanence de la validation ou de la direction de l'adulte."
+    },
+    {
+      "id": "liberté",
+      "terme": "Liberté",
+      "definition": "Marge d'initiative laissée à l'enfant dans ses choix et ses activités, dont l'ampleur et les limites varient fortement selon les pédagogues (de Neill à des positions plus encadrées)."
+    },
+    {
+      "id": "responsabilité",
+      "terme": "Responsabilité",
+      "definition": "Capacité et devoir de répondre de ses actes et de ses engagements au sein du groupe, développée notamment par les responsabilités concrètes confiées aux élèves."
+    },
+    {
+      "id": "démocratie",
+      "terme": "Démocratie",
+      "definition": "Principe d'organisation de la vie de classe fondé sur la délibération, le vote ou la décision collective, expérimenté très tôt comme apprentissage de la citoyenneté."
+    },
+    {
+      "id": "règles",
+      "terme": "Règles",
+      "definition": "Normes établies pour organiser la vie collective ou l'activité, dont l'élaboration et l'appropriation par les élèves eux-mêmes sont un enjeu pédagogique central."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "assemblée",
+      "terme": "Assemblée",
+      "definition": "Réunion de l'ensemble d'une classe ou d'une école pour délibérer collectivement de décisions communes."
+    },
+    {
+      "id": "choix",
+      "terme": "Choix de l'élève",
+      "definition": "Possibilité laissée à l'élève de sélectionner, dans un cadre proposé, l'activité, le support ou l'ordre de son travail."
+    },
+    {
+      "id": "régulation collective",
+      "terme": "Régulation collective",
+      "definition": "Ajustement du fonctionnement du groupe classe décidé et mis en œuvre collectivement, notamment via le conseil."
+    },
+    {
+      "id": "auto-discipline",
+      "terme": "Auto-discipline",
+      "definition": "Capacité de l'élève à réguler lui-même son comportement et son travail, visée comme alternative à une discipline uniquement imposée de l'extérieur."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

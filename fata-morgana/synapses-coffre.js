@@ -36,6 +36,13 @@
     return new Date().toISOString();
   }
 
+  /** Identifiant court unique, utilisé pour pouvoir retrouver un élément
+   *  précis (observation, événement de parcours...) afin de le modifier ou
+   *  le supprimer. Jamais transmis à une IA, purement technique/local. */
+  function genId(prefixe) {
+    return prefixe + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+  }
+
   /**
    * @param {string} [nomEtablissement] - libre, jamais transmis à une IA (voir grille-analyse.js)
    * @param {string} [dispositif] - type de dispositif d'école inclusive (ex: "ULIS école"),
@@ -129,7 +136,21 @@
       // planning, qui ne doit contenir que des données non nominatives).
       // Chaque entrée : { classeId, classeNom, creneauId, jour, debut,
       // fin, domaineCle, dateAffectation }.
-      planning: []
+      planning: [],
+      // Prise en charge extérieure (santé) : 3ᵉ possibilité, à côté de la
+      // classe de référence et du dispositif ULIS, pour un créneau
+      // hebdomadaire récurrent où l'élève est suivi par un intervenant
+      // extérieur à l'école (orthophoniste, psychomotricien, CMPP,
+      // hôpital de jour...). Purement déclaratif : aucune grille
+      // associée (contrairement à une classe/un dispositif), saisi et
+      // géré directement dans le coffre (onglet « Emploi du temps »).
+      // Sert à l'afficher dans l'emploi du temps individuel et à exclure
+      // l'élève des affectations/répartitions automatiques sur ce
+      // créneau (planning-gestion.html), pour ne jamais l'y afficher en
+      // double. Chaque entrée : { id, jour, debut, fin, intervenant,
+      // lieu, remarque, actif }. `actif` permet de suspendre une prise
+      // en charge sans perdre son historique.
+      priseEnChargeExterieure: []
     };
   }
 
@@ -290,9 +311,14 @@
      * horaires génériques).
      * @param {string} identifiantSynapses
      * @param {object} affectation - { classeId, classeNom, creneauId,
-     *   jour, debut, fin, domaineCle }. jour/debut/fin/domaineCle sont
-     *   recopiés au moment de l'affectation, pour rester lisibles même si
-     *   la grille de la classe est modifiée par la suite.
+     *   jour, debut, fin, type, titre, libelle, domaineCle }.
+     *   jour/debut/fin/type/titre/libelle/domaineCle sont recopiés au
+     *   moment de l'affectation, pour rester lisibles même si la grille
+     *   de la classe est modifiée par la suite. type/titre/libelle sont
+     *   ce qui permet à l'emploi du temps individuel (coffre.html)
+     *   d'afficher le nom et le type de chaque séance plutôt que
+     *   seulement le domaine (qui peut être partagé par plusieurs
+     *   séances distinctes).
      * @returns {boolean} false si l'élève est déjà affecté à ce créneau
      *   (même classeId + creneauId) — aucun doublon n'est jamais créé.
      */
@@ -314,6 +340,9 @@
         jour: a.jour != null ? Number(a.jour) : null,
         debut: a.debut || '',
         fin: a.fin || '',
+        type: a.type || 'seance',
+        titre: a.titre || '',
+        libelle: a.libelle || '',
         domaineCle: a.domaineCle || '',
         dateAffectation: nowIso()
       });
@@ -340,10 +369,66 @@
       return e.planning.slice();
     }
 
+    // ---- Prise en charge extérieure (santé) — 3ᵉ possibilité ----
+
+    ajouterPriseEnChargeExterieure(identifiantSynapses, pec) {
+      const e = this.getEleve(identifiantSynapses);
+      const p = Object.assign(
+        { id: genId('PEC'), jour: null, debut: '', fin: '', intervenant: '', lieu: '', remarque: '', actif: true },
+        pec
+      );
+      e.priseEnChargeExterieure.push(p);
+      return p;
+    }
+
+    modifierPriseEnChargeExterieure(identifiantSynapses, pecId, patch) {
+      const e = this.getEleve(identifiantSynapses);
+      const p = e.priseEnChargeExterieure.find((x) => x.id === pecId);
+      if (!p) throw new Error('Prise en charge extérieure introuvable : ' + pecId);
+      Object.assign(p, patch || {});
+      return p;
+    }
+
+    supprimerPriseEnChargeExterieure(identifiantSynapses, pecId) {
+      const e = this.getEleve(identifiantSynapses);
+      const idx = e.priseEnChargeExterieure.findIndex((x) => x.id === pecId);
+      if (idx === -1) throw new Error('Prise en charge extérieure introuvable : ' + pecId);
+      e.priseEnChargeExterieure.splice(idx, 1);
+    }
+
+    listerPriseEnChargeExterieure(identifiantSynapses) {
+      const e = this.getEleve(identifiantSynapses);
+      return e.priseEnChargeExterieure.slice();
+    }
+
+    /** Renvoie la prise en charge extérieure ACTIVE de l'élève qui
+     *  chevauche le créneau [jour, debut, fin] donné (ou null). Ne
+     *  dépend d'aucun autre script (pas de PC.heureVersMin ici) : coffre.html
+     *  n'a pas besoin de charger planning-core.js pour cette vérification,
+     *  et planning-gestion.html peut l'utiliser aussi bien que ses propres
+     *  fonctions PC.* pour rester cohérent entre les deux pages. */
+    priseEnChargeExterieureSurCreneau(identifiantSynapses, jour, debut, fin) {
+      const e = this.getEleve(identifiantSynapses);
+      const versMin = (h) => {
+        const m = /^(\d{1,2}):(\d{2})$/.exec(String(h || '').trim());
+        return m ? Number(m[1]) * 60 + Number(m[2]) : null;
+      };
+      const dMin = versMin(debut), fMin = versMin(fin);
+      if (dMin == null || fMin == null) return null;
+      return e.priseEnChargeExterieure.find((p) => {
+        if (p.actif === false) return false;
+        if (Number(p.jour) !== Number(jour)) return false;
+        const pd = versMin(p.debut), pf = versMin(p.fin);
+        if (pd == null || pf == null) return false;
+        return pd < fMin && dMin < pf;
+      }) || null;
+    }
+
     getEleve(identifiantSynapses) {
       this._assertOuvert();
       const e = this._data.eleves.find((e) => e.identifiantSynapses === identifiantSynapses);
       if (!e) throw new Error('Élève introuvable : ' + identifiantSynapses);
+      if (!Array.isArray(e.priseEnChargeExterieure)) e.priseEnChargeExterieure = []; // compat. coffres antérieurs
       return e;
     }
 
@@ -359,6 +444,7 @@
       const e = this.getEleve(identifiantSynapses);
       const obs = Object.assign(
         {
+          id: genId('OBS'),
           date: nowIso(),
           domaine: null,
           competence: null,
@@ -378,18 +464,66 @@
       return obs;
     }
 
+    /** Modifie une observation existante (édition manuelle, §6). Fusionne
+     *  `patch` sur l'observation trouvée par son id ; ne touche pas aux
+     *  champs non fournis. */
+    modifierObservation(identifiantSynapses, observationId, patch) {
+      const e = this.getEleve(identifiantSynapses);
+      const obs = e.observations.find((o) => o.id === observationId);
+      if (!obs) throw new Error('Observation introuvable : ' + observationId);
+      Object.assign(obs, patch || {});
+      return obs;
+    }
+
+    supprimerObservation(identifiantSynapses, observationId) {
+      const e = this.getEleve(identifiantSynapses);
+      const idx = e.observations.findIndex((o) => o.id === observationId);
+      if (idx === -1) throw new Error('Observation introuvable : ' + observationId);
+      e.observations.splice(idx, 1);
+    }
+
     ajouterBesoin(identifiantSynapses, besoin) {
       const e = this.getEleve(identifiantSynapses);
-      const b = Object.assign({ id: 'B-' + Date.now(), hypothese: '', priorite: null, evolution: [] }, besoin);
+      const b = Object.assign({ id: genId('B'), hypothese: '', priorite: null, evolution: [] }, besoin);
       e.besoins.push(b);
       return b;
     }
 
+    modifierBesoin(identifiantSynapses, besoinId, patch) {
+      const e = this.getEleve(identifiantSynapses);
+      const b = e.besoins.find((x) => x.id === besoinId);
+      if (!b) throw new Error('Besoin introuvable : ' + besoinId);
+      Object.assign(b, patch || {});
+      return b;
+    }
+
+    supprimerBesoin(identifiantSynapses, besoinId) {
+      const e = this.getEleve(identifiantSynapses);
+      const idx = e.besoins.findIndex((x) => x.id === besoinId);
+      if (idx === -1) throw new Error('Besoin introuvable : ' + besoinId);
+      e.besoins.splice(idx, 1);
+    }
+
     ajouterAdaptation(identifiantSynapses, adaptation) {
       const e = this.getEleve(identifiantSynapses);
-      const a = Object.assign({ id: 'A-' + Date.now(), libelle: '', proposee: true, utilisee: false, efficacite: null }, adaptation);
+      const a = Object.assign({ id: genId('A'), libelle: '', proposee: true, utilisee: false, efficacite: null }, adaptation);
       e.adaptations.push(a);
       return a;
+    }
+
+    modifierAdaptation(identifiantSynapses, adaptationId, patch) {
+      const e = this.getEleve(identifiantSynapses);
+      const a = e.adaptations.find((x) => x.id === adaptationId);
+      if (!a) throw new Error('Adaptation introuvable : ' + adaptationId);
+      Object.assign(a, patch || {});
+      return a;
+    }
+
+    supprimerAdaptation(identifiantSynapses, adaptationId) {
+      const e = this.getEleve(identifiantSynapses);
+      const idx = e.adaptations.findIndex((x) => x.id === adaptationId);
+      if (idx === -1) throw new Error('Adaptation introuvable : ' + adaptationId);
+      e.adaptations.splice(idx, 1);
     }
 
     /** Bascule utilisee (true <-> false) pour une adaptation donnée — ex :
@@ -406,18 +540,55 @@
      *  seulement après validation explicite de l'enseignant. */
     ajouterObjectif(identifiantSynapses, objectif) {
       const e = this.getEleve(identifiantSynapses);
-      const o = Object.assign({ id: 'O-' + Date.now(), libelle: '', statut: 'actif', historique: [] }, objectif);
+      const o = Object.assign({ id: genId('O'), libelle: '', statut: 'actif', historique: [] }, objectif);
       e.objectifs.push(o);
       return o;
     }
 
-    ajouterEvenementParcours(identifiantSynapses, type, evenement) {
+    modifierObjectif(identifiantSynapses, objectifId, patch) {
       const e = this.getEleve(identifiantSynapses);
+      const o = e.objectifs.find((x) => x.id === objectifId);
+      if (!o) throw new Error('Objectif introuvable : ' + objectifId);
+      Object.assign(o, patch || {});
+      return o;
+    }
+
+    supprimerObjectif(identifiantSynapses, objectifId) {
+      const e = this.getEleve(identifiantSynapses);
+      const idx = e.objectifs.findIndex((x) => x.id === objectifId);
+      if (idx === -1) throw new Error('Objectif introuvable : ' + objectifId);
+      e.objectifs.splice(idx, 1);
+    }
+
+    _cleParcours(type) {
       const cle = { seance: 'seances', observation: 'observations', progres: 'progres', bilan: 'bilans' }[type];
       if (!cle) throw new Error('Type d\'événement de parcours inconnu : ' + type);
-      const ev = Object.assign({ date: nowIso() }, evenement);
+      return cle;
+    }
+
+    ajouterEvenementParcours(identifiantSynapses, type, evenement) {
+      const e = this.getEleve(identifiantSynapses);
+      const cle = this._cleParcours(type);
+      const ev = Object.assign({ id: genId('EVT'), date: nowIso() }, evenement);
       e.parcours[cle].push(ev);
       return ev;
+    }
+
+    modifierEvenementParcours(identifiantSynapses, type, evenementId, patch) {
+      const e = this.getEleve(identifiantSynapses);
+      const cle = this._cleParcours(type);
+      const ev = e.parcours[cle].find((x) => x.id === evenementId);
+      if (!ev) throw new Error('Événement de parcours introuvable : ' + evenementId);
+      Object.assign(ev, patch || {});
+      return ev;
+    }
+
+    supprimerEvenementParcours(identifiantSynapses, type, evenementId) {
+      const e = this.getEleve(identifiantSynapses);
+      const cle = this._cleParcours(type);
+      const idx = e.parcours[cle].findIndex((x) => x.id === evenementId);
+      if (idx === -1) throw new Error('Événement de parcours introuvable : ' + evenementId);
+      e.parcours[cle].splice(idx, 1);
     }
 
     /**

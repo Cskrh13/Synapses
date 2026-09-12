@@ -90,5 +90,78 @@
       "Winnetka Public Schools",
       "INSEI"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue américain associé aux Winnetka Public Schools, il développe une organisation de l’enseignement combinant objectifs communs, progression individualisée et activités sociales.",
+    "texte": [
+      "Pédagogue américain associé aux Winnetka Public Schools, il développe une organisation de l’enseignement combinant objectifs communs, progression individualisée et activités sociales.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : pedagogie-active, education-nouvelle. Ce rattachement aide à situer Washburne dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Winnetka Plan ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1889–1968",
+    "reperes": {
+      "periode": "1889–1968",
+      "courants": [
+        "pedagogie-active",
+        "education-nouvelle"
+      ],
+      "ouvrages_reference": [
+        "Winnetka Plan"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "individualisation",
+      "terme": "Individualisation",
+      "definition": "Ajustement du parcours, du rythme ou des supports d'apprentissage à chaque élève pris isolément."
+    },
+    {
+      "id": "progression",
+      "terme": "Progression",
+      "definition": "Organisation dans le temps des apprentissages, qui peut être commune à la classe ou individualisée selon le rythme de chaque élève."
+    },
+    {
+      "id": "maîtrise",
+      "terme": "Maîtrise",
+      "definition": "Niveau de compétence suffisant pour utiliser un savoir ou un savoir-faire de manière fiable, souvent visé avant de passer à une notion suivante."
+    },
+    {
+      "id": "coopération",
+      "terme": "Coopération",
+      "definition": "Organisation du travail scolaire dans laquelle les élèves s'entraident et construisent ensemble, plutôt que d'être placés en situation de seule compétition individuelle."
+    },
+    {
+      "id": "curriculum",
+      "terme": "Curriculum",
+      "definition": "Organisation d'ensemble des contenus et des progressions enseignés, que certains pédagogues proposent de repenser à partir des besoins de l'enfant plutôt que des seules disciplines."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "travail individualisé",
+      "terme": "Travail individualisé",
+      "definition": "Organisation dans laquelle chaque élève avance sur des tâches adaptées à son propre niveau et à son propre rythme."
+    },
+    {
+      "id": "fiches auto-instructives",
+      "terme": "Fiches auto-instructives",
+      "definition": "Supports de travail conçus pour permettre à l'élève de progresser seul, étape par étape, avec un système d'autocorrection intégré."
+    },
+    {
+      "id": "rythmes différenciés",
+      "terme": "Rythmes différenciés",
+      "definition": "Organisation du temps scolaire qui tient compte des variations individuelles de rythme d'apprentissage et de fatigue des élèves."
+    },
+    {
+      "id": "activités collectives",
+      "terme": "Activités collectives",
+      "definition": "Tâches réalisées ensemble par la classe ou un groupe d'élèves, qui favorisent la coopération et donnent un cadre commun à l'apprentissage."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

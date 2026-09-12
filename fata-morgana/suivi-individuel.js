@@ -364,16 +364,22 @@
       const nav = el('div', { class: 'si-onglets-nav' }, onglets.map((o) =>
         el('button', {
           class: 'si-onglet' + (this._ongletActif === o.id ? ' active' : ''),
-          onclick: () => { this._ongletActif = o.id; this._render(); }
+          onclick: () => {
+            this._ongletActif = o.id;
+            this._editionId = null;
+            this._ajoutOuvert = null;
+            this._observationEnEdition = null;
+            this._render();
+          }
         }, [o.label])
       ));
 
       let contenu;
       switch (this._ongletActif) {
         case 'observations': contenu = this._renderOngletObservations(eleve); break;
-        case 'besoins': contenu = this._renderOngletListeSimple(eleve, 'besoins', ['hypothese', 'priorite']); break;
-        case 'adaptations': contenu = this._renderOngletListeSimple(eleve, 'adaptations', ['libelle', 'utilisee', 'efficacite'], { toggleBooleanColumn: 'utilisee' }); break;
-        case 'objectifs': contenu = this._renderOngletListeSimple(eleve, 'objectifs', ['libelle', 'statut']); break;
+        case 'besoins': contenu = this._renderOngletBesoins(eleve); break;
+        case 'adaptations': contenu = this._renderOngletAdaptations(eleve); break;
+        case 'objectifs': contenu = this._renderOngletObjectifs(eleve); break;
         case 'parcours': contenu = this._renderOngletParcours(eleve); break;
         case 'analyse': contenu = this._renderOngletAnalyse(eleve); break;
         case 'equivalence': contenu = this._renderOngletEquivalence(eleve); break;
@@ -389,19 +395,89 @@
       const wrap = el('div', { class: 'si-observations' });
       wrap.appendChild(this._renderFormulaireObservation(eleve));
 
+      const observations = eleve.observations.slice().reverse();
+      if (!observations.length) {
+        wrap.appendChild(el('p', { class: 'si-empty' }, ['Aucune observation enregistrée pour l\'instant.']));
+        return wrap;
+      }
+
       const table = el('table', { class: 'si-table' }, [
-        el('thead', {}, [el('tr', {}, ['Date', 'Domaine', 'Situation', 'Difficulté', 'Besoin', 'Adaptation'].map((h) => el('th', {}, [h])))]),
-        el('tbody', {}, eleve.observations.slice().reverse().map((o) => el('tr', {}, [
-          el('td', {}, [new Date(o.date).toLocaleDateString('fr-FR')]),
-          el('td', {}, [this._labelDomaine(o.domaine)]),
-          el('td', {}, [o.situation || '']),
-          el('td', {}, [o.difficulte || '']),
-          el('td', {}, [o.besoin || '']),
-          el('td', {}, [o.adaptationUtilisee || o.adaptationProposee || ''])
-        ])))
+        el('thead', {}, [el('tr', {}, ['Date', 'Domaine', 'Situation', 'Difficulté', 'Besoin', 'Adaptation', ''].map((h) => el('th', {}, [h])))]),
+        el('tbody', {}, observations.map((o) => this._renderLigneObservation(eleve, o)))
       ]);
       wrap.appendChild(table);
       return wrap;
+    }
+
+    _renderLigneObservation(eleve, o) {
+      if (this._observationEnEdition === o.id) {
+        return this._renderLigneObservationEdition(eleve, o);
+      }
+      return el('tr', {}, [
+        el('td', {}, [new Date(o.date).toLocaleDateString('fr-FR')]),
+        el('td', {}, [this._labelDomaine(o.domaine)]),
+        el('td', {}, [o.situation || '']),
+        el('td', {}, [o.difficulte || '']),
+        el('td', {}, [o.besoin || '']),
+        el('td', {}, [o.adaptationUtilisee || o.adaptationProposee || '']),
+        el('td', { style: 'white-space:nowrap;' }, [
+          el('button', {
+            class: 'si-btn si-btn-small',
+            title: 'Modifier cette observation',
+            onclick: () => { this._observationEnEdition = o.id; this._render(); }
+          }, ['✎']),
+          el('button', {
+            class: 'si-btn si-btn-small',
+            title: 'Supprimer cette observation',
+            onclick: () => {
+              if (confirm('Supprimer définitivement cette observation ?')) {
+                this.coffre.supprimerObservation(eleve.identifiantSynapses, o.id);
+                this._render();
+              }
+            }
+          }, ['🗑'])
+        ])
+      ]);
+    }
+
+    _renderLigneObservationEdition(eleve, o) {
+      const inputSituation = el('input', { type: 'text', value: o.situation || '' });
+      const inputDifficulte = el('input', { type: 'text', value: o.difficulte || '' });
+      const inputBesoin = el('input', { type: 'text', value: o.besoin || '' });
+      const inputAdaptationProposee = el('input', { type: 'text', value: o.adaptationProposee || '', placeholder: 'Adaptation proposée' });
+      const inputAdaptationUtilisee = el('input', { type: 'text', value: o.adaptationUtilisee || '', placeholder: 'Adaptation utilisée' });
+      const inputResultat = el('input', { type: 'text', value: o.resultat || '', placeholder: 'Résultat' });
+
+      const enregistrer = () => {
+        this.coffre.modifierObservation(eleve.identifiantSynapses, o.id, {
+          situation: inputSituation.value.trim(),
+          difficulte: inputDifficulte.value.trim(),
+          besoin: inputBesoin.value.trim(),
+          adaptationProposee: inputAdaptationProposee.value.trim(),
+          adaptationUtilisee: inputAdaptationUtilisee.value.trim(),
+          resultat: inputResultat.value.trim()
+        });
+        this._observationEnEdition = null;
+        this._render();
+      };
+      const annuler = () => { this._observationEnEdition = null; this._render(); };
+
+      return el('tr', { class: 'si-ligne-edition' }, [
+        el('td', {}, [new Date(o.date).toLocaleDateString('fr-FR')]),
+        el('td', {}, [this._labelDomaine(o.domaine)]),
+        el('td', {}, [inputSituation]),
+        el('td', {}, [inputDifficulte]),
+        el('td', {}, [inputBesoin]),
+        el('td', {}, [
+          el('div', {}, [inputAdaptationProposee]),
+          el('div', { style: 'margin-top:4px;' }, [inputAdaptationUtilisee]),
+          el('div', { style: 'margin-top:4px;' }, [inputResultat])
+        ]),
+        el('td', { style: 'white-space:nowrap;' }, [
+          el('button', { class: 'si-btn si-btn-small si-btn-primary', onclick: enregistrer }, ['Enregistrer']),
+          el('button', { class: 'si-btn si-btn-small', onclick: annuler }, ['Annuler'])
+        ])
+      ]);
     }
 
     _labelDomaine(id) {
@@ -495,39 +571,295 @@
       return item ? item.libelle : '';
     }
 
-    // ---- Onglets Besoins / Adaptations / Objectifs : listes simples ----
+    // ---- Onglets Besoins / Adaptations / Objectifs : listes éditables ----
+    // Chaque onglet suit le même schéma : formulaire d'ajout repliable,
+    // tableau des éléments existants avec édition en ligne (✎) et
+    // suppression (🗑). Les éléments peuvent aussi arriver automatiquement
+    // depuis une observation ou depuis l'onglet "Analyse & IA" ; ils
+    // restent ensuite librement modifiables ici, l'enseignant garde
+    // toujours la main sur le texte final (§7/§8 de la synthèse projet).
 
-    _renderOngletListeSimple(eleve, cle, colonnes, options) {
-      options = options || {};
-      const toggleCol = options.toggleBooleanColumn || null;
-      const wrap = el('div', {});
+    _renderOngletBesoins(eleve) {
+      const wrap = el('div', { class: 'si-besoins' });
+      const ouvrirAjout = () => { this._ajoutOuvert = this._ajoutOuvert === 'besoin' ? null : 'besoin'; this._render(); };
+
+      wrap.appendChild(el('button', { class: 'si-btn', onclick: ouvrirAjout }, [this._ajoutOuvert === 'besoin' ? 'Annuler' : '+ Ajouter un besoin']));
+
+      if (this._ajoutOuvert === 'besoin') {
+        const inputLibelle = el('input', { type: 'text', placeholder: 'Libellé du besoin' });
+        const inputHypothese = el('input', { type: 'text', placeholder: 'Hypothèse / justification' });
+        const selectPriorite = this._selectPriorite(null);
+        wrap.appendChild(el('div', { class: 'si-form-observation' }, [
+          el('div', { class: 'si-form-row' }, [el('label', {}, ['Libellé']), inputLibelle]),
+          el('div', { class: 'si-form-row' }, [el('label', {}, ['Hypothèse']), inputHypothese]),
+          el('div', { class: 'si-form-row' }, [el('label', {}, ['Priorité']), selectPriorite]),
+          el('button', {
+            class: 'si-btn si-btn-primary',
+            onclick: () => {
+              if (!inputLibelle.value.trim()) { alert('Précisez au moins un libellé.'); return; }
+              this.coffre.ajouterBesoin(eleve.identifiantSynapses, {
+                libelle: inputLibelle.value.trim(),
+                hypothese: inputHypothese.value.trim(),
+                priorite: selectPriorite.value || null
+              });
+              this._ajoutOuvert = null;
+              this._render();
+            }
+          }, ['Enregistrer le besoin'])
+        ]));
+      }
+
+      const besoins = eleve.besoins || [];
+      if (!besoins.length) {
+        wrap.appendChild(el('p', { class: 'si-empty' }, ['Rien d\'enregistré pour l\'instant.']));
+        return wrap;
+      }
+
       const table = el('table', { class: 'si-table' }, [
-        el('thead', {}, [el('tr', {}, colonnes.map((c) => el('th', {}, [c])))]),
-        el('tbody', {}, (eleve[cle] || []).map((item) => el('tr', {}, colonnes.map((c) => {
-          if (c === toggleCol) {
-            const val = !!item[c];
-            return el('td', {}, [
-              el('button', {
-                class: 'si-btn si-btn-small' + (val ? ' si-btn-primary' : ''),
-                title: 'Cliquer pour basculer',
-                onclick: () => {
-                  this.coffre.toggleAdaptationUtilisee(eleve.identifiantSynapses, item.id);
-                  this._render();
-                }
-              }, [val ? 'Oui' : 'Non'])
-            ]);
-          }
-          return el('td', {}, [String(item[c] ?? '')]);
-        }))))
+        el('thead', {}, [el('tr', {}, ['Libellé', 'Hypothèse', 'Priorité', ''].map((h) => el('th', {}, [h])))]),
+        el('tbody', {}, besoins.map((b) => this._renderLigneBesoin(eleve, b)))
       ]);
-      const vide = (eleve[cle] || []).length === 0;
-      wrap.appendChild(vide ? el('p', { class: 'si-empty' }, ['Rien d\'enregistré pour l\'instant.']) : table);
-      wrap.appendChild(el('p', { class: 'si-hint' }, [
-        'Les ' + cle + ' se créent le plus souvent depuis une observation, ou depuis l\'onglet "Analyse & IA". ' +
-        'Cet onglet affiche l\'état actuel pour ' + eleve.identifiantSynapses + '.' +
-        (toggleCol ? ' Cliquez sur "Oui"/"Non" pour indiquer si l\'adaptation a été effectivement utilisée.' : '')
-      ]));
+      wrap.appendChild(table);
       return wrap;
+    }
+
+    _renderLigneBesoin(eleve, b) {
+      if (this._editionId === b.id) {
+        const inputLibelle = el('input', { type: 'text', value: b.libelle || '' });
+        const inputHypothese = el('input', { type: 'text', value: b.hypothese || '' });
+        const selectPriorite = this._selectPriorite(b.priorite);
+        const enregistrer = () => {
+          this.coffre.modifierBesoin(eleve.identifiantSynapses, b.id, {
+            libelle: inputLibelle.value.trim(),
+            hypothese: inputHypothese.value.trim(),
+            priorite: selectPriorite.value || null
+          });
+          this._editionId = null;
+          this._render();
+        };
+        return el('tr', { class: 'si-ligne-edition' }, [
+          el('td', {}, [inputLibelle]),
+          el('td', {}, [inputHypothese]),
+          el('td', {}, [selectPriorite]),
+          el('td', { style: 'white-space:nowrap;' }, [
+            el('button', { class: 'si-btn si-btn-small si-btn-primary', onclick: enregistrer }, ['Enregistrer']),
+            el('button', { class: 'si-btn si-btn-small', onclick: () => { this._editionId = null; this._render(); } }, ['Annuler'])
+          ])
+        ]);
+      }
+      return el('tr', {}, [
+        el('td', {}, [b.libelle || '']),
+        el('td', {}, [b.hypothese || '']),
+        el('td', {}, [b.priorite || '—']),
+        el('td', { style: 'white-space:nowrap;' }, [
+          el('button', { class: 'si-btn si-btn-small', onclick: () => { this._editionId = b.id; this._render(); } }, ['✎']),
+          el('button', {
+            class: 'si-btn si-btn-small',
+            onclick: () => {
+              if (confirm('Supprimer définitivement ce besoin ?')) {
+                this.coffre.supprimerBesoin(eleve.identifiantSynapses, b.id);
+                this._render();
+              }
+            }
+          }, ['🗑'])
+        ])
+      ]);
+    }
+
+    _renderOngletAdaptations(eleve) {
+      const wrap = el('div', { class: 'si-adaptations' });
+      const ouvrirAjout = () => { this._ajoutOuvert = this._ajoutOuvert === 'adaptation' ? null : 'adaptation'; this._render(); };
+
+      wrap.appendChild(el('button', { class: 'si-btn', onclick: ouvrirAjout }, [this._ajoutOuvert === 'adaptation' ? 'Annuler' : '+ Ajouter une adaptation']));
+
+      if (this._ajoutOuvert === 'adaptation') {
+        const inputLibelle = el('input', { type: 'text', placeholder: 'Libellé de l\'adaptation' });
+        const selectEfficacite = this._selectEfficacite(null);
+        wrap.appendChild(el('div', { class: 'si-form-observation' }, [
+          el('div', { class: 'si-form-row' }, [el('label', {}, ['Libellé']), inputLibelle]),
+          el('div', { class: 'si-form-row' }, [el('label', {}, ['Efficacité']), selectEfficacite]),
+          el('button', {
+            class: 'si-btn si-btn-primary',
+            onclick: () => {
+              if (!inputLibelle.value.trim()) { alert('Précisez au moins un libellé.'); return; }
+              this.coffre.ajouterAdaptation(eleve.identifiantSynapses, {
+                libelle: inputLibelle.value.trim(),
+                efficacite: selectEfficacite.value || null
+              });
+              this._ajoutOuvert = null;
+              this._render();
+            }
+          }, ['Enregistrer l\'adaptation'])
+        ]));
+      }
+
+      const adaptations = eleve.adaptations || [];
+      if (!adaptations.length) {
+        wrap.appendChild(el('p', { class: 'si-empty' }, ['Rien d\'enregistré pour l\'instant.']));
+        return wrap;
+      }
+
+      const table = el('table', { class: 'si-table' }, [
+        el('thead', {}, [el('tr', {}, ['Libellé', 'Utilisée', 'Efficacité', ''].map((h) => el('th', {}, [h])))]),
+        el('tbody', {}, adaptations.map((a) => this._renderLigneAdaptation(eleve, a)))
+      ]);
+      wrap.appendChild(table);
+      wrap.appendChild(el('p', { class: 'si-hint' }, ['Cliquez sur "Oui"/"Non" pour indiquer si l\'adaptation a été effectivement utilisée.']));
+      return wrap;
+    }
+
+    _renderLigneAdaptation(eleve, a) {
+      const toggleUtilisee = el('button', {
+        class: 'si-btn si-btn-small' + (a.utilisee ? ' si-btn-primary' : ''),
+        title: 'Cliquer pour basculer',
+        onclick: () => { this.coffre.toggleAdaptationUtilisee(eleve.identifiantSynapses, a.id); this._render(); }
+      }, [a.utilisee ? 'Oui' : 'Non']);
+
+      if (this._editionId === a.id) {
+        const inputLibelle = el('input', { type: 'text', value: a.libelle || '' });
+        const selectEfficacite = this._selectEfficacite(a.efficacite);
+        const enregistrer = () => {
+          this.coffre.modifierAdaptation(eleve.identifiantSynapses, a.id, {
+            libelle: inputLibelle.value.trim(),
+            efficacite: selectEfficacite.value || null
+          });
+          this._editionId = null;
+          this._render();
+        };
+        return el('tr', { class: 'si-ligne-edition' }, [
+          el('td', {}, [inputLibelle]),
+          el('td', {}, [toggleUtilisee]),
+          el('td', {}, [selectEfficacite]),
+          el('td', { style: 'white-space:nowrap;' }, [
+            el('button', { class: 'si-btn si-btn-small si-btn-primary', onclick: enregistrer }, ['Enregistrer']),
+            el('button', { class: 'si-btn si-btn-small', onclick: () => { this._editionId = null; this._render(); } }, ['Annuler'])
+          ])
+        ]);
+      }
+      return el('tr', {}, [
+        el('td', {}, [a.libelle || '']),
+        el('td', {}, [toggleUtilisee]),
+        el('td', {}, [a.efficacite || '—']),
+        el('td', { style: 'white-space:nowrap;' }, [
+          el('button', { class: 'si-btn si-btn-small', onclick: () => { this._editionId = a.id; this._render(); } }, ['✎']),
+          el('button', {
+            class: 'si-btn si-btn-small',
+            onclick: () => {
+              if (confirm('Supprimer définitivement cette adaptation ?')) {
+                this.coffre.supprimerAdaptation(eleve.identifiantSynapses, a.id);
+                this._render();
+              }
+            }
+          }, ['🗑'])
+        ])
+      ]);
+    }
+
+    _renderOngletObjectifs(eleve) {
+      const wrap = el('div', { class: 'si-objectifs' });
+      const ouvrirAjout = () => { this._ajoutOuvert = this._ajoutOuvert === 'objectif' ? null : 'objectif'; this._render(); };
+
+      wrap.appendChild(el('button', { class: 'si-btn', onclick: ouvrirAjout }, [this._ajoutOuvert === 'objectif' ? 'Annuler' : '+ Ajouter un objectif']));
+
+      if (this._ajoutOuvert === 'objectif') {
+        const inputLibelle = el('input', { type: 'text', placeholder: 'Libellé de l\'objectif' });
+        const selectStatut = this._selectStatutObjectif('actif');
+        wrap.appendChild(el('div', { class: 'si-form-observation' }, [
+          el('div', { class: 'si-form-row' }, [el('label', {}, ['Libellé']), inputLibelle]),
+          el('div', { class: 'si-form-row' }, [el('label', {}, ['Statut']), selectStatut]),
+          el('button', {
+            class: 'si-btn si-btn-primary',
+            onclick: () => {
+              if (!inputLibelle.value.trim()) { alert('Précisez au moins un libellé.'); return; }
+              this.coffre.ajouterObjectif(eleve.identifiantSynapses, {
+                libelle: inputLibelle.value.trim(),
+                statut: selectStatut.value || 'actif'
+              });
+              this._ajoutOuvert = null;
+              this._render();
+            }
+          }, ['Enregistrer l\'objectif'])
+        ]));
+      }
+
+      const objectifs = eleve.objectifs || [];
+      if (!objectifs.length) {
+        wrap.appendChild(el('p', { class: 'si-empty' }, ['Rien d\'enregistré pour l\'instant.']));
+        return wrap;
+      }
+
+      const table = el('table', { class: 'si-table' }, [
+        el('thead', {}, [el('tr', {}, ['Libellé', 'Statut', ''].map((h) => el('th', {}, [h])))]),
+        el('tbody', {}, objectifs.map((o) => this._renderLigneObjectif(eleve, o)))
+      ]);
+      wrap.appendChild(table);
+      return wrap;
+    }
+
+    _renderLigneObjectif(eleve, o) {
+      if (this._editionId === o.id) {
+        const inputLibelle = el('input', { type: 'text', value: o.libelle || '' });
+        const selectStatut = this._selectStatutObjectif(o.statut);
+        const enregistrer = () => {
+          this.coffre.modifierObjectif(eleve.identifiantSynapses, o.id, {
+            libelle: inputLibelle.value.trim(),
+            statut: selectStatut.value || 'actif'
+          });
+          this._editionId = null;
+          this._render();
+        };
+        return el('tr', { class: 'si-ligne-edition' }, [
+          el('td', {}, [inputLibelle]),
+          el('td', {}, [selectStatut]),
+          el('td', { style: 'white-space:nowrap;' }, [
+            el('button', { class: 'si-btn si-btn-small si-btn-primary', onclick: enregistrer }, ['Enregistrer']),
+            el('button', { class: 'si-btn si-btn-small', onclick: () => { this._editionId = null; this._render(); } }, ['Annuler'])
+          ])
+        ]);
+      }
+      return el('tr', {}, [
+        el('td', {}, [o.libelle || '']),
+        el('td', {}, [o.statut || '—']),
+        el('td', { style: 'white-space:nowrap;' }, [
+          el('button', { class: 'si-btn si-btn-small', onclick: () => { this._editionId = o.id; this._render(); } }, ['✎']),
+          el('button', {
+            class: 'si-btn si-btn-small',
+            onclick: () => {
+              if (confirm('Supprimer définitivement cet objectif ?')) {
+                this.coffre.supprimerObjectif(eleve.identifiantSynapses, o.id);
+                this._render();
+              }
+            }
+          }, ['🗑'])
+        ])
+      ]);
+    }
+
+    _selectPriorite(valeur) {
+      return el('select', {}, [
+        el('option', { value: '', selected: !valeur ? 'selected' : null }, ['—']),
+        el('option', { value: 'basse', selected: valeur === 'basse' ? 'selected' : null }, ['Basse']),
+        el('option', { value: 'moyenne', selected: valeur === 'moyenne' ? 'selected' : null }, ['Moyenne']),
+        el('option', { value: 'haute', selected: valeur === 'haute' ? 'selected' : null }, ['Haute'])
+      ]);
+    }
+
+    _selectEfficacite(valeur) {
+      return el('select', {}, [
+        el('option', { value: '', selected: !valeur ? 'selected' : null }, ['—']),
+        el('option', { value: 'faible', selected: valeur === 'faible' ? 'selected' : null }, ['Faible']),
+        el('option', { value: 'moyenne', selected: valeur === 'moyenne' ? 'selected' : null }, ['Moyenne']),
+        el('option', { value: 'forte', selected: valeur === 'forte' ? 'selected' : null }, ['Forte'])
+      ]);
+    }
+
+    _selectStatutObjectif(valeur) {
+      return el('select', {}, [
+        el('option', { value: 'actif', selected: valeur === 'actif' ? 'selected' : null }, ['Actif']),
+        el('option', { value: 'atteint', selected: valeur === 'atteint' ? 'selected' : null }, ['Atteint']),
+        el('option', { value: 'revise', selected: valeur === 'revise' ? 'selected' : null }, ['Révisé']),
+        el('option', { value: 'abandonne', selected: valeur === 'abandonne' ? 'selected' : null }, ['Abandonné'])
+      ]);
     }
 
     // ---- Onglet Parcours : parcours de compétences PROPOSÉ (généré à partir
@@ -590,11 +922,12 @@
         onclick: () => this._ouvrirFormulaireEvenementParcours(eleve)
       }, ['+ Ajouter un événement']));
 
+      const LABELS_TYPE = { seance: 'Séance', observation: 'Observation', progres: 'Progrès', bilan: 'Bilan' };
       const evenements = []
-        .concat(eleve.parcours.seances.map((e) => ({ ...e, type: 'Séance' })))
-        .concat(eleve.parcours.observations.map((e) => ({ ...e, type: 'Observation' })))
-        .concat(eleve.parcours.progres.map((e) => ({ ...e, type: 'Progrès' })))
-        .concat(eleve.parcours.bilans.map((e) => ({ ...e, type: 'Bilan' })))
+        .concat(eleve.parcours.seances.map((e) => ({ ...e, typeInterne: 'seance' })))
+        .concat(eleve.parcours.observations.map((e) => ({ ...e, typeInterne: 'observation' })))
+        .concat(eleve.parcours.progres.map((e) => ({ ...e, typeInterne: 'progres' })))
+        .concat(eleve.parcours.bilans.map((e) => ({ ...e, typeInterne: 'bilan' })))
         .sort((a, b) => new Date(a.date) - new Date(b.date));
 
       if (!evenements.length) {
@@ -603,13 +936,45 @@
       }
 
       wrap.appendChild(el('div', { class: 'si-frise' }, evenements.map((e) =>
-        el('div', { class: 'si-frise-item' }, [
-          el('div', { class: 'si-frise-date' }, [new Date(e.date).toLocaleDateString('fr-FR')]),
-          el('div', { class: 'si-frise-type' }, [e.type]),
-          el('div', { class: 'si-frise-detail' }, [e.libelle || e.resume || ''])
-        ])
+        this._editionId === e.id
+          ? this._renderFriseItemEdition(eleve, e, LABELS_TYPE)
+          : el('div', { class: 'si-frise-item' }, [
+              el('div', { class: 'si-frise-date' }, [new Date(e.date).toLocaleDateString('fr-FR')]),
+              el('div', { class: 'si-frise-type' }, [LABELS_TYPE[e.typeInterne] || e.typeInterne]),
+              el('div', { class: 'si-frise-detail' }, [e.libelle || e.resume || '']),
+              el('div', { style: 'margin-top:6px;' }, [
+                el('button', { class: 'si-btn si-btn-small', onclick: () => { this._editionId = e.id; this._render(); } }, ['✎']),
+                el('button', {
+                  class: 'si-btn si-btn-small',
+                  onclick: () => {
+                    if (confirm('Supprimer définitivement cet événement de parcours ?')) {
+                      this.coffre.supprimerEvenementParcours(eleve.identifiantSynapses, e.typeInterne, e.id);
+                      this._render();
+                    }
+                  }
+                }, ['🗑'])
+              ])
+            ])
       )));
       return wrap;
+    }
+
+    _renderFriseItemEdition(eleve, e, LABELS_TYPE) {
+      const inputLibelle = el('input', { type: 'text', value: e.libelle || e.resume || '' });
+      const enregistrer = () => {
+        this.coffre.modifierEvenementParcours(eleve.identifiantSynapses, e.typeInterne, e.id, { libelle: inputLibelle.value.trim() });
+        this._editionId = null;
+        this._render();
+      };
+      return el('div', { class: 'si-frise-item si-ligne-edition' }, [
+        el('div', { class: 'si-frise-date' }, [new Date(e.date).toLocaleDateString('fr-FR')]),
+        el('div', { class: 'si-frise-type' }, [LABELS_TYPE[e.typeInterne] || e.typeInterne]),
+        el('div', { style: 'margin-top:6px;' }, [inputLibelle]),
+        el('div', { style: 'margin-top:6px;' }, [
+          el('button', { class: 'si-btn si-btn-small si-btn-primary', onclick: enregistrer }, ['Enregistrer']),
+          el('button', { class: 'si-btn si-btn-small', onclick: () => { this._editionId = null; this._render(); } }, ['Annuler'])
+        ])
+      ]);
     }
 
     _ouvrirFormulaireEvenementParcours(eleve) {

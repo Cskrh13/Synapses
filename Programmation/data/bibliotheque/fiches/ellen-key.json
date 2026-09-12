@@ -98,5 +98,77 @@
       "Réseau Canopé",
       "Cairn.info"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Essayiste et penseuse suédoise qui place l’enfant, son développement et la transformation du milieu éducatif au centre d’une critique de l’école traditionnelle.",
+    "texte": [
+      "Essayiste et penseuse suédoise qui place l’enfant, son développement et la transformation du milieu éducatif au centre d’une critique de l’école traditionnelle.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle. Ce rattachement aide à situer Key dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Le Siècle de l’enfant (1900) ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1849–1926",
+    "reperes": {
+      "periode": "1849–1926",
+      "courants": [
+        "education-nouvelle"
+      ],
+      "ouvrages_reference": [
+        "Le Siècle de l’enfant (1900)"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "enfant",
+      "terme": "Enfant",
+      "definition": "Sujet dont la nature propre, distincte de celle de l'adulte, est au cœur des débats pédagogiques depuis Rousseau : faut-il le façonner, le laisser se développer, ou l'accompagner ?"
+    },
+    {
+      "id": "individualité",
+      "terme": "Individualité",
+      "definition": "Reconnaissance de la singularité de chaque enfant comme point de départ de l'action éducative, plutôt que le traitement uniforme d'un groupe."
+    },
+    {
+      "id": "développement",
+      "terme": "Développement",
+      "definition": "Processus de transformation des capacités cognitives, affectives et sociales de l'enfant, dont les pédagogues discutent le rythme, les étapes et le lien avec les apprentissages scolaires."
+    },
+    {
+      "id": "milieu éducatif",
+      "terme": "Milieu éducatif",
+      "definition": "Environnement matériel et humain organisé intentionnellement par l'adulte pour favoriser l'activité et l'apprentissage de l'enfant."
+    },
+    {
+      "id": "culture",
+      "terme": "Culture",
+      "definition": "Ensemble des savoirs, œuvres et pratiques que l'école a pour mission de transmettre et de faire partager, au-delà des seules compétences utilitaires."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "respect des rythmes",
+      "terme": "Respect des rythmes",
+      "definition": "Organisation pédagogique qui laisse à chaque enfant le temps dont il a besoin, plutôt que d'imposer un rythme collectif uniforme."
+    },
+    {
+      "id": "observation",
+      "terme": "Observation",
+      "definition": "Recueil attentif d'informations sur l'enfant ou sur un phénomène, préalable indispensable à l'adaptation de l'action pédagogique."
+    },
+    {
+      "id": "éducation esthétique",
+      "terme": "Éducation esthétique",
+      "definition": "Formation du regard et de la sensibilité de l'enfant par le contact avec les œuvres et par la pratique artistique."
+    },
+    {
+      "id": "aménagement du milieu",
+      "terme": "Aménagement du milieu",
+      "definition": "Organisation matérielle réfléchie de l'espace de classe (mobilier, matériel accessible, coins d'activité) au service de l'autonomie et de l'activité de l'enfant."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

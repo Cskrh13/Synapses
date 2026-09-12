@@ -94,5 +94,84 @@
       "Association Sur les pas de Germaine Tortel",
       "Musée national de l’Éducation"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Inspectrice des écoles maternelles et créatrice de la pédagogie d’initiation, elle met au centre l’expression de l’enfant, le questionnement, les projets et la construction progressive de la pensée.",
+    "texte": [
+      "Inspectrice des écoles maternelles et créatrice de la pédagogie d’initiation, elle met au centre l’expression de l’enfant, le questionnement, les projets et la construction progressive de la pensée.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle, maternelle. Ce rattachement aide à situer Tortel dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Propos sur l’art enfantin », « L’enfant émerveillé ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1896–1975",
+    "reperes": {
+      "periode": "1896–1975",
+      "courants": [
+        "education-nouvelle",
+        "maternelle"
+      ],
+      "ouvrages_reference": [
+        "Propos sur l’art enfantin",
+        "L’enfant émerveillé"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "pédagogie d’initiation",
+      "terme": "Pédagogie d'initiation",
+      "definition": "Approche qui privilégie une première mise en contact vivante et concrète avec un domaine plutôt qu'un enseignement systématique d'emblée."
+    },
+    {
+      "id": "expression",
+      "terme": "Expression",
+      "definition": "Chez Freinet notamment, mise en mots, en images ou en gestes de ce que l'enfant vit ou pense, prise comme point de départ des apprentissages plutôt que comme simple exercice."
+    },
+    {
+      "id": "questionnement",
+      "terme": "Questionnement",
+      "definition": "Démarche qui consiste à faire naître et à travailler les questions des élèves plutôt qu'à leur fournir d'emblée des réponses."
+    },
+    {
+      "id": "projet",
+      "terme": "Projet",
+      "definition": "Démarche pédagogique organisée autour d'une réalisation concrète et signifiante pour les élèves, qui fédère et donne sens aux apprentissages qu'elle mobilise."
+    },
+    {
+      "id": "dessin enfantin",
+      "terme": "Dessin enfantin",
+      "definition": "Trace graphique spontanée de l'enfant, étudiée pour ce qu'elle révèle de son développement et de sa vision du monde."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "situation-problème",
+      "terme": "Situation-problème",
+      "definition": "Tâche conçue pour placer l'élève face à un obstacle qui nécessite la construction ou la mobilisation active de connaissances pour être surmonté."
+    },
+    {
+      "id": "projet",
+      "terme": "Projet",
+      "definition": "Réalisation concrète et signifiante, choisie ou négociée avec les élèves, qui organise et fédère une séquence de travail."
+    },
+    {
+      "id": "verbalisation",
+      "terme": "Verbalisation",
+      "definition": "Mise en mots par l'élève de ce qu'il fait, comprend ou ressent, qui contribue à structurer sa pensée."
+    },
+    {
+      "id": "dessin collectif",
+      "terme": "Dessin collectif",
+      "definition": "Production graphique réalisée à plusieurs, qui articule expression individuelle et travail de groupe."
+    },
+    {
+      "id": "écoute",
+      "terme": "Écoute",
+      "definition": "Attitude et pratique consistant à recueillir attentivement la parole de l'enfant avant d'intervenir, condition d'un dialogue pédagogique authentique."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

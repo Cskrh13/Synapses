@@ -99,5 +99,86 @@
       "Cairn.info",
       "INSEI"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Chercheur et essayiste français en sciences de l’éducation, il travaille notamment sur l’éducabilité, la différenciation, l’apprentissage, l’autorité et les conditions pédagogiques de l’émancipation.",
+    "texte": [
+      "Chercheur et essayiste français en sciences de l’éducation, il travaille notamment sur l’éducabilité, la différenciation, l’apprentissage, l’autorité et les conditions pédagogiques de l’émancipation.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : pedagogie-differenciee, education-inclusive, pedagogie-reflexive. Ce rattachement aide à situer Meirieu dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Apprendre… oui, mais comment ? », « Le choix d’éduquer », « Pédagogie : le devoir de résister ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1949–",
+    "reperes": {
+      "periode": "1949–",
+      "courants": [
+        "pedagogie-differenciee",
+        "education-inclusive",
+        "pedagogie-reflexive"
+      ],
+      "ouvrages_reference": [
+        "Apprendre… oui, mais comment ?",
+        "Le choix d’éduquer",
+        "Pédagogie : le devoir de résister"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "éducabilité",
+      "terme": "Éducabilité",
+      "definition": "Principe selon lequel toute personne, quelles que soient ses difficultés apparentes, est capable de progresser et d'apprendre."
+    },
+    {
+      "id": "différenciation",
+      "terme": "Différenciation pédagogique",
+      "definition": "Ensemble des adaptations de l'enseignement (contenus, démarches, supports, rythmes) permettant de répondre à la diversité des élèves sans renoncer aux objectifs communs."
+    },
+    {
+      "id": "autorité",
+      "terme": "Autorité",
+      "definition": "Rapport par lequel l'adulte oriente ou encadre l'action de l'enfant ; les pédagogues divergent fortement sur sa légitimité, sa forme et ses limites."
+    },
+    {
+      "id": "apprentissage",
+      "terme": "Apprentissage",
+      "definition": "Processus par lequel un individu acquiert des connaissances, des savoir-faire ou des attitudes nouvelles, à distinguer du développement bien que les deux soient liés."
+    },
+    {
+      "id": "émancipation",
+      "terme": "Émancipation",
+      "definition": "Visée éducative consistant à rendre le sujet capable de penser et d'agir par lui-même, indépendamment d'une tutelle qui prétendrait savoir à sa place."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "situation-problème",
+      "terme": "Situation-problème",
+      "definition": "Tâche conçue pour placer l'élève face à un obstacle qui nécessite la construction ou la mobilisation active de connaissances pour être surmonté."
+    },
+    {
+      "id": "différenciation",
+      "terme": "Différenciation pédagogique",
+      "definition": "Adaptations concrètes des tâches, des supports ou de l'accompagnement pour répondre aux besoins différents des élèves d'une même classe."
+    },
+    {
+      "id": "pédagogie explicite",
+      "terme": "Pédagogie explicite",
+      "definition": "Approche dans laquelle l'enseignant explicite clairement les objectifs, les démarches et les procédures avant que les élèves ne s'exercent."
+    },
+    {
+      "id": "métacognition",
+      "terme": "Métacognition",
+      "definition": "Réflexion de l'élève sur sa propre manière d'apprendre, de comprendre ou de résoudre un problème."
+    },
+    {
+      "id": "coopération",
+      "terme": "Coopération",
+      "definition": "Organisation du travail dans laquelle les élèves s'entraident et avancent ensemble plutôt que seuls face à la tâche."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

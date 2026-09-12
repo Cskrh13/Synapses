@@ -412,7 +412,6 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
 .drawer-manual select{width:100%;border:1px solid var(--line);border-radius:6px;padding:8px;font-size:13.5px;}
 .drawer-manual .btn{margin-top:8px;border:1px solid var(--accent-sky);background:var(--accent-sky);color:#fff;border-radius:6px;padding:8px 14px;font-size:13px;font-weight:600;}
 .nav-index-link{margin-right:auto;font-weight:700;}
-.usb-card code{font-family:"IBM Plex Mono",monospace;font-size:.9em;}
 
 
 .synapses-footer {
@@ -451,20 +450,6 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
 </header>
 
 <main>
-
-  <section class="card usb-card" style="margin-bottom:16px;">
-    <div style="display:flex;gap:12px;align-items:center;flex-wrap:wrap;">
-      <div>
-        <h2 style="margin:0 0 4px;">Clé USB</h2>
-        <p class="hint" style="margin:0;">
-          Le planning peut être lu depuis <code>planning/planning.json</code>.
-        </p>
-      </div>
-      <button class="btn" id="btn-usb-connect">Connecter la clé USB</button>
-      <button class="btn primary" id="btn-usb-load" disabled>Charger le planning</button>
-      <span id="usb-status" class="hint">Aucune clé connectée.</span>
-    </div>
-  </section>
 
   <h1 style="font-size:24px;margin:0 0 18px;">Planning de la semaine</h1>
 
@@ -535,7 +520,8 @@ let affectations = PC.chargerAffectations();
 let banque = {};
 let semaines = [];
 let semaineIdx = 0;
-let classesAffichees = []; // ids de classes
+let classesAffichees = []; // ids de classes et/ou de dispositifs
+let selectionInitialisee = false; // évite de re-cocher le dispositif après un décochage manuel
 
 function couleurDomaine(cle){
   let hash=0; const s=String(cle||"");
@@ -544,24 +530,53 @@ function couleurDomaine(cle){
   return palette[hash%palette.length];
 }
 
+function elementById(id){
+  return PC.classeById(config, id) || PC.dispositifById(config, id);
+}
+
 function renderClassesToggle(){
   const wrap = $("classes-affichees");
   wrap.innerHTML = "";
-  const disponibles = config.classes || [];
-  if(!classesAffichees.length) classesAffichees = disponibles.map(c=>c.id);
-  disponibles.forEach(cl=>{
+  const classes = config.classes || [];
+  const dispositifs = config.dispositifs || [];
+
+  // Sélection par défaut, à la première initialisation seulement : les
+  // classes sont toutes décochées, seul(s) le(s) dispositif(s) sont cochés.
+  // Un décochage manuel par l'utilisateur ne doit jamais être réécrasé.
+  if(!selectionInitialisee){
+    classesAffichees = dispositifs.map(d=>d.id);
+    selectionInitialisee = true;
+  }
+
+  const rendreChip = (item)=>{
     const b = document.createElement("button");
-    b.textContent = cl.nom;
-    b.className = classesAffichees.includes(cl.id) ? "active" : "";
+    b.textContent = item.nom;
+    b.className = classesAffichees.includes(item.id) ? "active" : "";
     b.addEventListener("click", ()=>{
-      const i = classesAffichees.indexOf(cl.id);
-      if(i>=0) classesAffichees.splice(i,1); else classesAffichees.push(cl.id);
+      const i = classesAffichees.indexOf(item.id);
+      if(i>=0) classesAffichees.splice(i,1); else classesAffichees.push(item.id);
       renderClassesToggle();
       renderSemaine();
     });
     wrap.appendChild(b);
-  });
-  if(!disponibles.length) wrap.innerHTML = '<span class="hint">Aucune classe créée — rendez-vous sur « Planning — Gestion ».</span>';
+  };
+
+  classes.forEach(rendreChip);
+
+  if(dispositifs.length){
+    if(classes.length){
+      const sep = document.createElement("span");
+      sep.className = "hint";
+      sep.style.margin = "0 4px";
+      sep.textContent = "·";
+      wrap.appendChild(sep);
+    }
+    dispositifs.forEach(rendreChip);
+  }
+
+  if(!classes.length && !dispositifs.length){
+    wrap.innerHTML = '<span class="hint">Aucune classe ni dispositif créé — rendez-vous sur « Planning — Gestion ».</span>';
+  }
 }
 
 function renderWeekNav(){
@@ -609,7 +624,7 @@ function renderSemaine(){
 
   const classesObjs =
     classesAffichees
-      .map(id => PC.classeById(config,id))
+      .map(id => elementById(id))
       .filter(Boolean);
 
   const grid = document.createElement("div");
@@ -908,7 +923,39 @@ function renderSemaine(){
             membre.creneau;
 
 
-          if(creneau.type === "seance"){
+          if(creneau.type === "seance" && !cl.niveau){
+
+            // Créneau "séance" d'un dispositif (ULIS, etc.) : pas de niveau,
+            // pas de banque de séances — le titre est celui saisi sur la
+            // grille du dispositif, en lecture seule dans cette vue de
+            // comparaison.
+
+            carte.className = "creneau-card seance";
+
+            carte.style.borderLeftColor =
+              couleurDomaine(creneau.domaineCle || cl.id);
+
+            carte.innerHTML = `
+              <div class="creneau-heure">
+                ${creneau.debut}–${creneau.fin}
+              </div>
+
+              <div class="creneau-titre">
+                ${
+                  (creneau.titre && creneau.titre.trim())
+                    ? creneau.titre
+                    : cl.nom
+                }
+              </div>
+
+              <div class="classes-tags">
+                <span>${cl.nom}</span>
+              </div>
+            `;
+
+          }
+
+          else if(creneau.type === "seance"){
 
             const aff =
               (affectations[cl.id] || {})[
@@ -1203,36 +1250,6 @@ window.addEventListener("storage", (e)=>{
   }catch(e){ /* le planning reste affichable, sans détail de séance */ }
   renderSemaine();
 })();
-
-// ------------------------- Clé USB -------------------------
-const usbConnectBtn = document.getElementById("btn-usb-connect");
-const usbLoadBtn = document.getElementById("btn-usb-load");
-const usbStatus = document.getElementById("usb-status");
-
-if (usbConnectBtn) usbConnectBtn.addEventListener("click", async ()=>{
-  try{
-    await PC.connecterDossierUSB();
-    usbStatus.textContent = "Dossier USB connecté.";
-    usbLoadBtn.disabled = false;
-  }catch(e){
-    usbStatus.textContent = e.name === "AbortError"
-      ? "Sélection annulée."
-      : "Connexion impossible : " + e.message;
-  }
-});
-
-if (usbLoadBtn) usbLoadBtn.addEventListener("click", async ()=>{
-  try{
-    const paquet = await PC.chargerPlanningUSB();
-    if (paquet.config) PC.sauverConfig(paquet.config);
-    if (paquet.grilles) PC.sauverGrilles(paquet.grilles);
-    if (paquet.affectations) PC.sauverAffectations(paquet.affectations);
-    usbStatus.textContent = "Planning chargé depuis la clé USB.";
-    location.reload();
-  }catch(e){
-    usbStatus.textContent = "Chargement impossible : " + e.message;
-  }
-});
 
 </script>
 

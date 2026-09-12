@@ -78,5 +78,62 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Philosophe des Lumières dont la réflexion sur l’éducation a profondément marqué l’histoire des idées pédagogiques.",
+    "texte": [
+      "Philosophe des Lumières dont la réflexion sur l’éducation a profondément marqué l’histoire des idées pédagogiques.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle. Ce rattachement aide à situer Rousseau dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Emile ou De l’éducation ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1712–1778",
+    "reperes": {
+      "periode": "1712–1778",
+      "courants": [
+        "education-nouvelle"
+      ],
+      "ouvrages_reference": [
+        "Emile ou De l’éducation"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "experience",
+      "terme": "Expérience",
+      "definition": "Chez Dewey notamment, contact actif et réfléchi avec le réel à partir duquel se construit la connaissance ; l'expérience éducative articule action et réflexion sur l'action."
+    },
+    {
+      "id": "developpement",
+      "terme": "Développement",
+      "definition": "Processus de transformation des capacités cognitives, affectives et sociales de l'enfant, dont les pédagogues discutent le rythme, les étapes et le lien avec les apprentissages scolaires."
+    },
+    {
+      "id": "interet",
+      "terme": "Intérêt",
+      "definition": "Mobile authentique de l'enfant, que plusieurs pédagogues considèrent comme le moteur nécessaire de l'attention et de l'apprentissage, à distinguer de l'amusement superficiel."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "observation",
+      "terme": "Observation",
+      "definition": "Recueil attentif d'informations sur l'enfant ou sur un phénomène, préalable indispensable à l'adaptation de l'action pédagogique."
+    },
+    {
+      "id": "experience",
+      "terme": "Expérience",
+      "definition": "Mise en situation active permettant à l'élève de constater, tester ou vérifier par lui-même plutôt que d'apprendre uniquement de manière déclarative."
+    },
+    {
+      "id": "progression",
+      "terme": "Progression",
+      "definition": "Organisation dans le temps des apprentissages visés, qui peut être commune ou individualisée."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

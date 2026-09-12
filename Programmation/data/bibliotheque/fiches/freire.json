@@ -83,5 +83,72 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue brésilien associé à l’éducation populaire et aux pédagogies critiques, centré sur le dialogue, la conscientisation et l’émancipation.",
+    "texte": [
+      "Pédagogue brésilien associé à l’éducation populaire et aux pédagogies critiques, centré sur le dialogue, la conscientisation et l’émancipation.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-populaire. Ce rattachement aide à situer Freire dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Pédagogie des opprimés ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1921–1997",
+    "reperes": {
+      "periode": "1921–1997",
+      "courants": [
+        "education-populaire"
+      ],
+      "ouvrages_reference": [
+        "Pédagogie des opprimés"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "dialogue",
+      "terme": "Dialogue",
+      "definition": "Chez Freire notamment, relation d'échange horizontal entre enseignant et élèves, opposée à la transmission verticale d'un savoir figé."
+    },
+    {
+      "id": "conscientisation",
+      "terme": "Conscientisation",
+      "definition": "Chez Freire, processus par lequel les personnes prennent conscience des rapports de domination qui structurent leur situation, condition d'une éducation émancipatrice."
+    },
+    {
+      "id": "emancipation",
+      "terme": "Émancipation",
+      "definition": "Visée éducative consistant à rendre le sujet capable de penser et d'agir par lui-même, indépendamment d'une tutelle qui prétendrait savoir à sa place."
+    },
+    {
+      "id": "pouvoir-d-agir",
+      "terme": "Pouvoir d'agir",
+      "definition": "Capacité effective d'une personne à influer sur sa propre situation, notion mobilisée par les pédagogies qui articulent apprentissage et émancipation sociale."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "dialogue",
+      "terme": "Dialogue",
+      "definition": "Échange horizontal entre enseignant et élèves, ou entre élèves, pris comme méthode de travail plutôt que comme simple préambule à une transmission descendante."
+    },
+    {
+      "id": "problematization",
+      "terme": "Problématisation",
+      "definition": "Démarche consistant à transformer une question de départ en un véritable problème à résoudre, en identifiant ce qui fait obstacle."
+    },
+    {
+      "id": "enquete",
+      "terme": "Enquête",
+      "definition": "Investigation menée par les élèves sur une question, un lieu ou un phénomène, qui articule observation, recueil de données et mise en forme des résultats."
+    },
+    {
+      "id": "expression",
+      "terme": "Expression libre",
+      "definition": "Production orale, écrite ou artistique dans laquelle l'élève choisit lui-même ce qu'il veut dire ou montrer."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

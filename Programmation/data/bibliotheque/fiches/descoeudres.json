@@ -93,5 +93,79 @@
       "INSEI",
       "Cairn.info"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue et psychologue suisse associée à l’Éducation nouvelle, attentive à l’observation de l’enfant, aux différences individuelles et à l’éducation des enfants en difficulté.",
+    "texte": [
+      "Pédagogue et psychologue suisse associée à l’Éducation nouvelle, attentive à l’observation de l’enfant, aux différences individuelles et à l’éducation des enfants en difficulté.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle, education-specialisee. Ce rattachement aide à situer Descoeudres dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Le développement de l’enfant de deux à sept ans », « L’éducation des enfants anormaux ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1877–1963",
+    "reperes": {
+      "periode": "1877–1963",
+      "courants": [
+        "education-nouvelle",
+        "education-specialisee"
+      ],
+      "ouvrages_reference": [
+        "Le développement de l’enfant de deux à sept ans",
+        "L’éducation des enfants anormaux"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "observation",
+      "terme": "Observation",
+      "definition": "Attitude et méthode qui consistent à regarder attentivement l'enfant ou le réel avant d'agir, fondement revendiqué par de nombreux pédagogues, de Montessori à Decroly."
+    },
+    {
+      "id": "individualisation",
+      "terme": "Individualisation",
+      "definition": "Ajustement du parcours, du rythme ou des supports d'apprentissage à chaque élève pris isolément."
+    },
+    {
+      "id": "enfant en difficulté",
+      "terme": "Enfant en difficulté",
+      "definition": "Élève rencontrant des obstacles particuliers dans les apprentissages, pour lequel plusieurs pédagogues (Descoeudres notamment) ont pensé des démarches spécifiques."
+    },
+    {
+      "id": "activité",
+      "terme": "Activité",
+      "definition": "Principe selon lequel l'enfant apprend en agissant sur le réel plutôt qu'en recevant passivement un enseignement ; fondement commun aux pédagogies dites « actives »."
+    },
+    {
+      "id": "autonomie",
+      "terme": "Autonomie",
+      "definition": "Capacité de l'élève à agir, choisir et apprendre sans dépendre en permanence de la validation ou de la direction de l'adulte."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "observation fine",
+      "terme": "Observation fine",
+      "definition": "Observation détaillée et régulière de l'enfant en activité, permettant à l'enseignant d'ajuster précisément son accompagnement."
+    },
+    {
+      "id": "individualisation",
+      "terme": "Individualisation",
+      "definition": "Ajustement des tâches, du rythme ou des supports au profil de chaque élève."
+    },
+    {
+      "id": "activités concrètes",
+      "terme": "Activités concrètes",
+      "definition": "Tâches impliquant une manipulation réelle plutôt qu'un travail purement abstrait ou sur fiche, considérées comme un point d'appui nécessaire, en particulier pour les jeunes élèves."
+    },
+    {
+      "id": "remédiation",
+      "terme": "Remédiation",
+      "definition": "Ensemble des actions mises en œuvre pour aider un élève à surmonter une difficulté identifiée dans ses apprentissages."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

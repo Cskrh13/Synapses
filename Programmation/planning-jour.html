@@ -93,7 +93,41 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .empty-journal h3{color:var(--ink);margin-bottom:8px;}
 .empty-journal p{max-width:520px;margin:0 auto 16px;font-size:13.5px;}
 
+/* -------- Portail d'import (page vide tant qu'aucun planning n'est chargé) -------- */
+#import-gate{max-width:640px;margin:40px auto;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:36px 32px;text-align:center;}
+#import-gate h2{font-size:20px;margin-bottom:10px;}
+#import-gate p{color:var(--ink-soft);font-size:13.5px;line-height:1.6;max-width:480px;margin:0 auto 22px;}
+#import-gate .gate-actions{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;}
+#import-gate .gate-note{margin-top:20px;font-size:12px;color:var(--ink-soft);}
+
 /* -------- Tableau cahier journal -------- */
+.view-toggle{display:flex;gap:6px;margin:0 0 14px;}
+.view-toggle button{border:1px solid var(--line);background:var(--panel-raised);color:var(--ink-soft);padding:7px 14px;border-radius:20px;font-weight:700;font-size:12.5px;}
+.view-toggle button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
+
+/* -------- Vue "CJ" (grille façon cahier journal papier) -------- */
+.cj-table{width:100%;border-collapse:collapse;background:#fff;border:1.5px solid var(--ink);font-size:12px;table-layout:fixed;}
+.cj-table th,.cj-table td{border:1px solid var(--ink);vertical-align:top;padding:6px 8px;}
+.cj-table th{background:var(--panel-raised);font-family:'Fraunces',serif;font-weight:600;font-size:12.5px;text-align:left;}
+.cj-table td.cj-col-creneau{width:13%;background:var(--panel-raised);font-weight:700;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);white-space:pre-line;}
+.cj-table td.cj-col-creneau .cj-creneau-label{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:13px;color:var(--ink);margin-bottom:3px;}
+.cj-table td.cj-empty{color:var(--line);text-align:center;}
+.cj-entry{margin:0 0 8px;}
+.cj-entry:last-child{margin-bottom:0;}
+.cj-entry-time{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent-sky);font-weight:600;}
+.cj-entry-titre{font-weight:600;font-size:12px;margin:1px 0 2px;}
+.cj-entry-eleves{font-size:11.5px;color:var(--ink-soft);}
+.cj-entry-remarque{font-size:11px;color:var(--danger);font-style:italic;margin-top:2px;}
+.cj-entry-domaine{font-size:10.5px;color:var(--ink-soft);font-style:italic;}
+.cj-banner-row td{background:#F2F0E8;font-style:italic;color:var(--ink-soft);font-size:11.5px;padding:5px 8px;}
+.cj-banner-row td.cj-col-creneau{font-style:normal;}
+.cj-lock{opacity:.55;font-size:10px;margin-left:4px;}
+.cj-notes{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;}
+.cj-notes h4{font-size:13px;margin:0 0 6px;}
+.cj-notes ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-soft);}
+.cj-notes li{margin-bottom:3px;}
+@media(max-width:900px){.cj-table{font-size:11px;}.cj-table td.cj-col-creneau{width:auto;}}
+
 .journal-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
 .journal-table > tbody > tr > td{border-top:1px solid var(--line);vertical-align:top;padding:0;}
 
@@ -365,6 +399,19 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .modal-foot{display:flex;justify-content:flex-end;gap:8px;padding:14px 20px;border-top:1px solid var(--line);}
 
 .toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%) translateY(20px);background:var(--navy);color:#fff;padding:10px 18px;border-radius:8px;font-size:13px;opacity:0;pointer-events:none;transition:all .25s;z-index:90;}
+
+/* -------- Résumé du jour -------- */
+.day-summary{display:flex;gap:16px;flex-wrap:wrap;margin:0 0 14px;font-size:12.5px;color:var(--ink-soft);}
+.day-summary strong{color:var(--ink);font-family:'IBM Plex Mono',monospace;}
+.day-summary .warn{color:var(--gold);font-weight:600;}
+
+/* -------- Nettoyage des créneaux de test -------- */
+.nettoyage-jour{border:1px solid var(--line);border-radius:8px;margin-bottom:10px;overflow:hidden;}
+.nettoyage-jour-head{background:var(--panel-raised);padding:8px 12px;font-size:12.5px;font-weight:700;display:flex;justify-content:space-between;align-items:center;}
+.nettoyage-item{display:flex;align-items:center;gap:10px;padding:8px 12px;border-top:1px solid var(--line);font-size:12.5px;}
+.nettoyage-item .item-info{flex:1;min-width:0;}
+.nettoyage-item .item-titre{font-weight:600;}
+.nettoyage-item .item-heure{font-family:'IBM Plex Mono',monospace;color:var(--ink-soft);font-size:11.5px;}
 .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
 .synapses-footer{margin-top:40px;padding:18px 24px;text-align:center;font-size:11px;color:var(--ink-soft);border-top:1px solid var(--line);}
@@ -396,15 +443,12 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     font-size:10.5pt;
   }
 
-  /* Tout ce qui sert à la navigation/édition disparaît. */
-  header.site-header,
-  .onboarding,
-  .day-toolbar,
-  #content,
-  .journal-bottom,
-  .synapses-footer,
-  .toast,
-  .modal-overlay{
+  /* Tout ce qui sert à la navigation/édition disparaît : seule la vue
+     imprimable dédiée (.print-journal, ajoutée directement à <body>) doit
+     apparaître. Cette règle générique évite qu'un élément d'écran ajouté
+     par la suite (résumé du jour, onglets, filtres…) ne se retrouve par
+     mégarde sur le papier. */
+  body > *:not(.print-journal){
     display:none !important;
   }
 
@@ -424,16 +468,44 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     align-items:flex-end;
     justify-content:space-between;
     gap:15px;
-    padding:0 0 7px;
-    margin-bottom:8px;
-    border-bottom:2px solid #222;
+    padding:0 0 9px;
+    margin-bottom:10px;
+    border-bottom:3px solid #1E2A4A;
+  }
+
+  .print-brand{
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+
+  .print-brand .mark{
+    width:26px;
+    height:26px;
+    border-radius:6px;
+    background:linear-gradient(160deg,#2E5EAA,#5486d6);
+    color:#fff;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-family:Georgia,'Times New Roman',serif;
+    font-weight:700;
+    font-size:13pt;
+  }
+
+  .print-brand .sub{
+    font-size:7.5pt;
+    letter-spacing:.08em;
+    text-transform:uppercase;
+    color:#5B5F6B;
   }
 
   .print-title{
     font-family:Georgia,'Times New Roman',serif;
-    font-size:19pt;
+    font-size:17pt;
     font-weight:700;
-    line-height:1.1;
+    line-height:1.15;
+    color:#1E2A4A;
   }
 
   .print-date{
@@ -441,6 +513,7 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     font-weight:600;
     text-align:right;
     white-space:nowrap;
+    color:#1E2A4A;
   }
 
   .print-schedule{
@@ -476,9 +549,10 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     align-items:center;
     gap:7px;
     padding:4px 6px;
-    background:#eee;
-    border-bottom:1px solid #aaa;
+    background:#EAF0FA;
+    border-bottom:1px solid #B9C6E5;
     font-weight:700;
+    color:#1E2A4A;
   }
 
   .print-time{
@@ -626,6 +700,7 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     <div class="coffre-widget">
       <span class="badge-coffre" id="coffre-status">Coffre fermé</span>
       <button class="btn small on-header" id="btn-coffre-toggle">Ouvrir le coffre</button>
+      <button class="btn small on-header" id="btn-changer-planning" style="display:none;" title="Revenir à l'écran d'import">🔄 Changer de planning</button>
     </div>
   </div>
 </header>
@@ -656,16 +731,56 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
   </div>
 </div>
 
+<div class="modal-overlay" id="modal-planning-import">
+  <div class="modal">
+    <div class="modal-head">
+      <h3>Importer un planning .synapses</h3>
+      <button class="modal-close" data-close="modal-planning-import">✕</button>
+    </div>
+    <div class="modal-body">
+      <p style="font-size:12.5px;color:var(--ink-soft);margin:0 0 14px;line-height:1.6;">
+        Choisissez le fichier <code>.synapses</code> exporté depuis « Planning — Gestion » (bouton « Exporter le planning »). Il contient la configuration, les grilles horaires, les affectations et le cahier journal.
+      </p>
+      <div class="field">
+        <label>Fichier .synapses — sur cet ordinateur</label>
+        <button type="button" class="btn" id="planning-import-browse-btn" style="width:100%;text-align:left;">📁 Parcourir mon ordinateur…</button>
+        <input type="file" id="planning-import-file" accept=".synapses" style="display:none;">
+        <div id="planning-import-file-name" style="font-size:12.5px;color:var(--ink-soft);margin-top:6px;">Aucun fichier sélectionné.</div>
+      </div>
+      <div class="field"><label>Mot de passe</label><input type="password" id="planning-import-password" placeholder="Mot de passe du planning"></div>
+      <p id="planning-import-erreur" style="display:none;color:var(--danger);font-size:12.5px;margin:10px 0 0;"></p>
+      <p style="font-size:12.5px;color:var(--ink-soft);margin:14px 0 0;line-height:1.6;">
+        ⚠️ Ce planning remplace entièrement celui actuellement enregistré dans cet onglet (configuration, grilles, affectations, cahier journal).
+      </p>
+    </div>
+    <div class="modal-foot">
+      <button class="btn" data-close="modal-planning-import">Annuler</button>
+      <button class="btn primary" id="btn-planning-import-confirm">Importer</button>
+    </div>
+  </div>
+</div>
+
+
 <main>
   <h1 style="font-size:24px;margin:0 0 14px;">Cahier journal</h1>
 
+  <div id="import-gate">
+    <h2>Aucun planning chargé</h2>
+    <p>Cette page reste vide tant qu'aucun planning n'a été importé : elle n'affiche plus automatiquement d'anciennes données. Importez le fichier <code>.synapses</code> exporté depuis « Planning — Gestion » pour afficher le cahier journal, puis, si besoin, ouvrez le coffre élèves pour voir les noms.</p>
+    <div class="gate-actions">
+      <button class="btn primary" id="btn-ouvrir-import-planning">📥 Importer le planning (.synapses)</button>
+      <button class="btn" id="btn-ouvrir-coffre-depuis-gate">🔐 Ouvrir le coffre élèves</button>
+    </div>
+    <p class="gate-note">Les deux fichiers sont indépendants : le planning (classes, grilles, cahier journal) vient de « Planning — Gestion » ; le coffre (identités des élèves) est un fichier <code>.synapses</code> séparé.</p>
+  </div>
+
+  <div id="app-content" style="display:none;">
   <div class="onboarding" id="onboarding">
     <button class="close-onboarding" id="btn-close-onboarding">Masquer ✕</button>
     <h3>Comment utiliser cette page ?</h3>
     <ol>
-      <li><strong>Synchronisation automatique</strong> — ce jour se met à jour tout seul depuis la grille de « Planning — Gestion » à chaque ouverture de page. Dès que vous modifiez un groupe (titre, adulte, horaire), il devient « figé » et n'est plus jamais écrasé automatiquement.</li>
-      <li><strong>Organiser</strong> — pour chaque créneau, ajoutez ou ajustez les groupes de besoin/travail (colonnes), affectez un adulte (enseignant, AESH, ATSEM…) et un titre de séance à chacun.</li>
-      <li><strong>Répartir</strong> — ouvrez le coffre élèves puis cliquez sur « Répartir les élèves » : Synapses propose une répartition à partir des besoins/objectifs actifs de chaque élève. <strong>Vous validez toujours</strong> en ajustant les chips élève à la main.</li>
+      <li><strong>Organiser</strong> — pour chaque créneau, ajoutez ou ajustez les groupes de besoin/travail (colonnes), affectez un adulte (enseignant, AESH, ATSEM…) et un titre à chacun.</li>
+      <li><strong>Élèves</strong> — ouvrez le coffre élèves pour affecter des élèves aux groupes du jour et voir leurs noms.</li>
     </ol>
     <p style="font-size:12px;color:var(--ink-soft);margin:0;">Aucune identité d'élève n'est jamais écrite dans ce planning : seuls des identifiants Synapses (ELEVE-xxxx) y apparaissent, rapprochés des noms en mémoire uniquement si le coffre est ouvert dans cet onglet.</p>
   </div>
@@ -679,12 +794,7 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     </div>
     <div class="day-title" id="day-title">—</div>
     <div class="day-actions">
-      <button class="btn" id="btn-generer-jour">↺ Resynchroniser avec la grille</button>
-      <button class="btn" id="btn-repartir-eleves">🎯 Répartir les élèves</button>
-      <button class="btn" id="btn-import-sequences">📥 Importer séquences / séances</button>
-      <input type="file" id="import-sequences-file" accept=".json,application/json" style="display:none;">
       <button class="btn" id="btn-print">🖨 Imprimer</button>
-      <a class="btn" href="planning-affichage.html">← Retour à la semaine</a>
     </div>
   </div>
 
@@ -695,6 +805,11 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 
   <section class="journal-tab-panel active" id="tab-journee">
     <div class="classe-filter-bar" id="classe-filter-bar"></div>
+    <div class="view-toggle" id="view-toggle">
+      <button type="button" data-vue="cartes">🗂 Vue cartes</button>
+      <button type="button" data-vue="cj">📋 Vue CJ</button>
+    </div>
+    <div class="day-summary" id="day-summary"></div>
     <div id="content"></div>
 
     <div class="journal-bottom">
@@ -725,6 +840,7 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
       <div id="prompt-ia-status" class="hint"></div>
     </div>
   </section>
+  </div>
 </main>
 
 <div class="toast" id="toast"></div>
@@ -747,7 +863,6 @@ function escapeHTML(s){ return (s==null?"":String(s)).replace(/[&<>]/g, c=>({"&"
 let config = PC.chargerConfig();
 let grilles = PC.chargerGrilles();
 let affectations = PC.chargerAffectations();
-let banque = {};
 let iso = (new URLSearchParams(location.search).get("date")) || PC.dateISO(new Date());
 let jour = null;
 // Filtre d'affichage du cahier journal (onglet "Journée") : il n'existe
@@ -758,6 +873,28 @@ let jour = null;
 // N'affecte que le RENDU — jour.groupes (donnée réellement enregistrée)
 // n'est jamais tronqué par ce filtre.
 let classeFiltreCourante = null;
+const VUE_JOURNAL_KEY = "synapses_planning_vue_journal";
+let vueJournal = localStorage.getItem(VUE_JOURNAL_KEY) === "cj" ? "cj" : "cartes";
+// Préférence d'affichage uniquement (aucune donnée élève) : peut vivre en localStorage.
+
+/* ---------------- Portail d'import ----------------
+   Cette page ne doit plus jamais afficher automatiquement d'anciennes
+   données accumulées dans le stockage partagé (config/grilles/journal) :
+   elle reste vide tant qu'un planning .synapses n'a pas été importé
+   explicitement DANS CETTE PAGE. Ce drapeau, propre à planning-jour.html,
+   ne touche à aucune donnée : il ne fait que décider si l'écran d'import
+   ou le cahier journal est affiché. Un import réel remplace de toute
+   façon entièrement config/grilles/affectations/journal (voir
+   PC.appliquerPaquetPlanning), ce qui règle aussi la pollution des
+   données elles-mêmes, pas seulement leur affichage. */
+const SESSION_KEY = "synapses_planning_jour_session_active";
+function sessionActive(){ return localStorage.getItem(SESSION_KEY) === "1"; }
+function afficherEtatSelonSession(){
+  const actif = sessionActive();
+  $("import-gate").style.display = actif ? "none" : "";
+  $("app-content").style.display = actif ? "" : "none";
+  $("btn-changer-planning").style.display = actif ? "" : "none";
+}
 
 /* ---------------- Coffre (repris du modèle sequences.html) ---------------- */
 let coffre = null;
@@ -765,16 +902,17 @@ try{ coffre = new SynapsesCoffre.Coffre(); }catch(e){ coffre = null; }
 function coffreDisponible(){ return !!coffre; }
 function coffreOuvert(){ return !!(coffre && coffre.ouvert); }
 function eleveLabel(e){
-  // N'affiche que les INITIALES de l'élève, calculées à la volée à partir
-  // de son identité (coffre ouvert, en mémoire uniquement) : ce libellé
-  // n'est jamais stocké — seul l'identifiant d'anonymat (identifiantSynapses)
-  // est enregistré dans les groupes du jour, dans localStorage (non chiffré).
-  // Le nom/prénom réel de l'élève ne doit jamais en sortir.
-  const nom = ((e.identite && (e.identite.prenom || e.identite.nom)) || "").trim();
-  if(!nom) return e.identifiantSynapses;
-  const morceaux = nom.split(/\s+/).filter(Boolean);
-  if(morceaux.length === 1) return morceaux[0].slice(0,2).toUpperCase();
-  return (morceaux[0][0] + morceaux[morceaux.length-1][0]).toUpperCase();
+  // Affiche le prénom et le nom de l'élève, calculés à la volée à partir de
+  // son identité (coffre ouvert, en mémoire uniquement du navigateur) : ce
+  // libellé n'est jamais stocké — seul l'identifiant d'anonymat
+  // (identifiantSynapses) est enregistré dans les groupes du jour, dans
+  // localStorage (non chiffré). Le nom/prénom réel n'existe donc qu'à
+  // l'écran (et sur l'impression), jamais persisté hors du fichier
+  // .synapses lui-même.
+  const prenom = ((e.identite && e.identite.prenom) || "").trim();
+  const nomFamille = ((e.identite && e.identite.nom) || "").trim();
+  const complet = [prenom, nomFamille].filter(Boolean).join(" ");
+  return complet || e.identifiantSynapses;
 }
 function updateCoffreWidget(){
   const status = $("coffre-status"), btn = $("btn-coffre-toggle");
@@ -801,7 +939,7 @@ if($("btn-coffre-toggle")){
         coffre.purger();
         updateCoffreWidget();
         toast("Coffre fermé, données purgées");
-        renderJour();
+        rafraichirEtat();
       }
     } else {
       openModal('modal-coffre');
@@ -824,8 +962,12 @@ if($("btn-coffre-toggle")){
       $("coffre-file").value = "";
       $("coffre-file-name").textContent = "Aucun fichier sélectionné.";
       updateCoffreWidget();
-      toast("Coffre ouvert : " + coffre.listerEleves().length + " élève(s)");
-      renderJour();
+      // Resynchronise IMMÉDIATEMENT le cahier journal : les élèves du
+      // coffre qui ont un planning individuel (onglet Affectation) ou qui
+      // relèvent d'un dispositif (ULIS…) apparaissent aussitôt, par leur
+      // prénom/nom, sur les créneaux concernés — sans action supplémentaire.
+      rafraichirEtat();
+      toast("Coffre ouvert : " + coffre.listerEleves().length + " élève(s) chargé(s) sur la journée");
     }catch(e){
       toast("Impossible d'ouvrir le coffre : " + e.message);
     }
@@ -838,6 +980,52 @@ if($("btn-coffre-toggle")){
   // donc il ne purge pas le coffre pendant une utilisation normale.
   window.addEventListener('pagehide', ()=>{ if(coffre) coffre.purger(); });
 }
+
+/* ---------------- Portail d'import : planning .synapses ---------------- */
+$("planning-import-browse-btn").addEventListener("click", ()=> $("planning-import-file").click());
+$("planning-import-file").addEventListener("change", ()=>{
+  const f = $("planning-import-file").files[0];
+  $("planning-import-file-name").textContent = f ? ("Sélectionné : " + f.name) : "Aucun fichier sélectionné.";
+});
+$("btn-planning-import-confirm").addEventListener("click", async ()=>{
+  const erreurEl = $("planning-import-erreur");
+  erreurEl.style.display = "none";
+  const file = $("planning-import-file").files[0];
+  const pwd = $("planning-import-password").value;
+  if(!file){ erreurEl.textContent = "Choisissez d'abord un fichier .synapses."; erreurEl.style.display = ""; return; }
+  if(!pwd){ erreurEl.textContent = "Saisissez le mot de passe du planning."; erreurEl.style.display = ""; return; }
+  try{
+    const enveloppe = await PC.lireFichierJSON(file);
+    if(!enveloppe || enveloppe.format !== "synapses-planning-secure"){
+      throw new Error("Ce fichier n'est pas un planning .synapses protégé.");
+    }
+    const paquet = await PC.dechiffrerPlanningJSON(enveloppe, pwd);
+    const applique = PC.appliquerPaquetPlanning(paquet);
+    localStorage.setItem(SESSION_KEY, "1");
+    closeModal('modal-planning-import');
+    $("planning-import-password").value = "";
+    $("planning-import-file").value = "";
+    $("planning-import-file-name").textContent = "Aucun fichier sélectionné.";
+    afficherEtatSelonSession();
+    rafraichirEtat();
+    toast("Planning importé : " + applique.join(", ") + ".");
+  }catch(e){
+    erreurEl.textContent = e.message || "Import impossible.";
+    erreurEl.style.display = "";
+  }
+});
+$("btn-ouvrir-import-planning").addEventListener("click", ()=> openModal('modal-planning-import'));
+if($("btn-ouvrir-coffre-depuis-gate")){
+  $("btn-ouvrir-coffre-depuis-gate").addEventListener("click", ()=>{
+    if(!coffreDisponible()){ toast("Le coffre est indisponible : synapses-coffre.js n'a pas pu être chargé."); return; }
+    openModal('modal-coffre');
+  });
+}
+$("btn-changer-planning").addEventListener("click", ()=>{
+  if(!confirm("Revenir à l'écran d'import ? Rien n'est supprimé : le planning actuellement enregistré reste intact, vous pourrez le réimporter à tout moment.")) return;
+  localStorage.removeItem(SESSION_KEY);
+  afficherEtatSelonSession();
+});
 
 /* ---------------- Onboarding ---------------- */
 const ONB_KEY = "synapses_journal_onboarding_vu";
@@ -943,16 +1131,18 @@ function renderJour(){
   content.innerHTML = "";
 
   renderClasseFilterBar();
+  renderDaySummary(jour.groupes.filter(matchFiltreClasse));
+  document.querySelectorAll("#view-toggle [data-vue]").forEach(b=>{
+    b.classList.toggle("active", b.dataset.vue===vueJournal);
+  });
 
   if(!jour.groupes.length){
     content.innerHTML = `
       <div class="empty-journal">
         <h3>Aucun cahier journal pour ce jour</h3>
-        <p>Synchronisez-le automatiquement depuis la grille horaire hebdomadaire définie dans « Planning — Gestion », puis ajustez les groupes, les adultes et les élèves. Vous pouvez aussi ajouter un premier créneau à la main.</p>
-        <button class="btn primary" id="btn-generer-jour-vide">↺ Resynchroniser avec la grille</button>
-        <button class="btn" id="btn-ajouter-bloc-vide" style="margin-left:8px;">+ Ajouter un créneau</button>
+        <p>Ajoutez un premier créneau à la main pour commencer à organiser cette journée.</p>
+        <button class="btn primary" id="btn-ajouter-bloc-vide">+ Ajouter un créneau</button>
       </div>`;
-    $("btn-generer-jour-vide").addEventListener("click", ()=>genererDepuisGrille(false));
     $("btn-ajouter-bloc-vide").addEventListener("click", ()=>ajouterBloc());
     return;
   }
@@ -1102,6 +1292,17 @@ function renderJour(){
 
   if(ligneCourante.length){
     lignes.push(ligneCourante);
+  }
+
+  if(vueJournal === "cj"){
+    content.appendChild(construireTableCJ(lignes, hm));
+
+    const addBlocRowCJ = document.createElement("div");
+    addBlocRowCJ.className = "add-bloc-row";
+    addBlocRowCJ.innerHTML = `<button class="btn" id="btn-add-bloc">+ Ajouter un créneau</button>`;
+    content.appendChild(addBlocRowCJ);
+    $("btn-add-bloc").addEventListener("click", ()=>ajouterBloc());
+    return;
   }
 
   const table = document.createElement("table");
@@ -1427,6 +1628,115 @@ function renderJour(){
   );
 }
 
+/* =========================================================
+   VUE "CJ" — grille façon cahier journal papier
+   ---------------------------------------------------------
+   Colonnes fixes : Créneau | Enseignant | AESH / autre adulte
+   | Autonomie. Chaque ligne correspond à une plage horaire
+   commune (même regroupement par chevauchement que la vue
+   cartes) ; les créneaux fixes sans adulte (récréation,
+   service…) sont affichés en bandeau, comme dans le cahier
+   journal papier.
+   ========================================================= */
+
+function heureCourte(hhmm){
+  if(!hhmm) return "";
+  const [h,m] = String(hhmm).split(":");
+  const hh = String(parseInt(h,10));
+  return (!m || m==="00") ? hh+"h" : hh+"h"+m;
+}
+
+function classifierGroupeCJ(g){
+  if(g.fixe && !g.adulte) return "banner";
+  const t = g.adulte && g.adulte.type;
+  if(t === "enseignant") return "ens";
+  if(t === "aesh" || t === "atsem" || t === "autre") return "aesh";
+  return "auto";
+}
+
+function renderEntreeCJ(bloc, g){
+  const eleves = (g.eleves||[]).map(id=>labelEleve(id));
+  const nomAdulte = g.adulte && g.adulte.nom ? " · " + escapeHTML(g.adulte.nom) : "";
+  const cadenas = g.modifie ? `<span class="cj-lock" title="Modifié à la main">🔒</span>` : "";
+  return `
+    <div class="cj-entry">
+      <div class="cj-entry-time">${escapeHTML(heureCourte(bloc.debut))}–${escapeHTML(heureCourte(bloc.fin))}${nomAdulte}${cadenas}</div>
+      <div class="cj-entry-titre">${escapeHTML(g.titre || "")}</div>
+      ${g.domaineCle ? `<div class="cj-entry-domaine">${escapeHTML((g.niveau?g.niveau+" · ":"")+g.domaineCle)}</div>` : ""}
+      ${eleves.length ? `<div class="cj-entry-eleves">${eleves.map(escapeHTML).join(", ")}</div>` : ""}
+      ${g.remarque ? `<div class="cj-entry-remarque">⚠ ${escapeHTML(g.remarque)}</div>` : ""}
+    </div>`;
+}
+
+function construireTableCJ(lignes, hm){
+  const table = document.createElement("table");
+  table.className = "cj-table";
+  table.innerHTML = `<thead><tr>
+    <th style="width:13%;">Créneau</th>
+    <th>Enseignant</th>
+    <th>AESH / autre adulte</th>
+    <th>Autonomie</th>
+  </tr></thead>`;
+
+  const tbody = document.createElement("tbody");
+
+  lignes.forEach(ligneBrute=>{
+    const ligne = ligneBrute.slice().sort((a,b)=>hm(a.debut)-hm(b.debut) || hm(a.fin)-hm(b.fin));
+
+    let minDebutStr = ligne[0].debut, maxFinStr = ligne[0].fin;
+    ligne.forEach(b=>{
+      if(hm(b.debut) < hm(minDebutStr)) minDebutStr = b.debut;
+      if(hm(b.fin) > hm(maxFinStr)) maxFinStr = b.fin;
+    });
+
+    const label = ligne.length === 1
+      ? (PC.libelleBloc(jour, ligne[0].debut, ligne[0].fin) || (heureCourte(ligne[0].debut) + "–" + heureCourte(ligne[0].fin)))
+      : (heureCourte(minDebutStr) + "–" + heureCourte(maxFinStr));
+
+    const cols = { ens: [], aesh: [], auto: [] };
+    const banners = [];
+
+    ligne.forEach(bloc=>{
+      (bloc.groupes || []).forEach(g=>{
+        const t = classifierGroupeCJ(g);
+        if(t === "banner"){
+          banners.push(g);
+        }else{
+          cols[t].push(renderEntreeCJ(bloc, g));
+        }
+      });
+    });
+
+    const aDuContenu = cols.ens.length || cols.aesh.length || cols.auto.length;
+    const titresBanner = [...new Set(banners.map(g=>g.titre).filter(Boolean))];
+
+    const tr = document.createElement("tr");
+
+    if(!aDuContenu && banners.length){
+      tr.className = "cj-banner-row";
+      tr.innerHTML = `
+        <td class="cj-col-creneau"><span class="cj-creneau-label">${escapeHTML(label)}</span></td>
+        <td colspan="3">${escapeHTML(titresBanner.join(" · ") || "Créneau fixe")}</td>
+      `;
+    }else{
+      const noteBanner = titresBanner.length
+        ? `<div style="margin-top:4px;font-style:italic;font-size:10.5px;color:var(--ink-soft);">${escapeHTML(titresBanner.join(" · "))}</div>`
+        : "";
+      tr.innerHTML = `
+        <td class="cj-col-creneau"><span class="cj-creneau-label">${escapeHTML(label)}</span>${noteBanner}</td>
+        <td>${cols.ens.join("") || `<span class="cj-empty">—</span>`}</td>
+        <td>${cols.aesh.join("") || `<span class="cj-empty">—</span>`}</td>
+        <td>${cols.auto.join("") || `<span class="cj-empty">—</span>`}</td>
+      `;
+    }
+
+    tbody.appendChild(tr);
+  });
+
+  table.appendChild(tbody);
+  return table;
+}
+
 function ajouterBloc(){
   const debut = prompt("Heure de début (HH:MM)", "09:00"); if(debut===null) return;
   const fin = prompt("Heure de fin (HH:MM)", "09:30"); if(fin===null) return;
@@ -1448,24 +1758,11 @@ function renderGroupeCard(g){
   }
 
   const typesOptions = PC.TYPES_ADULTE.map(t=>`<option value="${t.id}" ${g.adulte && g.adulte.type===t.id?'selected':''}>${t.label}</option>`).join("");
-  const cadenas = g.modifie ? `<span title="Modifié à la main : ne sera plus écrasé par une resynchronisation" style="float:right;font-size:11px;color:var(--ink-soft);">🔒</span>` : "";
-
-  const items = [];
-  Object.entries(banque || {}).forEach(([niveau, domaines])=>{
-    Object.entries(domaines || {}).forEach(([cle, bucket])=>{
-      (bucket.items || []).forEach(it=>items.push(Object.assign({},it,{_niveau:niveau,_domaineCle:it.domaineCle||cle,_domaineLabel:bucket.label||cle})));
-    });
-  });
-  const uniques = new Map();
-  items.forEach(it=>{if(it.id && !uniques.has(it.id)) uniques.set(it.id,it);});
-  const sessionItems = Array.from(uniques.values());
-  const currentId = g.seanceRef && g.seanceRef.id ? g.seanceRef.id : "";
-  const sessionOptions = `<option value="">— Sélectionner une séance —</option>` + sessionItems.map(it=>`<option value="${escapeAttr(it.id)}" ${it.id===currentId?'selected':''}>${escapeHTML((it._niveau?it._niveau+" · ":"")+(it.seqTitre?it.seqTitre+" · ":"")+(it.titre||it.type||it.id))}</option>`).join("");
+  const cadenas = g.modifie ? `<span title="Modifié à la main" style="float:right;font-size:11px;color:var(--ink-soft);">🔒</span>` : "";
 
   card.innerHTML = `
     <input class="groupe-titre" value="${escapeAttr(g.titre)}" placeholder="Titre du groupe / séance">
     ${cadenas}
-    <select class="groupe-seance" data-role="seance" style="width:100%;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:12px;background:#fff;margin-bottom:6px;">${sessionOptions}</select>
     ${g.domaineCle ? `<span class="domaine-tag">${escapeHTML(g.niveau||"")} · ${escapeHTML(g.domaineCle)}</span>` : ""}
     <div class="row1">
       <select class="adulte-type">${typesOptions}</select>
@@ -1505,15 +1802,6 @@ function renderGroupeCard(g){
   card.querySelector(".adulte-type").addEventListener("change",e=>{g.adulte=g.adulte||{};g.adulte.type=e.target.value;marquerPersonnalise();sauver();});
   card.querySelector(".adulte-nom").addEventListener("change",e=>{g.adulte=g.adulte||{};g.adulte.nom=e.target.value;marquerPersonnalise();sauver();});
   card.querySelector(".remarque").addEventListener("change",e=>{g.remarque=e.target.value;sauver();});
-  card.querySelector('[data-role=seance]').addEventListener("change",e=>{
-    const item=sessionItems.find(x=>x.id===e.target.value);
-    if(!item){g.seanceRef=null;g.domaineCle="";marquerPersonnalise();sauver();renderJour();return;}
-    g.seanceRef={id:item.id,source:item.source,fichier:item.fichier||null};
-    g.titre=item.titre||item.type||g.titre||"Séance";
-    g.domaineCle=item._domaineCle||g.domaineCle||"";
-    g.niveau=g.niveau||item._niveau||"";
-    marquerPersonnalise();sauver();renderJour();
-  });
   card.querySelector('[data-role=add-eleve]').addEventListener("change",e=>{
     const id=e.target.value;if(!id)return;g.eleves=g.eleves||[];if(!g.eleves.includes(id))g.eleves.push(id);marquerPersonnalise();sauver();renderChips();
     e.target.innerHTML=`<option value="">${coffreOuvert()?"+ Ajouter un élève…":"Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
@@ -1525,6 +1813,15 @@ function renderGroupeCard(g){
   return card;
 }
 
+/* ---------------- Bascule Vue cartes / Vue CJ ---------------- */
+document.querySelectorAll("#view-toggle [data-vue]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    vueJournal = btn.dataset.vue;
+    localStorage.setItem(VUE_JOURNAL_KEY, vueJournal);
+    renderJour();
+  });
+});
+
 /* ---------------- Onglets cahier journal ---------------- */
 document.querySelectorAll("[data-journal-tab]").forEach(btn=>{
   btn.addEventListener("click",()=>{
@@ -1532,20 +1829,6 @@ document.querySelectorAll("[data-journal-tab]").forEach(btn=>{
     document.querySelectorAll(".journal-tab-panel").forEach(p=>p.classList.toggle("active",p.id===btn.dataset.journalTab));
     if(btn.dataset.journalTab==="tab-ia-devoirs") genererPromptIA();
   });
-});
-
-/* ---------------- Import séquences / séances ---------------- */
-$("btn-import-sequences").addEventListener("click",()=>$("import-sequences-file").click());
-$("import-sequences-file").addEventListener("change",async e=>{
-  const file=e.target.files[0]; if(!file)return;
-  try{
-    const payload=await PC.lireFichierJSON(file);
-    const r=PC.importerBibliothequeJSON(payload);
-    banque=await PC.chargerBanque();
-    toast(`Import réussi : ${r.sequences} séquence(s), ${r.seances} séance(s).`);
-    renderJour();
-  }catch(err){ toast("Import impossible : "+(err.message||err)); }
-  finally{ e.target.value=""; }
 });
 
 /* ---------------- Prompt IA pour les devoirs ---------------- */
@@ -1598,40 +1881,37 @@ $("btn-copier-prompt-ia").addEventListener("click",async()=>{
   $("prompt-ia-status").textContent="Prompt copié.";
 });
 
-/* ---------------- Actions globales ---------------- */
-async function genererDepuisGrille(silencieux){
-  // Toujours relire l'état le plus récent. Classes et dispositifs (ULIS
-  // compris) utilisent maintenant exactement le même mécanisme : la grille
-  // est la source des créneaux du cahier journal.
+/* ---------------- Résumé du jour ---------------- */
+function renderDaySummary(groupesVisibles){
+  const el = $("day-summary");
+  if(!el) return;
+  const nonFixes = groupesVisibles.filter(g=>!g.fixe);
+  const idsAffectes = new Set();
+  nonFixes.forEach(g=>(g.eleves||[]).forEach(id=>idsAffectes.add(id)));
+  const sansEleve = nonFixes.filter(g=>!(g.eleves||[]).length).length;
+  const parts = [`<span><strong>${nonFixes.length}</strong> séance(s) affichée(s)</span>`];
+  if(coffreOuvert()){
+    parts.push(`<span><strong>${idsAffectes.size}</strong> élève(s) placé(s) sur cette vue</span>`);
+    if(sansEleve) parts.push(`<span class="warn">⚠ ${sansEleve} séance(s) sans élève affecté</span>`);
+  } else {
+    parts.push(`<span>Ouvrez le coffre pour voir les élèves affectés</span>`);
+  }
+  el.innerHTML = parts.join("");
+}
+
+/* ---------------- Actions globales ----------------
+   Cette page ne génère plus aucune séance automatiquement depuis la
+   grille (Planning — Gestion) : elle se contente d'afficher et de
+   modifier le cahier journal tel qu'enregistré. Cette fonction ne fait
+   que recharger l'état courant (config/grilles/affectations, utile pour
+   rester cohérent avec les autres onglets) puis réaffiche le jour.
+--------------------------------------------------------------------- */
+function rafraichirEtat(){
   config = PC.chargerConfig();
   grilles = PC.chargerGrilles();
   affectations = PC.chargerAffectations();
-  try{
-    if(!Object.keys(banque).length) banque = await PC.chargerBanque();
-  }catch(e){}
-  PC.genererJournalDepuisGrille(iso, config, grilles, affectations, banque, coffre);
-  if(!silencieux) toast("Cahier journal resynchronisé avec les grilles (classes et dispositifs).");
   renderJour();
 }
-$("btn-generer-jour").addEventListener("click", ()=> genererDepuisGrille(false));
-
-$("btn-repartir-eleves").addEventListener("click", async ()=>{
-  if(!coffreOuvert()){ toast("Ouvrez le coffre pour répartir les élèves."); openModal('modal-coffre'); return; }
-  config = PC.chargerConfig();
-  grilles = PC.chargerGrilles();
-  try{
-    const affectationsExistantes=PC.chargerAffectations();
-    const nouvelles=await PC.genererAffectations(config.classes||[],config,grilles,affectationsExistantes);
-    PC.sauverAffectations(nouvelles);
-    const stats=PC.repartirElevesSemaineAuto(config,grilles,nouvelles,coffre);
-    PC.genererJournalDepuisGrille(iso,config,grilles,nouvelles,banque,coffre);
-    jour = PC.journalPourDate(iso, PC.chargerJournal());
-    toast(`${stats.ajouts} affectation(s) d'élève · ${stats.groupes} groupe(s) automatique(s).`);
-  }catch(e){
-    toast("Erreur lors de la répartition : " + (e.message || e));
-  }
-  renderJour();
-});
 
 /* ---------------- Impression ergonomique ----------------
    La version imprimée est une vue dédiée :
@@ -1672,8 +1952,14 @@ function construireVueImpression(){
     "print-head";
 
   head.innerHTML = `
-    <div class="print-title">
-      Cahier journal
+    <div>
+      <div class="print-brand">
+        <span class="mark">RÉ</span>
+        <span class="sub">Synapses — Planning</span>
+      </div>
+      <div class="print-title">
+        Cahier journal
+      </div>
     </div>
     <div class="print-date">
       ${escapeHTML(
@@ -2134,7 +2420,7 @@ async function allerA(nouvIso){
   const url = new URL(location.href);
   url.searchParams.set("date", iso);
   history.replaceState(null, "", url);
-  await genererDepuisGrille(true); // fluidité : resynchronisation silencieuse à chaque changement de jour
+  rafraichirEtat();
 }
 $("prev-day").addEventListener("click", ()=> allerA(PC.dateISO(PC.addDays(PC.parseISO(iso), -1))));
 $("next-day").addEventListener("click", ()=> allerA(PC.dateISO(PC.addDays(PC.parseISO(iso), 1))));
@@ -2142,18 +2428,21 @@ $("btn-today").addEventListener("click", ()=> allerA(PC.dateISO(new Date())));
 $("date-picker").addEventListener("change", e=>{ if(e.target.value) allerA(e.target.value); });
 
 // Si la grille/config/affectations changent dans un autre onglet (Planning
-// — Gestion ou Planning — Affichage), on resynchronise silencieusement ici
-// aussi, sans jamais toucher aux groupes déjà modifiés à la main.
+// — Gestion ou Planning — Affichage), on relit l'état ici aussi, sans
+// jamais toucher aux groupes déjà modifiés à la main et sans jamais
+// générer automatiquement de séance. On ne le fait que si un planning a
+// été explicitement importé dans cette page (voir portail d'import).
 window.addEventListener("storage", (e)=>{
-  if([PC.STORE_CONFIG, PC.STORE_GRILLES, PC.STORE_AFFECT].includes(e.key)){
-    genererDepuisGrille(true);
+  if(sessionActive() && [PC.STORE_CONFIG, PC.STORE_GRILLES, PC.STORE_AFFECT].includes(e.key)){
+    rafraichirEtat();
   }
 });
 
 /* ---------------- Initialisation ---------------- */
-(async function init(){
+(function init(){
   updateCoffreWidget();
-  await genererDepuisGrille(true);
+  afficherEtatSelonSession();
+  if(sessionActive()) rafraichirEtat();
 })();
 </script>
 

@@ -92,5 +92,78 @@
       "Fayard",
       "Institut FSU"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Philosophe français, auteur du Maître ignorant, qui interroge la relation pédagogique à partir de l’émancipation intellectuelle et de l’égalité des intelligences.",
+    "texte": [
+      "Philosophe français, auteur du Maître ignorant, qui interroge la relation pédagogique à partir de l’émancipation intellectuelle et de l’égalité des intelligences.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : pedagogies-critiques, education-populaire. Ce rattachement aide à situer Rancière dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Le Maître ignorant (1987) ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1940–",
+    "reperes": {
+      "periode": "1940–",
+      "courants": [
+        "pedagogies-critiques",
+        "education-populaire"
+      ],
+      "ouvrages_reference": [
+        "Le Maître ignorant (1987)"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "émancipation",
+      "terme": "Émancipation",
+      "definition": "Visée éducative consistant à rendre le sujet capable de penser et d'agir par lui-même, indépendamment d'une tutelle qui prétendrait savoir à sa place."
+    },
+    {
+      "id": "égalité des intelligences",
+      "terme": "Égalité des intelligences",
+      "definition": "Chez Rancière (« Le Maître ignorant »), postulat selon lequel toutes les intelligences sont égales en puissance, ce qui déplace le rôle du maître de la transmission d'un savoir vers l'exigence adressée à l'élève de chercher par lui-même."
+    },
+    {
+      "id": "explication",
+      "terme": "Explication",
+      "definition": "Exposé par l'enseignant d'une notion ou d'une procédure ; son moment et sa place (avant, pendant ou après l'activité de l'élève) font débat entre pédagogies."
+    },
+    {
+      "id": "autonomie intellectuelle",
+      "terme": "Autonomie intellectuelle",
+      "definition": "Capacité à juger et à raisonner par soi-même, visée par plusieurs pédagogies comme finalité ultime de l'instruction, au-delà de l'acquisition de connaissances."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "recherche autonome",
+      "terme": "Recherche autonome",
+      "definition": "Investigation menée par l'élève avec un degré élevé d'initiative, l'enseignant intervenant surtout pour cadrer et ressourcer la démarche."
+    },
+    {
+      "id": "questionnement",
+      "terme": "Questionnement",
+      "definition": "Pratique consistant à interroger les élèves pour faire émerger, préciser ou reformuler leur pensée plutôt qu'à leur livrer directement une réponse."
+    },
+    {
+      "id": "explication différée",
+      "terme": "Explication différée",
+      "definition": "Chez Freinet notamment, choix de retarder l'explication magistrale après que l'élève a d'abord tâtonné ou expérimenté par lui-même."
+    },
+    {
+      "id": "lecture",
+      "terme": "Lecture",
+      "definition": "Pratique de déchiffrage et de compréhension de l'écrit, dont les méthodes (globale, syllabique, naturelle...) ont fait l'objet de débats pédagogiques constants."
+    },
+    {
+      "id": "débat",
+      "terme": "Débat",
+      "definition": "Discussion argumentée organisée en classe sur une question, qui développe l'expression, l'écoute et la pensée critique."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

@@ -87,5 +87,74 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Psychologue américain qui a travaillé sur les représentations, la découverte guidée, le curriculum et l’étayage.",
+    "texte": [
+      "Psychologue américain qui a travaillé sur les représentations, la découverte guidée, le curriculum et l’étayage.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : socioconstructivisme, pedagogie-active. Ce rattachement aide à situer Bruner dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « The Process of Education », « Actual Minds, Possible Worlds ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1915–2016",
+    "reperes": {
+      "periode": "1915–2016",
+      "courants": [
+        "socioconstructivisme",
+        "pedagogie-active"
+      ],
+      "ouvrages_reference": [
+        "The Process of Education",
+        "Actual Minds, Possible Worlds"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "etayage",
+      "terme": "Étayage",
+      "definition": "Soutien qu'un adulte ou un pair plus expérimenté apporte à l'enfant pour l'aider à réaliser une tâche qu'il ne pourrait pas mener seul, en réduisant progressivement ce soutien."
+    },
+    {
+      "id": "representation",
+      "terme": "Représentation",
+      "definition": "Image mentale ou modèle que l'enfant se construit du réel, objet de travail pour de nombreuses démarches d'apprentissage."
+    },
+    {
+      "id": "curriculum",
+      "terme": "Curriculum",
+      "definition": "Organisation d'ensemble des contenus et des progressions enseignés, que certains pédagogues proposent de repenser à partir des besoins de l'enfant plutôt que des seules disciplines."
+    },
+    {
+      "id": "spirale",
+      "terme": "Curriculum en spirale",
+      "definition": "Organisation des apprentissages selon laquelle une même notion est retravaillée à plusieurs reprises, à des niveaux de complexité croissants (notion associée à Bruner)."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "questionnement",
+      "terme": "Questionnement",
+      "definition": "Pratique consistant à interroger les élèves pour faire émerger, préciser ou reformuler leur pensée plutôt qu'à leur livrer directement une réponse."
+    },
+    {
+      "id": "guidage",
+      "terme": "Guidage",
+      "definition": "Degré et modalités d'intervention de l'enseignant dans l'activité de l'élève, question centrale de désaccord entre pédagogies plus ou moins directives."
+    },
+    {
+      "id": "decouverte-guidee",
+      "terme": "Découverte guidée",
+      "definition": "Démarche dans laquelle l'enseignant amène l'élève à découvrir par lui-même une notion, en orientant discrètement son exploration plutôt qu'en l'exposant directement."
+    },
+    {
+      "id": "revisitation",
+      "terme": "Révisitation",
+      "definition": "Reprise, à des moments différents et à des niveaux de complexité croissants, d'une même notion (proche du principe de curriculum en spirale)."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

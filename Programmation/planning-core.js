@@ -1132,14 +1132,10 @@
   // ========================================================================
 
   function chargerConfig() {
-    // Migration RGPD : les anciennes affectations élève↔créneau et
-    // exclusions nominatives ne doivent plus rester dans le stockage local.
-    // Elles sont désormais portées exclusivement par le planning de chaque
-    // élève dans le coffre Synapses.
-    try {
-      localStorage.removeItem(STORE_AFFECT_ELEVES);
-      localStorage.removeItem(STORE_EXCLUSIONS_CRENEAU);
-    } catch (e) {}
+    // IMPORTANT : ne jamais supprimer silencieusement des données locales.
+    // Les anciennes affectations/exclusions restent conservées pour assurer
+    // la rétrocompatibilité ; le coffre demeure la source de vérité pour les
+    // données nominatives. Une éventuelle migration doit être explicite.
 
     try {
 
@@ -1166,8 +1162,13 @@
         // "classes" (entités propres, ex. deux CE2 distincts). On migre une
         // seule fois : chaque niveau actif devient une classe portant ce
         // niveau comme nom par défaut.
-        if (!Array.isArray(c.classes)) {
-          c.classes = (c.niveauxActifs || []).map((n, i) => ({
+        // Ancien stockage : `niveauxActifs` était la liste des clés de
+        // grille. Certaines versions intermédiaires avaient déjà créé
+        // `classes: []` sans recopier cette liste. Dans les deux cas, si des
+        // niveaux historiques existent, ils doivent redevenir des classes.
+        if (!Array.isArray(c.classes) || (c.classes.length === 0 && Array.isArray(c.niveauxActifs) && c.niveauxActifs.length)) {
+          const anciens = Array.isArray(c.niveauxActifs) ? c.niveauxActifs : [];
+          c.classes = anciens.map((n, i) => ({
             id: uid("cls"), nom: n, niveau: n, couleur: PALETTE_CLASSES[i % PALETTE_CLASSES.length], dispositifs: []
           }));
         }
@@ -1397,6 +1398,84 @@
       JSON.stringify(g)
     );
 
+  }
+
+  /**
+   * Restaure les clés de stockage de l'ancien modèle (CP/CE1/…) vers les
+   * identifiants stables des nouvelles classes. Cette migration est
+   * volontairement non destructive : les anciennes clés ne sont supprimées
+   * qu'après copie réussie vers une classe correspondante.
+   */
+  function migrerStockageClasses(config, grilles) {
+    if (!config || !grilles || typeof grilles !== "object") return false;
+
+    // Ancien modèle : les grilles étaient directement indexées par niveau
+    // (CP, CE1, CE2...). On conserve toutes les données et on reconstruit
+    // seulement les entités de classe manquantes.
+    const anciens = Array.isArray(config.niveauxActifs)
+      ? config.niveauxActifs.slice()
+      : [];
+    Object.keys(grilles).forEach(k => {
+      const niveau = String(k).toUpperCase();
+      if (NIVEAUX.includes(niveau) && !anciens.some(x => String(x).toUpperCase() === niveau)) {
+        anciens.push(k);
+      }
+    });
+
+    if (!Array.isArray(config.classes)) config.classes = [];
+    let modifie = false;
+
+    anciens.forEach(niveau => {
+      if (!niveau) return;
+      const niveauCle = String(niveau).toUpperCase();
+      let cl = config.classes.find(c =>
+        String(c.niveau || c.nom || "").toUpperCase() === niveauCle
+      );
+      if (!cl) {
+        cl = {
+          id: uid("cls"),
+          nom: niveau,
+          niveau: niveau,
+          couleur: PALETTE_CLASSES[config.classes.length % PALETTE_CLASSES.length],
+          dispositifs: []
+        };
+        config.classes.push(cl);
+        modifie = true;
+      }
+      const ancienne = grilles[niveau] || grilles[niveauCle];
+      if (Array.isArray(ancienne) &&
+          (!Array.isArray(grilles[cl.id]) || !grilles[cl.id].length)) {
+        grilles[cl.id] = ancienne;
+        modifie = true;
+      }
+    });
+
+    // Même migration pour les affectations de séances, sans supprimer les
+    // anciennes clés.
+    try {
+      const aff = JSON.parse(localStorage.getItem(STORE_AFFECT) || "{}");
+      let affModifie = false;
+      anciens.forEach(niveau => {
+        const niveauCle = String(niveau).toUpperCase();
+        const cl = config.classes.find(c =>
+          String(c.niveau || c.nom || "").toUpperCase() === niveauCle
+        );
+        const ancienne = aff[niveau] || aff[niveauCle];
+        if (cl && ancienne !== undefined && !Object.prototype.hasOwnProperty.call(aff, cl.id)) {
+          aff[cl.id] = ancienne;
+          affModifie = true;
+        }
+      });
+      if (affModifie) localStorage.setItem(STORE_AFFECT, JSON.stringify(aff));
+    } catch (e) {
+      // Une migration secondaire ne doit jamais empêcher le chargement du planning.
+    }
+
+    if (modifie) {
+      sauverGrilles(grilles);
+      sauverConfig(config);
+    }
+    return modifie;
   }
 
   // ------------------------------------------------------------------------
@@ -1864,6 +1943,15 @@
         originesVues.add(origine);
         const existant = parOrigine.get(origine);
         if (existant && existant.modifie) return;
+
+        // Un créneau déjà réparti en groupes de besoin (voir
+        // repartirGroupesBesoinDispositif ci-dessous, action « Répartir
+        // les élèves » de l'onglet Génération) porte plusieurs groupes
+        // sous cette même origine. Dans ce cas, la répartition fait foi :
+        // on ne recrée jamais le groupe fusionné unique par-dessus, pour
+        // ne pas écraser silencieusement le travail de répartition.
+        const sousGroupesBesoin = jour.groupes.filter(g => g.origine === origine && g.groupeBesoin);
+        if (sousGroupesBesoin.length) return;
 
         const debut = heureVersMin(c.debut), fin = heureVersMin(c.fin);
         const idsPlanning = (coffre && coffre.ouvert && typeof coffre.listerEleves === "function")
@@ -3244,6 +3332,233 @@
   }
 
   /**
+   * Répartit les élèves d'un dispositif (ULIS, SEGPA, RASED, …) en
+   * groupes de besoin, créneau par créneau, sur les créneaux « séance »
+   * de sa grille horaire — dans la limite de 3 groupes simultanés, comme
+   * pour les créneaux composés à la main dans le cahier journal.
+   *
+   * Principe : pour chaque créneau de la grille du dispositif, on
+   * retrouve les élèves disponibles (même calcul de disponibilité que
+   * genererGroupesDispositifs, à partir du planning individuel du
+   * coffre), puis on les regroupe par domaine BO ciblé en priorité
+   * (français/mathématiques d'abord), en tenant compte du volume horaire
+   * hebdomadaire déjà couvert (BO n°44 du 26/11/2015) et des besoins /
+   * objectifs actifs déclarés dans le coffre. S'il reste plus de 3
+   * groupes de besoin distincts sur un même créneau, les plus petits sont
+   * fusionnés en un groupe « Besoins ciblés » pour respecter la limite.
+   *
+   * Cette fonction ne touche jamais un créneau dont un des groupes de
+   * besoin a été personnalisé à la main (personnalise:true) : l'enseignant
+   * garde toujours la main sur une répartition qu'il a retouchée.
+   */
+  function repartirGroupesBesoinDispositif(config, grilles, coffre, dispositifId) {
+    const disp = dispositifById(config, dispositifId);
+    if (!disp) {
+      return { groupes: 0, eleves: 0, jours: 0, raisons: ["Dispositif introuvable."] };
+    }
+    if (!coffre || !coffre.ouvert) {
+      return { groupes: 0, eleves: 0, jours: 0, raisons: ["Ouvrez le coffre avant de répartir les élèves."] };
+    }
+
+    const classes = config.classes || [];
+    const classesLiees = classes.filter(cl => (cl.dispositifs || []).includes(disp.id));
+    if (!classesLiees.length) {
+      return { groupes: 0, eleves: 0, jours: 0, raisons: [`« ${disp.nom} » n'est rattaché à aucune classe (Configuration générale → Classes → Dispositifs).`] };
+    }
+    const classeIds = new Set(classesLiees.map(cl => cl.id));
+
+    const grille = (grilles[disp.id] || []).filter(c => c.type === "seance");
+    if (!grille.length) {
+      return { groupes: 0, eleves: 0, jours: 0, raisons: [`La grille horaire de « ${disp.nom} » ne contient aucun créneau de séance à répartir.`] };
+    }
+
+    const eleves = coffre.listerEleves ? coffre.listerEleves() : [];
+    if (!eleves.length) {
+      return { groupes: 0, eleves: 0, jours: 0, raisons: ["Aucun élève dans le coffre ouvert."] };
+    }
+
+    const norm = v => String(v || "")
+      .toLowerCase().normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[^a-z0-9]+/g, " ").trim();
+    const niveauDe = v => {
+      const s = norm(v);
+      const m = s.match(/\b(tps|ps|ms|gs|cp|ce1|ce2|cm1|cm2)\b/);
+      return m ? m[1].toUpperCase() : "";
+    };
+    const niveauEleve = e => {
+      const parClasse = niveauDe(e.classe);
+      if (parClasse) return parClasse;
+      const eq = e.equivalenceScolaire || {};
+      return niveauDe((eq.francais && eq.francais.niveauEquivalent) ||
+        (eq.mathematiques && eq.mathematiques.niveauEquivalent) || "");
+    };
+    const niveauEquivalentSujet = (e, matiere) => {
+      const eq = e.equivalenceScolaire && e.equivalenceScolaire[matiere];
+      const v = eq && eq.niveauEquivalent;
+      return v ? (niveauDe(v) || niveauEleve(e)) : niveauEleve(e);
+    };
+    const besoinsEtObjectifs = e => {
+      const besoins = (e.besoins || []).map(x =>
+        x && typeof x === "object" ? (x.hypothese || x.domaine || x.champ || "") : x
+      );
+      const objectifs = (e.objectifs || [])
+        .filter(x => !x || !x.statut || x.statut === "actif")
+        .map(x => x && typeof x === "object" ? (x.libelle || x.domaine || "") : x);
+      return besoins.concat(objectifs).map(norm).filter(Boolean);
+    };
+
+    const ORDRE_DOMAINES = [
+      "francais", "mathematiques", "eps", "languesVivantes",
+      "questionnerLeMonde", "histoireGeographie", "sciencesTechnologie",
+      "artsEducationMusicale", "emc"
+    ];
+    const libelleDomaine = {
+      francais: "Français", mathematiques: "Mathématiques", eps: "EPS",
+      languesVivantes: "Langues vivantes", questionnerLeMonde: "Questionner le monde",
+      histoireGeographie: "Histoire-géographie", sciencesTechnologie: "Sciences et technologie",
+      artsEducationMusicale: "Arts / éducation musicale", emc: "EMC", mixte: "Besoins ciblés"
+    };
+
+    let stats = new Map();
+    function initStats() { stats = new Map(eleves.map(e => [e.identifiantSynapses, {}])); }
+    function domaineCibleDe(e) {
+      const cycle = cycleDuNiveau(niveauEleve(e)) || "cycle2";
+      const cibles = BO_VOLUMES_HEBDO[cycle];
+      const fait = stats.get(e.identifiantSynapses) || {};
+      const besoins = besoinsEtObjectifs(e);
+      let meilleur = null, meilleurEcart = -Infinity;
+      ORDRE_DOMAINES.forEach(dom => {
+        if (cibles[dom] === undefined) return;
+        const restant = cibles[dom] - (fait[dom] || 0);
+        if (restant <= 0) return;
+        const bonus = besoins.some(b => domaineBoDe(b) === dom) ? 200 : 0;
+        const ecart = restant + bonus;
+        if (ecart > meilleurEcart) { meilleurEcart = ecart; meilleur = dom; }
+      });
+      return meilleur || "francais";
+    }
+
+    const planningDe = e => Array.isArray(e.planning) ? e.planning : [];
+    const chevauche = (a, b, c, d) => a < d && c < b;
+    const disponiblesSurCreneau = (debut, fin, jourN) => eleves.filter(e => {
+      const plan = planningDe(e);
+      const planClasses = plan.filter(p => classeIds.has(p.classeId));
+      if (planClasses.length) {
+        return !planClasses.some(p =>
+          Number(p.jour) === jourN && chevauche(heureVersMin(p.debut), heureVersMin(p.fin), debut, fin)
+        );
+      }
+      const classeRef = classeDeReferenceCorrespondante(e.classe, config);
+      if (!classeRef || !classeIds.has(classeRef.id)) return false;
+      return !(grilles[classeRef.id] || []).some(cx =>
+        cx.jour === jourN && chevauche(heureVersMin(cx.debut), heureVersMin(cx.fin), debut, fin)
+      );
+    });
+
+    const semaines = calculerSemaines(config || {});
+    const joursTravail = new Set((config.joursTravailles || [1,2,3,4,5]).map(Number));
+    const journal = chargerJournal();
+    let nbJours = 0, nbGroupes = 0, nbEleves = 0;
+    const raisons = [];
+    let creneauxIgnoresPersonnalises = 0;
+
+    semaines.forEach(sem => {
+      initStats();
+      JOURS.forEach(j => {
+        if (!joursTravail.has(j.n)) return;
+        const iso = dateISO(addDays(sem.lundi, j.n - 1));
+        const jour = journalPourDate(iso, journal);
+        nbJours++;
+
+        grille.filter(c => c.jour === j.n)
+          .sort((a, b) => heureVersMin(a.debut) - heureVersMin(b.debut))
+          .forEach(c => {
+            const origine = disp.id + "__" + c.id;
+            if (jour.exclusions.indexOf(origine) !== -1) return;
+
+            const groupesActuels = jour.groupes.filter(g => g.origine === origine);
+            if (groupesActuels.some(g => g.personnalise)) {
+              creneauxIgnoresPersonnalises++;
+              return; // l'enseignant a retouché ce créneau : on n'y touche plus
+            }
+
+            const debut = heureVersMin(c.debut), fin = heureVersMin(c.fin);
+            const disponibles = disponiblesSurCreneau(debut, fin, j.n);
+            if (!disponibles.length) return;
+
+            // On repart de zéro pour ce créneau (groupe fusionné unique
+            // OU précédente répartition automatique non personnalisée).
+            jour.groupes = jour.groupes.filter(g => !groupesActuels.includes(g));
+
+            const parGroupe = new Map(); // "domaine|niveau" -> {domaine, niveau, eleves}
+            disponibles.forEach(e => {
+              const dom = domaineCibleDe(e);
+              const niv = /francais|mathematiques/.test(dom)
+                ? niveauEquivalentSujet(e, dom === "francais" ? "francais" : "mathematiques")
+                : niveauEleve(e);
+              const cle = dom + "|" + (niv || "");
+              if (!parGroupe.has(cle)) parGroupe.set(cle, { domaine: dom, niveau: niv, eleves: [] });
+              parGroupe.get(cle).eleves.push(e);
+            });
+
+            let entrees = Array.from(parGroupe.values());
+            if (entrees.length > 3) {
+              entrees.sort((a, b) => b.eleves.length - a.eleves.length);
+              const gardes = entrees.slice(0, 2);
+              const reste = entrees.slice(2);
+              const fusion = { domaine: "mixte", niveau: "", eleves: [] };
+              reste.forEach(x => fusion.eleves.push(...x.eleves));
+              entrees = gardes.concat([fusion]);
+            }
+
+            const dureeMin = fin - debut;
+            entrees.forEach(entree => {
+              if (!entree.eleves.length) return;
+              const titre = disp.nom + " — " + (libelleDomaine[entree.domaine] || entree.domaine) +
+                (entree.niveau ? " (" + entree.niveau + ")" : "");
+              jour.groupes.push({
+                id: uid("grp"),
+                debut: c.debut, fin: c.fin,
+                origine, modifie: false,
+                adulte: { type: "enseignant", nom: "" },
+                titre,
+                domaineCle: entree.domaine,
+                niveau: entree.niveau || "",
+                classeId: "",
+                dispositifId: disp.id,
+                dispositifType: disp.type,
+                seanceRef: null,
+                eleves: entree.eleves.map(e => e.identifiantSynapses).filter(Boolean),
+                remarque: "Groupe de besoin généré automatiquement au sein du créneau du dispositif (référentiel BO n°44 du 26/11/2015).",
+                fixe: false,
+                repartitionAuto: true,
+                personnalise: false,
+                profilDispositif: true,
+                groupeBesoin: true
+              });
+              nbGroupes++;
+              nbEleves += entree.eleves.length;
+              entree.eleves.forEach(e => {
+                const fait = stats.get(e.identifiantSynapses) || {};
+                fait[entree.domaine] = (fait[entree.domaine] || 0) + dureeMin;
+                stats.set(e.identifiantSynapses, fait);
+              });
+            });
+          });
+
+        journal[iso] = jour;
+      });
+    });
+
+    if (creneauxIgnoresPersonnalises) {
+      raisons.push(`${creneauxIgnoresPersonnalises} créneau(x) déjà personnalisé(s) à la main ont été conservés tels quels.`);
+    }
+
+    sauverJournal(journal);
+    return { dispositif: disp.nom, jours: nbJours, groupes: nbGroupes, eleves: nbEleves, raisons };
+  }
+
+  /**
    * Génération complète et unifiée du planning.
    *
    *  1. Séquences/séances de classe, uniquement sur les créneaux encore
@@ -4032,6 +4347,7 @@
     // Grilles
     chargerGrilles,
     sauverGrilles,
+    migrerStockageClasses,
     appliquerCreneauxFixes,
 
     // Affectations
@@ -4062,6 +4378,7 @@
     // Génération
     genererAffectations,
     genererGroupesDispositifs,
+    repartirGroupesBesoinDispositif,
     genererPlanningComplet,
 
     // Référentiel horaire BO n°44 du 26/11/2015

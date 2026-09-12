@@ -141,6 +141,10 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 .si-table{width:100%;border-collapse:collapse;font-size:13px;}
 .si-table th,.si-table td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);}
 .si-table th{color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+.si-ligne-edition{background:#EEF2FB;}
+.si-ligne-edition input,.si-ligne-edition select{width:100%;min-width:0;font-size:13px;padding:5px 7px;}
+.si-frise-item.si-ligne-edition{background:#EEF2FB;border-radius:7px;padding:8px 10px 14px;}
+.si-frise-item.si-ligne-edition input{width:100%;min-width:0;}
 .si-empty{color:var(--ink-soft);font-size:13.5px;font-style:italic;}
 .si-hint{color:var(--ink-soft);font-size:12.5px;margin-top:10px;}
 .si-frise{display:flex;flex-direction:column;gap:0;border-left:2px solid var(--line);padding-left:16px;}
@@ -160,9 +164,30 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 .edt-table th.edt-heure{background:#FAFAF7;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:12px;white-space:nowrap;text-align:right;padding-right:10px;}
 .edt-case{min-width:110px;}
 .edt-case.edt-remplie{background:#EEF2FB;}
+.edt-bloc{padding:4px 0;}
+.edt-bloc + .edt-bloc{border-top:1px dashed var(--line);margin-top:4px;}
 .edt-case .edt-classe{font-weight:600;color:var(--navy);font-size:12.5px;}
-.edt-case .edt-domaine{color:var(--ink-soft);font-size:11.5px;margin-top:2px;}
+.edt-case .edt-nom{color:var(--ink);font-size:12px;margin-top:2px;}
+.edt-case .edt-titre{color:var(--ink-soft);font-size:11.5px;font-style:italic;margin-top:1px;}
+.edt-case .edt-type{display:inline-block;color:var(--ink-soft);font-size:10.5px;text-transform:uppercase;letter-spacing:.03em;margin-top:2px;}
 .edt-case .edt-horaire{color:var(--accent-sky);font-family:'IBM Plex Mono',monospace;font-size:10.5px;margin-top:2px;}
+.edt-bloc-recreation .edt-classe,.edt-bloc-pause .edt-classe,.edt-bloc-autre .edt-classe{color:var(--ink-soft);font-weight:500;}
+.edt-bloc-externe{background:#FDF3E7;border-radius:5px;padding:4px 6px;margin:2px -6px;}
+.edt-bloc-externe .edt-classe{color:#8A5A16;}
+.edt-bloc-externe .edt-type{color:#8A5A16;}
+
+/* ---- Gestion des prises en charge extérieures (santé) ---- */
+.pec-wrap{margin:0 0 20px;}
+.pec-table{width:100%;border-collapse:collapse;font-size:13px;margin-top:10px;}
+.pec-table th,.pec-table td{text-align:left;padding:7px 6px;border-bottom:1px solid var(--line);}
+.pec-table th{color:var(--ink-soft);font-size:11px;text-transform:uppercase;letter-spacing:.04em;}
+.pec-table input,.pec-table select{width:100%;min-width:0;font-size:13px;padding:5px 7px;box-sizing:border-box;}
+.pec-ligne-edition{background:#EEF2FB;}
+.pec-inactive{opacity:.55;}
+.pec-form{background:#FDF3E7;border-radius:8px;padding:12px 14px;margin-top:10px;display:grid;gap:8px;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));align-items:end;}
+.pec-form label{display:block;font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;}
+.pec-form input,.pec-form select{width:100%;box-sizing:border-box;font-size:13px;padding:6px 8px;}
+.pec-form .pec-form-actions{grid-column:1/-1;}
 
 /* ===== grille-analyse.js (onglet "Analyse & IA") ===== */
 .ga-section { margin-bottom: 28px; }
@@ -335,6 +360,7 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
         <option value="">— sélectionner un élève —</option>
       </select>
     </div>
+    <div id="edtPecWrap"></div>
     <div id="edtGrilleWrap"></div>
   </section>
 
@@ -445,8 +471,70 @@ const SYNAPSES_BUILD = {
      Affiche, pour l'élève sélectionné, ses créneaux (coffre.listerEleves()
      -> e.planning, alimenté par Coffre.affecterCreneau()) sous forme de
      grille heures x jours. Purement une lecture du coffre déjà ouvert :
-     aucune donnée n'est récupérée ni envoyée ailleurs. */
+     aucune donnée n'est récupérée ni envoyée ailleurs.
+     Champs affichés par créneau, dans cet ordre : classe (classeNom — la
+     classe OU le dispositif, ex. ULIS, sur lequel l'élève est positionné
+     à ce moment), nom (libelle), titre, type. Quand ni libelle ni titre
+     ne sont renseignés (cas fréquent des créneaux d'une classe dont la
+     grille horaire type ne détaille pas la matière), domaineCle est
+     utilisé en dernier recours, mis en forme lisible (domaineLisible) :
+     mieux vaut une indication imparfaite que "Séance" répété sur toute
+     la semaine. Les créneaux strictement identiques enregistrés en
+     double dans une même case (mêmes classe/titre/libelle/domaine/
+     horaire — ex. ancien bug d'affectation) sont fusionnés à l'affichage. */
   const JOURS_SEMAINE = ['Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi', 'Samedi', 'Dimanche'];
+
+  // Libellés des types de créneau (copie volontairement réduite de
+  // PC.TYPES_CRENEAU de planning-core.js : coffre.html ne charge pas ce
+  // script, pour rester une page autonome et légère).
+  const LIBELLES_TYPE_CRENEAU = {
+    seance: 'Séance',
+    recreation: 'Récréation',
+    pause: 'Pause méridienne',
+    autre: 'Autre / rituel',
+    externe: 'Santé (extérieur)'
+  };
+
+  function typeSeanceCreneau(c){
+    return LIBELLES_TYPE_CRENEAU[c.type] || (c.type ? c.type : 'Séance');
+  }
+
+  /** Mise en forme minimale d'un domaineCle technique (ex.
+   *  "mathematiques::numeration", "fran_ais::lecture") en un texte à peu
+   *  près lisible : underscores → espaces, "::" → " · ", 1ère lettre en
+   *  majuscule sur chaque segment. Ce n'est PAS une traduction fiable
+   *  (les accents perdus dans certaines clés ne sont pas restitués), mais
+   *  c'est nettement plus informatif qu'une case vide ou un "Séance"
+   *  générique répété toute la semaine. N'est utilisé qu'en dernier
+   *  recours, quand ni libelle ni titre ne sont renseignés. */
+  function domaineLisible(cle){
+    if (!cle) return '';
+    return String(cle)
+      .split('::')
+      .map((seg) => seg.trim().replace(/_/g, ' '))
+      .filter(Boolean)
+      .map((seg) => seg.charAt(0).toUpperCase() + seg.slice(1))
+      .join(' · ');
+  }
+
+  /** Clé de dédoublonnage d'un créneau affiché dans une case : deux
+   *  créneaux du planning individuel identiques sur tous les champs
+   *  visibles (classe, nom, titre, domaine, horaire) n'apportent aucune
+   *  information supplémentaire l'un par rapport à l'autre — un seul
+   *  bloc est affiché. */
+  function cleAffichageCreneau(c){
+    return [c.classeId, c.classeNom, c.type, c.titre, c.libelle, c.domaineCle, c.debut, c.fin].join('|');
+  }
+
+  function dedoublonnerCreneaux(liste){
+    const vues = new Set();
+    return liste.filter((c) => {
+      const cle = cleAffichageCreneau(c);
+      if (vues.has(cle)) return false;
+      vues.add(cle);
+      return true;
+    });
+  }
 
   function nomAffichageEleve(e){
     const identite = e.identite || {};
@@ -471,7 +559,239 @@ const SYNAPSES_BUILD = {
     if (valeurPrecedente && Array.prototype.some.call(sel.options, (o) => o.value === valeurPrecedente)) {
       sel.value = valeurPrecedente;
     }
+    afficherPriseEnChargeExterieure(sel.value);
     afficherEmploiDuTemps(sel.value);
+  }
+
+  /* -------- Prise en charge extérieure (santé) — 3ᵉ possibilité --------
+     Créneaux hebdomadaires récurrents où l'élève est suivi par un
+     intervenant extérieur à l'école (orthophoniste, psychomotricien,
+     CMPP, hôpital de jour...). Purement déclaratif, géré ici (coffre),
+     et fondu dans la grille de l'emploi du temps ci-dessous comme un 3ᵉ
+     type de créneau, à côté de la classe et du dispositif ULIS. */
+  let pecEditionId = null;
+  let pecAjoutOuvert = false;
+
+  function selectJourPec(valeurSelectionnee){
+    const sel = document.createElement('select');
+    JOURS_SEMAINE.slice(0, 5).forEach((nom, i) => {
+      const opt = document.createElement('option');
+      opt.value = String(i + 1);
+      opt.textContent = nom;
+      if (String(valeurSelectionnee) === String(i + 1)) opt.selected = true;
+      sel.appendChild(opt);
+    });
+    return sel;
+  }
+
+  function ligneChampPec(labelTexte, input){
+    const div = document.createElement('div');
+    const label = document.createElement('label');
+    label.textContent = labelTexte;
+    div.appendChild(label);
+    div.appendChild(input);
+    return div;
+  }
+
+  function afficherPriseEnChargeExterieure(identifiantSynapses){
+    const wrap = $('edtPecWrap');
+    wrap.innerHTML = '';
+    pecEditionId = null;
+    if (!identifiantSynapses) return;
+
+    const eleve = coffre.listerEleves().find((e) => e.identifiantSynapses === identifiantSynapses);
+    if (!eleve) return;
+
+    const section = document.createElement('div');
+    section.className = 'pec-wrap';
+
+    const titre = document.createElement('h3');
+    titre.style.cssText = 'font-size:15px;margin:0 0 4px;';
+    titre.textContent = 'Prise en charge extérieure (santé)';
+    section.appendChild(titre);
+
+    const aide = document.createElement('p');
+    aide.className = 'hint';
+    aide.style.margin = '0 0 6px';
+    aide.textContent = 'Créneaux hebdomadaires récurrents où l\'élève est suivi par un intervenant extérieur (orthophoniste, psychomotricien, CMPP, hôpital de jour…). Ces créneaux sont exclus des affectations classe/ULIS dans Planning — Gestion.';
+    section.appendChild(aide);
+
+    const btnAjout = document.createElement('button');
+    btnAjout.className = 'btn';
+    btnAjout.textContent = pecAjoutOuvert ? 'Annuler' : '+ Ajouter une prise en charge extérieure';
+    btnAjout.addEventListener('click', () => {
+      pecAjoutOuvert = !pecAjoutOuvert;
+      afficherPriseEnChargeExterieure(identifiantSynapses);
+    });
+    section.appendChild(btnAjout);
+
+    if (pecAjoutOuvert) {
+      section.appendChild(formulairePec(eleve, null));
+    }
+
+    const liste = eleve.priseEnChargeExterieure || [];
+    if (liste.length) {
+      const table = document.createElement('table');
+      table.className = 'pec-table';
+      const thead = document.createElement('thead');
+      thead.innerHTML = '<tr><th>Intervenant</th><th>Jour</th><th>Horaire</th><th>Lieu</th><th>Remarque</th><th>Actif</th><th></th></tr>';
+      table.appendChild(thead);
+      const tbody = document.createElement('tbody');
+      liste.forEach((p) => tbody.appendChild(ligneReadonlyPec(eleve, p)));
+      table.appendChild(tbody);
+      section.appendChild(table);
+    } else if (!pecAjoutOuvert) {
+      const vide = document.createElement('p');
+      vide.className = 'hint';
+      vide.style.marginTop = '8px';
+      vide.textContent = 'Aucune prise en charge extérieure enregistrée pour cet élève.';
+      section.appendChild(vide);
+    }
+
+    wrap.appendChild(section);
+  }
+
+  function formulairePec(eleve, pecExistante){
+    const form = document.createElement('div');
+    form.className = 'pec-form';
+
+    const inputIntervenant = document.createElement('input');
+    inputIntervenant.type = 'text';
+    inputIntervenant.placeholder = 'Ex. Orthophoniste — Mme Martin';
+    inputIntervenant.value = pecExistante ? (pecExistante.intervenant || '') : '';
+
+    const selJour = selectJourPec(pecExistante ? pecExistante.jour : 1);
+
+    const inputDebut = document.createElement('input');
+    inputDebut.type = 'time';
+    inputDebut.value = pecExistante ? (pecExistante.debut || '') : '';
+
+    const inputFin = document.createElement('input');
+    inputFin.type = 'time';
+    inputFin.value = pecExistante ? (pecExistante.fin || '') : '';
+
+    const inputLieu = document.createElement('input');
+    inputLieu.type = 'text';
+    inputLieu.placeholder = 'Ex. Cabinet, hôpital de jour…';
+    inputLieu.value = pecExistante ? (pecExistante.lieu || '') : '';
+
+    const inputRemarque = document.createElement('input');
+    inputRemarque.type = 'text';
+    inputRemarque.placeholder = 'Remarque (optionnel)';
+    inputRemarque.value = pecExistante ? (pecExistante.remarque || '') : '';
+
+    form.appendChild(ligneChampPec('Intervenant', inputIntervenant));
+    form.appendChild(ligneChampPec('Jour', selJour));
+    form.appendChild(ligneChampPec('Début', inputDebut));
+    form.appendChild(ligneChampPec('Fin', inputFin));
+    form.appendChild(ligneChampPec('Lieu', inputLieu));
+    form.appendChild(ligneChampPec('Remarque', inputRemarque));
+
+    const actions = document.createElement('div');
+    actions.className = 'pec-form-actions';
+    const btnEnregistrer = document.createElement('button');
+    btnEnregistrer.className = 'btn primary';
+    btnEnregistrer.textContent = 'Enregistrer';
+    btnEnregistrer.addEventListener('click', () => {
+      if (!inputIntervenant.value.trim()) { alert('Précisez au moins l\'intervenant.'); return; }
+      if (!inputDebut.value || !inputFin.value) { alert('Précisez l\'heure de début et de fin.'); return; }
+      if (inputFin.value <= inputDebut.value) { alert('L\'heure de fin doit être après l\'heure de début.'); return; }
+      const patch = {
+        intervenant: inputIntervenant.value.trim(),
+        jour: Number(selJour.value),
+        debut: inputDebut.value,
+        fin: inputFin.value,
+        lieu: inputLieu.value.trim(),
+        remarque: inputRemarque.value.trim()
+      };
+      if (pecExistante) {
+        coffre.modifierPriseEnChargeExterieure(eleve.identifiantSynapses, pecExistante.id, patch);
+        pecEditionId = null;
+      } else {
+        coffre.ajouterPriseEnChargeExterieure(eleve.identifiantSynapses, patch);
+        pecAjoutOuvert = false;
+      }
+      afficherPriseEnChargeExterieure(eleve.identifiantSynapses);
+      afficherEmploiDuTemps(eleve.identifiantSynapses);
+      marquerCoffreModifieSiDisponible();
+    });
+    const btnAnnuler = document.createElement('button');
+    btnAnnuler.className = 'btn';
+    btnAnnuler.textContent = 'Annuler';
+    btnAnnuler.addEventListener('click', () => {
+      pecEditionId = null;
+      pecAjoutOuvert = false;
+      afficherPriseEnChargeExterieure(eleve.identifiantSynapses);
+    });
+    actions.appendChild(btnEnregistrer);
+    actions.appendChild(btnAnnuler);
+    form.appendChild(actions);
+    return form;
+  }
+
+  function ligneReadonlyPec(eleve, p){
+    if (pecEditionId === p.id) {
+      const tr = document.createElement('tr');
+      tr.className = 'pec-ligne-edition';
+      const td = document.createElement('td');
+      td.colSpan = 7;
+      td.appendChild(formulairePec(eleve, p));
+      tr.appendChild(td);
+      return tr;
+    }
+    const tr = document.createElement('tr');
+    if (p.actif === false) tr.className = 'pec-inactive';
+    const tdIntervenant = document.createElement('td'); tdIntervenant.textContent = p.intervenant || '';
+    const tdJour = document.createElement('td'); tdJour.textContent = JOURS_SEMAINE[(Number(p.jour) || 1) - 1] || '';
+    const tdHoraire = document.createElement('td'); tdHoraire.textContent = (p.debut || '') + ' – ' + (p.fin || '');
+    const tdLieu = document.createElement('td'); tdLieu.textContent = p.lieu || '';
+    const tdRemarque = document.createElement('td'); tdRemarque.textContent = p.remarque || '';
+    const tdActif = document.createElement('td');
+    const btnActif = document.createElement('button');
+    btnActif.className = 'btn si-btn-small';
+    btnActif.textContent = p.actif === false ? 'Suspendu' : 'Actif';
+    btnActif.title = 'Cliquer pour basculer, sans supprimer l\'historique';
+    btnActif.addEventListener('click', () => {
+      coffre.modifierPriseEnChargeExterieure(eleve.identifiantSynapses, p.id, { actif: p.actif === false });
+      afficherPriseEnChargeExterieure(eleve.identifiantSynapses);
+      afficherEmploiDuTemps(eleve.identifiantSynapses);
+      marquerCoffreModifieSiDisponible();
+    });
+    tdActif.appendChild(btnActif);
+    const tdActions = document.createElement('td');
+    tdActions.style.whiteSpace = 'nowrap';
+    const btnEditer = document.createElement('button');
+    btnEditer.className = 'btn si-btn-small';
+    btnEditer.textContent = '✎';
+    btnEditer.addEventListener('click', () => { pecEditionId = p.id; afficherPriseEnChargeExterieure(eleve.identifiantSynapses); });
+    const btnSupprimer = document.createElement('button');
+    btnSupprimer.className = 'btn si-btn-small';
+    btnSupprimer.textContent = '🗑';
+    btnSupprimer.addEventListener('click', () => {
+      if (confirm('Supprimer définitivement cette prise en charge extérieure ?')) {
+        coffre.supprimerPriseEnChargeExterieure(eleve.identifiantSynapses, p.id);
+        afficherPriseEnChargeExterieure(eleve.identifiantSynapses);
+        afficherEmploiDuTemps(eleve.identifiantSynapses);
+        marquerCoffreModifieSiDisponible();
+      }
+    });
+    tdActions.appendChild(btnEditer);
+    tdActions.appendChild(btnSupprimer);
+    tr.appendChild(tdIntervenant);
+    tr.appendChild(tdJour);
+    tr.appendChild(tdHoraire);
+    tr.appendChild(tdLieu);
+    tr.appendChild(tdRemarque);
+    tr.appendChild(tdActif);
+    tr.appendChild(tdActions);
+    return tr;
+  }
+
+  /** Marque le coffre comme modifié si la fonction existe dans cette page
+   *  (elle est définie plus bas, près de l'export) : évite une erreur si
+   *  jamais l'ordre des scripts changeait. */
+  function marquerCoffreModifieSiDisponible(){
+    if (typeof marquerCoffreModifie === 'function') marquerCoffreModifie();
   }
 
   function afficherEmploiDuTemps(identifiantSynapses){
@@ -486,21 +806,38 @@ const SYNAPSES_BUILD = {
 
     const eleve = coffre.listerEleves().find((e) => e.identifiantSynapses === identifiantSynapses);
     const planning = (eleve && Array.isArray(eleve.planning)) ? eleve.planning : [];
+    // Les prises en charge extérieures ACTIVES sont fondues dans la même
+    // grille que les créneaux classe/dispositif, comme un 3ᵉ type de
+    // créneau ("externe"), pour donner une vision d'ensemble de la
+    // semaine de l'élève en un coup d'œil.
+    const pecActives = (eleve && Array.isArray(eleve.priseEnChargeExterieure) ? eleve.priseEnChargeExterieure : [])
+      .filter((p) => p.actif !== false)
+      .map((p) => ({
+        classeNom: (p.intervenant || '').trim() || 'Prise en charge extérieure',
+        libelle: (p.lieu || '').trim(),
+        titre: (p.remarque || '').trim(),
+        type: 'externe',
+        jour: p.jour,
+        debut: p.debut || '',
+        fin: p.fin || '',
+        domaineCle: ''
+      }));
+    const toutesCases = planning.concat(pecActives);
 
-    if (!planning.length) {
+    if (!toutesCases.length) {
       const vide = document.createElement('div');
       vide.className = 'edt-vide';
-      vide.textContent = 'Aucun créneau enregistré pour cet élève (voir Planning — Gestion, onglet « Affectation »).';
+      vide.textContent = 'Aucun créneau enregistré pour cet élève (voir Planning — Gestion, onglet « Affectation », et/ou prise en charge extérieure ci-dessus).';
       wrap.appendChild(vide);
       return;
     }
 
     // Lignes = heures de début distinctes présentes dans le planning de l'élève, triées.
-    const heures = Array.from(new Set(planning.map((c) => c.debut || ''))).filter(Boolean).sort();
+    const heures = Array.from(new Set(toutesCases.map((c) => c.debut || ''))).filter(Boolean).sort();
 
     // Index rapide { "jour|heure" -> [créneaux] } pour gérer d'éventuels doublons sans rien perdre.
     const index = new Map();
-    planning.forEach((c) => {
+    toutesCases.forEach((c) => {
       const cle = String(c.jour) + '|' + (c.debut || '');
       if (!index.has(cle)) index.set(cle, []);
       index.get(cle).push(c);
@@ -531,21 +868,51 @@ const SYNAPSES_BUILD = {
       for (let jour = 1; jour <= 5; jour++) {
         const td = document.createElement('td');
         td.className = 'edt-case';
-        const creneaux = index.get(String(jour) + '|' + heure) || [];
+        const creneaux = dedoublonnerCreneaux(index.get(String(jour) + '|' + heure) || []);
         if (creneaux.length) {
           td.classList.add('edt-remplie');
           creneaux.forEach((c) => {
             const bloc = document.createElement('div');
+            bloc.className = 'edt-bloc edt-bloc-' + (c.type || 'seance');
+            const typeLabel = typeSeanceCreneau(c);
+            const nom = (c.libelle || '').trim() || domaineLisible(c.domaineCle);
+            const titre = (c.titre || '').trim();
+
+            // Ordre d'affichage voulu : classe du créneau, nom (libellé),
+            // titre, type. Chaque ligne n'est affichée que si elle apporte
+            // une information (pas de doublon avec la ligne précédente).
+            // domaineCle n'est volontairement jamais affiché (clé technique
+            // interne, non destinée à être lue).
             const classeNom = document.createElement('div');
             classeNom.className = 'edt-classe';
             classeNom.textContent = c.classeNom || '(classe sans nom)';
             bloc.appendChild(classeNom);
-            if (c.domaineCle) {
-              const domaine = document.createElement('div');
-              domaine.className = 'edt-domaine';
-              domaine.textContent = c.domaineCle;
-              bloc.appendChild(domaine);
+
+            if (nom) {
+              const nomEl = document.createElement('div');
+              nomEl.className = 'edt-nom';
+              nomEl.textContent = nom;
+              bloc.appendChild(nomEl);
             }
+
+            if (titre && titre.toLowerCase() !== nom.toLowerCase()) {
+              const titreEl = document.createElement('div');
+              titreEl.className = 'edt-titre';
+              titreEl.textContent = titre;
+              bloc.appendChild(titreEl);
+            }
+
+            // Type de créneau, sauf quand il redit exactement le nom déjà
+            // affiché (créneau sans aucune information saisie : évite
+            // "Séance" / "SÉANCE" en double).
+            const dejaAffiche = (nom || titre).toLowerCase();
+            if (typeLabel.toLowerCase() !== dejaAffiche) {
+              const type = document.createElement('div');
+              type.className = 'edt-type';
+              type.textContent = typeLabel;
+              bloc.appendChild(type);
+            }
+
             const horaire = document.createElement('div');
             horaire.className = 'edt-horaire';
             horaire.textContent = (c.debut || '') + (c.fin ? ' – ' + c.fin : '');
@@ -566,6 +933,7 @@ const SYNAPSES_BUILD = {
   }
 
   $('edtSelectEleve').addEventListener('change', (e) => {
+    afficherPriseEnChargeExterieure(e.target.value);
     afficherEmploiDuTemps(e.target.value);
   });
 

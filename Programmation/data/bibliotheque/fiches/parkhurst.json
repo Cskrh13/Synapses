@@ -93,5 +93,83 @@
       "Dalton International",
       "INSEI"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue américaine, créatrice du Dalton Plan, qui articule liberté responsable, coopération et organisation du travail par contrats ou assignments.",
+    "texte": [
+      "Pédagogue américaine, créatrice du Dalton Plan, qui articule liberté responsable, coopération et organisation du travail par contrats ou assignments.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle, pedagogie-active. Ce rattachement aide à situer Parkhurst dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Education on the Dalton Plan (1922) ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1886–1973",
+    "reperes": {
+      "periode": "1886–1973",
+      "courants": [
+        "education-nouvelle",
+        "pedagogie-active"
+      ],
+      "ouvrages_reference": [
+        "Education on the Dalton Plan (1922)"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "autonomie",
+      "terme": "Autonomie",
+      "definition": "Capacité de l'élève à agir, choisir et apprendre sans dépendre en permanence de la validation ou de la direction de l'adulte."
+    },
+    {
+      "id": "responsabilité",
+      "terme": "Responsabilité",
+      "definition": "Capacité et devoir de répondre de ses actes et de ses engagements au sein du groupe, développée notamment par les responsabilités concrètes confiées aux élèves."
+    },
+    {
+      "id": "contrat",
+      "terme": "Contrat",
+      "definition": "Engagement réciproque, souvent formalisé, entre l'enseignant et l'élève ou entre pairs, qui structure le travail et responsabilise chacun."
+    },
+    {
+      "id": "coopération",
+      "terme": "Coopération",
+      "definition": "Organisation du travail scolaire dans laquelle les élèves s'entraident et construisent ensemble, plutôt que d'être placés en situation de seule compétition individuelle."
+    },
+    {
+      "id": "organisation du travail",
+      "terme": "Organisation du travail",
+      "definition": "Façon dont le temps, l'espace et les tâches de la classe sont structurés, enjeu pédagogique à part entière au-delà des seuls contenus enseignés."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "plan de travail",
+      "terme": "Plan de travail",
+      "definition": "Document individuel sur lequel l'élève planifie, sur une période donnée, les tâches qu'il doit ou choisit d'accomplir, et suit sa propre progression."
+    },
+    {
+      "id": "assignment",
+      "terme": "Devoir assigné",
+      "definition": "Tâche fixée par l'enseignant à un élève ou à un groupe dans le cadre d'un plan de travail (terme employé notamment dans le Plan Dalton de Parkhurst)."
+    },
+    {
+      "id": "laboratoire",
+      "terme": "Laboratoire",
+      "definition": "Espace ou dispositif d'expérimentation dans lequel les élèves manipulent et testent directement un phénomène ou un matériau."
+    },
+    {
+      "id": "coopération",
+      "terme": "Coopération",
+      "definition": "Organisation du travail dans laquelle les élèves s'entraident et avancent ensemble plutôt que seuls face à la tâche."
+    },
+    {
+      "id": "auto-organisation",
+      "terme": "Auto-organisation",
+      "definition": "Capacité d'un groupe ou d'un élève à structurer lui-même son activité et son fonctionnement, avec un minimum d'intervention extérieure."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

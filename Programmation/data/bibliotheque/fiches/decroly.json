@@ -83,5 +83,72 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Médecin et pédagogue belge, promoteur des centres d’intérêt, de l’observation et de l’approche globale des activités scolaires.",
+    "texte": [
+      "Médecin et pédagogue belge, promoteur des centres d’intérêt, de l’observation et de l’approche globale des activités scolaires.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle. Ce rattachement aide à situer Decroly dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « La fonction de globalisation et l’enseignement ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1871–1932",
+    "reperes": {
+      "periode": "1871–1932",
+      "courants": [
+        "education-nouvelle"
+      ],
+      "ouvrages_reference": [
+        "La fonction de globalisation et l’enseignement"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "centres-d-interet",
+      "terme": "Centres d'intérêt",
+      "definition": "Chez Decroly, unités d'organisation du curriculum construites à partir des besoins fondamentaux de l'enfant (se nourrir, s'abriter, se défendre, agir), plutôt qu'à partir du découpage disciplinaire classique."
+    },
+    {
+      "id": "globalisation",
+      "terme": "Globalisation",
+      "definition": "Chez Decroly, principe selon lequel la perception et la pensée de l'enfant procèdent d'abord par ensembles globaux avant de se différencier en éléments analysés."
+    },
+    {
+      "id": "observation",
+      "terme": "Observation",
+      "definition": "Attitude et méthode qui consistent à regarder attentivement l'enfant ou le réel avant d'agir, fondement revendiqué par de nombreux pédagogues, de Montessori à Decroly."
+    },
+    {
+      "id": "besoins",
+      "terme": "Besoins",
+      "definition": "Nécessités fondamentales de l'enfant (physiologiques, affectives, cognitives) que certaines pédagogies, comme celle de Decroly, prennent comme point de départ de l'organisation scolaire."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "observation",
+      "terme": "Observation",
+      "definition": "Recueil attentif d'informations sur l'enfant ou sur un phénomène, préalable indispensable à l'adaptation de l'action pédagogique."
+    },
+    {
+      "id": "association",
+      "terme": "Association d'idées",
+      "definition": "Démarche pédagogique consistant à relier une notion nouvelle à des connaissances ou expériences déjà connues de l'élève."
+    },
+    {
+      "id": "expression",
+      "terme": "Expression libre",
+      "definition": "Production orale, écrite ou artistique dans laquelle l'élève choisit lui-même ce qu'il veut dire ou montrer."
+    },
+    {
+      "id": "projet",
+      "terme": "Projet",
+      "definition": "Réalisation concrète et signifiante, choisie ou négociée avec les élèves, qui organise et fédère une séquence de travail."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

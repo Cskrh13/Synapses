@@ -89,5 +89,85 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Instituteur français, figure majeure de l’École moderne, qui développe une pédagogie du travail, de la coopération, de l’expression et du tâtonnement expérimental.",
+    "texte": [
+      "Instituteur français, figure majeure de l’École moderne, qui développe une pédagogie du travail, de la coopération, de l’expression et du tâtonnement expérimental.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : education-nouvelle, pedagogie-active, freinet. Ce rattachement aide à situer Freinet dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « L’Éducation du travail », « Les Dits de Mathieu ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1896–1966",
+    "reperes": {
+      "periode": "1896–1966",
+      "courants": [
+        "education-nouvelle",
+        "pedagogie-active",
+        "freinet"
+      ],
+      "ouvrages_reference": [
+        "L’Éducation du travail",
+        "Les Dits de Mathieu"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "cooperation",
+      "terme": "Coopération",
+      "definition": "Organisation du travail scolaire dans laquelle les élèves s'entraident et construisent ensemble, plutôt que d'être placés en situation de seule compétition individuelle."
+    },
+    {
+      "id": "tâtonnement-experimental",
+      "terme": "Tâtonnement expérimental",
+      "definition": "Concept central de Freinet : l'enfant apprend en essayant, en se trompant et en réajustant son action, à la manière d'un chercheur, plutôt qu'en recevant un savoir tout formé."
+    },
+    {
+      "id": "expression",
+      "terme": "Expression",
+      "definition": "Chez Freinet notamment, mise en mots, en images ou en gestes de ce que l'enfant vit ou pense, prise comme point de départ des apprentissages plutôt que comme simple exercice."
+    },
+    {
+      "id": "travail",
+      "terme": "Travail",
+      "definition": "Chez Freinet en particulier, activité productive et sérieuse de l'enfant, distincte à la fois du jeu gratuit et du devoir scolaire artificiel, à laquelle il attache une valeur éducative propre."
+    },
+    {
+      "id": "autonomie",
+      "terme": "Autonomie",
+      "definition": "Capacité de l'élève à agir, choisir et apprendre sans dépendre en permanence de la validation ou de la direction de l'adulte."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "texte-libre",
+      "terme": "Texte libre",
+      "definition": "Chez Freinet, écrit produit spontanément par l'élève sur un sujet de son choix, lu et discuté en classe, qui sert de point de départ à l'étude de la langue."
+    },
+    {
+      "id": "conseil-cooperatif",
+      "terme": "Conseil coopératif",
+      "definition": "Instance régulière, animée par les élèves, où se discutent les projets, les responsabilités et les conflits de la classe (pratique Freinet et institutionnaliste)."
+    },
+    {
+      "id": "correspondance",
+      "terme": "Correspondance scolaire",
+      "definition": "Échange régulier de courriers, textes ou productions avec une autre classe, qui donne une destination réelle à l'écriture (pratique caractéristique de Freinet)."
+    },
+    {
+      "id": "plan-de-travail",
+      "terme": "Plan de travail",
+      "definition": "Document individuel sur lequel l'élève planifie, sur une période donnée, les tâches qu'il doit ou choisit d'accomplir, et suit sa propre progression."
+    },
+    {
+      "id": "recherche",
+      "terme": "Recherche documentaire ou expérimentale",
+      "definition": "Démarche par laquelle les élèves investiguent une question par eux-mêmes, seuls ou en groupe, avant ou à la place d'un exposé du savoir par l'enseignant."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

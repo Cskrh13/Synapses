@@ -91,5 +91,84 @@
       "Fédération Pédagogie Steiner-Waldorf",
       "INSEI"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Philosophe et fondateur de la première école Waldorf en 1919, dont la pédagogie est historiquement liée à l’anthroposophie et accorde une place importante aux arts, au rythme et aux activités pratiques.",
+    "texte": [
+      "Philosophe et fondateur de la première école Waldorf en 1919, dont la pédagogie est historiquement liée à l’anthroposophie et accorde une place importante aux arts, au rythme et aux activités pratiques.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : steiner-waldorf, education-nouvelle. Ce rattachement aide à situer Steiner dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « La première école Waldorf (1919) », « Étude de l’homme comme base de la pédagogie ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1861–1925",
+    "reperes": {
+      "periode": "1861–1925",
+      "courants": [
+        "steiner-waldorf",
+        "education-nouvelle"
+      ],
+      "ouvrages_reference": [
+        "La première école Waldorf (1919)",
+        "Étude de l’homme comme base de la pédagogie"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "rythme",
+      "terme": "Rythme",
+      "definition": "Tempo propre à chaque enfant dans ses apprentissages, que plusieurs pédagogies (Montessori, Decroly) cherchent explicitement à respecter."
+    },
+    {
+      "id": "arts",
+      "terme": "Arts",
+      "definition": "Pratiques de création (dessin, musique, expression corporelle) mobilisées comme voies d'expression et d'apprentissage à part entière."
+    },
+    {
+      "id": "activité manuelle",
+      "terme": "Activité manuelle",
+      "definition": "Travail impliquant le geste et la manipulation, considéré par plusieurs pédagogues comme un support privilégié du développement intellectuel."
+    },
+    {
+      "id": "développement",
+      "terme": "Développement",
+      "definition": "Processus de transformation des capacités cognitives, affectives et sociales de l'enfant, dont les pédagogues discutent le rythme, les étapes et le lien avec les apprentissages scolaires."
+    },
+    {
+      "id": "imaginaire",
+      "terme": "Imaginaire",
+      "definition": "Faculté de représentation mentale que sollicitent le jeu symbolique, le récit et la création, et que plusieurs pédagogies cherchent à cultiver plutôt qu'à contenir."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "arts",
+      "terme": "Pratiques artistiques",
+      "definition": "Ensemble des activités de création (dessin, musique, expression corporelle) intégrées au travail scolaire."
+    },
+    {
+      "id": "récit",
+      "terme": "Récit",
+      "definition": "Mise en mots, orale ou écrite, d'une expérience ou d'une histoire, support d'expression et de structuration de la pensée."
+    },
+    {
+      "id": "activités manuelles",
+      "terme": "Activités manuelles",
+      "definition": "Travaux impliquant le geste (construction, bricolage, artisanat) comme support d'apprentissage intellectuel et de développement de l'habileté."
+    },
+    {
+      "id": "rythmes scolaires",
+      "terme": "Rythmes scolaires",
+      "definition": "Organisation du temps de la journée, de la semaine ou de l'année scolaire, questionnée par plusieurs pédagogues au nom des besoins physiologiques de l'enfant."
+    },
+    {
+      "id": "expérience sensible",
+      "terme": "Expérience sensible",
+      "definition": "Contact direct avec la matière, l'environnement ou l'œuvre, mobilisant les sens comme point d'entrée dans l'apprentissage."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

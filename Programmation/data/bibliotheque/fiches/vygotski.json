@@ -83,5 +83,72 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Psychologue soviétique dont les travaux soulignent le rôle du langage, de la culture et des interactions sociales dans le développement et les apprentissages.",
+    "texte": [
+      "Psychologue soviétique dont les travaux soulignent le rôle du langage, de la culture et des interactions sociales dans le développement et les apprentissages.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : socioconstructivisme. Ce rattachement aide à situer Vygotski dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Pensée et langage ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1896–1934",
+    "reperes": {
+      "periode": "1896–1934",
+      "courants": [
+        "socioconstructivisme"
+      ],
+      "ouvrages_reference": [
+        "Pensée et langage"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "zone-proximale-de-developpement",
+      "terme": "Zone proximale de développement",
+      "definition": "Chez Vygotski, écart entre ce qu'un enfant sait faire seul et ce qu'il peut réaliser avec l'aide d'un adulte ou d'un pair plus avancé ; c'est dans cet écart que l'apprentissage est le plus fécond."
+    },
+    {
+      "id": "langage",
+      "terme": "Langage",
+      "definition": "Outil de communication et de pensée dont le développement est au cœur des préoccupations pédagogiques, qu'il soit oral ou écrit."
+    },
+    {
+      "id": "mediation",
+      "terme": "Médiation",
+      "definition": "Rôle de l'adulte, du pair ou d'un outil culturel (langage, signe) qui s'interpose entre l'enfant et le savoir pour en rendre l'accès possible."
+    },
+    {
+      "id": "interaction",
+      "terme": "Interaction",
+      "definition": "Échange entre l'enfant et son environnement humain ou matériel, considéré comme moteur du développement et de l'apprentissage, en particulier dans les approches socioconstructivistes."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "etayage",
+      "terme": "Étayage",
+      "definition": "Soutien ajusté et progressivement retiré qu'apporte l'enseignant ou un pair pour permettre à l'élève de réaliser une tâche hors de sa portée immédiate."
+    },
+    {
+      "id": "travail-a-deux",
+      "terme": "Travail à deux",
+      "definition": "Organisation dans laquelle deux élèves collaborent sur une même tâche."
+    },
+    {
+      "id": "dialogue",
+      "terme": "Dialogue",
+      "definition": "Échange horizontal entre enseignant et élèves, ou entre élèves, pris comme méthode de travail plutôt que comme simple préambule à une transmission descendante."
+    },
+    {
+      "id": "modelisation",
+      "terme": "Modélisation",
+      "definition": "Démonstration par l'enseignant d'une procédure ou d'une démarche que l'élève est ensuite amené à s'approprier."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

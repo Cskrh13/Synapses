@@ -94,5 +94,78 @@
       "ERIC",
       "INSEI"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Pédagogue américain lié à John Dewey, connu pour avoir formulé la méthode des projets comme organisation d’activités autour d’un but intentionnel.",
+    "texte": [
+      "Pédagogue américain lié à John Dewey, connu pour avoir formulé la méthode des projets comme organisation d’activités autour d’un but intentionnel.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : pedagogie-active, education-nouvelle. Ce rattachement aide à situer Kilpatrick dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « The Project Method (1918) ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1871–1965",
+    "reperes": {
+      "periode": "1871–1965",
+      "courants": [
+        "pedagogie-active",
+        "education-nouvelle"
+      ],
+      "ouvrages_reference": [
+        "The Project Method (1918)"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "projet",
+      "terme": "Projet",
+      "definition": "Démarche pédagogique organisée autour d'une réalisation concrète et signifiante pour les élèves, qui fédère et donne sens aux apprentissages qu'elle mobilise."
+    },
+    {
+      "id": "intention",
+      "terme": "Intention",
+      "definition": "Visée consciente qui oriente l'action de l'enfant ou de l'enseignant, distincte de l'activité purement réflexe ou imposée."
+    },
+    {
+      "id": "expérience",
+      "terme": "Expérience",
+      "definition": "Chez Dewey notamment, contact actif et réfléchi avec le réel à partir duquel se construit la connaissance ; l'expérience éducative articule action et réflexion sur l'action."
+    },
+    {
+      "id": "résolution de problème",
+      "terme": "Résolution de problème",
+      "definition": "Démarche par laquelle l'élève construit ou mobilise des connaissances pour surmonter un obstacle identifié, plutôt que de les recevoir hors contexte."
+    },
+    {
+      "id": "motivation",
+      "terme": "Motivation",
+      "definition": "Ensemble des raisons qui poussent l'élève à s'engager dans une tâche ; les pédagogies actives cherchent à l'ancrer dans le sens de l'activité plutôt que dans la seule récompense."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "pédagogie de projet",
+      "terme": "Pédagogie de projet",
+      "definition": "Démarche organisant les apprentissages autour de la réalisation d'un projet concret et signifiant pour les élèves."
+    },
+    {
+      "id": "production",
+      "terme": "Production d'élève",
+      "definition": "Réalisation concrète (texte, objet, exposé) issue du travail de l'élève, valorisée et souvent partagée au sein ou hors de la classe."
+    },
+    {
+      "id": "enquête",
+      "terme": "Enquête",
+      "definition": "Investigation menée par les élèves sur une question, un lieu ou un phénomène, qui articule observation, recueil de données et mise en forme des résultats."
+    },
+    {
+      "id": "planification",
+      "terme": "Planification",
+      "definition": "Organisation à l'avance, par l'élève ou l'enseignant, du déroulement des tâches sur une période donnée."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

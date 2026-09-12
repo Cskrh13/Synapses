@@ -84,5 +84,73 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Philosophe et psychologue américain du pragmatisme, pour qui l’expérience, l’enquête et la démocratie constituent des dimensions centrales de l’éducation.",
+    "texte": [
+      "Philosophe et psychologue américain du pragmatisme, pour qui l’expérience, l’enquête et la démocratie constituent des dimensions centrales de l’éducation.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : pedagogie-active. Ce rattachement aide à situer Dewey dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « The School and Society », « Experience and Education ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1859–1952",
+    "reperes": {
+      "periode": "1859–1952",
+      "courants": [
+        "pedagogie-active"
+      ],
+      "ouvrages_reference": [
+        "The School and Society",
+        "Experience and Education"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "experience",
+      "terme": "Expérience",
+      "definition": "Chez Dewey notamment, contact actif et réfléchi avec le réel à partir duquel se construit la connaissance ; l'expérience éducative articule action et réflexion sur l'action."
+    },
+    {
+      "id": "enquete",
+      "terme": "Enquête",
+      "definition": "Chez Dewey en particulier, démarche par laquelle une difficulté rencontrée dans l'expérience est transformée en objet d'investigation méthodique."
+    },
+    {
+      "id": "probleme",
+      "terme": "Problème",
+      "definition": "Situation dont la résolution nécessite la mobilisation active de connaissances, moteur privilégié de l'apprentissage dans les pédagogies actives."
+    },
+    {
+      "id": "democratie",
+      "terme": "Démocratie",
+      "definition": "Principe d'organisation de la vie de classe fondé sur la délibération, le vote ou la décision collective, expérimenté très tôt comme apprentissage de la citoyenneté."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "investigation",
+      "terme": "Investigation",
+      "definition": "Démarche active de recherche par laquelle l'élève recueille et interprète des informations pour répondre à une question."
+    },
+    {
+      "id": "probleme",
+      "terme": "Situation-problème",
+      "definition": "Tâche conçue pour placer l'élève face à un obstacle qui nécessite la construction ou la mobilisation active de connaissances pour être surmonté."
+    },
+    {
+      "id": "projet",
+      "terme": "Projet",
+      "definition": "Réalisation concrète et signifiante, choisie ou négociée avec les élèves, qui organise et fédère une séquence de travail."
+    },
+    {
+      "id": "discussion",
+      "terme": "Discussion",
+      "definition": "Échange oral entre élèves ou avec l'enseignant permettant de confronter des points de vue et de construire une compréhension commune."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

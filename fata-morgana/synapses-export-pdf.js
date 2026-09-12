@@ -130,14 +130,16 @@
     // Mise en page commune
     // ------------------------------------------------------------------
 
-    _nouveauDocument() {
+    _nouveauDocument(options) {
+      options = options || {};
       const JsPDF = jsPDFCtor();
-      // Format paysage : les tableaux (observations notamment, jusqu'à 6 colonnes)
-      // gagnent en largeur, donc en lisibilité, plutôt que d'entasser du texte
-      // dans des colonnes étroites en portrait.
-      const doc = new JsPDF({ unit: 'pt', format: 'a4', orientation: 'landscape' });
+      // Format paysage par défaut : les tableaux (observations notamment, jusqu'à 6
+      // colonnes) gagnent en largeur, donc en lisibilité, plutôt que d'entasser du
+      // texte dans des colonnes étroites en portrait. L'emploi du temps (5 jours +
+      // 1 colonne horaire) tient très bien en portrait, voir telechargerEmploiDuTemps().
+      const doc = new JsPDF({ unit: 'pt', format: 'a4', orientation: options.orientation || 'landscape' });
       doc.setProperties({
-        title: 'Fiche Synapses',
+        title: options.titre || 'Fiche Synapses',
         subject: 'Coffre confidentiel Synapses',
         creator: 'Synapses'
       });
@@ -152,7 +154,7 @@
     }
 
     /** Bandeau d'en-tête navy, identique en esprit au header du site. Renvoie le y de reprise. */
-    _dessinerEntete(doc, eleve) {
+    _dessinerEntete(doc, eleve, sousTitreBandeau) {
       const w = this._largeurPage(doc);
       const infos = this.coffre.donnees || {};
 
@@ -169,7 +171,7 @@
       doc.setFont('helvetica', 'normal');
       doc.setFontSize(8);
       doc.setTextColor(185, 198, 229);
-      doc.text('COFFRE CONFIDENTIEL — FICHE INDIVIDUELLE', MARGIN, 38);
+      doc.text(sousTitreBandeau || 'COFFRE CONFIDENTIEL — FICHE INDIVIDUELLE', MARGIN, 38);
 
       // Nom / identifiant
       doc.setFont('times', 'bold');
@@ -518,6 +520,68 @@
       }
 
       return y;
+    }
+
+    // ------------------------------------------------------------------
+    // Emploi du temps (onglet "3. Emploi du temps" de coffre.html)
+    // ------------------------------------------------------------------
+
+    /** Construit la grille heures x jours dans `doc` à partir de `eleve.planning`.
+     *  Reprend exactement la même logique que afficherEmploiDuTemps() dans coffre.html
+     *  (mêmes clés d'index "jour|heure", même convention jour 1=Lundi…5=Vendredi) afin
+     *  que le PDF ne puisse jamais afficher autre chose que ce qui est à l'écran. */
+    _construireGrilleEmploiDuTemps(doc, eleve, y) {
+      const planning = Array.isArray(eleve.planning) ? eleve.planning : [];
+
+      if (!planning.length) {
+        return this._texteVide(doc, y, 'Aucun créneau enregistré pour cet élève.');
+      }
+
+      const heures = Array.from(new Set(planning.map((c) => c.debut || ''))).filter(Boolean).sort();
+      const index = new Map();
+      planning.forEach((c) => {
+        const cle = String(c.jour) + '|' + (c.debut || '');
+        if (!index.has(cle)) index.set(cle, []);
+        index.get(cle).push(c);
+      });
+
+      const rows = heures.map((heure) => {
+        const ligne = [heure];
+        for (let jour = 1; jour <= 5; jour++) {
+          const creneaux = index.get(String(jour) + '|' + heure) || [];
+          ligne.push(
+            creneaux
+              .map((c) => {
+                const parties = [c.classeNom || '(classe sans nom)'];
+                if (c.domaineCle) parties.push(c.domaineCle);
+                parties.push((c.debut || '') + (c.fin ? ' – ' + c.fin : ''));
+                return parties.join('\n');
+              })
+              .join('\n\n')
+          );
+        }
+        return ligne;
+      });
+
+      return this._table(doc, y, ['Horaire', 'Lundi', 'Mardi', 'Mercredi', 'Jeudi', 'Vendredi'], rows, {
+        0: { cellWidth: 56, fontStyle: 'bold', textColor: C.inkSoft }
+      });
+    }
+
+    /** Génère et télécharge l'emploi du temps individuel (grille heures x jours) d'un
+     *  élève : les créneaux auxquels il a été affecté (Planning — Gestion, onglet
+     *  « Affectation »), tels qu'enregistrés dans son coffre. */
+    telechargerEmploiDuTemps(identifiantSynapses) {
+      const eleve = this.coffre.getEleve(identifiantSynapses);
+      const doc = this._nouveauDocument({ orientation: 'portrait', titre: 'Emploi du temps — Synapses' });
+      let y = this._dessinerEntete(doc, eleve, 'COFFRE CONFIDENTIEL — EMPLOI DU TEMPS INDIVIDUEL');
+      y = this._dessinerBandeauConfidentialite(doc, y);
+      y = this._titreSection(doc, y, 'Emploi du temps',
+        'Les créneaux auxquels cet élève a été affecté (Planning — Gestion, onglet « Affectation »), tels qu\'enregistrés dans son coffre.');
+      this._construireGrilleEmploiDuTemps(doc, eleve, y);
+      this._piedDePage(doc);
+      const nom = nomComplet(eleve) === '(identité non renseignée)' ? eleve.identifiantSynapses : nomComplet(eleve);
+      doc.save(this._nomFichierSlug(nom) + '_emploi-du-temps_' + this._horodatage() + '.pdf');
     }
 
     // ------------------------------------------------------------------

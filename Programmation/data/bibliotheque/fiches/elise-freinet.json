@@ -93,5 +93,84 @@
       "CEMÉA",
       "Musée national de l’Éducation"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Artiste, enseignante et pédagogue, co-constructrice du mouvement Freinet, elle développe notamment une réflexion majeure sur l’expression artistique et la création enfantine.",
+    "texte": [
+      "Artiste, enseignante et pédagogue, co-constructrice du mouvement Freinet, elle développe notamment une réflexion majeure sur l’expression artistique et la création enfantine.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : freinet, education-nouvelle. Ce rattachement aide à situer Freinet dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « Naissance d’une pédagogie populaire », « L’enfant artiste ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1898–1983",
+    "reperes": {
+      "periode": "1898–1983",
+      "courants": [
+        "freinet",
+        "education-nouvelle"
+      ],
+      "ouvrages_reference": [
+        "Naissance d’une pédagogie populaire",
+        "L’enfant artiste"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "expression",
+      "terme": "Expression",
+      "definition": "Chez Freinet notamment, mise en mots, en images ou en gestes de ce que l'enfant vit ou pense, prise comme point de départ des apprentissages plutôt que comme simple exercice."
+    },
+    {
+      "id": "art enfantin",
+      "terme": "Art enfantin",
+      "definition": "Production artistique propre à l'enfant, considérée par certains pédagogues comme une expression authentique à préserver plutôt qu'à corriger selon des normes adultes."
+    },
+    {
+      "id": "créativité",
+      "terme": "Créativité",
+      "definition": "Capacité à produire des idées, des formes ou des solutions nouvelles ; plusieurs pédagogies en font un objectif éducatif en soi."
+    },
+    {
+      "id": "observation",
+      "terme": "Observation",
+      "definition": "Attitude et méthode qui consistent à regarder attentivement l'enfant ou le réel avant d'agir, fondement revendiqué par de nombreux pédagogues, de Montessori à Decroly."
+    },
+    {
+      "id": "coopération",
+      "terme": "Coopération",
+      "definition": "Organisation du travail scolaire dans laquelle les élèves s'entraident et construisent ensemble, plutôt que d'être placés en situation de seule compétition individuelle."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "arts plastiques",
+      "terme": "Arts plastiques",
+      "definition": "Pratiques de création visuelle (dessin, peinture, modelage) intégrées comme activité d'expression et d'apprentissage."
+    },
+    {
+      "id": "expression libre",
+      "terme": "Expression libre",
+      "definition": "Production orale, écrite ou artistique dans laquelle l'élève choisit lui-même ce qu'il veut dire ou montrer."
+    },
+    {
+      "id": "journal",
+      "terme": "Journal scolaire",
+      "definition": "Publication réalisée par les élèves à partir de leurs textes libres et de leurs travaux, diffusée notamment aux correspondants (pratique Freinet)."
+    },
+    {
+      "id": "correspondance",
+      "terme": "Correspondance scolaire",
+      "definition": "Échange régulier de courriers, textes ou productions avec une autre classe, qui donne une destination réelle à l'écriture (pratique caractéristique de Freinet)."
+    },
+    {
+      "id": "valorisation des productions",
+      "terme": "Valorisation des productions",
+      "definition": "Pratique consistant à donner une visibilité et une reconnaissance réelle aux travaux des élèves (affichage, publication, présentation)."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }

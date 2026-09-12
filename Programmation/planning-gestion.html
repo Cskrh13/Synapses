@@ -149,6 +149,8 @@ table.affg .affg-eleve-line{display:flex;align-items:center;justify-content:cent
 table.affg .affg-eleve-initial{font-family:'IBM Plex Mono',monospace;font-weight:700;font-size:13px;min-width:22px;text-align:center;}
 table.affg input[type="checkbox"]{width:16px;height:16px;cursor:pointer;flex:0 0 auto;}
 table.affg .affg-eleve-line.exclu{background:#FBEEE9;opacity:.7;}
+table.affg .affg-eleve-line.affg-eleve-pec{background:#FDF3E7;opacity:1;cursor:default;justify-content:flex-start;}
+table.affg .affg-badge-pec{font-size:12px;line-height:1;}
 table.affg .affg-vide{color:var(--ink-soft);font-size:11px;text-align:center;opacity:.7;}
 </style>
 </head>
@@ -362,7 +364,7 @@ table.affg .affg-vide{color:var(--ink-soft);font-size:11px;text-align:center;opa
       <div class="ia-atelier">
         <h3>🤖 Atelier IA — Récupérer les horaires depuis un fichier</h3>
         <p class="hint" style="margin-top:0;">
-          Copiez le prompt ci-dessous, collez-le dans votre IA habituelle (avec le fichier Excel, PDF, Word ou une photo/scan de l'emploi du temps en pièce jointe), puis collez la réponse obtenue dans la seconde zone. La grille de la classe sélectionnée ci-dessus (<strong id="ia-classe-nom">—</strong>) sera remplie automatiquement — vous gardez la main pour tout ajuster ensuite créneau par créneau.
+          Copiez le prompt ci-dessous, collez-le dans votre IA habituelle (avec le fichier Excel, PDF, Word ou une photo/scan de l'emploi du temps en pièce jointe), puis collez la réponse obtenue dans la seconde zone. La grille de la classe ou du dispositif sélectionné ci-dessus (<strong id="ia-classe-nom">—</strong>) sera remplie automatiquement — vous gardez la main pour tout ajuster ensuite créneau par créneau. Fonctionne aussi bien pour l'emploi du temps d'une classe que pour celui d'un dispositif (ULIS, SEGPA, RASED…).
         </p>
 
         <div class="field">
@@ -394,7 +396,7 @@ table.affg .affg-vide{color:var(--ink-soft);font-size:11px;text-align:center;opa
   <div class="tab-panel" id="tab-affectation">
     <section class="card">
       <h2>Affectation des élèves — semaine complète</h2>
-      <p class="hint">Sélectionnez une classe pour afficher tous ses créneaux du lundi au vendredi. Les créneaux sont ceux de la grille horaire type et ne sont pas modifiables ici. Pour chaque élève chargé dans la classe, chaque cellule indique s'il est affecté ou non au créneau.</p>
+      <p class="hint">Sélectionnez une classe pour afficher tous ses créneaux du lundi au vendredi. Les créneaux sont ceux de la grille horaire type et ne sont pas modifiables ici. Pour chaque élève chargé dans la classe, chaque cellule indique s'il est affecté ou non au créneau. Un élève marqué 🏥 est en prise en charge extérieure (santé) sur ce créneau (voir coffre.html, onglet « Emploi du temps ») : il n'est proposé ni pour la classe ni pour un dispositif tant que cette prise en charge est active.</p>
       <div class="row" style="margin-bottom:14px;">
         <div class="field"><label>Classe</label><select id="affg-classe"></select></div>
         <button class="btn primary" id="btn-enregistrer-eleves">Enregistrer les élèves et leurs créneaux</button>
@@ -411,25 +413,22 @@ table.affg .affg-vide{color:var(--ink-soft);font-size:11px;text-align:center;opa
       <h2>Génération du planning</h2>
       <p class="hint">Répartit automatiquement, pour chaque créneau de type « Séance », la prochaine séance disponible du domaine choisi (fichiers du dépôt + séances créées dans « Séquences &amp; séances »). Les créneaux déjà modifiés à la main dans la page d'affichage <strong>ne sont jamais écrasés</strong>.</p>
       <div class="row" style="align-items:center;gap:10px;flex-wrap:wrap;">
-        <button class="btn primary" id="btn-generer">Répartir les élèves</button>
         <label class="field" style="margin:0;">
           <span>Choisir un dispositif</span>
           <select id="generation-dispositif" style="min-width:190px;"></select>
         </label>
-        <button class="btn" id="btn-generer-dispositif">Synchroniser le dispositif avec le cahier journal</button>
+        <button class="btn primary" id="btn-sync-affectations">Synchroniser les affectations</button>
         <span id="gen-status" style="color:var(--ink-soft);font-size:13.5px;"></span>
       </div>
       <p class="hint" style="margin-top:14px;">
-        <strong>Répartir les élèves :</strong> répartit automatiquement les élèves sur les créneaux de leur classe à partir de leur planning individuel enregistré dans le coffre.
-        <strong>Choisir un dispositif :</strong> la grille du dispositif est saisie comme celle d'une classe : chaque créneau définit directement un temps de l'emploi du temps ULIS.
-        Le bouton ci-dessous ne reconstruit plus la grille à partir des « trous » des classes : il synchronise cette grille vers le cahier journal.
-        Les affectations individuelles des élèves déterminent ensuite les élèves présents sur ces créneaux.
+        <strong>Choisir un dispositif :</strong> la grille du dispositif est saisie comme celle d'une classe : chaque créneau définit directement un temps de l'emploi du temps ULIS. Les élèves affectés au dispositif sur chaque créneau se règlent ci-dessous.
+        <strong>Synchroniser les affectations :</strong> pour tous les créneaux du dispositif choisi, un élève qui n'est pas dans sa classe de référence à cet horaire est considéré présent sur le dispositif, et le cahier journal est mis à jour en conséquence.
       </p>
 
       <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--line);">
         <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:10px;flex-wrap:wrap;gap:10px;">
           <p class="hint" style="margin:0;max-width:640px;">
-            Élèves affectés au dispositif choisi ci-dessus, créneau par créneau. Cocher un élève l'affecte au dispositif à ce créneau et le retire de l'affectation de sa classe de référence ; décocher fait l'inverse. Par défaut, la case est cochée pour chaque créneau où l'élève n'est <strong>pas</strong> déjà affecté à sa classe de référence.
+            Élèves affectés au dispositif choisi ci-dessus, créneau par créneau. Cocher un élève l'affecte au dispositif à ce créneau et le retire de l'affectation de sa classe de référence ; décocher fait l'inverse. Par défaut, la case est cochée pour chaque créneau où l'élève n'est <strong>pas</strong> déjà affecté à sa classe de référence. Un élève marqué 🏥 est en prise en charge extérieure (santé) sur ce créneau : ni classe ni dispositif ne lui sont proposés.
           </p>
           <div class="row" style="gap:8px;align-items:center;">
             <span id="gend-save-status" class="hint" style="margin:0;"></span>
@@ -485,11 +484,52 @@ table.affg .affg-vide{color:var(--ink-soft);font-size:11px;text-align:center;opa
 <script src="planning-core.js"></script>
 <script>
 /* =========================================================
+   SYNAPSES — DEPENDENCY LOADER / ROBUST STARTUP
+   Les onglets et le coffre dépendent de PlanningCore + Coffre.
+   Si GitHub Pages a servi une version sans l'un de ces scripts, on les
+   recharge depuis le même dossier avant d'initialiser l'application.
+   Cela évite qu'une seule dépendance manquante bloque TOUS les onglets.
+   ========================================================= */
+(function(){
+  const deps = [
+    { test: () => !!window.PlanningCore, src: "planning-core.js" },
+    { test: () => !!window.SynapsesCrypto, src: "../fata-morgana/synapses-crypto.js" },
+    { test: () => !!window.SynapsesCoffre, src: "../fata-morgana/synapses-coffre.js" }
+  ];
+  function load(src){
+    return new Promise((resolve,reject)=>{
+      const s=document.createElement("script");
+      s.src=src + (src.indexOf("?")>=0 ? "&" : "?") + "v=20260907";
+      s.onload=resolve;
+      s.onerror=()=>reject(new Error("Impossible de charger "+src));
+      document.head.appendChild(s);
+    });
+  }
+  (async()=>{
+    try{
+      for(const d of deps){ if(!d.test()) await load(d.src); }
+      if(!window.PlanningCore) throw new Error("PlanningCore indisponible");
+      // Appel direct : évite une course lorsque toutes les dépendances sont déjà chargées.
+      // Dans l'ancienne version, dispatchEvent() pouvait se produire avant que
+      // le listener placé plus bas ne soit enregistré, ce qui laissait la page
+      // entièrement statique (onglets bloqués).
+      initPlanning();
+    }catch(e){
+      console.error("Démarrage du planning impossible :",e);
+      const box=document.createElement("div");
+      box.style.cssText="margin:20px;padding:16px;border:2px solid #B5502E;border-radius:8px;background:#fff;color:#20242E;font-family:system-ui,sans-serif";
+      box.innerHTML="<strong>Le planning n'a pas pu charger tous ses fichiers JavaScript.</strong><br>Rechargez la page. Si le problème persiste, vérifiez que <code>planning-core.js</code> et le dossier <code>fata-morgana</code> sont bien présents dans le dépôt.";
+      document.body.prepend(box);
+    }
+  })();
+})();
+function initPlanning(){
+/* =========================================================
    SYNAPSES — AUTHOR MARKER
    Project: Grand Planificateur pédagogique
    Author: Cskrh13 / Vincent
    Copyright: © 2026
-   Version: 0.9.0-test
+   Version: 0.9.1-fix-migration
    Build: 2026-08-27
    ========================================================= */
 
@@ -497,8 +537,8 @@ const SYNAPSES_BUILD = {
     project: "Synapses",
     author: "Cskrh13",
     year: 2026,
-    version: "0.9.0-test",
-    build: "2026-08-27"
+    version: "0.9.1-fix-migration",
+    build: "2026-09-07"
 };
 
 "use strict";
@@ -508,6 +548,17 @@ function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("sho
 
 let config = PC.chargerConfig();
 let grilles = PC.chargerGrilles();
+// Restaure immédiatement les anciennes grilles indexées par niveau (CP,
+// CE1, …) vers les nouveaux identifiants de classes. Cette étape est
+// indispensable lors du premier chargement après la migration du modèle.
+if (typeof PC.migrerStockageClasses === "function") {
+  PC.migrerStockageClasses(config, grilles);
+}
+// Persiste la configuration migrée afin qu'un prochain chargement n'ait pas
+// à recréer des identifiants de classes différents.
+if (Array.isArray(config.classes) && config.classes.length && Array.isArray(config.niveauxActifs)) {
+  PC.sauverConfig(config);
+}
 let banque = {}; // rempli au chargement
 let grilleClasseCourant = null;
 function entiteGrilleById(id){ return (config.classes||[]).find(x=>x.id===id) || (config.dispositifs||[]).find(x=>x.id===id) || null; }
@@ -1024,8 +1075,6 @@ function renderGrilleTabs(){
     wrap.appendChild(b);
   });
   renderGrilleBody();
-  const iaAtelier = document.querySelector(".ia-atelier");
-  if(iaAtelier) iaAtelier.style.display = estDispositifId(grilleClasseCourant) ? "none" : "";
   if(typeof refreshIaAtelier === "function") refreshIaAtelier();
   if(typeof refreshGrilleClasseNomActions === "function") refreshGrilleClasseNomActions();
 }
@@ -1276,13 +1325,21 @@ $("grille-telecharger-format").addEventListener("change", (e)=>{
 
 /* ---------------- Atelier IA : import d'un emploi du temps ---------------- */
 
+// L'Atelier IA fonctionne aussi bien sur la grille d'une classe que sur
+// celle d'un dispositif (ULIS, SEGPA, RASED, …) : les deux sont saisies
+// exactement de la même façon (voir renderGrilleTabs et entiteGrilleById).
+
 function genererPromptIa(){
-  const cl = PC.classeById(config, grilleClasseCourant);
-  if(!cl) return "Sélectionnez une classe pour importer sa grille horaire.";
+  const ent = entiteGrilleById(grilleClasseCourant);
+  if(!ent) return "Sélectionnez une classe ou un dispositif pour importer sa grille horaire.";
+  const estDisp = estDispositifId(grilleClasseCourant);
+  const ligneEntite = estDisp
+    ? `Dispositif concerné : ${ent.nom} (${ent.type || "ULIS"}) — pas de niveau unique, les créneaux sont ceux du dispositif lui-même (ex. emploi du temps ULIS).`
+    : `Classe concernée : ${ent.nom} (niveau ${ent.niveau}).`;
   return (
 `Tu es un assistant qui extrait un emploi du temps scolaire à partir d'un document joint (Excel, PDF, Word, photo ou scan).
 
-Classe concernée : ${cl.nom} (niveau ${cl.niveau}).
+${ligneEntite}
 
 Renvoie UNIQUEMENT un tableau JSON. Chaque objet représente un créneau horaire récurrent de la semaine :
 
@@ -1297,10 +1354,10 @@ Règles impératives :
 - "type" : "seance", "recreation", "pause" ou "autre".
 - "nom" : nom/libellé visible du créneau, sans inventer de séance précise.
 - NE FOURNIS PAS de champ "matiere", "domaine" ou "domaineCle" : le domaine reste une donnée interne à Synapses et sera déterminé plus tard lors de la génération.
-- NE FAIS AUCUNE affectation d'élève et ne renseigne aucun élève.
+- NE FAIS AUCUNE affectation d'élève et ne renseigne aucun élève, ni aucun nom d'élève même si le document en comporte.
 - Ne fusionne pas deux créneaux différents.
 - Ne crée pas de créneau absent du document.
-- Pour une séance, "nom" peut être la matière ou l'intitulé général visible (ex. "Français", "Mathématiques", "Lecture"). Le rattachement à une séance précise se fera dans le cahier journal.
+- Pour une séance, "nom" peut être la matière ou l'intitulé général visible (ex. "Français", "Mathématiques", "Lecture"${estDisp ? `, "Groupe de besoin"` : ""}). Le rattachement à une séance précise se fera dans le cahier journal.
 - Pour une récréation, pause ou autre temps non pédagogique, indique son libellé dans "nom".
 
 Réponds uniquement avec le tableau JSON, sans commentaire ni bloc de code.`
@@ -1308,8 +1365,10 @@ Réponds uniquement avec le tableau JSON, sans commentaire ni bloc de code.`
 }
 
 function refreshIaAtelier(){
-  const cl = PC.classeById(config, grilleClasseCourant);
-  $("ia-classe-nom").textContent = cl ? cl.nom : "—";
+  const ent = entiteGrilleById(grilleClasseCourant);
+  $("ia-classe-nom").textContent = ent
+    ? (estDispositifId(grilleClasseCourant) ? `${ent.nom} (${ent.type || "ULIS"})` : ent.nom)
+    : "—";
   $("ia-prompt").value = genererPromptIa();
 }
 
@@ -1405,7 +1464,7 @@ function parserResultatIa(texte){
 $("btn-ia-remplir").addEventListener("click", ()=>{
   const statusEl = $("ia-status");
   statusEl.className = "ia-status";
-  if(!grilleClasseCourant){ statusEl.textContent = "Sélectionnez d'abord une classe."; statusEl.classList.add("err"); return; }
+  if(!grilleClasseCourant){ statusEl.textContent = "Sélectionnez d'abord une classe ou un dispositif."; statusEl.classList.add("err"); return; }
 
   const lignes = parserResultatIa($("ia-resultat").value);
   if(!lignes.length){
@@ -1491,6 +1550,11 @@ function enregistrerElevesClasse(classeId, etat){
       if(!coche) return;
 
       // Écriture uniquement dans e.planning, donc dans le .synapse.
+      // On recopie aussi type/titre/libelle (et pas seulement domaineCle) :
+      // sans eux, l'emploi du temps individuel (coffre.html) ne peut pas
+      // distinguer deux créneaux du même domaine (ex. "Orthographe 20'" vs
+      // "Écriture 25'" en français), ni les créneaux hors "séance"
+      // (rituels, récréation, pause) qui n'ont pas de domaineCle du tout.
       e.planning.push({
         classeId: cl.id,
         classeNom: cl.nom,
@@ -1498,6 +1562,9 @@ function enregistrerElevesClasse(classeId, etat){
         jour: c.jour,
         debut: c.debut,
         fin: c.fin,
+        type: c.type || "seance",
+        titre: c.titre || "",
+        libelle: c.libelle || "",
         domaineCle: c.domaineCle||""
       });
       enregistres++;
@@ -1614,6 +1681,30 @@ function renderAffgGrille(){
 
           const cle=ref.identifiantSynapses+"::"+c.id;
 
+          // 3ᵉ possibilité : prise en charge extérieure (santé) active sur
+          // ce créneau. Elle est prioritaire — l'élève n'est ni affecté à
+          // la classe ni au dispositif à ce moment-là. On ne propose donc
+          // pas de case à cocher : l'entrée n'est jamais ajoutée à
+          // affgEtatEnCours, donc jamais réaffectée à la classe lors de
+          // l'enregistrement (voir enregistrerElevesClasse).
+          const pec = coffre.priseEnChargeExterieureSurCreneau
+            ? coffre.priseEnChargeExterieureSurCreneau(ref.identifiantSynapses, j.n, c.debut, c.fin)
+            : null;
+          if(pec){
+            const lignePec=document.createElement("div");
+            lignePec.className="affg-eleve-line affg-eleve-pec";
+            lignePec.title=`${ref.nom} — ${pec.intervenant||"prise en charge extérieure"} (santé), à l'extérieur sur ce créneau`;
+            const initialePec=document.createElement("span");
+            initialePec.className="affg-eleve-initial";
+            initialePec.textContent=initialesEleve(ref);
+            const badgePec=document.createElement("span");
+            badgePec.className="affg-badge-pec";
+            badgePec.textContent="🏥";
+            lignePec.appendChild(initialePec);lignePec.appendChild(badgePec);
+            td.appendChild(lignePec);
+            return;
+          }
+
           // Par défaut : coché si aucun planning individuel n'a encore
           // été enregistré pour cette classe.
           const coche=info.aDejaUnPlanning ? info.ids.has(c.id) : true;
@@ -1681,25 +1772,6 @@ function renderGenerationDispositifs(){
   if(prev && dispositifs.some(d=>d.id===prev)) sel.value=prev;
 }
 
-$("btn-generer").addEventListener("click", async ()=>{
-  if(!config.rentree){ toast("Renseignez une date de rentrée avant de répartir."); return; }
-  if(!config.classes.length){ toast("Créez au moins une classe."); return; }
-  if(!coffre || !coffre.ouvert){ toast("Ouvrez le coffre avant de répartir les élèves."); return; }
-  $("gen-status").textContent="Répartition des élèves en cours…";
-  try{
-    const affectationsExistantes=PC.chargerAffectations();
-    const nouvelles=await PC.genererAffectations(config.classes,config,grilles,affectationsExistantes);
-    PC.sauverAffectations(nouvelles);
-    const stats=PC.repartirElevesSemaineAuto(config,grilles,nouvelles,coffre);
-    $("gen-status").textContent=
-      `${stats.ajouts} affectation(s) d'élève · ${stats.groupes} groupe(s) automatique(s).`;
-    toast("Répartition des élèves terminée.");
-  }catch(e){
-    $("gen-status").textContent="Erreur : "+(e.message||e);
-    toast("Répartition impossible.");
-  }
-});
-
 /**
  * Synchronise l'emploi du temps du dispositif avec le cahier journal.
  * La grille du dispositif est désormais saisie manuellement, exactement
@@ -1727,15 +1799,16 @@ async function synchroniserDispositifDansJournal(dispositifId){
   return {dispositif:disp.nom, jours, creneaux:grille.length};
 }
 
-$("btn-generer-dispositif").addEventListener("click",async()=>{
+$("btn-sync-affectations").addEventListener("click",async()=>{
   const dispositifId=$("generation-dispositif").value;
   if(!dispositifId){ toast("Choisissez un dispositif."); return; }
+  if(!coffre || !coffre.ouvert){ toast("Ouvrez le coffre avant de synchroniser les affectations."); return; }
   try{
-    $("gen-status").textContent="Synchronisation du dispositif avec le cahier journal…";
+    $("gen-status").textContent="Synchronisation des affectations en cours…";
     const stats=await synchroniserDispositifDansJournal(dispositifId);
     $("gen-status").textContent=
       `${stats.creneaux} créneau(x) de ${stats.dispositif} synchronisé(s) avec le cahier journal.`;
-    toast("Emploi du temps du dispositif synchronisé.");
+    toast("Affectations synchronisées.");
     renderGenDispositifGrille();
   }catch(e){
     $("gen-status").textContent="Erreur : "+(e.message||e);
@@ -1882,6 +1955,30 @@ function renderGenDispositifGrille(){
           if(!cl) return;
 
           const cle=ref.identifiantSynapses+"::"+c.id;
+
+          // 3ᵉ possibilité : prise en charge extérieure (santé) active sur
+          // ce créneau — prioritaire sur classe ET dispositif. On ne
+          // propose pas de case à cocher : l'entrée n'est jamais ajoutée à
+          // gendEtatEnCours/gendEtatOriginal, donc jamais affectée au
+          // dispositif lors de l'enregistrement.
+          const pec = coffre.priseEnChargeExterieureSurCreneau
+            ? coffre.priseEnChargeExterieureSurCreneau(ref.identifiantSynapses, c.jour, c.debut, c.fin)
+            : null;
+          if(pec){
+            const lignePec=document.createElement("div");
+            lignePec.className="affg-eleve-line affg-eleve-pec";
+            lignePec.title=`${ref.nom} — ${pec.intervenant||"prise en charge extérieure"} (santé), à l'extérieur sur ce créneau`;
+            const badgePec=document.createElement("span");
+            badgePec.className="affg-badge-pec";
+            badgePec.textContent="🏥";
+            const nomPec=document.createElement("span");
+            nomPec.className="affg-eleve-name";
+            nomPec.textContent=ref.libelle;
+            lignePec.appendChild(nomPec);lignePec.appendChild(badgePec);
+            td.appendChild(lignePec);
+            return;
+          }
+
           const enClasse=eleveEnClasseSurCreneauGend(e, cl.id, c);
           // Coché par défaut = présent au dispositif = PAS déjà affecté à sa
           // classe de référence sur ce créneau (complémentaire des
@@ -1892,10 +1989,6 @@ function renderGenDispositifGrille(){
 
           const line=document.createElement("label");
           line.className="affg-eleve-line"+(coche?"":" exclu");
-
-          const initiale=document.createElement("span");
-          initiale.className="affg-eleve-initial";
-          initiale.textContent=initialesEleve(ref);
 
           const cb=document.createElement("input");
           cb.type="checkbox"; cb.checked=coche;
@@ -1910,7 +2003,6 @@ function renderGenDispositifGrille(){
           const identiteLabel=document.createElement("span");
           identiteLabel.className="affg-eleve-name";
           identiteLabel.textContent=ref.libelle;
-          line.appendChild(initiale);
           line.appendChild(identiteLabel);
           line.appendChild(cb);
           td.appendChild(line);
@@ -1931,6 +2023,7 @@ $("btn-enregistrer-gend").addEventListener("click", ()=>{
   if(!coffre || !coffre.ouvert){ toast("Ouvrez le coffre d'abord."); return; }
   const dispId=$("generation-dispositif").value;
   if(!dispId){ toast("Choisissez un dispositif."); return; }
+  const disp=(config.dispositifs||[]).find(d=>d.id===dispId);
   const creneaux=(grilles[dispId]||[]);
   let bascules=0;
 
@@ -1952,7 +2045,12 @@ $("btn-enregistrer-gend").addEventListener("click", ()=>{
 
     if(apres){
       // Coché = affecté au dispositif => retiré du planning de la classe de
-      // référence pour tout créneau qui chevauche celui-ci.
+      // référence pour tout créneau qui chevauche celui-ci, ET ajouté au
+      // planning individuel pour CE créneau du dispositif. Sans cet ajout,
+      // l'élève n'était affecté nulle part (ni classe, ni dispositif) : il
+      // redevenait éligible à être replacé dans un groupe de sa classe par
+      // la répartition automatique alors qu'il est censé être à l'ULIS —
+      // d'où des élèves affichés simultanément sur deux créneaux.
       e.planning = e.planning.filter(p=>{
         if(p.classeId!==cl.id) return true;
         if(Number(p.jour)!==Number(c.jour)) return true;
@@ -1962,10 +2060,28 @@ $("btn-enregistrer-gend").addEventListener("click", ()=>{
         );
         return !chevauche;
       });
+      const dejaPresent = e.planning.some(p=>p.classeId===dispId && p.creneauId===c.id);
+      if(!dejaPresent){
+        e.planning.push({
+          classeId: dispId,
+          classeNom: disp ? disp.nom : "",
+          creneauId: c.id,
+          jour: c.jour,
+          debut: c.debut,
+          fin: c.fin,
+          type: c.type || "seance",
+          titre: c.titre || "",
+          libelle: c.libelle || "",
+          domaineCle: c.domaineCle||""
+        });
+      }
     } else {
-      // Décoché = renvoyé dans sa classe de référence : réaffectation à
-      // tous les créneaux de la grille de cette classe qui chevauchent le
+      // Décoché = renvoyé dans sa classe de référence : on retire d'abord
+      // l'affectation au dispositif pour CE créneau précis (sans quoi
+      // l'élève resterait affecté aux deux à la fois), puis on réaffecte à
+      // tous les créneaux de la grille de la classe qui chevauchent le
       // créneau du dispositif.
+      e.planning = e.planning.filter(p => !(p.classeId===dispId && p.creneauId===c.id));
       creneauxClasseChevauchantGend(cl.id, c).forEach(cc=>{
         const dejaPresent = e.planning.some(p=>p.classeId===cl.id && p.creneauId===cc.id);
         if(dejaPresent) return;
@@ -1976,6 +2092,9 @@ $("btn-enregistrer-gend").addEventListener("click", ()=>{
           jour: cc.jour,
           debut: cc.debut,
           fin: cc.fin,
+          type: cc.type || "seance",
+          titre: cc.titre || "",
+          libelle: cc.libelle || "",
           domaineCle: cc.domaineCle||""
         });
       });
@@ -2092,3 +2211,23 @@ $("import-json-file").addEventListener("change", async ()=>{
     $("import-json-file").value = "";
   }
 });
+
+/* ---------------- Initialisation ----------------
+   Sans cet appel, rien ne s'affiche au chargement de la page : chaque
+   render*() n'était jusqu'ici déclenché que par une action manuelle
+   (créer une classe, ouvrir un onglet précis...). Les données chargées
+   autrement — import de configuration, import d'un planning .synapses,
+   ou simplement l'ouverture normale de la page après un rechargement —
+   restaient donc invisibles tant qu'aucun clic ne forçait un re-rendu,
+   alors même qu'elles étaient bien enregistrées dans le stockage local. */
+renderConfig();
+renderClasses();
+renderDispositifs();
+renderGrilleTabs();
+renderSummary();
+majEtatCoffre();
+
+}
+</script>
+</body>
+</html>

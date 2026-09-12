@@ -83,5 +83,72 @@
       "eduscol",
       "education.gouv.fr"
     ]
-  }
+  },
+  "presentation": {
+    "chapo": "Instituteur et fondateur, avec Aïda Vasquez, de la pédagogie institutionnelle.",
+    "texte": [
+      "Instituteur et fondateur, avec Aïda Vasquez, de la pédagogie institutionnelle.",
+      "Sa pensée est généralement rattachée au(x) courant(s) suivant(s) : pedagogie-institutionnelle. Ce rattachement aide à situer Oury dans l'histoire des idées pédagogiques, sans réduire pour autant l'originalité propre de son travail.",
+      "Pour aller directement aux sources, les textes de référence les plus souvent cités sont « De la classe coopérative à la pédagogie institutionnelle ».",
+      "Comme pour toute figure historique de la pédagogie, il est utile de distinguer trois plans : ce que cette personne a effectivement écrit et mis en œuvre à son époque, ce que la postérité en a retenu ou simplifié, et ce qui, dans ce corpus, peut réellement nourrir une pratique de classe aujourd'hui."
+    ],
+    "role": "pédagogue",
+    "periode": "1920–1998",
+    "reperes": {
+      "periode": "1920–1998",
+      "courants": [
+        "pedagogie-institutionnelle"
+      ],
+      "ouvrages_reference": [
+        "De la classe coopérative à la pédagogie institutionnelle"
+      ]
+    }
+  },
+  "concepts_detailles": [
+    {
+      "id": "institution",
+      "terme": "Institution",
+      "definition": "Dans le courant institutionnaliste (Oury), dispositif collectif (conseil, métiers, monnaie intérieure...) qui organise la vie de la classe et sert de médiation entre l'enfant et le groupe."
+    },
+    {
+      "id": "groupe",
+      "terme": "Groupe",
+      "definition": "Unité sociale de la classe (petit groupe, classe entière) dont l'organisation conditionne fortement la nature du travail et des apprentissages."
+    },
+    {
+      "id": "parole",
+      "terme": "Parole",
+      "definition": "Prise de mots par l'enfant en tant que sujet, valorisée comme condition de son engagement dans les apprentissages et dans la vie collective."
+    },
+    {
+      "id": "cadre",
+      "terme": "Cadre",
+      "definition": "Ensemble des limites et des règles qui structurent l'activité de l'enfant, considéré par certains pédagogues comme la condition, et non l'ennemi, de la liberté."
+    }
+  ],
+  "pratiques_detaillees": [
+    {
+      "id": "conseil",
+      "terme": "Conseil de classe / de coopérative",
+      "definition": "Réunion périodique où les élèves régulent collectivement la vie de la classe : projets, responsabilités, difficultés, décisions."
+    },
+    {
+      "id": "institutions",
+      "terme": "Institutions de classe",
+      "definition": "Dans la pédagogie institutionnelle, ensemble des dispositifs stables (conseil, métiers, ceintures, monnaie intérieure...) qui organisent la vie et les apprentissages du groupe."
+    },
+    {
+      "id": "regles",
+      "terme": "Élaboration collective des règles",
+      "definition": "Pratique consistant à faire construire par les élèves eux-mêmes tout ou partie des règles de vie de la classe."
+    },
+    {
+      "id": "analyse-du-groupe",
+      "terme": "Analyse du groupe",
+      "definition": "Dans la pédagogie institutionnelle, temps où les élèves reviennent collectivement sur le fonctionnement du groupe pour en comprendre les tensions et les dynamiques."
+    }
+  ],
+  "podcasts": [],
+  "_schema_version": 2,
+  "_derniere_maj": "2026-09-08"
 }
