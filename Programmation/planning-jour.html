@@ -101,32 +101,6 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 #import-gate .gate-note{margin-top:20px;font-size:12px;color:var(--ink-soft);}
 
 /* -------- Tableau cahier journal -------- */
-.view-toggle{display:flex;gap:6px;margin:0 0 14px;}
-.view-toggle button{border:1px solid var(--line);background:var(--panel-raised);color:var(--ink-soft);padding:7px 14px;border-radius:20px;font-weight:700;font-size:12.5px;}
-.view-toggle button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
-
-/* -------- Vue "CJ" (grille façon cahier journal papier) -------- */
-.cj-table{width:100%;border-collapse:collapse;background:#fff;border:1.5px solid var(--ink);font-size:12px;table-layout:fixed;}
-.cj-table th,.cj-table td{border:1px solid var(--ink);vertical-align:top;padding:6px 8px;}
-.cj-table th{background:var(--panel-raised);font-family:'Fraunces',serif;font-weight:600;font-size:12.5px;text-align:left;}
-.cj-table td.cj-col-creneau{width:13%;background:var(--panel-raised);font-weight:700;font-family:'IBM Plex Mono',monospace;font-size:11.5px;color:var(--ink-soft);white-space:pre-line;}
-.cj-table td.cj-col-creneau .cj-creneau-label{display:block;font-family:'Fraunces',serif;font-weight:600;font-size:13px;color:var(--ink);margin-bottom:3px;}
-.cj-table td.cj-empty{color:var(--line);text-align:center;}
-.cj-entry{margin:0 0 8px;}
-.cj-entry:last-child{margin-bottom:0;}
-.cj-entry-time{font-family:'IBM Plex Mono',monospace;font-size:10.5px;color:var(--accent-sky);font-weight:600;}
-.cj-entry-titre{font-weight:600;font-size:12px;margin:1px 0 2px;}
-.cj-entry-eleves{font-size:11.5px;color:var(--ink-soft);}
-.cj-entry-remarque{font-size:11px;color:var(--danger);font-style:italic;margin-top:2px;}
-.cj-entry-domaine{font-size:10.5px;color:var(--ink-soft);font-style:italic;}
-.cj-banner-row td{background:#F2F0E8;font-style:italic;color:var(--ink-soft);font-size:11.5px;padding:5px 8px;}
-.cj-banner-row td.cj-col-creneau{font-style:normal;}
-.cj-lock{opacity:.55;font-size:10px;margin-left:4px;}
-.cj-notes{margin-top:14px;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);padding:12px 16px;}
-.cj-notes h4{font-size:13px;margin:0 0 6px;}
-.cj-notes ul{margin:0;padding-left:18px;font-size:12.5px;color:var(--ink-soft);}
-.cj-notes li{margin-bottom:3px;}
-@media(max-width:900px){.cj-table{font-size:11px;}.cj-table td.cj-col-creneau{width:auto;}}
 
 .journal-table{width:100%;border-collapse:collapse;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;}
 .journal-table > tbody > tr > td{border-top:1px solid var(--line);vertical-align:top;padding:0;}
@@ -369,9 +343,19 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .groupe-card input.adulte-nom{border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:12.5px;flex:1;min-width:60px;}
 .groupe-card input.groupe-titre{width:100%;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:13px;font-weight:600;margin-bottom:6px;background:#fff;}
 .groupe-card .domaine-tag{font-size:10.5px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;margin-bottom:6px;display:block;}
+.groupe-card .seance-lien-row{display:flex;align-items:center;gap:6px;flex-wrap:wrap;margin-bottom:6px;}
+.groupe-card .seance-badge{display:inline-flex;align-items:center;background:#EFF4FB;border:1px solid #C9D8F0;color:var(--accent-sky);border-radius:14px;padding:3px 9px;font-size:11px;font-weight:600;max-width:100%;}
+.groupe-card .btn-delier-seance{border:none;background:var(--panel-raised);border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;color:var(--danger);flex-shrink:0;}
+.groupe-card select.lier-seance{flex:1 1 100%;border:1px dashed var(--line);border-radius:6px;padding:4px 6px;font-size:11.5px;background:#fff;color:var(--ink-soft);}
+.groupe-card .seance-vide{flex:1 1 100%;display:flex;flex-direction:column;gap:5px;border:1px dashed var(--line);border-radius:6px;padding:7px 8px;background:var(--panel-raised);}
+.groupe-card .seance-vide .seance-vide-note{font-size:10.5px;color:var(--ink-soft);}
+.groupe-card .seance-vide input.seance-manuelle{width:100%;border:1px solid var(--line);border-radius:6px;padding:4px 6px;font-size:11.5px;background:#fff;}
+.groupe-card .seance-vide .btn-generer-seance{align-self:flex-start;font-size:11px;font-weight:600;color:var(--accent-sky);text-decoration:none;border:1px solid #C9D8F0;background:#EFF4FB;border-radius:6px;padding:4px 8px;}
+.groupe-card .seance-vide .btn-generer-seance:hover{background:#E2EBF9;}
 .eleves-chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;}
 .eleve-chip{display:inline-flex;align-items:center;gap:5px;background:#fff;border:1px solid var(--line);border-radius:16px;padding:2px 4px 2px 10px;font-size:11.5px;}
 .eleve-chip button{border:none;background:var(--panel-raised);border-radius:50%;width:16px;height:16px;font-size:10px;line-height:1;color:var(--danger);}
+.eleve-chip select[data-role=reaffecter]{border:1px solid var(--line);border-radius:10px;font-size:10.5px;padding:1px 3px;background:var(--panel-raised);color:var(--accent-sky);max-width:90px;}
 .groupe-card select.add-eleve{width:100%;border:1px dashed var(--line);border-radius:6px;padding:4px 6px;font-size:12px;background:#fff;color:var(--ink-soft);margin-bottom:6px;}
 .groupe-card textarea.remarque{width:100%;border:1px solid var(--line);border-radius:6px;padding:5px 7px;font-size:12px;resize:vertical;min-height:32px;}
 .groupe-card .card-foot{display:flex;justify-content:flex-end;margin-top:6px;}
@@ -517,123 +501,96 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
   }
 
   .print-schedule{
-    display:flex;
-    flex-direction:column;
-    gap:6px;
     width:100%;
   }
 
-  /* Chaque ligne contient les créneaux qui se chevauchent.
-     Les créneaux successifs restent donc verticalement. */
-  .print-lane{
-    display:grid;
-    grid-template-columns:repeat(var(--print-cols,1),minmax(0,1fr));
-    gap:6px;
+  .print-cj-table{
     width:100%;
-    break-inside:avoid;
-    page-break-inside:avoid;
+    border-collapse:collapse;
+    table-layout:fixed;
+    border:1.4px solid #111;
   }
 
-  .print-block{
-    min-width:0;
-    border:1px solid #999;
-    border-radius:5px;
-    background:#fff;
-    overflow:hidden;
-    break-inside:avoid;
-    page-break-inside:avoid;
+  .print-cj-table th,
+  .print-cj-table td{
+    border:1px solid #111;
+    vertical-align:top;
+    padding:4px 5px;
+    font-size:8.6pt;
   }
 
-  .print-block-head{
-    display:flex;
-    align-items:center;
-    gap:7px;
-    padding:4px 6px;
+  .print-cj-table thead th{
     background:#EAF0FA;
-    border-bottom:1px solid #B9C6E5;
     font-weight:700;
+    text-align:left;
+    font-size:8.8pt;
     color:#1E2A4A;
   }
 
-  .print-time{
+  .print-cj-table td.print-cj-col-creneau{
+    width:16%;
+    background:#F6F5F1;
     font-family:'Courier New',monospace;
-    font-size:9.5pt;
-    white-space:nowrap;
+    font-weight:700;
   }
 
-  .print-label{
-    font-size:9.5pt;
-    min-width:0;
-    overflow:hidden;
-    text-overflow:ellipsis;
+  .print-cj-table td.print-cj-empty{
+    color:#bbb;
+    text-align:center;
   }
 
-  .print-common{
-    padding:5px 6px 6px;
+  .print-cj-table tr{
     break-inside:avoid;
     page-break-inside:avoid;
   }
 
-  .print-common-title{
+  .print-cj-entry{
+    margin:0 0 5px;
+  }
+
+  .print-cj-entry:last-child{
+    margin-bottom:0;
+  }
+
+  .print-cj-entry-time{
+    font-family:'Courier New',monospace;
+    font-size:7.8pt;
     font-weight:700;
-    font-size:10.5pt;
-    margin-bottom:3px;
+    color:#2E5EAA;
   }
 
-  .print-classes{
-    display:flex;
-    flex-wrap:wrap;
-    gap:3px;
-    margin-bottom:4px;
-  }
-
-  .print-class{
-    font-size:8.5pt;
+  .print-cj-entry-titre{
     font-weight:700;
-    border:1px solid #aaa;
-    border-radius:10px;
-    padding:1px 5px;
+    font-size:8.6pt;
+    margin:1px 0 1px;
   }
 
-  .print-group{
-    padding:4px 0;
-    border-top:1px solid #ddd;
-    break-inside:avoid;
-    page-break-inside:avoid;
-  }
-
-  .print-group:first-child{
-    border-top:0;
-  }
-
-  .print-group-title{
-    font-weight:700;
-    font-size:9.5pt;
-  }
-
-  .print-group-meta{
-    font-size:8.5pt;
-    color:#333;
-    margin-top:2px;
-  }
-
-  .print-students{
-    font-size:8.2pt;
-    margin-top:3px;
-    line-height:1.25;
-  }
-
-  .print-note{
-    font-size:8.2pt;
-    margin-top:3px;
+  .print-cj-entry-domaine{
+    font-size:7.8pt;
     font-style:italic;
+    color:#444;
   }
 
-  .print-fixed{
-    padding:6px;
-    font-weight:700;
+  .print-cj-entry-eleves{
+    font-size:8pt;
+    color:#222;
+  }
+
+  .print-cj-entry-remarque{
+    font-size:7.8pt;
     font-style:italic;
+    color:#7a3a20;
+    margin-top:1px;
+  }
+
+  .print-cj-banner-row td{
     background:#f1f1f1;
+    font-style:italic;
+    font-weight:700;
+  }
+
+  .print-cj-banner-row td.print-cj-col-creneau{
+    font-style:normal;
   }
 
   .print-bottom{
@@ -667,11 +624,8 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
     white-space:pre-wrap;
   }
 
-  /* Évite qu'un bloc soit coupé entre deux pages. */
-  .print-block,
-  .print-lane,
-  .print-group,
-  .print-common,
+  /* Évite qu'une ligne soit coupée entre deux pages. */
+  .print-cj-table tr,
   .print-bottom{
     orphans:3;
     widows:3;
@@ -805,10 +759,6 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 
   <section class="journal-tab-panel active" id="tab-journee">
     <div class="classe-filter-bar" id="classe-filter-bar"></div>
-    <div class="view-toggle" id="view-toggle">
-      <button type="button" data-vue="cartes">🗂 Vue cartes</button>
-      <button type="button" data-vue="cj">📋 Vue CJ</button>
-    </div>
     <div class="day-summary" id="day-summary"></div>
     <div id="content"></div>
 
@@ -846,6 +796,24 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 <div class="toast" id="toast"></div>
 
 <script src="../fata-morgana/synapses-crypto.js"></script>
+<script>
+/* Nettoyage du localStorage à la fermeture de la page.
+ * Ces pages sont des outils de travail temporaires : aucune donnée ne doit
+ * rester persistée côté navigateur après leur fermeture.
+ * BUG CORRIGÉ : ce code était auparavant placé à l'intérieur d'une balise
+ * <script src="..."> ; le contenu inline d'une telle balise n'est jamais
+ * exécuté par le navigateur, donc ce nettoyage ne se déclenchait jamais. */
+(function(){
+  let nettoye = false;
+  function nettoyerLocalStorage(){
+    if(nettoye) return;
+    nettoye = true;
+    try { localStorage.clear(); } catch(e) {}
+  }
+  window.addEventListener("pagehide", nettoyerLocalStorage);
+  window.addEventListener("beforeunload", nettoyerLocalStorage);
+})();
+</script>
 <script src="../fata-morgana/synapses-coffre.js"></script>
 <script src="planning-core.js"></script>
 
@@ -865,6 +833,87 @@ let grilles = PC.chargerGrilles();
 let affectations = PC.chargerAffectations();
 let iso = (new URLSearchParams(location.search).get("date")) || PC.dateISO(new Date());
 let jour = null;
+// Banque de séquences/séances (index.json du dépôt + banque locale créée
+// dans sequences.html). Chargée une fois de façon asynchrone : tant qu'elle
+// n'est pas prête, les sélecteurs "Lier une séance" des cartes de groupe
+// restent vides, mais tout le reste de la page (dont un seanceRef déjà
+// enregistré) continue de fonctionner normalement — cette banque ne sert
+// qu'à PROPOSER un lien, jamais à valider ou effacer un lien existant.
+let banque = {};
+let banqueChargee = false;
+async function chargerBanquePage(){
+  try{ banque = await PC.chargerBanque(); }
+  catch(e){ banque = {}; }
+  banqueChargee = true;
+  if(sessionActive()) renderJour();
+}
+
+// Liste plate de tous les items (séances) de la banque, tous niveaux et
+// domaines confondus, pour alimenter le sélecteur de chaque carte de
+// groupe. Chaque entrée porte son niveau et son domaine d'origine (perdus
+// dans la structure imbriquée renvoyée par PC.chargerBanque()).
+function seancesPlates(){
+  const out = [];
+  Object.keys(banque).forEach(niveau=>{
+    const parDomaine = banque[niveau] || {};
+    Object.keys(parDomaine).forEach(domaineCle=>{
+      const bucket = parDomaine[domaineCle];
+      (bucket.items||[]).forEach(item=>{
+        out.push(Object.assign({niveau, domaineLabel:bucket.label}, item));
+      });
+    });
+  });
+  return out;
+}
+
+function itemSeanceParId(id){
+  return seancesPlates().find(it=>it.id===id) || null;
+}
+
+// Libellé compact pour le badge affiché sur une carte déjà liée à une
+// séance : "Séquence — n°Numéro Titre". Si la séance n'est plus trouvée
+// dans la banque actuellement chargée (banque pas encore chargée, ou
+// séance retirée de la bibliothèque depuis), on retombe sur les bribes
+// d'information déjà connues sans jamais effacer le lien enregistré.
+function seanceLabelDe(ref){
+  if(!ref) return "";
+  if(ref.source === "manuel") return ref.titre || "Séance (saisie libre)";
+  const item = itemSeanceParId(ref.id);
+  if(item){
+    const num = item.numero ? "n°"+item.numero+" " : "";
+    return (item.seqTitre ? item.seqTitre+" — " : "") + num + (item.titre || item.type || "Séance");
+  }
+  return banqueChargee ? "Séance liée (introuvable dans la banque)" : "Séance liée…";
+}
+
+// Options du sélecteur "Lier une séance", regroupées par niveau puis
+// domaine puis séquence, dans l'ordre pédagogique (PC.NIVEAUX) plutôt
+// qu'alphabétique.
+function optionsSeances(g){
+  const items = seancesPlates();
+  if(!items.length) return "";
+  const rangNiveau = n => { const i = PC.NIVEAUX.indexOf(n); return i===-1 ? 999 : i; };
+  const groupes = new Map();
+  items.forEach(it=>{
+    const gKey = it.niveau + "|" + it.domaineLabel + "|" + (it.seqTitre||"");
+    if(!groupes.has(gKey)) groupes.set(gKey, { niveau:it.niveau, domaineLabel:it.domaineLabel, seqTitre:it.seqTitre, items:[] });
+    groupes.get(gKey).items.push(it);
+  });
+  const ordre = Array.from(groupes.values()).sort((a,b)=>
+    rangNiveau(a.niveau)-rangNiveau(b.niveau) ||
+    a.domaineLabel.localeCompare(b.domaineLabel) ||
+    (a.items[0].ordreSeq||0)-(b.items[0].ordreSeq||0)
+  );
+  return ordre.map(grp=>{
+    const label = grp.niveau + " · " + grp.domaineLabel + (grp.seqTitre ? " — " + grp.seqTitre : "");
+    const opts = grp.items.map(it=>{
+      const num = it.numero ? "n°"+it.numero+" — " : "";
+      return `<option value="${escapeAttr(it.id)}" ${g.seanceRef && g.seanceRef.id===it.id ? "selected":""}>${escapeHTML(num + (it.titre || it.type || "Séance"))}</option>`;
+    }).join("");
+    return `<optgroup label="${escapeAttr(label)}">${opts}</optgroup>`;
+  }).join("");
+}
+
 // Filtre d'affichage du cahier journal (onglet "Journée") : il n'existe
 // volontairement PAS d'option "Toutes les classes" — on affiche toujours
 // une seule classe (ou le dispositif ULIS / un autre dispositif) à la
@@ -873,9 +922,6 @@ let jour = null;
 // N'affecte que le RENDU — jour.groupes (donnée réellement enregistrée)
 // n'est jamais tronqué par ce filtre.
 let classeFiltreCourante = null;
-const VUE_JOURNAL_KEY = "synapses_planning_vue_journal";
-let vueJournal = localStorage.getItem(VUE_JOURNAL_KEY) === "cj" ? "cj" : "cartes";
-// Préférence d'affichage uniquement (aucune donnée élève) : peut vivre en localStorage.
 
 /* ---------------- Portail d'import ----------------
    Cette page ne doit plus jamais afficher automatiquement d'anciennes
@@ -886,9 +932,18 @@ let vueJournal = localStorage.getItem(VUE_JOURNAL_KEY) === "cj" ? "cj" : "cartes
    ou le cahier journal est affiché. Un import réel remplace de toute
    façon entièrement config/grilles/affectations/journal (voir
    PC.appliquerPaquetPlanning), ce qui règle aussi la pollution des
-   données elles-mêmes, pas seulement leur affichage. */
+   données elles-mêmes, pas seulement leur affichage.
+   BUG CORRIGÉ : ce drapeau était stocké dans localStorage, qui ne
+   s'efface JAMAIS tout seul (contrairement à ce que son nom "session"
+   laisse penser) — une fois importé une seule fois, la page rouvrait
+   directement le cahier journal à chaque visite ultérieure, y compris
+   après un redémarrage du navigateur des jours plus tard, sans jamais
+   repasser par le portail d'import. sessionStorage est effacé à la
+   fermeture de l'onglet/du navigateur : c'est le seul moyen de tenir la
+   promesse "reste vide tant qu'aucun planning n'a été importé [dans
+   cette page, pour cette session]" énoncée ci-dessus et à l'écran. */
 const SESSION_KEY = "synapses_planning_jour_session_active";
-function sessionActive(){ return localStorage.getItem(SESSION_KEY) === "1"; }
+function sessionActive(){ return sessionStorage.getItem(SESSION_KEY) === "1"; }
 function afficherEtatSelonSession(){
   const actif = sessionActive();
   $("import-gate").style.display = actif ? "none" : "";
@@ -1001,7 +1056,7 @@ $("btn-planning-import-confirm").addEventListener("click", async ()=>{
     }
     const paquet = await PC.dechiffrerPlanningJSON(enveloppe, pwd);
     const applique = PC.appliquerPaquetPlanning(paquet);
-    localStorage.setItem(SESSION_KEY, "1");
+    sessionStorage.setItem(SESSION_KEY, "1");
     closeModal('modal-planning-import');
     $("planning-import-password").value = "";
     $("planning-import-file").value = "";
@@ -1023,7 +1078,7 @@ if($("btn-ouvrir-coffre-depuis-gate")){
 }
 $("btn-changer-planning").addEventListener("click", ()=>{
   if(!confirm("Revenir à l'écran d'import ? Rien n'est supprimé : le planning actuellement enregistré reste intact, vous pourrez le réimporter à tout moment.")) return;
-  localStorage.removeItem(SESSION_KEY);
+  sessionStorage.removeItem(SESSION_KEY);
   afficherEtatSelonSession();
 });
 
@@ -1051,10 +1106,18 @@ function labelEleve(id){
   return id;
 }
 
-function optionsElevesDisponibles(groupe){
+// `siblings` = les autres groupes du même créneau (même brique), le cas
+// échéant. On exclut de la liste tout élève déjà présent dans CE groupe
+// OU dans un groupe voisin du même créneau : un élève ne doit jamais se
+// retrouver affecté à deux groupes en même temps. Pour déplacer un élève
+// d'un groupe voisin vers celui-ci, on passe par le contrôle de
+// réaffectation de la puce (voir renderGroupeCard), pas par cette liste.
+function optionsElevesDisponibles(groupe, siblings){
   if(!coffreOuvert()) return "";
+  const dejaPlaces = new Set(groupe.eleves||[]);
+  (siblings||[]).forEach(s=>(s.eleves||[]).forEach(id=>dejaPlaces.add(id)));
   return coffre.listerEleves()
-    .filter(e=> !(groupe.eleves||[]).includes(e.identifiantSynapses))
+    .filter(e=> !dejaPlaces.has(e.identifiantSynapses))
     .map(e=>`<option value="${escapeAttr(e.identifiantSynapses)}">${escapeHTML(eleveLabel(e))}</option>`).join("");
 }
 
@@ -1120,9 +1183,18 @@ function renderJour(){
   $("date-picker").value = iso;
   $("day-title").textContent = PC.formatDateLong(PC.parseISO(iso));
 
-  const journal = PC.chargerJournal();
-  jour = PC.journalPourDate(iso, journal);
-  PC.sauverJournal(journal);
+  // Resynchronise le cahier journal du jour avec la grille horaire (classes
+  // + dispositifs) actuellement chargée AVANT de l'afficher. Sans cet appel,
+  // cette page se contentait de relire le journal tel quel (PC.journalPourDate)
+  // sans jamais le recalculer depuis les grilles : après un import de
+  // planning (nouvelles grilles), ou toute modification faite dans
+  // Planning — Gestion, les créneaux affichés ici restaient ceux de
+  // l'ancien état, jusqu'à ce que quelqu'un relance "Répartir la semaine".
+  // genererJournalDepuisGrille() est sans danger à chaque appel : elle
+  // respecte les groupes déjà personnalisés (modifie=true) et les créneaux
+  // volontairement supprimés (jour.exclusions), et ne touche qu'aux groupes
+  // encore synchronisés avec leur créneau de grille d'origine.
+  jour = PC.genererJournalDepuisGrille(iso, config, grilles, affectations, {}, coffre);
 
   $("j-remarque").value = jour.remarque || "";
   $("j-devoirs").value = jour.devoirs || "";
@@ -1132,9 +1204,6 @@ function renderJour(){
 
   renderClasseFilterBar();
   renderDaySummary(jour.groupes.filter(matchFiltreClasse));
-  document.querySelectorAll("#view-toggle [data-vue]").forEach(b=>{
-    b.classList.toggle("active", b.dataset.vue===vueJournal);
-  });
 
   if(!jour.groupes.length){
     content.innerHTML = `
@@ -1292,17 +1361,6 @@ function renderJour(){
 
   if(ligneCourante.length){
     lignes.push(ligneCourante);
-  }
-
-  if(vueJournal === "cj"){
-    content.appendChild(construireTableCJ(lignes, hm));
-
-    const addBlocRowCJ = document.createElement("div");
-    addBlocRowCJ.className = "add-bloc-row";
-    addBlocRowCJ.innerHTML = `<button class="btn" id="btn-add-bloc">+ Ajouter un créneau</button>`;
-    content.appendChild(addBlocRowCJ);
-    $("btn-add-bloc").addEventListener("click", ()=>ajouterBloc());
-    return;
   }
 
   const table = document.createElement("table");
@@ -1513,7 +1571,7 @@ function renderJour(){
 
           bloc.groupes.forEach(g=>{
             communBody.appendChild(
-              renderGroupeCard(g)
+              renderGroupeCard(g, bloc.groupes.filter(x=>x!==g))
             );
           });
 
@@ -1569,10 +1627,26 @@ function renderJour(){
 
       addBtn.addEventListener("click",()=>{
         if(bloc.groupes.length >= 3){ toast("Maximum de 3 groupes pour ce créneau."); return; }
+
+        /* Le nouveau groupe doit apparaître à droite du/des groupe(s)
+           existant(s) sur cette brique, en gardant le même créneau
+           horaire. Pour cela il doit rejoindre la MÊME brique : la
+           fonction contenuKey() (plus haut) regroupe les groupes par
+           début + fin + contenu (titre/domaineCle/seanceRef/fixe).
+           On reprend donc ces champs du groupe de référence de la
+           brique, sinon le nouveau groupe (contenu différent) se
+           retrouverait dans une brique séparée, avec son propre
+           en-tête et ses propres champs horaires indépendants. */
+        const ref = bloc.groupes[0];
+
         jour.groupes.push({
           id:PC.uid("grp"), debut:bloc.debut, fin:bloc.fin, origine:null, modifie:true,
-          adulte:{type:"enseignant",nom:""}, titre:"Nouveau groupe", domaineCle:"", niveau:"", classeId:"",
-          seanceRef:null, eleves:[], remarque:"", fixe:false
+          adulte:{type:"enseignant",nom:""},
+          titre:ref.titre || "Nouveau groupe",
+          domaineCle:ref.domaineCle || "",
+          niveau:"", classeId:"",
+          seanceRef:ref.seanceRef || null,
+          eleves:[], remarque:"", fixe:ref.fixe || false
         });
         sauver(); renderJour();
       });
@@ -1628,115 +1702,6 @@ function renderJour(){
   );
 }
 
-/* =========================================================
-   VUE "CJ" — grille façon cahier journal papier
-   ---------------------------------------------------------
-   Colonnes fixes : Créneau | Enseignant | AESH / autre adulte
-   | Autonomie. Chaque ligne correspond à une plage horaire
-   commune (même regroupement par chevauchement que la vue
-   cartes) ; les créneaux fixes sans adulte (récréation,
-   service…) sont affichés en bandeau, comme dans le cahier
-   journal papier.
-   ========================================================= */
-
-function heureCourte(hhmm){
-  if(!hhmm) return "";
-  const [h,m] = String(hhmm).split(":");
-  const hh = String(parseInt(h,10));
-  return (!m || m==="00") ? hh+"h" : hh+"h"+m;
-}
-
-function classifierGroupeCJ(g){
-  if(g.fixe && !g.adulte) return "banner";
-  const t = g.adulte && g.adulte.type;
-  if(t === "enseignant") return "ens";
-  if(t === "aesh" || t === "atsem" || t === "autre") return "aesh";
-  return "auto";
-}
-
-function renderEntreeCJ(bloc, g){
-  const eleves = (g.eleves||[]).map(id=>labelEleve(id));
-  const nomAdulte = g.adulte && g.adulte.nom ? " · " + escapeHTML(g.adulte.nom) : "";
-  const cadenas = g.modifie ? `<span class="cj-lock" title="Modifié à la main">🔒</span>` : "";
-  return `
-    <div class="cj-entry">
-      <div class="cj-entry-time">${escapeHTML(heureCourte(bloc.debut))}–${escapeHTML(heureCourte(bloc.fin))}${nomAdulte}${cadenas}</div>
-      <div class="cj-entry-titre">${escapeHTML(g.titre || "")}</div>
-      ${g.domaineCle ? `<div class="cj-entry-domaine">${escapeHTML((g.niveau?g.niveau+" · ":"")+g.domaineCle)}</div>` : ""}
-      ${eleves.length ? `<div class="cj-entry-eleves">${eleves.map(escapeHTML).join(", ")}</div>` : ""}
-      ${g.remarque ? `<div class="cj-entry-remarque">⚠ ${escapeHTML(g.remarque)}</div>` : ""}
-    </div>`;
-}
-
-function construireTableCJ(lignes, hm){
-  const table = document.createElement("table");
-  table.className = "cj-table";
-  table.innerHTML = `<thead><tr>
-    <th style="width:13%;">Créneau</th>
-    <th>Enseignant</th>
-    <th>AESH / autre adulte</th>
-    <th>Autonomie</th>
-  </tr></thead>`;
-
-  const tbody = document.createElement("tbody");
-
-  lignes.forEach(ligneBrute=>{
-    const ligne = ligneBrute.slice().sort((a,b)=>hm(a.debut)-hm(b.debut) || hm(a.fin)-hm(b.fin));
-
-    let minDebutStr = ligne[0].debut, maxFinStr = ligne[0].fin;
-    ligne.forEach(b=>{
-      if(hm(b.debut) < hm(minDebutStr)) minDebutStr = b.debut;
-      if(hm(b.fin) > hm(maxFinStr)) maxFinStr = b.fin;
-    });
-
-    const label = ligne.length === 1
-      ? (PC.libelleBloc(jour, ligne[0].debut, ligne[0].fin) || (heureCourte(ligne[0].debut) + "–" + heureCourte(ligne[0].fin)))
-      : (heureCourte(minDebutStr) + "–" + heureCourte(maxFinStr));
-
-    const cols = { ens: [], aesh: [], auto: [] };
-    const banners = [];
-
-    ligne.forEach(bloc=>{
-      (bloc.groupes || []).forEach(g=>{
-        const t = classifierGroupeCJ(g);
-        if(t === "banner"){
-          banners.push(g);
-        }else{
-          cols[t].push(renderEntreeCJ(bloc, g));
-        }
-      });
-    });
-
-    const aDuContenu = cols.ens.length || cols.aesh.length || cols.auto.length;
-    const titresBanner = [...new Set(banners.map(g=>g.titre).filter(Boolean))];
-
-    const tr = document.createElement("tr");
-
-    if(!aDuContenu && banners.length){
-      tr.className = "cj-banner-row";
-      tr.innerHTML = `
-        <td class="cj-col-creneau"><span class="cj-creneau-label">${escapeHTML(label)}</span></td>
-        <td colspan="3">${escapeHTML(titresBanner.join(" · ") || "Créneau fixe")}</td>
-      `;
-    }else{
-      const noteBanner = titresBanner.length
-        ? `<div style="margin-top:4px;font-style:italic;font-size:10.5px;color:var(--ink-soft);">${escapeHTML(titresBanner.join(" · "))}</div>`
-        : "";
-      tr.innerHTML = `
-        <td class="cj-col-creneau"><span class="cj-creneau-label">${escapeHTML(label)}</span>${noteBanner}</td>
-        <td>${cols.ens.join("") || `<span class="cj-empty">—</span>`}</td>
-        <td>${cols.aesh.join("") || `<span class="cj-empty">—</span>`}</td>
-        <td>${cols.auto.join("") || `<span class="cj-empty">—</span>`}</td>
-      `;
-    }
-
-    tbody.appendChild(tr);
-  });
-
-  table.appendChild(tbody);
-  return table;
-}
-
 function ajouterBloc(){
   const debut = prompt("Heure de début (HH:MM)", "09:00"); if(debut===null) return;
   const fin = prompt("Heure de fin (HH:MM)", "09:30"); if(fin===null) return;
@@ -1747,7 +1712,59 @@ function ajouterBloc(){
   sauver(); renderJour();
 }
 
-function renderGroupeCard(g){
+// Bloc "lier une séance" d'une carte de groupe.
+// La séquence/séance d'un créneau n'est pas forcément déjà rédigée : tant
+// qu'aucune VRAIE séance de la banque n'est liée, la saisie libre reste
+// donc toujours affichée (pense-bête pour se souvenir de quoi il s'agit),
+// que la banque soit vide ou non. Dès que la banque contient au moins une
+// séance, le sélecteur apparaît juste à côté pour faire correspondre ce
+// pense-bête à la vraie séance dès qu'elle existe — sans jamais perdre le
+// texte tant que ce choix n'a pas été fait. Une fois une vraie séance liée,
+// seul le sélecteur reste affiché (pour en changer) ; la saisie libre n'a
+// alors plus lieu d'être, le badge + « ✕ Détacher » couvrant ce cas.
+function blocLienSeance(g){
+  const estLieReel = g.seanceRef && g.seanceRef.source !== "manuel";
+
+  if(estLieReel){
+    if(!banqueChargee){
+      return `<select class="lier-seance" data-role="lier-seance"><option value="">Chargement de la banque de séances…</option></select>`;
+    }
+    return `<select class="lier-seance" data-role="lier-seance">
+      <option value="">🔗 Changer la séance liée…</option>
+      ${optionsSeances(g)}
+    </select>`;
+  }
+
+  const titreManuel = (g.seanceRef && g.seanceRef.source==="manuel") ? g.seanceRef.titre||"" : "";
+  const saisieLibre = `<input type="text" class="seance-manuelle" data-role="seance-manuelle" placeholder="Nom de la séance/séquence (pense-bête, pas encore rédigée)" value="${escapeAttr(titreManuel)}">`;
+
+  if(!banqueChargee){
+    return `<div class="seance-vide" data-role="seance-vide">${saisieLibre}</div>`;
+  }
+  if(seancesPlates().length){
+    return `
+      <div class="seance-vide" data-role="seance-vide">
+        ${saisieLibre}
+        <select class="lier-seance" data-role="lier-seance">
+          <option value="">🔗 Faire correspondre à une séance déjà rédigée…</option>
+          ${optionsSeances(g)}
+        </select>
+      </div>`;
+  }
+  return `
+    <div class="seance-vide" data-role="seance-vide">
+      ${saisieLibre}
+      <span class="seance-vide-note">Aucune séance/séquence dans la banque pour l'instant — ce pense-bête reste ici pour la retrouver dès qu'elle sera rédigée.</span>
+      <a class="btn-generer-seance" href="generateur-sequences-projet.html" target="_blank" rel="noopener">🧩 Générer une séance/séquence</a>
+    </div>`;
+}
+
+// `siblings` (optionnel) = les autres groupes déjà présents sur le même
+// créneau (même brique). Quand il y en a, chaque puce élève affiche un
+// petit sélecteur « ⇄ » permettant de réaffecter directement l'élève vers
+// un de ces groupes voisins, sans repasser par une suppression manuelle.
+function renderGroupeCard(g, siblings){
+  siblings = siblings || [];
   const card = document.createElement("div");
   card.className = "groupe-card" + (g.fixe ? " fixe" : "");
 
@@ -1757,21 +1774,30 @@ function renderGroupeCard(g){
     return card;
   }
 
-  const typesOptions = PC.TYPES_ADULTE.map(t=>`<option value="${t.id}" ${g.adulte && g.adulte.type===t.id?'selected':''}>${t.label}</option>`).join("");
+  const typeAdulteActuel = g.adulte ? g.adulte.type : "autonomie";
+  const typesOptions = PC.TYPES_ADULTE.map(t=>`<option value="${t.id}" ${t.id===typeAdulteActuel?'selected':''}>${t.label}</option>`).join("");
   const cadenas = g.modifie ? `<span title="Modifié à la main" style="float:right;font-size:11px;color:var(--ink-soft);">🔒</span>` : "";
 
   card.innerHTML = `
     <input class="groupe-titre" value="${escapeAttr(g.titre)}" placeholder="Titre du groupe / séance">
     ${cadenas}
     ${g.domaineCle ? `<span class="domaine-tag">${escapeHTML(g.niveau||"")} · ${escapeHTML(g.domaineCle)}</span>` : ""}
+    <div class="seance-lien-row" data-role="seance-lien-row">
+      ${g.seanceRef ? `<span class="seance-badge" data-role="seance-badge" title="${escapeAttr(seanceLabelDe(g.seanceRef))}">🔗 ${escapeHTML(seanceLabelDe(g.seanceRef))}</span><button type="button" class="btn-delier-seance" data-role="delier-seance" title="Détacher cette séance (le titre reste modifiable à la main)">✕</button>` : ""}
+      ${blocLienSeance(g)}
+    </div>
     <div class="row1">
       <select class="adulte-type">${typesOptions}</select>
-      <input class="adulte-nom" placeholder="Nom (ex. Vincent, Yasmina…)" value="${escapeAttr(g.adulte ? g.adulte.nom : "")}">
+      <input class="adulte-nom" placeholder="Nom (ex. Vincent, Yasmina…)" value="${escapeAttr(g.adulte ? g.adulte.nom : "")}" ${g.adulte ? "" : "disabled"}>
     </div>
     <div class="eleves-chips" data-role="chips"></div>
-    <select class="add-eleve" data-role="add-eleve"><option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}</select>
+    <select class="add-eleve" data-role="add-eleve"><option value="">${coffreOuvert() ? "+ Ajouter un élève…" : "Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g, siblings)}</select>
     <textarea class="remarque" placeholder="Point de vigilance / remarque…">${escapeHTML(g.remarque||"")}</textarea>
     <div class="card-foot"><button data-role="del-groupe">✕ Supprimer ce groupe</button></div>`;
+
+  function rafraichirAddEleve(){
+    card.querySelector('[data-role=add-eleve]').innerHTML=`<option value="">${coffreOuvert()?"+ Ajouter un élève…":"Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g, siblings)}`;
+  }
 
   function renderChips(){
     const chips=card.querySelector('[data-role=chips]');
@@ -1779,10 +1805,31 @@ function renderGroupeCard(g){
     (g.eleves||[]).forEach(id=>{
       const chip=document.createElement("span");
       chip.className="eleve-chip";
-      chip.innerHTML=`${escapeHTML(labelEleve(id))} <button title="Retirer">✕</button>`;
+
+      const reaffectOptions = siblings.map((s,i)=>
+        `<option value="${i}">→ ${escapeHTML(s.titre || "Groupe "+(i+2))}</option>`
+      ).join("");
+
+      chip.innerHTML=`${escapeHTML(labelEleve(id))} ${
+        siblings.length ? `<select title="Réaffecter vers un autre groupe de ce créneau" data-role="reaffecter"><option value="">⇄</option>${reaffectOptions}</select>` : ""
+      } <button title="Retirer">✕</button>`;
+
+      if(siblings.length){
+        chip.querySelector('[data-role=reaffecter]').addEventListener("change",e=>{
+          const idx=e.target.value; if(idx==="") return;
+          const cible=siblings[Number(idx)]; if(!cible) return;
+          g.eleves=(g.eleves||[]).filter(x=>x!==id);
+          cible.eleves=cible.eleves||[];
+          if(!cible.eleves.includes(id)) cible.eleves.push(id);
+          marquerPersonnalise();
+          cible.modifie=true; if(cible.repartitionAuto) cible.personnalise=true;
+          sauver(); renderJour();
+        });
+      }
+
       chip.querySelector("button").addEventListener("click",()=>{
         g.eleves=g.eleves.filter(x=>x!==id); marquerPersonnalise(); sauver(); renderChips();
-        card.querySelector('[data-role=add-eleve]').innerHTML=`<option value="">${coffreOuvert()?"+ Ajouter un élève…":"Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
+        rafraichirAddEleve();
       });
       chips.appendChild(chip);
     });
@@ -1799,12 +1846,58 @@ function renderGroupeCard(g){
   function marquerPersonnalise(){ g.modifie = true; if(g.repartitionAuto) g.personnalise = true; }
 
   card.querySelector(".groupe-titre").addEventListener("change",e=>{g.titre=e.target.value;marquerPersonnalise();sauver();renderJour();});
-  card.querySelector(".adulte-type").addEventListener("change",e=>{g.adulte=g.adulte||{};g.adulte.type=e.target.value;marquerPersonnalise();sauver();});
+  const selectLierSeance = card.querySelector('[data-role=lier-seance]');
+  if(selectLierSeance){
+    selectLierSeance.addEventListener("change",e=>{
+      const id=e.target.value; if(!id) return;
+      const item=itemSeanceParId(id); if(!item) return;
+      g.seanceRef={id:item.id, source:item.source, fichier:item.fichier||null};
+      // On propose le titre et le domaine de la séance choisie comme point de
+      // départ, mais le champ "Titre du groupe / séance" et le domaineCle
+      // restent des champs libres, modifiables à la main ensuite : lier une
+      // séance ne verrouille jamais rien sur la carte.
+      g.titre = item.titre || item.type || g.titre;
+      g.domaineCle = item.domaineCle || g.domaineCle;
+      marquerPersonnalise();
+      sauver(); renderJour();
+    });
+  }
+  const inputSeanceManuelle = card.querySelector('[data-role=seance-manuelle]');
+  if(inputSeanceManuelle){
+    inputSeanceManuelle.addEventListener("change",e=>{
+      const titre = e.target.value.trim();
+      // Pense-bête : pas d'id de banque, seulement le texte tapé. Reste en
+      // place tant qu'aucune vraie séance n'est choisie dans le sélecteur ;
+      // le choisir remplacera ce lien "manuel" par le vrai lien (et fera
+      // disparaître ce champ, la séance étant alors désignée sans ambiguïté).
+      g.seanceRef = titre ? {id:null, source:"manuel", titre} : null;
+      marquerPersonnalise();
+      sauver(); renderJour();
+    });
+  }
+  const btnDelier = card.querySelector('[data-role=delier-seance]');
+  if(btnDelier){
+    btnDelier.addEventListener("click",()=>{
+      g.seanceRef=null; marquerPersonnalise(); sauver(); renderJour();
+    });
+  }
+  card.querySelector(".adulte-type").addEventListener("change",e=>{
+    const val=e.target.value;
+    const nomInput=card.querySelector(".adulte-nom");
+    if(val==="autonomie"){
+      g.adulte=null;
+      if(nomInput){ nomInput.value=""; nomInput.disabled=true; }
+    }else{
+      g.adulte=g.adulte||{}; g.adulte.type=val; if(g.adulte.nom===undefined) g.adulte.nom="";
+      if(nomInput) nomInput.disabled=false;
+    }
+    marquerPersonnalise();sauver();
+  });
   card.querySelector(".adulte-nom").addEventListener("change",e=>{g.adulte=g.adulte||{};g.adulte.nom=e.target.value;marquerPersonnalise();sauver();});
   card.querySelector(".remarque").addEventListener("change",e=>{g.remarque=e.target.value;sauver();});
   card.querySelector('[data-role=add-eleve]').addEventListener("change",e=>{
     const id=e.target.value;if(!id)return;g.eleves=g.eleves||[];if(!g.eleves.includes(id))g.eleves.push(id);marquerPersonnalise();sauver();renderChips();
-    e.target.innerHTML=`<option value="">${coffreOuvert()?"+ Ajouter un élève…":"Ouvrez le coffre pour ajouter des élèves"}</option>${optionsElevesDisponibles(g)}`;
+    rafraichirAddEleve();
   });
   card.querySelector('[data-role=del-groupe]').addEventListener("click",()=>{
     if(g.origine) jour.exclusions.push(g.origine);
@@ -1812,15 +1905,6 @@ function renderGroupeCard(g){
   });
   return card;
 }
-
-/* ---------------- Bascule Vue cartes / Vue CJ ---------------- */
-document.querySelectorAll("#view-toggle [data-vue]").forEach(btn=>{
-  btn.addEventListener("click",()=>{
-    vueJournal = btn.dataset.vue;
-    localStorage.setItem(VUE_JOURNAL_KEY, vueJournal);
-    renderJour();
-  });
-});
 
 /* ---------------- Onglets cahier journal ---------------- */
 document.querySelectorAll("[data-journal-tab]").forEach(btn=>{
@@ -2080,275 +2164,114 @@ function construireVueImpression(){
   schedule.className =
     "print-schedule";
 
+  /* ---------- Aides locales, calquées sur l'ancienne vue CJ ---------- */
 
-  /* ---------- Une ligne après l'autre ---------- */
+  function heureCourteImpr(hhmm){
+    if(!hhmm) return "";
+    const [h,m] = String(hhmm).split(":");
+    const hh = String(parseInt(h,10));
+    return (!m || m==="00") ? hh+"h" : hh+"h"+m;
+  }
 
-  lignes.forEach(ligne=>{
+  function classifierGroupeImpr(g){
+    if(g.fixe && !g.adulte) return "banner";
+    const t = g.adulte && g.adulte.type;
+    if(t === "enseignant") return "ens";
+    if(t === "aesh" || t === "atsem" || t === "autre") return "aesh";
+    return "auto";
+  }
 
-    ligne.sort(
-      (a,b)=>
-        hm(a.debut)-hm(b.debut) ||
-        hm(a.fin)-hm(b.fin)
+  function renderEntreeImpr(bloc, g){
+    const eleves = (g.eleves||[]).map(id=>labelEleve(id));
+    const nomAdulte = g.adulte && g.adulte.nom ? " · " + escapeHTML(g.adulte.nom) : "";
+    return `
+      <div class="print-cj-entry">
+        <div class="print-cj-entry-time">${escapeHTML(heureCourteImpr(bloc.debut))}–${escapeHTML(heureCourteImpr(bloc.fin))}${nomAdulte}</div>
+        <div class="print-cj-entry-titre">${escapeHTML(g.titre || "")}</div>
+        ${g.domaineCle ? `<div class="print-cj-entry-domaine">${escapeHTML((g.niveau?g.niveau+" · ":"")+g.domaineCle)}</div>` : ""}
+        ${eleves.length ? `<div class="print-cj-entry-eleves">${eleves.map(escapeHTML).join(", ")}</div>` : ""}
+        ${g.remarque ? `<div class="print-cj-entry-remarque">⚠ ${escapeHTML(g.remarque)}</div>` : ""}
+      </div>`;
+  }
+
+  const table =
+    document.createElement("table");
+
+  table.className =
+    "print-cj-table";
+
+  table.innerHTML = `<thead><tr>
+    <th class="print-cj-col-creneau">Créneau</th>
+    <th>Enseignant</th>
+    <th>AESH / autre adulte</th>
+    <th>Autonomie</th>
+  </tr></thead>`;
+
+  const tbody =
+    document.createElement("tbody");
+
+  lignes.forEach(ligneBrute=>{
+
+    const ligne = ligneBrute.slice().sort(
+      (a,b)=>hm(a.debut)-hm(b.debut) || hm(a.fin)-hm(b.fin)
     );
 
-
-    const lane =
-      document.createElement("div");
-
-    lane.className =
-      "print-lane";
-
-    lane.style.setProperty(
-      "--print-cols",
-      String(ligne.length)
-    );
-
-
-    ligne.forEach(bloc=>{
-
-      const block =
-        document.createElement("article");
-
-      block.className =
-        "print-block";
-
-
-      const head =
-        document.createElement("div");
-
-      head.className =
-        "print-block-head";
-
-      const label =
-        PC.libelleBloc(
-          jour,
-          bloc.debut,
-          bloc.fin
-        ) || "";
-
-      head.innerHTML = `
-        <span class="print-time">
-          ${escapeHTML(bloc.debut)}
-          – ${escapeHTML(bloc.fin)}
-        </span>
-        <span class="print-label">
-          ${escapeHTML(label)}
-        </span>
-      `;
-
-      block.appendChild(head);
-
-
-      const tousFixes =
-        bloc.groupes.every(
-          g=>g.fixe
-        );
-
-
-      /* ---------- Brique commune ---------- */
-
-      const common =
-        document.createElement("div");
-
-      common.className =
-        "print-common";
-
-
-      const classes =
-        [...new Set(
-          bloc.groupes
-            .map(
-              g =>
-                g.niveau ||
-                g.classeId ||
-                "Classe"
-            )
-            .filter(Boolean)
-        )];
-
-
-      const titre =
-        bloc.groupes[0].titre ||
-        (tousFixes
-          ? "Créneau fixe"
-          : "Créneau commun");
-
-
-      common.innerHTML = `
-        <div class="print-common-title">
-          ${escapeHTML(titre)}
-        </div>
-
-        <div class="print-classes">
-          ${
-            classes.map(
-              c =>
-                `<span class="print-class">
-                  ${escapeHTML(c)}
-                </span>`
-            ).join("")
-          }
-        </div>
-      `;
-
-
-      /* ---------- Récréation / pause ---------- */
-
-      if(tousFixes){
-
-        common.classList.add(
-          "print-fixed"
-        );
-
-        block.appendChild(
-          common
-        );
-
-      }
-
-
-      /* ---------- Groupes indépendants ---------- */
-
-      else{
-
-        const hasDetails =
-          bloc.groupes.some(
-            g =>
-              g.adulte &&
-              (
-                g.adulte.type ||
-                g.adulte.nom
-              )
-          ) ||
-          bloc.groupes.some(
-            g =>
-              (g.eleves || []).length
-          ) ||
-          bloc.groupes.some(
-            g =>
-              String(g.remarque || "")
-                .trim()
-          );
-
-
-        /* Si plusieurs groupes partagent le contenu,
-           la liste des classes est suffisante en tête.
-           On détaille ensuite chaque groupe uniquement
-           lorsque cela apporte une information utile. */
-
-        const body =
-          document.createElement("div");
-
-        body.className =
-          "print-common";
-
-
-        body.innerHTML =
-          common.innerHTML;
-
-
-        bloc.groupes.forEach(g=>{
-
-          const group =
-            document.createElement("div");
-
-          group.className =
-            "print-group";
-
-
-          const classe =
-            g.niveau ||
-            g.classeId ||
-            "";
-
-
-          const adulte =
-            g.adulte
-              ? [
-                  g.adulte.type || "",
-                  g.adulte.nom || ""
-                ]
-                .filter(Boolean)
-                .join(" · ")
-              : "";
-
-
-          const eleves =
-            (g.eleves || [])
-              .map(id=>labelEleve(id))
-              .filter(Boolean)
-              .join(" · ");
-
-
-          group.innerHTML = `
-            <div class="print-group-title">
-              ${escapeHTML(
-                classe
-                  ? classe + " — "
-                  : ""
-              )}
-              ${escapeHTML(
-                g.titre || ""
-              )}
-            </div>
-
-            ${
-              adulte
-                ? `<div class="print-group-meta">
-                     ${escapeHTML(adulte)}
-                   </div>`
-                : ""
-            }
-
-            ${
-              eleves
-                ? `<div class="print-students">
-                     Élèves : ${escapeHTML(eleves)}
-                   </div>`
-                : ""
-            }
-
-            ${
-              String(g.remarque || "").trim()
-                ? `<div class="print-note">
-                     ${escapeHTML(g.remarque)}
-                   </div>`
-                : ""
-            }
-          `;
-
-
-          body.appendChild(
-            group
-          );
-
-        });
-
-
-        block.appendChild(
-          body
-        );
-
-      }
-
-
-      schedule.appendChild(
-        lane
-      );
-
-      lane.appendChild(
-        block
-      );
-
+    let minDebutStr = ligne[0].debut, maxFinStr = ligne[0].fin;
+    ligne.forEach(b=>{
+      if(hm(b.debut) < hm(minDebutStr)) minDebutStr = b.debut;
+      if(hm(b.fin) > hm(maxFinStr)) maxFinStr = b.fin;
     });
 
+    const label = ligne.length === 1
+      ? (PC.libelleBloc(jour, ligne[0].debut, ligne[0].fin) || (heureCourteImpr(ligne[0].debut) + "–" + heureCourteImpr(ligne[0].fin)))
+      : (heureCourteImpr(minDebutStr) + "–" + heureCourteImpr(maxFinStr));
+
+    const cols = { ens: [], aesh: [], auto: [] };
+    const banners = [];
+
+    ligne.forEach(bloc=>{
+      (bloc.groupes || []).forEach(g=>{
+        const t = classifierGroupeImpr(g);
+        if(t === "banner"){
+          banners.push(g);
+        }else{
+          cols[t].push(renderEntreeImpr(bloc, g));
+        }
+      });
+    });
+
+    const aDuContenu = cols.ens.length || cols.aesh.length || cols.auto.length;
+    const titresBanner = [...new Set(banners.map(g=>g.titre).filter(Boolean))];
+
+    const tr = document.createElement("tr");
+
+    if(!aDuContenu && banners.length){
+      tr.className = "print-cj-banner-row";
+      tr.innerHTML = `
+        <td class="print-cj-col-creneau">${escapeHTML(label)}</td>
+        <td colspan="3">${escapeHTML(titresBanner.join(" · ") || "Créneau fixe")}</td>
+      `;
+    }else{
+      const noteBanner = titresBanner.length
+        ? `<div style="margin-top:3px;font-style:italic;font-size:7.6pt;color:#555;">${escapeHTML(titresBanner.join(" · "))}</div>`
+        : "";
+      tr.innerHTML = `
+        <td class="print-cj-col-creneau">${escapeHTML(label)}${noteBanner}</td>
+        <td>${cols.ens.join("") || `<span class="print-cj-empty">—</span>`}</td>
+        <td>${cols.aesh.join("") || `<span class="print-cj-empty">—</span>`}</td>
+        <td>${cols.auto.join("") || `<span class="print-cj-empty">—</span>`}</td>
+      `;
+    }
+
+    tbody.appendChild(tr);
   });
 
+  table.appendChild(tbody);
+  schedule.appendChild(table);
 
   root.appendChild(
     schedule
   );
-
 
   /* ---------- Remarque / devoirs ---------- */
 
@@ -2443,6 +2366,7 @@ window.addEventListener("storage", (e)=>{
   updateCoffreWidget();
   afficherEtatSelonSession();
   if(sessionActive()) rafraichirEtat();
+  chargerBanquePage();
 })();
 </script>
 

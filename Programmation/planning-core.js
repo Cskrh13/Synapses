@@ -68,6 +68,23 @@
     }
   };
 
+  /**
+   * Nom d'affichage d'un créneau (grille horaire type, grille d'affectation,
+   * affectation individuelle envoyée au coffre — voir PLANNING-ELEVE-SCHEMA.md).
+   * Utilisée PARTOUT où un créneau doit être nommé, pour garantir que le nom
+   * affecté à un élève dans le coffre est TOUJOURS identique à celui affiché
+   * dans Planning — Gestion au moment de l'enregistrement, et n'est jamais
+   * vide : titre saisi (séance) → libellé saisi (récréation/pause/autre) →
+   * libellé générique du type de créneau, en tout dernier recours.
+   */
+  function libelleCreneau(c) {
+    if (!c) return "";
+    const saisi = c.type === "seance" ? (c.titre || "") : (c.libelle || "");
+    if (saisi.trim()) return saisi.trim();
+    const type = TYPES_CRENEAU[c.type];
+    return type ? type.label : "Créneau";
+  }
+
   // Référentiel horaire officiel — arrêté du 9-11-2015 (BO n°44 du
   // 26/11/2015, MENE1526553A) : horaires d'enseignement à l'école
   // élémentaire, 24 h de classe par semaine.
@@ -172,7 +189,11 @@
     { id: "enseignant", label: "Enseignant" },
     { id: "aesh", label: "AESH" },
     { id: "atsem", label: "ATSEM" },
-    { id: "autre", label: "Autre" }
+    { id: "autre", label: "Autre" },
+    // Pas un « adulte » au sens propre : ce choix correspond à adulte:null
+    // (convention déjà utilisée par ex. pour les groupes d'autonomie de la
+    // répartition automatique et dans la vue impression du cahier journal).
+    { id: "autonomie", label: "Autonomie (sans adulte)" }
   ];
 
 
@@ -912,9 +933,14 @@
     seas.forEach(
       sea => {
 
+        // sequence_id est le champ canonique (voir sequences.html) ; on
+        // accepte sequenceId en repli défensif au cas où une séance aurait
+        // été écrite dans planif_seances par un autre chemin que le
+        // formulaire normal, pour ne pas la faire retomber silencieusement
+        // dans le domaine par défaut ci-dessous.
         const seq =
           seqById.get(
-            sea.sequence_id
+            sea.sequence_id || sea.sequenceId
           );
 
 
@@ -1976,11 +2002,81 @@
           ? ((c.libelle && c.libelle.trim()) ? c.libelle.trim() : ((TYPES_CRENEAU[c.type] || {}).label || c.type))
           : ((c.titre && c.titre.trim()) ? c.titre.trim() : disp.nom);
 
-        if (existant) {
-          existant.debut = c.debut; existant.fin = c.fin; existant.titre = titre;
-          existant.domaineCle = c.domaineCle || ""; existant.niveau = ""; existant.classeId = "";
-          existant.dispositifId = disp.id; existant.dispositifType = disp.type || "ULIS";
-          existant.eleves = idsPlanning.slice(); existant.fixe = estFixe;
+        // --------------------------------------------------------------
+        // Répartition Enseignant / AESH / Autonomie (onglet « Répartition
+        // des élèves » de Planning — Gestion, config.dispositifGroupes) :
+        // quand une répartition a été enregistrée pour ce créneau, le
+        // cahier journal affiche directement un groupe par profil
+        // réellement utilisé (seul avec l'enseignant / avec l'AESH / en
+        // autonomie), au lieu d'un groupe fusionné unique, pour que
+        // l'organisation décidée dans la répartition soit visible et
+        // ajustable ici. Un groupe déjà retouché à la main (modifie:true)
+        // n'est jamais recalculé.
+        // --------------------------------------------------------------
+        const cleRepartition = disp.id + "::" + jourSemaine + "::" + c.id;
+        const repartition = !estFixe ? (config.dispositifGroupes || {})[cleRepartition] : null;
+        const profilsRepartis = repartition
+          ? ["enseignant", "aesh", "autonomie"].filter(k => Array.isArray(repartition[k]) && repartition[k].length)
+          : [];
+
+        if (profilsRepartis.length) {
+          // Ne jamais laisser coexister l'ancien groupe fusionné (créé par
+          // une génération antérieure, ou restauré tel quel par un import
+          // de planning) avec les nouveaux groupes de répartition : sur un
+          // créneau déjà réparti, le groupe fusionné est toujours retiré,
+          // sauf s'il a été retouché à la main, auquel cas ce choix de
+          // l'enseignant prime et la répartition n'est pas appliquée ici.
+          const groupeFusion = jour.groupes.find(g => g.origine === origine && !g.profilRepartitionDisp && !g.groupeBesoin);
+          if (groupeFusion) {
+            if (groupeFusion.modifie) return;
+            jour.groupes = jour.groupes.filter(g => g !== groupeFusion);
+          }
+
+          const dispoIds = new Set(idsPlanning);
+          const PROFILS = {
+            enseignant: { suffixe: "Enseignant", adulte: { type: "enseignant", nom: "" } },
+            aesh: { suffixe: "AESH", adulte: { type: "aesh", nom: "" } },
+            autonomie: { suffixe: "Autonome", adulte: null }
+          };
+          Object.keys(PROFILS).forEach(profil => {
+            const ids = (Array.isArray(repartition[profil]) ? repartition[profil] : []).filter(id => dispoIds.has(id));
+            const groupeExistant = jour.groupes.find(g => g.origine === origine && g.profilRepartitionDisp === profil);
+            if (groupeExistant && groupeExistant.modifie) return; // retouché à la main : on n'y touche plus
+            if (!ids.length) {
+              if (groupeExistant) jour.groupes = jour.groupes.filter(g => g !== groupeExistant);
+              return;
+            }
+            if (groupeExistant) {
+              groupeExistant.debut = c.debut; groupeExistant.fin = c.fin;
+              groupeExistant.titre = titre + " — " + PROFILS[profil].suffixe;
+              groupeExistant.domaineCle = c.domaineCle || "";
+              groupeExistant.eleves = ids;
+            } else {
+              jour.groupes.push({
+                id: uid("grp"), debut: c.debut, fin: c.fin, origine, modifie: false,
+                adulte: PROFILS[profil].adulte, titre: titre + " — " + PROFILS[profil].suffixe,
+                domaineCle: c.domaineCle || "", niveau: "", classeId: "",
+                dispositifId: disp.id, dispositifType: disp.type || "ULIS", seanceRef: null,
+                eleves: ids, remarque: "", fixe: false,
+                repartitionAuto: true, profilRepartitionDisp: profil
+              });
+            }
+          });
+          return; // la répartition fait foi : pas de groupe fusionné en plus
+        }
+
+        // Aucune répartition (ou plus aucune) enregistrée pour ce créneau :
+        // on retire d'éventuels groupes de répartition devenus obsolets et
+        // jamais retouchés à la main, puis on retombe sur le groupe
+        // fusionné habituel (comportement historique).
+        jour.groupes = jour.groupes.filter(g => !(g.origine === origine && g.profilRepartitionDisp && !g.modifie));
+        const groupeFusion = jour.groupes.find(g => g.origine === origine);
+
+        if (groupeFusion) {
+          groupeFusion.debut = c.debut; groupeFusion.fin = c.fin; groupeFusion.titre = titre;
+          groupeFusion.domaineCle = c.domaineCle || ""; groupeFusion.niveau = ""; groupeFusion.classeId = "";
+          groupeFusion.dispositifId = disp.id; groupeFusion.dispositifType = disp.type || "ULIS";
+          groupeFusion.eleves = idsPlanning.slice(); groupeFusion.fixe = estFixe;
         } else {
           jour.groupes.push({
             id: uid("grp"), debut: c.debut, fin: c.fin, origine, modifie: false,
@@ -3195,152 +3291,14 @@
   }
 
   /**
-   * Génère les groupes des dispositifs rattachés aux classes.
-   *
-   * Les dispositifs disposent de leur propre grille horaire, sans niveau.
-   * À chaque génération, un créneau de dispositif peut accueillir les
-   * élèves des classes rattachées qui sont libres à cet horaire selon leur
-   * planning individuel stocké dans leur coffre. Aucune donnée nominative
-   * n'est écrite dans le stockage local du planning.
-   */
-  function genererGroupesDispositifs(config, grilles, coffre) {
-    const dispositifsConfigures = config.dispositifs || [];
-    if (!dispositifsConfigures.length) {
-      return { dispositifs: 0, groupes: 0, eleves: 0, raisons: [] };
-    }
-    if (!coffre || !coffre.ouvert) {
-      return { dispositifs: 0, groupes: 0, eleves: 0, raisons: ["Ouvrez le coffre pour générer le planning des dispositifs."] };
-    }
-
-    const eleves = coffre.listerEleves ? coffre.listerEleves() : [];
-    if (!eleves.length) {
-      return { dispositifs: 0, groupes: 0, eleves: 0, raisons: ["Aucun élève dans le coffre ouvert."] };
-    }
-
-    const classes = config.classes || [];
-    const semaines = calculerSemaines(config || {});
-    const joursTravail = new Set((config.joursTravailles || [1,2,3,4,5]).map(Number));
-    const journal = chargerJournal();
-    let groupes = 0, nbEleves = 0, nbDispositifs = 0;
-    const raisons = [];
-
-    const planningDe = e => Array.isArray(e.planning) ? e.planning : [];
-    const chevauche = (a,b,c,d) => a < d && c < b;
-
-    dispositifsConfigures.forEach(disp => {
-      const classesLiees = classes.filter(cl => (cl.dispositifs || []).includes(disp.id));
-      if (!classesLiees.length) {
-        raisons.push(`« ${disp.nom} » n'est rattaché à aucune classe (Configuration générale → Classes → Dispositifs).`);
-        return;
-      }
-      const classeIds = new Set(classesLiees.map(cl => cl.id));
-      const grille = (grilles[disp.id] || []).filter(c => c.type === "seance" || c.type === "autre");
-      if (!grille.length) {
-        raisons.push(`La grille horaire de « ${disp.nom} » est vide (onglet Génération → « Générer le planning du dispositif »).`);
-        return;
-      }
-      nbDispositifs++;
-      let nbEleveConcernesDisp = 0;
-
-      semaines.forEach(sem => {
-        JOURS.forEach(j => {
-          if (!joursTravail.has(j.n)) return;
-          const iso = dateISO(addDays(sem.lundi, j.n - 1));
-          const jour = journalPourDate(iso, journal);
-
-          // Les groupes générés précédemment pour ce dispositif sont
-          // reconstruits, sauf s'ils ont été retouchés dans le cahier journal.
-          jour.groupes = jour.groupes.filter(g =>
-            !(g.profilDispositif && g.dispositifId === disp.id &&
-              g.repartitionAuto && !g.personnalise)
-          );
-
-          grille.filter(c => c.jour === j.n)
-            .sort((a,b) => heureVersMin(a.debut)-heureVersMin(b.debut))
-            .forEach(c => {
-              const debut = heureVersMin(c.debut), fin = heureVersMin(c.fin);
-              // N'est « occupé » qu'un créneau où le DISPOSITIF possède déjà
-              // un groupe (conservé ci-dessus car personnalisé) sur cet
-              // horaire exact. Les groupes des CLASSES à cette même heure ne
-              // comptent pas : c'est précisément le principe d'un dispositif
-              // comme ULIS que d'accueillir des élèves PENDANT que leur
-              // classe a cours ailleurs — sinon aucun créneau de dispositif
-              // ne serait jamais généré, puisqu'à toute heure de la journée
-              // une classe ou une autre a nécessairement cours.
-              const occupe = jour.groupes.some(g =>
-                g.profilDispositif && g.dispositifId === disp.id &&
-                heureVersMin(g.debut) < fin && heureVersMin(g.fin) > debut
-              );
-              if (occupe) return;
-
-              // Sécurité : les créneaux du dispositif sont persistés sans
-              // identité d'élève. Les élèves sont rechargés exclusivement
-              // depuis le coffre et leur planning individuel fait foi.
-              const disponibles = eleves.filter(e => {
-                const plan = planningDe(e);
-                const planClasses = plan.filter(p => classeIds.has(p.classeId));
-                if (planClasses.length) {
-                  return !planClasses.some(p =>
-                    Number(p.jour) === j.n &&
-                    chevauche(heureVersMin(p.debut), heureVersMin(p.fin), debut, fin)
-                  );
-                }
-                const classeRef = classeDeReferenceCorrespondante(e.classe, config);
-                if (!classeRef || !classeIds.has(classeRef.id)) return false;
-                return !(grilles[classeRef.id] || []).some(cx =>
-                  cx.jour === j.n &&
-                  chevauche(heureVersMin(cx.debut), heureVersMin(cx.fin), debut, fin)
-                );
-              });
-              if (!disponibles.length) return;
-
-              const nom = (c.type === "seance" ? c.titre : c.libelle) || disp.nom;
-              jour.groupes.push({
-                id: uid("grp"),
-                debut: c.debut, fin: c.fin,
-                origine: disp.id + "__" + c.id,
-                modifie: false,
-                adulte: { type: "enseignant", nom: "" },
-                titre: nom,
-                domaineCle: "",
-                niveau: "",
-                classeId: "",
-                dispositifId: disp.id,
-                dispositifType: disp.type,
-                seanceRef: null,
-                eleves: disponibles.map(e => e.identifiantSynapses).filter(Boolean),
-                remarque: `Groupe ${disp.type} généré à partir du créneau libre du dispositif.`,
-                fixe: false,
-                repartitionAuto: true,
-                personnalise: false,
-                profilDispositif: true
-              });
-              groupes++;
-              nbEleves += disponibles.length;
-              nbEleveConcernesDisp += disponibles.length;
-            });
-        });
-      });
-
-      if (!nbEleveConcernesDisp) {
-        raisons.push(`Aucun élève du coffre n'est disponible sur les créneaux de « ${disp.nom} » (vérifiez la classe de référence des élèves et leur planning individuel dans l'onglet Affectation).`);
-      }
-    });
-
-    sauverJournal(journal);
-    return { dispositifs: nbDispositifs, groupes, eleves: nbEleves, raisons };
-  }
-
-  /**
    * Répartit les élèves d'un dispositif (ULIS, SEGPA, RASED, …) en
    * groupes de besoin, créneau par créneau, sur les créneaux « séance »
    * de sa grille horaire — dans la limite de 3 groupes simultanés, comme
    * pour les créneaux composés à la main dans le cahier journal.
    *
    * Principe : pour chaque créneau de la grille du dispositif, on
-   * retrouve les élèves disponibles (même calcul de disponibilité que
-   * genererGroupesDispositifs, à partir du planning individuel du
-   * coffre), puis on les regroupe par domaine BO ciblé en priorité
+   * retrouve les élèves disponibles (à partir de leur planning individuel
+   * dans le coffre), puis on les regroupe par domaine BO ciblé en priorité
    * (français/mathématiques d'abord), en tenant compte du volume horaire
    * hebdomadaire déjà couvert (BO n°44 du 26/11/2015) et des besoins /
    * objectifs actifs déclarés dans le coffre. S'il reste plus de 3
@@ -3556,52 +3514,6 @@
 
     sauverJournal(journal);
     return { dispositif: disp.nom, jours: nbJours, groupes: nbGroupes, eleves: nbEleves, raisons };
-  }
-
-  /**
-   * Génération complète et unifiée du planning.
-   *
-   *  1. Séquences/séances de classe, uniquement sur les créneaux encore
-   *     libres du cahier journal (genererAffectations).
-   *  2. Reconstruction du cahier journal à partir des grilles de classe
-   *     pour toutes les semaines de l'année (genererJournalDepuisGrille),
-   *     dans le respect des retouches manuelles déjà enregistrées.
-   *  3. Groupes de besoin ULIS pour les élèves du coffre non affectés à
-   *     une classe, sur les créneaux qui restent libres (dans l'emploi du
-   *     temps de l'enseignant), au regard du volume horaire BO n°44.
-   *
-   * Cette fonction ÉCRASE le cahier journal existant sur tous les
-   * créneaux qu'elle génère (elle ne touche jamais un créneau que
-   * l'enseignant a modifié à la main).
-   */
-  async function genererPlanningComplet(config, grilles, affectationsExistantes, coffre) {
-    if (!config.rentree) throw new Error("Renseignez une date de rentrée avant de générer.");
-    if (!config.classes || !config.classes.length) throw new Error("Créez au moins une classe.");
-
-    // 1) Séquences/séances de classe (créneaux libres uniquement).
-    const affectations = await genererAffectations(config.classes, config, grilles, affectationsExistantes || {});
-    sauverAffectations(affectations);
-
-    // 2) Cahier journal reconstruit à partir des grilles, pour chaque
-    // semaine/jour de l'année, avec la banque de séquences chargée.
-    const banque = await chargerBanque();
-    const semaines = calculerSemaines(config);
-    const joursTravail = new Set((config.joursTravailles || [1, 2, 3, 4, 5]).map(Number));
-    semaines.forEach(sem => {
-      JOURS.forEach(j => {
-        if (!joursTravail.has(j.n)) return;
-        const iso = dateISO(addDays(sem.lundi, j.n - 1));
-        genererJournalDepuisGrille(iso, config, grilles, affectations, banque, coffre);
-      });
-    });
-
-    // 3) Les dispositifs (dont ULIS) suivent exactement la même logique que
-    // les classes : leur grille est une source de créneaux, et le cahier
-    // journal est synchronisé depuis cette grille. Il n'y a plus de
-    // génération parallèle « par trous » du planning individuel.
-    const dispositifs = (config.dispositifs || []).map(d => d.id).filter(id => Array.isArray(grilles[id]) && grilles[id].length).length;
-
-    return { affectations, ulis: { jours: 0, groupes: 0, ajouts: 0, eleves: 0 }, dispositifs: { dispositifs, groupes: 0, eleves: 0 } };
   }
 
   // ========================================================================
@@ -4303,6 +4215,7 @@
     JOURS,
     TYPES_CRENEAU,
     TYPES_ADULTE,
+    libelleCreneau,
 
     // Stockage
     STORE_CONFIG,
@@ -4377,9 +4290,7 @@
 
     // Génération
     genererAffectations,
-    genererGroupesDispositifs,
     repartirGroupesBesoinDispositif,
-    genererPlanningComplet,
 
     // Référentiel horaire BO n°44 du 26/11/2015
     BO_VOLUMES_HEBDO,

@@ -39,6 +39,8 @@ nav.main-nav a.nav-programmation:hover{background:rgba(255,255,255,.18);}
 nav.main-nav a.nav-programmation.active{background:var(--accent-sky);border-color:var(--accent-sky);}
 main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 .toolbar{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-bottom:18px;}
+.btn-purger{border:1px solid #E3C9BE;background:#fff;color:var(--danger);border-radius:20px;padding:7px 14px;font-size:13px;font-weight:600;cursor:pointer;}
+.btn-purger:hover{background:#FBEEE9;}
 .toolbar .chip-toggle{display:flex;gap:6px;flex-wrap:wrap;}
 .toolbar .chip-toggle button{border:1px solid var(--line);background:var(--panel);border-radius:20px;padding:6px 14px;font-size:13px;font-weight:600;}
 .toolbar .chip-toggle button.active{background:var(--navy);color:#fff;border-color:var(--navy);}
@@ -310,6 +312,73 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 }
 
 /* ---------------------------------------------------------
+   AXE DES TEMPS — progression de 30mn en 30mn
+   ---------------------------------------------------------
+   Chaque journée affiche, à gauche, une graduation horaire
+   (traits + heures) et positionne ses créneaux verticalement
+   selon leur horaire réel, plutôt qu'en simple empilement. */
+
+.jour-grille{
+  position:relative;
+  display:flex;
+  gap:6px;
+  width:100%;
+}
+
+.temps-axe{
+  position:relative;
+  flex:0 0 40px;
+  width:40px;
+  border-right:1px solid var(--line);
+}
+
+.temps-tick{
+  position:absolute;
+  left:0;
+  right:6px;
+  transform:translateY(-50%);
+  font-family:'IBM Plex Mono',monospace;
+  font-size:9px;
+  color:var(--ink-soft);
+  text-align:right;
+  white-space:nowrap;
+  opacity:.65;
+}
+
+.temps-tick.heure-pleine{
+  font-weight:700;
+  color:var(--ink);
+  opacity:1;
+}
+
+.temps-corps{
+  position:relative;
+  flex:1 1 auto;
+  min-width:0;
+}
+
+.temps-ligne{
+  position:absolute;
+  left:0;
+  right:0;
+  height:0;
+  border-top:1px dashed var(--line);
+  opacity:.55;
+}
+
+.temps-ligne.heure-pleine{
+  border-top:1px solid var(--line);
+  opacity:.9;
+}
+
+.creneau-card.creneau-positionne{
+  position:absolute;
+  margin:0;
+  overflow:hidden;
+  box-shadow:0 1px 2px rgba(0,0,0,.05);
+}
+
+/* ---------------------------------------------------------
    RESPONSIVE
    --------------------------------------------------------- */
 
@@ -460,6 +529,7 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
       <span class="label" id="week-label">—</span>
       <button id="next-week">▶</button>
     </div>
+    <button class="btn-purger" id="btn-purger-memoire" title="Effacer immédiatement la configuration/grilles/affectations de la mémoire de cet onglet" style="margin-left:auto;">🗑 Purger</button>
   </div>
 
   <div id="content"></div>
@@ -474,9 +544,25 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
   <div class="drawer-body" id="drawerBody"></div>
 </aside>
 
-<script src="../fata-morgana/synapses-crypto.js"></script>
-<script src="../fata-morgana/synapses-coffre.js"></script>
 <script src="planning-core.js"></script>
+<script>
+/* Nettoyage du localStorage à la fermeture de la page.
+ * Ces pages sont des outils de travail temporaires : aucune donnée ne doit
+ * rester persistée côté navigateur après leur fermeture.
+ * BUG CORRIGÉ : ce code était auparavant placé à l'intérieur d'une balise
+ * <script src="..."> ; le contenu inline d'une telle balise n'est jamais
+ * exécuté par le navigateur, donc ce nettoyage ne se déclenchait jamais. */
+(function(){
+  let nettoye = false;
+  function nettoyerLocalStorage(){
+    if(nettoye) return;
+    nettoye = true;
+    try { localStorage.clear(); } catch(e) {}
+  }
+  window.addEventListener("pagehide", nettoyerLocalStorage);
+  window.addEventListener("beforeunload", nettoyerLocalStorage);
+})();
+</script>
 <script>
 /* =========================================================
    SYNAPSES — AUTHOR MARKER
@@ -497,20 +583,6 @@ const SYNAPSES_BUILD = {
 
 "use strict";
 const PC = window.PlanningCore;
-
-/*
- * Coffre Synapses — lecture locale uniquement.
- * Le contenu réel provient exclusivement du fichier .synapses ouvert par
- * l'utilisateur. Aucun élève, besoin, objectif ou autre donnée individuelle
- * n'est créé ici et rien n'est placé dans localStorage.
- */
-let coffre = null;
-try { coffre = new SynapsesCoffre.Coffre(); } catch (e) { coffre = null; }
-function coffreDisponible(){ return !!coffre; }
-function coffreOuvert(){ return !!(coffre && coffre.ouvert); }
-function lireElevesDuCoffre(){
-  return coffreOuvert() ? coffre.listerEleves() : [];
-}
 
 const $ = id => document.getElementById(id);
 
@@ -629,6 +701,75 @@ function renderSemaine(){
 
   const grid = document.createElement("div");
   grid.className = "week-grid";
+
+
+  /* =========================================================
+     AXE DES TEMPS COMMUN À LA SEMAINE
+     =========================================================
+     Toutes les journées partagent la même amplitude horaire et
+     la même échelle (px / minute), calculées une seule fois à
+     partir de l'ensemble des créneaux réellement présents dans
+     la semaine — cela garantit des traits de 30mn alignés d'une
+     journée à l'autre. */
+
+  let minDebutSemaine = Infinity;
+  let maxFinSemaine = -Infinity;
+
+  PC.JOURS.forEach(j => {
+    classesObjs.forEach(cl => {
+      (grilles[cl.id] || [])
+        .filter(c => c.jour === j.n)
+        .forEach(c => {
+          minDebutSemaine = Math.min(minDebutSemaine, PC.heureVersMin(c.debut));
+          maxFinSemaine = Math.max(maxFinSemaine, PC.heureVersMin(c.fin));
+        });
+    });
+  });
+
+  if(!isFinite(minDebutSemaine)){
+    minDebutSemaine = 8*60;
+    maxFinSemaine = 17*60;
+  }
+
+  // Arrondi à la demi-heure inférieure/supérieure, pour que les traits
+  // de 30mn tombent toujours "ronds".
+  minDebutSemaine = Math.floor(minDebutSemaine/30)*30;
+  maxFinSemaine = Math.ceil(maxFinSemaine/30)*30;
+
+  const PX_PAR_MIN = 1.7;
+  const hauteurGrilleTemps = (maxFinSemaine - minDebutSemaine) * PX_PAR_MIN;
+
+  const minutesVersHHMM = (m)=>{
+    const h = Math.floor(m/60), mm = m%60;
+    return String(h).padStart(2,"0") + ":" + String(mm).padStart(2,"0");
+  };
+
+  /** Construit l'axe des temps (colonne de gauche d'une journée) et
+   *  les traits horizontaux de progression (toutes les 30mn, trait
+   *  plus marqué toutes les heures pleines). */
+  function construireAxeTemps(){
+    const axe = document.createElement("div");
+    axe.className = "temps-axe";
+    for(let t=minDebutSemaine; t<=maxFinSemaine; t+=30){
+      const tick = document.createElement("div");
+      tick.className = "temps-tick" + (t%60===0 ? " heure-pleine" : "");
+      tick.style.top = ((t-minDebutSemaine)*PX_PAR_MIN) + "px";
+      tick.textContent = minutesVersHHMM(t);
+      axe.appendChild(tick);
+    }
+    return axe;
+  }
+
+  function construireLignesTemps(){
+    const frag = document.createDocumentFragment();
+    for(let t=minDebutSemaine; t<=maxFinSemaine; t+=30){
+      const ligne = document.createElement("div");
+      ligne.className = "temps-ligne" + (t%60===0 ? " heure-pleine" : "");
+      ligne.style.top = ((t-minDebutSemaine)*PX_PAR_MIN) + "px";
+      frag.appendChild(ligne);
+    }
+    return frag;
+  }
 
 
   /* =========================================================
@@ -825,40 +966,25 @@ function renderSemaine(){
        AFFICHAGE DES RANGÉES
        ======================================================= */
 
-    const sequence =
+    const grilleTemps =
       document.createElement("div");
 
-    sequence.className =
-      "creneaux-sequence";
+    grilleTemps.className = "jour-grille";
 
+    const axeTemps = construireAxeTemps();
+
+    const corps =
+      document.createElement("div");
+
+    corps.className = "temps-corps";
+    corps.style.height = hauteurGrilleTemps + "px";
+    corps.appendChild(construireLignesTemps());
+
+    let nbCreneauxAffiches = 0;
 
     ranges.forEach(rangee => {
 
-      const row =
-        document.createElement("div");
-
-      row.className =
-        "creneaux-row";
-
-
-      if(rangee.length > 1){
-
-        row.classList.add(
-          "has-overlap"
-        );
-
-        if(rangee.length >= 3){
-
-          row.classList.add(
-            "many"
-          );
-
-        }
-
-      }
-
-
-      rangee.forEach(bloc => {
+      rangee.forEach((bloc, indexDansRangee) => {
 
         const c =
           bloc.creneau;
@@ -1084,20 +1210,38 @@ function renderSemaine(){
         }
 
 
-        row.appendChild(carte);
+        /* =================================================
+           POSITIONNEMENT SUR L'AXE DES TEMPS
+           =================================================
+           Vertical : d'après l'heure réelle du créneau.
+           Horizontal : les créneaux simultanés (même rangée
+           de chevauchement) se partagent la largeur disponible
+           à parts égales. */
+
+        const debutMin = PC.heureVersMin(c.debut);
+        const finMin = PC.heureVersMin(c.fin);
+        const nbColonnes = rangee.length;
+
+        carte.classList.add("creneau-positionne");
+        carte.style.top = ((debutMin - minDebutSemaine) * PX_PAR_MIN) + "px";
+        carte.style.height = Math.max(20, (finMin - debutMin) * PX_PAR_MIN - 2) + "px";
+        carte.style.left = `calc(${(100/nbColonnes)*indexDansRangee}% + ${indexDansRangee>0 ? 3 : 0}px)`;
+        carte.style.width = `calc(${100/nbColonnes}% - ${nbColonnes>1 ? 6 : 0}px)`;
+
+        corps.appendChild(carte);
+        nbCreneauxAffiches++;
 
       });
 
-
-      sequence.appendChild(row);
-
     });
 
+    grilleTemps.appendChild(axeTemps);
+    grilleTemps.appendChild(corps);
 
-    if(sequence.children.length){
+    if(nbCreneauxAffiches){
 
       body.appendChild(
-        sequence
+        grilleTemps
       );
 
     }
@@ -1239,6 +1383,26 @@ window.addEventListener("storage", (e)=>{
     renderClassesToggle();
     renderSemaine();
   }
+});
+
+/* ---------------- Purge explicite ----------------
+   Cette page ne contient pas de coffre élèves (aucune donnée nominative
+   n'y transite), mais elle lit/persiste config/grilles/affectations dans
+   localStorage. Ce bouton permet de les effacer immédiatement de cet
+   onglet sans attendre la fermeture (pagehide/beforeunload le font déjà
+   automatiquement) — utile par exemple avant de laisser l'ordinateur sans
+   surveillance. Après purge, on recharge les valeurs par défaut de
+   PlanningCore et on réaffiche, sans recharger la page. */
+$("btn-purger-memoire").addEventListener("click", ()=>{
+  if(!confirm("Effacer immédiatement la configuration, les grilles horaires et les affectations de la mémoire de cet onglet ?")) return;
+  try{ localStorage.clear(); }catch(e){}
+  config = PC.chargerConfig();
+  grilles = PC.chargerGrilles();
+  affectations = PC.chargerAffectations();
+  semaines = PC.calculerSemaines(config);
+  semaineIdx = 0;
+  renderClassesToggle();
+  renderSemaine();
 });
 
 /* ---------------- Initialisation ---------------- */

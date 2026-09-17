@@ -44,6 +44,115 @@
   }
 
   /**
+   * ---------------------------------------------------------------------
+   * Modèle unifié d'une "case" d'emploi du temps individuel (v2).
+   * ---------------------------------------------------------------------
+   * Une case répond toujours à 3 questions indépendantes, en plus de
+   * l'horaire : OÙ (lieu), QUOI (activité), AVEC QUI (adulte de référence).
+   * Ce triptyque s'applique aussi bien à une affectation classe/dispositif
+   * (eleve.planning[], alimentée par Planning — Gestion) qu'à une prise en
+   * charge extérieure (eleve.priseEnChargeExterieure[], saisie dans le
+   * coffre). Voir PLANNING-ELEVE-SCHEMA.md pour la spec complète destinée
+   * à planning-gestion.html.
+   *
+   * Forme canonique (v2) d'une entrée de eleve.planning[] :
+   *   {
+   *     id,               // identifiant technique de l'AFFECTATION (genId('AFF')),
+   *                        // stable même si la grille de la classe change ensuite.
+   *     classeId,         // identifiant technique du lieu (classe OU dispositif)
+   *     classeNom,        // nom affiché du lieu, recopié au moment de l'affectation
+   *     typeLieu,         // 'classe' | 'dispositif' — nature du lieu
+   *     creneauId,        // identifiant technique du créneau dans la grille horaire
+   *     jour, debut, fin, // recopiés au moment de l'affectation (lisibles même si
+   *                        // la grille change ensuite)
+   *     activite: { nom, domaineCle },
+   *                        // nom = libellé lisible de l'activité travaillée (ex.
+   *                        // "Lecture", "Numération"). domaineCle = clé technique
+   *                        // optionnelle vers le référentiel (BARRY/S4C), pour
+   *                        // rattachement futur à l'analyse pédagogique — jamais
+   *                        // affichée telle quelle à l'écran.
+   *     adulteReference: { nom, role },
+   *                        // adulte responsable de l'élève sur ce créneau (ex.
+   *                        // "Mme Dupont" / "Enseignante ULIS"). role est libre.
+   *     remarque,          // texte libre optionnel
+   *     dateAffectation
+   *   }
+   *
+   * Rétrocompatibilité : les entrées antérieures à ce schéma (sans id, avec
+   * type/titre/libelle/domaineCle à plat au lieu de activite/adulteReference)
+   * restent lues correctement par formatCasePourAffichage() ci-dessous — elles
+   * ne sont jamais migrées de force en mémoire, seulement interprétées à
+   * l'affichage.
+   */
+
+  /** Extrait un texte affichable d'un champ dont la forme réelle peut
+   *  varier selon la version du code qui l'a enregistré (chaîne à plat de
+   *  longue date, ou objet { nom, ... } introduit plus tard) : sans ceci,
+   *  un champ qui se trouve être un objet s'affiche tel quel comme
+   *  "[object Object]" (coercition JS par défaut d'un objet en chaîne)
+   *  dès qu'il est assigné à .textContent ou concaténé. Ne modifie jamais
+   *  la donnée en mémoire ni dans le coffre : c'est une lecture tolérante,
+   *  au même esprit que formatCasePourAffichage() qui accepte déjà
+   *  plusieurs formes historiques de planning[]. */
+  function texteBrutChamp(v){
+    if (v == null) return '';
+    if (typeof v === 'string') return v.trim();
+    if (typeof v === 'object') return String(v.nom || v.libelle || v.label || '').trim();
+    return String(v).trim();
+  }
+
+  /** Normalise n'importe quelle case d'emploi du temps (planning[] v1/v2 ou
+   *  priseEnChargeExterieure[]) en un objet d'affichage unique et stable :
+   *  { lieuNom, typeLieu, activiteNom, domaineCle, adulteNom, adulteRole,
+   *    remarque, jour, debut, fin }.
+   *  Centralise ici plutôt que dans coffre.html pour que planning-gestion.html
+   *  et synapses-export-pdf.js puissent réutiliser exactement la même logique
+   *  et rester cohérents entre eux. */
+  function formatCasePourAffichage(c, origine) {
+    c = c || {};
+    if (origine === 'externe') {
+      const lieuTxt = texteBrutChamp(c.lieu);
+      const activiteTxt = texteBrutChamp(c.activite);
+      const remarqueTxt = texteBrutChamp(c.remarque);
+      const intervenantTxt = texteBrutChamp(c.intervenant);
+      return {
+        lieuNom: lieuTxt || 'Prise en charge extérieure',
+        typeLieu: 'externe',
+        activiteNom: activiteTxt || remarqueTxt,
+        domaineCle: '',
+        adulteNom: intervenantTxt,
+        adulteRole: 'Intervenant extérieur',
+        remarque: activiteTxt ? remarqueTxt : '',
+        jour: c.jour, debut: c.debut || '', fin: c.fin || ''
+      };
+    }
+    // planning[] — accepte indifféremment la forme v2 (activite/adulteReference
+    // objets) ou la forme héritée (libelle/titre/domaineCle/type à plat).
+    const activiteNom = (c.activite && typeof c.activite === 'object')
+      ? texteBrutChamp(c.activite.nom)
+      : texteBrutChamp(c.libelle);
+    const domaineCle = (c.activite && typeof c.activite === 'object')
+      ? (c.activite.domaineCle || '')
+      : (c.domaineCle || '');
+    const adulteNom = (c.adulteReference && typeof c.adulteReference === 'object')
+      ? texteBrutChamp(c.adulteReference.nom)
+      : '';
+    const adulteRole = (c.adulteReference && typeof c.adulteReference === 'object')
+      ? texteBrutChamp(c.adulteReference.role)
+      : '';
+    return {
+      lieuNom: texteBrutChamp(c.classeNom) || '(lieu sans nom)',
+      typeLieu: c.typeLieu || (c.type === 'dispositif' ? 'dispositif' : 'classe'),
+      activiteNom,
+      domaineCle,
+      adulteNom,
+      adulteRole,
+      remarque: texteBrutChamp(c.remarque) || (!activiteNom ? texteBrutChamp(c.titre) : ''),
+      jour: c.jour, debut: c.debut || '', fin: c.fin || ''
+    };
+  }
+
+  /**
    * @param {string} [nomEtablissement] - libre, jamais transmis à une IA (voir grille-analyse.js)
    * @param {string} [dispositif] - type de dispositif d'école inclusive (ex: "ULIS école"),
    *   donnée générique (pas d'identité), seule autorisée à être transmise en contexte IA.
@@ -269,7 +378,18 @@
         adaptations: e.adaptations || [],
         objectifs: e.objectifs || [],
         equivalenceScolaire: e.equivalenceScolaire || { francais: null, mathematiques: null, transversal: null },
-        planning: e.planning || [] // compat. coffres antérieurs à ce champ
+        planning: e.planning || [], // compat. coffres antérieurs à ce champ
+        // BUG CORRIGÉ : priseEnChargeExterieure manquait ici, si bien que
+        // listerEleves() renvoyait toujours un élève SANS ses prises en
+        // charge extérieures (coffre.html les lit exclusivement via cette
+        // méthode) : la section "3. Emploi du temps" les affichait comme
+        // inexistantes en permanence, et il était donc impossible de les
+        // supprimer depuis l'interface (rien à cliquer), alors qu'elles
+        // restaient bien présentes dans this._data et dans le fichier
+        // .synapses exporté. Même classe de bug que pour `planning` :
+        // toujours vérifier ici quand un nouveau champ est ajouté à
+        // eleveVide()/e.
+        priseEnChargeExterieure: e.priseEnChargeExterieure || []
       }));
     }
 
@@ -310,17 +430,20 @@
      * ne doit contenir que des données non nominatives (classes, grilles
      * horaires génériques).
      * @param {string} identifiantSynapses
-     * @param {object} affectation - { classeId, classeNom, creneauId,
-     *   jour, debut, fin, type, titre, libelle, domaineCle }.
-     *   jour/debut/fin/type/titre/libelle/domaineCle sont recopiés au
-     *   moment de l'affectation, pour rester lisibles même si la grille
-     *   de la classe est modifiée par la suite. type/titre/libelle sont
-     *   ce qui permet à l'emploi du temps individuel (coffre.html)
-     *   d'afficher le nom et le type de chaque séance plutôt que
-     *   seulement le domaine (qui peut être partagé par plusieurs
-     *   séances distinctes).
-     * @returns {boolean} false si l'élève est déjà affecté à ce créneau
-     *   (même classeId + creneauId) — aucun doublon n'est jamais créé.
+     * @param {object} affectation - forme v2 recommandée :
+     *   { classeId, classeNom, typeLieu, creneauId, jour, debut, fin,
+     *     activite: { nom, domaineCle }, adulteReference: { nom, role },
+     *     remarque }.
+     *   Forme héritée toujours acceptée en entrée (auto-convertie) :
+     *   { classeId, classeNom, creneauId, jour, debut, fin, type, titre,
+     *     libelle, domaineCle }.
+     *   jour/debut/fin/activite/adulteReference sont recopiés au moment de
+     *   l'affectation, pour rester lisibles même si la grille de la classe
+     *   est modifiée par la suite. Voir PLANNING-ELEVE-SCHEMA.md pour la
+     *   spec complète destinée à planning-gestion.html.
+     * @returns {object|false} l'entrée créée (avec son id), ou false si
+     *   l'élève est déjà affecté à ce créneau (même classeId + creneauId)
+     *   — aucun doublon n'est jamais créé.
      */
     affecterCreneau(identifiantSynapses, affectation) {
       const e = this.getEleve(identifiantSynapses);
@@ -333,20 +456,57 @@
         (p) => p.classeId === a.classeId && p.creneauId === a.creneauId
       );
       if (dejaPresent) return false;
-      e.planning.push({
+      const activite = a.activite && typeof a.activite === 'object'
+        ? { nom: a.activite.nom || '', domaineCle: a.activite.domaineCle || '' }
+        : { nom: a.libelle || '', domaineCle: a.domaineCle || '' };
+      const adulteReference = a.adulteReference && typeof a.adulteReference === 'object'
+        ? { nom: a.adulteReference.nom || '', role: a.adulteReference.role || '' }
+        : { nom: '', role: '' };
+      const entree = {
+        id: genId('AFF'),
         classeId: a.classeId,
         classeNom: a.classeNom || '',
+        typeLieu: a.typeLieu || (a.type === 'dispositif' ? 'dispositif' : 'classe'),
         creneauId: a.creneauId,
         jour: a.jour != null ? Number(a.jour) : null,
         debut: a.debut || '',
         fin: a.fin || '',
-        type: a.type || 'seance',
-        titre: a.titre || '',
-        libelle: a.libelle || '',
-        domaineCle: a.domaineCle || '',
+        activite,
+        adulteReference,
+        remarque: a.remarque || (a.titre && a.titre !== activite.nom ? a.titre : ''),
         dateAffectation: nowIso()
-      });
-      return true;
+      };
+      e.planning.push(entree);
+      return entree;
+    }
+
+    /** Modifie une affectation déjà enregistrée (typiquement pour préciser
+     *  ou corriger l'activité et/ou l'adulte de référence depuis coffre.html,
+     *  sans devoir repasser par Planning — Gestion). Identifie l'entrée par
+     *  son id (v2) ; pour compatibilité avec des entrées héritées sans id,
+     *  accepte aussi { classeId, creneauId } en secours.
+     *  @param {object} patch - champs à fusionner ; activite/adulteReference
+     *    peuvent être passés partiellement (ex. { activite: { nom: 'Lecture' } }
+     *    ne touche pas activite.domaineCle). */
+    modifierAffectationCreneau(identifiantSynapses, idOuCles, patch) {
+      const e = this.getEleve(identifiantSynapses);
+      if (!Array.isArray(e.planning)) e.planning = [];
+      const p = typeof idOuCles === 'string'
+        ? e.planning.find((x) => x.id === idOuCles)
+        : e.planning.find((x) => x.classeId === idOuCles.classeId && x.creneauId === idOuCles.creneauId);
+      if (!p) throw new Error('Affectation de créneau introuvable.');
+      if (!p.id) p.id = genId('AFF'); // migration douce d'une entrée héritée touchée
+      const patchLocal = Object.assign({}, patch || {});
+      if (patchLocal.activite) {
+        p.activite = Object.assign({ nom: '', domaineCle: '' }, p.activite || {}, patchLocal.activite);
+        delete patchLocal.activite;
+      }
+      if (patchLocal.adulteReference) {
+        p.adulteReference = Object.assign({ nom: '', role: '' }, p.adulteReference || {}, patchLocal.adulteReference);
+        delete patchLocal.adulteReference;
+      }
+      Object.assign(p, patchLocal);
+      return p;
     }
 
     /** Retire une affectation créneau précédemment enregistrée dans le
@@ -357,6 +517,17 @@
       const idx = e.planning.findIndex(
         (p) => p.classeId === classeId && p.creneauId === creneauId
       );
+      if (idx === -1) return false;
+      e.planning.splice(idx, 1);
+      return true;
+    }
+
+    /** Retire une affectation par son id (v2). Préférer cette méthode à
+     *  retirerCreneau() une fois les entrées migrées vers le schéma v2. */
+    retirerAffectationParId(identifiantSynapses, id) {
+      const e = this.getEleve(identifiantSynapses);
+      if (!Array.isArray(e.planning)) { e.planning = []; return false; }
+      const idx = e.planning.findIndex((p) => p.id === id);
       if (idx === -1) return false;
       e.planning.splice(idx, 1);
       return true;
@@ -374,7 +545,7 @@
     ajouterPriseEnChargeExterieure(identifiantSynapses, pec) {
       const e = this.getEleve(identifiantSynapses);
       const p = Object.assign(
-        { id: genId('PEC'), jour: null, debut: '', fin: '', intervenant: '', lieu: '', remarque: '', actif: true },
+        { id: genId('PEC'), jour: null, debut: '', fin: '', intervenant: '', lieu: '', activite: '', remarque: '', actif: true },
         pec
       );
       e.priseEnChargeExterieure.push(p);
@@ -665,5 +836,5 @@
     }
   }
 
-  global.SynapsesCoffre = { Coffre, eleveVide, coffreVide };
+  global.SynapsesCoffre = { Coffre, eleveVide, coffreVide, formatCasePourAffichage, texteBrutChamp };
 })(window);

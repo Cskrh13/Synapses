@@ -2463,6 +2463,17 @@ function mergeLocalSequenceData(data){
       if(!sea || typeof sea!=='object') return sea;
       const s={...sea};
       if(!s.objectif_commun && s.objectif) s.objectif_commun = s.objectif;
+      // BUG CORRIGÉ : une séance importée imbriquée dans le fichier de sa
+      // séquence appartient forcément à cette séquence. On impose donc
+      // sequence_id = seq.id quel que soit ce que portait le fichier
+      // source (champ absent, nommé "sequenceId", ou même une valeur
+      // fausse/périmée) : l'imbrication est la source de vérité. Sans ce
+      // recalage, une séance mal reliée se retrouvait classée par
+      // chargerBanque() (planning-core.js, qui ne lit que sequence_id)
+      // dans un domaine par défaut ("français — lecture"), sans qu'aucune
+      // erreur ne soit remontée nulle part.
+      s.sequence_id = seq.id;
+      delete s.sequenceId; delete s.seqId; delete s.sequence;
       return s;
     });
     const idx=state.sequences.findIndex(x=>x.id===seq.id);
@@ -2472,7 +2483,27 @@ function mergeLocalSequenceData(data){
   };
   if(Array.isArray(data?.sequences)) data.sequences.forEach(addSeq);
   else if(data?.id && data?.titre) addSeq(data);
-  if(Array.isArray(data?.seances) && !data?.id) data.seances.forEach(sea=>{if(sea?.id){const j=state.seances.findIndex(x=>x.id===sea.id);if(j>=0)state.seances[j]=sea;else state.seances.push(sea);}});
+  // Import de séances "à plat" (fichier contenant uniquement des séances,
+  // sans leur séquence) : impossible ici de déduire la séquence par
+  // imbrication, chaque séance doit donc déjà porter un identifiant
+  // exploitable. On accepte les variantes de nommage rencontrées
+  // (sequenceId, seqId, sequence) en les ramenant vers le champ canonique
+  // sequence_id, et on signale — au lieu de les importer en silence — les
+  // séances qu'on ne peut rattacher à aucune séquence connue, pour éviter
+  // qu'elles se classent sans prévenir dans un domaine par défaut.
+  if(Array.isArray(data?.seances) && !data?.id){
+    let orphelines = 0;
+    data.seances.forEach(sea=>{
+      if(!sea?.id) return;
+      const s = {...sea};
+      s.sequence_id = s.sequence_id || s.sequenceId || s.seqId || s.sequence || "";
+      delete s.sequenceId; delete s.seqId; delete s.sequence;
+      if(!s.sequence_id || !state.sequences.some(x=>x.id===s.sequence_id)) orphelines++;
+      const j=state.seances.findIndex(x=>x.id===s.id);
+      if(j>=0) state.seances[j]=s; else state.seances.push(s);
+    });
+    if(orphelines) toast(orphelines+" séance(s) importée(s) sans séquence reconnue — à rattacher à la main (classées par défaut en attendant).");
+  }
   return imported;
 }
 function attachLocalSequenceLoader(){
