@@ -13,6 +13,7 @@
       this.cles = Object.assign({
         config: "synapses_planning_config",
         grilles: "synapses_planning_grilles",
+        affectations: "synapses_planning_affectations",
         sequencesBrouillon: "planif_sequences",
         seancesBrouillon: "planif_seances"
       }, prefixeCles || {});

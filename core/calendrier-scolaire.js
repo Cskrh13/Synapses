@@ -3,7 +3,8 @@
  * ============================================================================
  * Portage fidèle (aucun changement de logique ni de valeur) des utilitaires
  * de date de planning-core.js : JOURS, dateISO, parseISO, addDays,
- * mondayOfWeek, estEnVacances, calculerSemaines.
+ * mondayOfWeek, estEnVacances, calculerSemaines
+ * (+ formatDateLong / formatDateShort, ajoutés pour planning-affichage.html).
  *
  * Extraits ici parce que genererGroupesBesoinULIS, repartirElevesAuto et
  * repartirElevesSemaineAuto en dépendent toutes les trois : les porter dans
@@ -47,6 +48,18 @@
       const r = new Date(d);
       const dow = (r.getDay() + 6) % 7;
       return CalendrierScolaire.addDays(r, -dow);
+    }
+
+    /** Ex. « lundi 7 septembre 2026 » — portage fidèle de formatDateLong (planning-core.js). */
+    static formatDateLong(d) {
+      return d.toLocaleDateString("fr-FR", {
+        weekday: "long", day: "numeric", month: "long", year: "numeric"
+      });
+    }
+
+    /** Ex. « 07/09 » — portage fidèle de formatDateShort (planning-core.js). */
+    static formatDateShort(d) {
+      return d.toLocaleDateString("fr-FR", { day: "2-digit", month: "2-digit" });
     }
 
     /** Une semaine est « en vacances » dès qu'elle chevauche une période. */

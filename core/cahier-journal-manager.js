@@ -2,7 +2,8 @@
  * Synapses 2.0 — core/cahier-journal-manager.js
  * ============================================================================
  * Portage fidèle de genererJournalDepuisGrille, regrouperParBloc, cleBloc,
- * cleCreneau et TYPES_CRENEAU (planning-core.js).
+ * cleCreneau et TYPES_CRENEAU (planning-core.js) ; + libelleBloc,
+ * libelleBlocDefaut et TYPES_ADULTE (ajoutés pour planning-jour.html).
  *
  * Extrait en classe propre parce que repartirElevesSemaineAuto en dépend
  * directement : le cahier journal d'une journée est reconstruit à partir des
@@ -29,6 +30,17 @@
     autre: { label: "Autre / rituel", couleur: "#5B5F6B" }
   };
 
+  // Types d'adulte proposés sur une carte de groupe (portage de TYPES_ADULTE,
+  // planning-core.js). « autonomie » n'est pas un adulte : il correspond à
+  // adulte:null (groupes d'autonomie, vue impression du cahier journal).
+  const TYPES_ADULTE = [
+    { id: "enseignant", label: "Enseignant" },
+    { id: "aesh", label: "AESH" },
+    { id: "atsem", label: "ATSEM" },
+    { id: "autre", label: "Autre" },
+    { id: "autonomie", label: "Autonomie (sans adulte)" }
+  ];
+
   const PROFILS_DISPOSITIF = {
     enseignant: { suffixe: "Enseignant", adulte: { type: "enseignant", nom: "" } },
     aesh: { suffixe: "AESH", adulte: { type: "aesh", nom: "" } },
@@ -47,6 +59,8 @@
 
     static get TYPES_CRENEAU() { return TYPES_CRENEAU; }
 
+    static get TYPES_ADULTE() { return TYPES_ADULTE; }
+
     static uidParDefaut(prefixe) {
       return prefixe + "_" + Date.now().toString(36) + "_" +
         Math.random().toString(36).slice(2, 8);
@@ -55,6 +69,21 @@
     static cleBloc(debut, fin) { return debut + "|" + fin; }
 
     static cleCreneau(dateStr, creneauId) { return dateStr + "__" + creneauId; }
+
+    /** Nom par défaut d'un bloc horaire, d'après son heure de début. */
+    static libelleBlocDefaut(debut) {
+      const h = hm(debut);
+      if (h < 10 * 60 + 30) return "Matin 1";
+      if (h < 12 * 60) return "Matin 2";
+      if (h < 15 * 60) return "Après-midi 1";
+      return "Après-midi 2";
+    }
+
+    /** Libellé d'un bloc : celui saisi par l'enseignant, sinon le nom par défaut. */
+    static libelleBloc(jourJournal, debut, fin) {
+      return jourJournal.libellesBlocs[CahierJournalManager.cleBloc(debut, fin)] ||
+        CahierJournalManager.libelleBlocDefaut(debut);
+    }
 
     /** Regroupe les groupes d'un jour par plage horaire, triés par heure. */
     static regrouperParBloc(jourJournal) {

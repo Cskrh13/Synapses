@@ -61,6 +61,11 @@
       return `${ReferentielHoraire.pad2(Math.floor(m / 60))}:${ReferentielHoraire.pad2(m % 60)}`;
     }
 
+    /** Deux plages [aDebut,aFin) et [bDebut,bFin) (en minutes) se chevauchent-elles ? */
+    static chevaucheMin(aDebut, aFin, bDebut, bFin) {
+      return aDebut < bFin && bDebut < aFin;
+    }
+
     static cycleDuNiveau(niveau) {
       const n = String(niveau || "").toUpperCase();
       if (["CP", "CE1", "CE2"].includes(n)) return "cycle2";

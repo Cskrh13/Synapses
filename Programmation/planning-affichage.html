@@ -544,7 +544,29 @@ table.deroule td{padding:8px;border-top:1px solid var(--line);vertical-align:top
   <div class="drawer-body" id="drawerBody"></div>
 </aside>
 
-<script src="planning-core.js"></script>
+<!-- Synapses 2.0 : la page s'appuie sur model/ et core/ (l'ancien moteur V1 n'est plus chargé).
+     Ordre = ordre de dépendance : modèle -> adaptateurs -> utilitaires -> managers. -->
+<script src="../model/entite.js"></script>
+<script src="../model/classe.js"></script>
+<script src="../model/dispositif.js"></script>
+<script src="../model/ecole.js"></script>
+<script src="../model/espace.js"></script>
+<script src="../model/creneau.js"></script>
+<script src="../model/personnel.js"></script>
+<script src="../model/objectif.js"></script>
+<script src="../model/sequence.js"></script>
+<script src="../model/seance.js"></script>
+<script src="../model/occurrence.js"></script>
+<script src="../core/adapters/storage-adapter.js"></script>
+<script src="../core/adapters/local-adapter.js"></script>
+<script src="../core/adapters/coffre-adapter.js"></script>
+<script src="../core/adapters/journal-adapter.js"></script>
+<script src="../core/referentiel-horaire.js"></script>
+<script src="../core/calendrier-scolaire.js"></script>
+<script src="../core/data-manager.js"></script>
+<script src="../core/cahier-journal-manager.js"></script>
+<script src="../core/affectation-seance-manager.js"></script>
+<script src="../core/banque-seances-manager.js"></script>
 <script>
 /* Nettoyage du localStorage à la fermeture de la page.
  * Ces pages sont des outils de travail temporaires : aucune donnée ne doit
@@ -582,13 +604,19 @@ const SYNAPSES_BUILD = {
 };
 
 "use strict";
-const PC = window.PlanningCore;
+const {
+  DataManager, CalendrierScolaire: CS, ReferentielHoraire: RH,
+  CahierJournalManager: CJ, AffectationSeanceManager, BanqueSeancesManager
+} = window.SynapsesCore;
 
 const $ = id => document.getElementById(id);
 
-let config = PC.chargerConfig();
-let grilles = PC.chargerGrilles();
-let affectations = PC.chargerAffectations();
+const data = new DataManager();
+const affectationsMgr = new AffectationSeanceManager({ localAdapter: data.local });
+const banqueMgr = new BanqueSeancesManager({ storageAdapter: data.storage, localAdapter: data.local });
+
+let config = { classes: [], dispositifs: [], rentree: null, semaines: 0, vacances: [] };
+let grilles = {};
 let banque = {};
 let semaines = [];
 let semaineIdx = 0;
@@ -602,8 +630,31 @@ function couleurDomaine(cle){
   return palette[hash%palette.length];
 }
 
-function elementById(id){
-  return PC.classeById(config, id) || PC.dispositifById(config, id);
+function classeById(id){ return (config.classes || []).find(c => c.id === id) || null; }
+function dispositifById(id){ return (config.dispositifs || []).find(d => d.id === id) || null; }
+function elementById(id){ return classeById(id) || dispositifById(id); }
+
+/* Adaptation modèle 2.0 -> vocabulaire de la page.
+   - Classe.niveauId porte le niveau V1 en clair (« CP », « CE2 »…), qui est
+     aussi la clé de la banque ; « INCONNU » est le repli du modèle quand la
+     classe n'a pas de niveau. Un dispositif n'a pas de niveauId : niveau vide,
+     donc pas de banque de séances (comportement V1 inchangé).
+   - Dispositif.nom peut être null (la V1 le remplissait avec le type). */
+function niveauDe(el){
+  const n = el && el.niveauId;
+  return (!n || n === "INCONNU") ? "" : n;
+}
+function nomDe(el){
+  return el.nom || el.typeId || "Dispositif";
+}
+
+/** (Re)charge école, grilles et affectations via le DataManager / les managers du core. */
+async function chargerDonnees(){
+  const [ecole, grillesBrutes] = await Promise.all([data.get("ecole"), data.get("grilles")]);
+  config = ecole;
+  grilles = grillesBrutes || {};
+  affectationsMgr.charger();
+  semaines = CS.calculerSemaines(config);
 }
 
 function renderClassesToggle(){
@@ -622,7 +673,7 @@ function renderClassesToggle(){
 
   const rendreChip = (item)=>{
     const b = document.createElement("button");
-    b.textContent = item.nom;
+    b.textContent = nomDe(item);
     b.className = classesAffichees.includes(item.id) ? "active" : "";
     b.addEventListener("click", ()=>{
       const i = classesAffichees.indexOf(item.id);
@@ -653,7 +704,7 @@ function renderClassesToggle(){
 
 function renderWeekNav(){
   const sem = semaines[semaineIdx];
-  $("week-label").textContent = sem ? `Semaine ${sem.numero} — ${PC.formatDateShort(sem.lundi)} au ${PC.formatDateShort(sem.vendredi)}` : "—";
+  $("week-label").textContent = sem ? `Semaine ${sem.numero} — ${CS.formatDateShort(sem.lundi)} au ${CS.formatDateShort(sem.vendredi)}` : "—";
 }
 
 function itemPourCle(classeNiveau, domaineCle, seanceId){
@@ -715,13 +766,13 @@ function renderSemaine(){
   let minDebutSemaine = Infinity;
   let maxFinSemaine = -Infinity;
 
-  PC.JOURS.forEach(j => {
+  CS.JOURS.forEach(j => {
     classesObjs.forEach(cl => {
       (grilles[cl.id] || [])
         .filter(c => c.jour === j.n)
         .forEach(c => {
-          minDebutSemaine = Math.min(minDebutSemaine, PC.heureVersMin(c.debut));
-          maxFinSemaine = Math.max(maxFinSemaine, PC.heureVersMin(c.fin));
+          minDebutSemaine = Math.min(minDebutSemaine, RH.heureVersMin(c.debut));
+          maxFinSemaine = Math.max(maxFinSemaine, RH.heureVersMin(c.fin));
         });
     });
   });
@@ -776,16 +827,16 @@ function renderSemaine(){
      UNE JOURNÉE
      ========================================================= */
 
-  PC.JOURS.forEach(j => {
+  CS.JOURS.forEach(j => {
 
     const jourDate =
-      PC.addDays(
+      CS.addDays(
         sem.lundi,
         j.n - 1
       );
 
     const iso =
-      PC.dateISO(jourDate);
+      CS.dateISO(jourDate);
 
     const col =
       document.createElement("div");
@@ -804,7 +855,7 @@ function renderSemaine(){
         </h3>
 
         <div class="day-date">
-          ${PC.formatDateShort(jourDate)}
+          ${CS.formatDateShort(jourDate)}
         </div>
       </a>
     `;
@@ -899,8 +950,8 @@ function renderSemaine(){
     const blocs =
       Array.from(groupes.values())
         .sort((a,b) =>
-          PC.heureVersMin(a.creneau.debut) -
-          PC.heureVersMin(b.creneau.debut)
+          RH.heureVersMin(a.creneau.debut) -
+          RH.heureVersMin(b.creneau.debut)
         );
 
 
@@ -919,12 +970,12 @@ function renderSemaine(){
     blocs.forEach(bloc => {
 
       const debut =
-        PC.heureVersMin(
+        RH.heureVersMin(
           bloc.creneau.debut
         );
 
       const fin =
-        PC.heureVersMin(
+        RH.heureVersMin(
           bloc.creneau.fin
         );
 
@@ -935,7 +986,7 @@ function renderSemaine(){
         const derniereFin =
           Math.max(
             ...ranges[i].map(x =>
-              PC.heureVersMin(
+              RH.heureVersMin(
                 x.creneau.fin
               )
             )
@@ -1015,7 +1066,7 @@ function renderSemaine(){
               ${
                 (c.libelle && c.libelle.trim())
                   ? c.libelle
-                  : PC.TYPES_CRENEAU[c.type].label
+                  : CJ.TYPES_CRENEAU[c.type].label
               }
             </div>
 
@@ -1023,7 +1074,7 @@ function renderSemaine(){
               ${
                 bloc.classes
                   .map(cl =>
-                    `<span>${cl.nom}</span>`
+                    `<span>${nomDe(cl)}</span>`
                   )
                   .join("")
               }
@@ -1049,7 +1100,7 @@ function renderSemaine(){
             membre.creneau;
 
 
-          if(creneau.type === "seance" && !cl.niveau){
+          if(creneau.type === "seance" && !niveauDe(cl)){
 
             // Créneau "séance" d'un dispositif (ULIS, etc.) : pas de niveau,
             // pas de banque de séances — le titre est celui saisi sur la
@@ -1070,12 +1121,12 @@ function renderSemaine(){
                 ${
                   (creneau.titre && creneau.titre.trim())
                     ? creneau.titre
-                    : cl.nom
+                    : nomDe(cl)
                 }
               </div>
 
               <div class="classes-tags">
-                <span>${cl.nom}</span>
+                <span>${nomDe(cl)}</span>
               </div>
             `;
 
@@ -1084,17 +1135,16 @@ function renderSemaine(){
           else if(creneau.type === "seance"){
 
             const aff =
-              (affectations[cl.id] || {})[
-                PC.cleCreneau(
-                  iso,
-                  creneau.id
-                )
-              ];
+              affectationsMgr.pour(
+                cl.id,
+                iso,
+                creneau.id
+              );
 
             const item =
               aff && aff.seanceId
                 ? itemPourCle(
-                    cl.niveau,
+                    niveauDe(cl),
                     creneau.domaineCle,
                     aff.seanceId
                   )
@@ -1108,12 +1158,12 @@ function renderSemaine(){
 
             const domaineLabel =
               (
-                banque[cl.niveau] &&
-                banque[cl.niveau][
+                banque[niveauDe(cl)] &&
+                banque[niveauDe(cl)][
                   creneau.domaineCle
                 ]
               )
-                ? banque[cl.niveau][
+                ? banque[niveauDe(cl)][
                     creneau.domaineCle
                   ].label
                 : creneau.domaineCle;
@@ -1152,7 +1202,7 @@ function renderSemaine(){
               </div>
 
               <div class="classes-tags">
-                <span>${cl.nom}</span>
+                <span>${nomDe(cl)}</span>
               </div>
             `;
 
@@ -1194,14 +1244,14 @@ function renderSemaine(){
                     creneau.libelle.trim()
                   )
                     ? creneau.libelle
-                    : PC.TYPES_CRENEAU[
+                    : CJ.TYPES_CRENEAU[
                         creneau.type
                       ].label
                 }
               </div>
 
               <div class="classes-tags">
-                <span>${cl.nom}</span>
+                <span>${nomDe(cl)}</span>
               </div>
             `;
 
@@ -1218,8 +1268,8 @@ function renderSemaine(){
            de chevauchement) se partagent la largeur disponible
            à parts égales. */
 
-        const debutMin = PC.heureVersMin(c.debut);
-        const finMin = PC.heureVersMin(c.fin);
+        const debutMin = RH.heureVersMin(c.debut);
+        const finMin = RH.heureVersMin(c.fin);
         const nbColonnes = rangee.length;
 
         carte.classList.add("creneau-positionne");
@@ -1267,20 +1317,20 @@ function renderSemaine(){
 
 /* ---------------- Drawer : déroulé de séance ---------------- */
 async function ouvrirDrawer(classeId, iso, creneau, itemResume){
-  const cl = PC.classeById(config, classeId);
+  const cl = classeById(classeId);
   const overlay = $("drawerOverlay"), drawer = $("drawer"), body = $("drawerBody");
   overlay.classList.add("open"); drawer.classList.add("open");
-  $("drawerCrumb").textContent = `${cl.nom} · ${PC.formatDateLong(PC.parseISO(iso))} · ${creneau.debut}–${creneau.fin}`;
+  $("drawerCrumb").textContent = `${nomDe(cl)} · ${CS.formatDateLong(CS.parseISO(iso))} · ${creneau.debut}–${creneau.fin}`;
   body.innerHTML = '<p style="color:var(--ink-soft);">Chargement du déroulé…</p>';
 
-  const domaineLabel = (banque[cl.niveau] && banque[cl.niveau][creneau.domaineCle]) ? banque[cl.niveau][creneau.domaineCle].label : creneau.domaineCle;
+  const domaineLabel = (banque[niveauDe(cl)] && banque[niveauDe(cl)][creneau.domaineCle]) ? banque[niveauDe(cl)][creneau.domaineCle].label : creneau.domaineCle;
 
   if(!itemResume){
     renderDrawerVide(classeId, iso, creneau, domaineLabel);
     return;
   }
   try{
-    const item = await PC.chargerDerouleDeItem(itemResume);
+    const item = await banqueMgr.chargerDeroule(itemResume);
     renderDrawerSeance(classeId, iso, creneau, domaineLabel, item);
   }catch(e){
     body.innerHTML = `<p style="color:var(--danger);">Impossible de charger le déroulé (${e.message}).</p>`;
@@ -1295,7 +1345,7 @@ $("drawerClose").addEventListener("click", fermerDrawer);
 $("drawerOverlay").addEventListener("click", fermerDrawer);
 
 function renderDrawerSeance(classeId, iso, creneau, domaineLabel, item){
-  const cl = PC.classeById(config, classeId);
+  const cl = classeById(classeId);
   const body = $("drawerBody");
   const phases = (item.deroule||[]).map(p=>`
     <tr>
@@ -1307,7 +1357,7 @@ function renderDrawerSeance(classeId, iso, creneau, domaineLabel, item){
   body.innerHTML = `
     <h2>${item.titre || "Séance"}</h2>
     <div class="drawer-meta">
-      <span>${cl.nom}</span><span>${domaineLabel}</span>${item.numero?`<span>N° ${item.numero}</span>`:""}${item.type?`<span>${item.type}</span>`:""}
+      <span>${nomDe(cl)}</span><span>${domaineLabel}</span>${item.numero?`<span>N° ${item.numero}</span>`:""}${item.type?`<span>${item.type}</span>`:""}
     </div>
     ${item.objectif_commun?`<div class="drawer-block"><h4>Objectif</h4><p>${item.objectif_commun}</p></div>`:""}
     ${item.problematique?`<div class="drawer-block"><h4>Problématique</h4><p>${item.problematique}</p></div>`:""}
@@ -1323,11 +1373,11 @@ function renderDrawerSeance(classeId, iso, creneau, domaineLabel, item){
 }
 
 function renderDrawerVide(classeId, iso, creneau, domaineLabel){
-  const cl = PC.classeById(config, classeId);
+  const cl = classeById(classeId);
   const body = $("drawerBody");
   body.innerHTML = `
     <h2>Créneau libre</h2>
-    <div class="drawer-meta"><span>${cl.nom}</span><span>${domaineLabel}</span></div>
+    <div class="drawer-meta"><span>${nomDe(cl)}</span><span>${domaineLabel}</span></div>
     <p style="color:var(--ink-soft);">Aucune séance disponible dans ce domaine n'a pu être affectée automatiquement (banque épuisée). Choisissez-en une manuellement, ou ajoutez de nouvelles séances dans « Séquences &amp; séances ».</p>
     ${renderChoixManuel(classeId, iso, creneau)}
   `;
@@ -1335,8 +1385,8 @@ function renderDrawerVide(classeId, iso, creneau, domaineLabel){
 }
 
 function renderChoixManuel(classeId, iso, creneau){
-  const cl = PC.classeById(config, classeId);
-  const bucket = banque[cl.niveau] && banque[cl.niveau][creneau.domaineCle];
+  const cl = classeById(classeId);
+  const bucket = banque[niveauDe(cl)] && banque[niveauDe(cl)][creneau.domaineCle];
   const options = bucket ? bucket.items.map(it=>`<option value="${it.id}">${it.titre||it.type||it.id} (n°${it.numero||"?"})</option>`).join("") : "";
   return `
     <div class="drawer-manual">
@@ -1349,17 +1399,13 @@ function brancherChoixManuel(classeId, iso, creneau){
   const btn = $("btn-affecter-manuel");
   if(!btn) return;
   btn.addEventListener("click", ()=>{
-    const cl = PC.classeById(config, classeId);
+    const cl = classeById(classeId);
     const sel = $("choix-manuel");
     const id = sel.value;
     if(!id) return;
-    const bucket = banque[cl.niveau] && banque[cl.niveau][creneau.domaineCle];
+    const bucket = banque[niveauDe(cl)] && banque[niveauDe(cl)][creneau.domaineCle];
     const item = bucket.items.find(it=>it.id===id);
-    affectations[classeId] = affectations[classeId] || {};
-    affectations[classeId][PC.cleCreneau(iso, creneau.id)] = {
-      seanceId: id, source: item.source, fichier: item.fichier || null, domaineCle: creneau.domaineCle, manuel: true
-    };
-    PC.sauverAffectations(affectations);
+    affectationsMgr.affecterManuellement(classeId, iso, creneau.id, item, creneau.domaineCle);
     fermerDrawer();
     renderSemaine();
   });
@@ -1372,16 +1418,15 @@ $("next-week").addEventListener("click", ()=>{ if(semaineIdx<semaines.length-1){
 // Si la configuration, les grilles ou les affectations changent dans un
 // autre onglet (Planning — Gestion), on relit tout et on réaffiche —
 // fluidité entre les pages du planning, sans jamais perdre les affectations
-// manuelles (déjà protégées par le flag "manuel" côté planning-core.js).
-window.addEventListener("storage", (e)=>{
-  if([PC.STORE_CONFIG, PC.STORE_GRILLES, PC.STORE_AFFECT].includes(e.key)){
-    config = PC.chargerConfig();
-    grilles = PC.chargerGrilles();
-    affectations = PC.chargerAffectations();
-    semaines = PC.calculerSemaines(config);
-    if(semaineIdx >= semaines.length) semaineIdx = Math.max(0, semaines.length-1);
-    renderClassesToggle();
-    renderSemaine();
+// manuelles (déjà protégées par le flag "manuel", voir AffectationSeanceManager).
+window.addEventListener("storage", async (e)=>{
+  const cles = data.local.cles;
+  if([cles.config, cles.grilles, cles.affectations].includes(e.key)){
+    if(!await chargerDonneesOuAfficherErreur()) return;
+    if(semaineIdx >= semaines.length){
+      semaineIdx = Math.max(0, semaines.length-1);
+      renderSemaine();
+    }
   }
 });
 
@@ -1391,26 +1436,41 @@ window.addEventListener("storage", (e)=>{
    localStorage. Ce bouton permet de les effacer immédiatement de cet
    onglet sans attendre la fermeture (pagehide/beforeunload le font déjà
    automatiquement) — utile par exemple avant de laisser l'ordinateur sans
-   surveillance. Après purge, on recharge les valeurs par défaut de
-   PlanningCore et on réaffiche, sans recharger la page. */
-$("btn-purger-memoire").addEventListener("click", ()=>{
+   surveillance. Après purge, on recharge les valeurs par défaut du
+   DataManager et on réaffiche, sans recharger la page. */
+$("btn-purger-memoire").addEventListener("click", async ()=>{
   if(!confirm("Effacer immédiatement la configuration, les grilles horaires et les affectations de la mémoire de cet onglet ?")) return;
   try{ localStorage.clear(); }catch(e){}
-  config = PC.chargerConfig();
-  grilles = PC.chargerGrilles();
-  affectations = PC.chargerAffectations();
-  semaines = PC.calculerSemaines(config);
   semaineIdx = 0;
-  renderClassesToggle();
-  renderSemaine();
+  await chargerDonneesOuAfficherErreur();
 });
 
 /* ---------------- Initialisation ---------------- */
-(async function init(){
-  semaines = PC.calculerSemaines(config);
-  renderClassesToggle();
+/** Charge les données puis affiche ; en cas d'échec (config illisible, classe
+ *  sans id…), affiche l'erreur au lieu de laisser une page blanche. */
+async function chargerDonneesOuAfficherErreur(){
   try{
-    banque = await PC.chargerBanque();
+    await chargerDonnees();
+  }catch(e){
+    console.error(e);
+    config = { classes: [], dispositifs: [], rentree: null, semaines: 0, vacances: [] };
+    grilles = {};
+    semaines = [];
+    renderClassesToggle();
+    $("content").innerHTML =
+      '<div class="empty-state">Impossible de lire la configuration du planning : ' +
+      String((e && e.message) || e).replace(/</g,"&lt;") + '</div>';
+    return false;
+  }
+  renderClassesToggle();
+  renderSemaine();
+  return true;
+}
+
+(async function init(){
+  if(!await chargerDonneesOuAfficherErreur()) return;
+  try{
+    banque = await banqueMgr.charger();
   }catch(e){ /* le planning reste affichable, sans détail de séance */ }
   renderSemaine();
 })();

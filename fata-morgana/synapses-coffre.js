@@ -494,6 +494,7 @@
         fin: a.fin || '',
         activite,
         adulteReference,
+        aesh: a.aesh === true,
         remarque: a.remarque || (a.titre && a.titre !== activite.nom ? a.titre : ''),
         dateAffectation: nowIso()
       };

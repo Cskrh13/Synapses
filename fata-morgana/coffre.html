@@ -175,6 +175,9 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 .edt-axe-temps{background:#FAFAF7;border-right:1px solid var(--line);}
 .edt-heure-repere{position:absolute;left:0;right:0;height:1px;border-top:1px solid var(--line);}
 .edt-heure-label{position:absolute;right:8px;top:-8px;background:#FAFAF7;padding-left:3px;color:var(--ink-soft);font-family:'IBM Plex Mono',monospace;font-size:11px;line-height:16px;white-space:nowrap;}
+/* Premier et dernier repères : centrés sur la ligne ils déborderaient de la grille (sous l'en-tête des jours / hors du cadre). On les place juste sous, puis juste au-dessus de leur ligne. */
+.edt-heure-label.edt-heure-premier{top:2px;}
+.edt-heure-label.edt-heure-dernier{top:-18px;}
 .edt-jour-col{border-left:1px solid var(--line);background:repeating-linear-gradient(to bottom,#fff 0,#fff calc(var(--edt-px-30) - 1px),#E8E5DC calc(var(--edt-px-30) - 1px),#E8E5DC var(--edt-px-30));}
 .edt-jour-col .edt-ligne-demi{position:absolute;left:0;right:0;border-top:1px dashed #EEECE5;height:1px;}
 .edt-bloc{position:absolute;left:4px;right:4px;padding:4px 6px;border:1px solid #C9D2E7;border-radius:6px;background:#EEF2FB;overflow:hidden;z-index:2;box-shadow:0 1px 2px rgba(20,29,51,.06);}
@@ -183,17 +186,20 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 .edt-bloc-pause{background:#F1EFE9;border-color:#D7D2C5;}
 .edt-bloc-externe{background:#FDF3E7;border-color:#E8CFA8;}
 .edt-bloc-dispositif{background:#EAF1FA;border-color:#BFD0E8;}
-.edt-bloc .edt-classe{font-weight:600;color:var(--navy);font-size:11.5px;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.edt-bloc .edt-classe{font-weight:600;color:var(--navy);font-size:11.5px;line-height:1.2;overflow-wrap:anywhere;}
+.edt-bloc .edt-emoji{font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;font-weight:400;margin-right:3px;}
 .edt-bloc-recreation .edt-classe,.edt-bloc-pause .edt-classe{color:var(--ink-soft);font-weight:600;}
 .edt-bloc-externe .edt-classe{color:#8A5A16;}
-.edt-bloc .edt-nom{color:var(--ink);font-size:11.2px;line-height:1.25;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.edt-bloc .edt-titre{color:var(--ink-soft);font-size:10.5px;line-height:1.2;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-.edt-bloc .edt-adulte{color:var(--ink);font-size:10.5px;line-height:1.2;margin-top:2px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.edt-bloc .edt-nom{color:var(--ink);font-size:11.2px;line-height:1.25;margin-top:2px;overflow-wrap:anywhere;}
+.edt-bloc .edt-titre{color:var(--ink-soft);font-size:10.5px;line-height:1.2;margin-top:2px;overflow-wrap:anywhere;}
+.edt-bloc .edt-adulte{color:var(--ink);font-size:10.5px;line-height:1.2;margin-top:2px;overflow-wrap:anywhere;}
 .edt-bloc .edt-horaire{color:var(--accent-sky);font-family:'IBM Plex Mono',monospace;font-size:9.5px;line-height:1.15;margin-top:2px;white-space:nowrap;}
 .edt-bloc-recreation .edt-horaire,.edt-bloc-pause .edt-horaire{color:var(--ink-soft);}
 .edt-bloc.edt-duree-courte .edt-adulte,.edt-bloc.edt-duree-courte .edt-titre{display:none;}
 .edt-bloc.edt-duree-tres-courte .edt-horaire{font-size:8.5px;}
 .edt-bloc:hover,.edt-bloc:focus-within{z-index:6;box-shadow:0 4px 14px rgba(20,29,51,.22);}
+/* À l'écran, un bloc trop court pour tout son texte se déploie au survol / au focus (jamais de texte perdu). */
+.edt-bloc:hover,.edt-bloc:focus-within{height:auto !important;min-height:var(--edt-h);overflow:visible;}
 .edt-btn-editer{position:absolute;top:2px;right:2px;border:none;background:rgba(255,255,255,.7);color:var(--ink-soft);cursor:pointer;font-size:11px;line-height:1;padding:2px 4px;opacity:.6;border-radius:4px;z-index:3;}
 /* Créneau ULIS déduit d'un trou d'emploi du temps (aucune affectation
    réellement enregistrée à cet horaire) : même teinte que les créneaux
@@ -213,19 +219,26 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 #edtEnteteImpression h2{margin:1px 0 0;font-size:19px;color:var(--navy);}
 #edtEnteteImpression .edt-imp-meta{text-align:right;font-size:11.5px;color:var(--ink-soft);}
 #edtEnteteImpression .edt-imp-meta div+div{margin-top:2px;}
-#edtImpressionLegende{display:none;}
-#edtImpressionLegende .edt-imp-puce{display:inline-flex;align-items:center;gap:5px;}
-#edtImpressionLegende .edt-imp-carre{width:11px;height:11px;border-radius:3px;display:inline-block;}
 #edtImpressionPied{display:none;}
 @media print {
-  @page { size: landscape; margin: 10mm 12mm; }
+  /* A4 vertical, une seule page. Zone imprimable = 186 mm x 277 mm
+     (≈ 703 x 1047 px à 96 dpi) : l'échelle de la grille d'impression est
+     calculée pour cette hauteur (voir HAUTEUR_GRILLE_IMPRESSION_PX plus bas). */
+  @page { size: A4 portrait; margin: 10mm 12mm; }
   html, body{-webkit-print-color-adjust:exact;print-color-adjust:exact;color-adjust:exact;}
+  html, body{height:auto;margin:0;}
   body{background:#fff;}
   body *{visibility:hidden;}
   #edtZoneImpression, #edtZoneImpression *{visibility:visible;}
+  /* « visibility:hidden » masque sans libérer la place : le reste de la page
+     (cartes, formulaires…) continuait donc d'occuper de la hauteur et
+     produisait des pages blanches supplémentaires à l'impression. On retire
+     de la mise en page tout ce qui n'est ni la zone d'impression, ni l'un de
+     ses ancêtres, ni l'un de ses descendants. */
+  body :not(#edtZoneImpression):not(#edtZoneImpression *):not(:has(#edtZoneImpression)){display:none !important;}
+  #edtZoneImpression{break-inside:avoid;page-break-inside:avoid;}
   #edtZoneImpression{position:absolute;left:0;top:0;width:100%;padding:0;margin:0;}
   .print-only{display:block;}
-  #edtImpressionLegende{display:flex;gap:16px;flex-wrap:wrap;margin-top:10px;font-size:11px;color:var(--ink-soft);align-items:center;}
   #edtImpressionPied{display:flex;margin-top:14px;padding-top:8px;border-top:1px solid var(--line);font-size:10px;color:var(--ink-soft);justify-content:space-between;}
   /* La grille écran (échelle adaptée à la lecture au clavier/souris) n'est
      jamais imprimée : seule la grille dédiée à l'impression, reconstruite
@@ -233,15 +246,45 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
      + le gestionnaire de #edtBtnImprimer), doit apparaître sur le papier. */
   #edtGrilleWrap{display:none !important;}
   .edt-btn-editer{display:none !important;}
-  .edt-planning{min-width:0;width:100%;box-shadow:none;}
-  .edt-planning-head,.edt-planning-body{grid-template-columns:50px repeat(5,minmax(0,1fr));}
-  .edt-axe-temps,.edt-jour-col{height:var(--edt-hauteur);}
-  .edt-bloc{left:3px;right:3px;padding:2px 4px;box-shadow:none;}
-  .edt-bloc .edt-classe{font-size:10.5px;}
-  .edt-bloc .edt-nom{font-size:10px;}
-  .edt-bloc .edt-titre,.edt-bloc .edt-adulte{font-size:9px;}
-  .edt-bloc .edt-horaire{font-size:8.5px;}
 }
+
+/* Grille d'impression (#edtGrilleWrapImpression). Ces règles sont HORS de
+   @media print pour que la même mise en page serve à la fois au papier et à la
+   MESURE faite avant l'impression (voir construireGrilleImpression) : le
+   conteneur est masqué à l'écran (.print-only) et n'est affiché que pour
+   l'impression ou, brièvement et hors écran, pour vérifier qu'aucun texte
+   n'est coupé dans un bloc. */
+#edtGrilleWrapImpression.edt-mesure{display:block !important;position:absolute;left:-99999px;top:0;visibility:hidden;}
+#edtGrilleWrapImpression .edt-planning{min-width:0;width:100%;box-shadow:none;}
+#edtGrilleWrapImpression .edt-planning-head,#edtGrilleWrapImpression .edt-planning-body{grid-template-columns:50px repeat(5,minmax(0,1fr));}
+#edtGrilleWrapImpression .edt-axe-temps,#edtGrilleWrapImpression .edt-jour-col{height:var(--edt-hauteur);}
+#edtGrilleWrapImpression .edt-bloc{left:3px;right:3px;padding:2px 4px;box-shadow:none;}
+#edtGrilleWrapImpression .edt-btn-editer{display:none !important;}
+/* Blocs courts (récréation de 15 min, créneau d'une demi-heure sur une longue
+   journée…) : lieu, activité et horaire se suivent sur une même ligne (retour à
+   la ligne si besoin) au lieu d'être empilés, pour que tout tienne sans coupure. */
+#edtGrilleWrapImpression .edt-bloc.edt-duree-courte{display:flex;flex-wrap:wrap;align-items:baseline;column-gap:5px;row-gap:0;}
+#edtGrilleWrapImpression .edt-bloc.edt-duree-courte>div{margin-top:0;}
+#edtGrilleWrapImpression .edt-bloc .edt-emoji{line-height:1;}
+#edtGrilleWrapImpression .edt-bloc.edt-duree-minuscule .edt-nom{display:none;}
+#edtGrilleWrapImpression .edt-bloc.edt-sans-remarque .edt-titre{display:none;}
+#edtGrilleWrapImpression .edt-bloc.edt-sans-adulte .edt-adulte{display:none;}
+#edtGrilleWrapImpression .edt-bloc .edt-classe{font-size:10.5px;}
+#edtGrilleWrapImpression .edt-bloc .edt-nom{font-size:10px;}
+#edtGrilleWrapImpression .edt-bloc .edt-titre,#edtGrilleWrapImpression .edt-bloc .edt-adulte{font-size:9px;}
+#edtGrilleWrapImpression .edt-bloc .edt-horaire{font-size:8.5px;}
+/* Si un bloc est trop dense pour son texte, on réduit d'abord la police (deux
+   crans) plutôt que de couper ou d'abréger quoi que ce soit. */
+#edtGrilleWrapImpression.edt-dense .edt-bloc{padding:1px 3px;}
+#edtGrilleWrapImpression.edt-dense .edt-bloc .edt-classe{font-size:9.5px;}
+#edtGrilleWrapImpression.edt-dense .edt-bloc .edt-nom{font-size:9px;}
+#edtGrilleWrapImpression.edt-dense .edt-bloc .edt-titre,#edtGrilleWrapImpression.edt-dense .edt-bloc .edt-adulte{font-size:8px;}
+#edtGrilleWrapImpression.edt-dense .edt-bloc .edt-horaire{font-size:8px;}
+#edtGrilleWrapImpression.edt-tres-dense .edt-bloc{padding:1px 2px;}
+#edtGrilleWrapImpression.edt-tres-dense .edt-bloc .edt-classe{font-size:8.5px;}
+#edtGrilleWrapImpression.edt-tres-dense .edt-bloc .edt-nom{font-size:8px;}
+#edtGrilleWrapImpression.edt-tres-dense .edt-bloc .edt-titre,#edtGrilleWrapImpression.edt-tres-dense .edt-bloc .edt-adulte{font-size:7.5px;}
+#edtGrilleWrapImpression.edt-tres-dense .edt-bloc .edt-horaire{font-size:7.5px;}
 
 /* ---- Gestion des prises en charge extérieures (santé) ---- */
 .pec-wrap{margin:0 0 20px;}
@@ -255,6 +298,38 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
 .pec-form label{display:block;font-size:11.5px;color:var(--ink-soft);margin-bottom:3px;}
 .pec-form input,.pec-form select{width:100%;box-sizing:border-box;font-size:13px;padding:6px 8px;}
 .pec-form .pec-form-actions{grid-column:1/-1;}
+
+/* ===== Onglets principaux (1 à 4) ===== */
+.main-tabs{display:flex;gap:4px;margin:0 0 18px;border-bottom:2px solid var(--line);overflow-x:auto;-webkit-overflow-scrolling:touch;}
+.main-tab{display:flex;align-items:center;gap:8px;background:none;border:none;border-bottom:3px solid transparent;margin-bottom:-2px;padding:11px 16px;font-size:14px;font-weight:600;color:var(--ink-soft);border-radius:8px 8px 0 0;white-space:nowrap;}
+.main-tab .main-tab-num{width:22px;height:22px;border-radius:50%;background:var(--line);color:var(--ink-soft);font-size:12px;display:inline-flex;align-items:center;justify-content:center;flex-shrink:0;}
+.main-tab:hover:not(:disabled){color:var(--ink);background:#EFEDE6;}
+.main-tab:focus-visible{outline:2px solid var(--accent-sky);outline-offset:-2px;}
+.main-tab.actif{color:var(--accent-sky);border-bottom-color:var(--accent-sky);}
+.main-tab.actif .main-tab-num{background:var(--accent-sky);color:#fff;}
+.main-tab:disabled{opacity:.45;cursor:not-allowed;}
+.tab-panel{display:none;}
+.tab-panel.actif{display:block;}
+@media(max-width:640px){.main-tab{padding:9px 11px;font-size:13px;}}
+
+/* ===== Choix du smiley d'un créneau (formulaire d'édition) ===== */
+.edt-emoji-choix{display:flex;flex-wrap:wrap;gap:4px;margin:4px 0 8px;}
+.edt-emoji-btn{width:34px;height:34px;padding:0;font-size:18px;line-height:1;border:1px solid var(--line);background:#fff;border-radius:7px;font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;}
+.edt-emoji-btn:hover{border-color:var(--accent-sky);}
+.edt-emoji-btn[aria-pressed="true"]{border-color:var(--accent-sky);background:#EAF1FA;box-shadow:0 0 0 2px rgba(46,94,170,.25);}
+.edt-emoji-btn.edt-emoji-auto{width:auto;padding:0 10px;font-size:12.5px;font-weight:600;color:var(--ink-soft);font-family:inherit;}
+.edt-emoji-libre{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+.edt-edition-boite .edt-emoji-libre input{width:150px;}
+.edt-emoji-apercu{font-size:24px;line-height:1;font-family:'Apple Color Emoji','Segoe UI Emoji','Noto Color Emoji',sans-serif;}
+.edt-edition-erreur{color:var(--danger);font-size:13px;margin:8px 0 0;}
+.edt-edition-boite .pec-form-actions{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px;}
+
+/* ===== Enregistrement depuis l'onglet 3 ===== */
+.edt-enregistrer{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin:0 0 16px;padding:10px 12px;border:1px solid var(--line);border-radius:8px;background:#FAFAF7;}
+.edt-enregistrer input{width:230px;max-width:100%;font-size:13px;padding:7px 9px;}
+.edt-enregistrer .status{flex-basis:100%;margin:0;}
+.edt-modif-etat{font-size:13px;color:var(--ink-soft);margin-right:auto;}
+.edt-modif-etat.attente{color:#8A5A16;font-weight:600;}
 
 /* ===== grille-analyse.js (onglet "Analyse & IA") ===== */
 .ga-section { margin-bottom: 28px; }
@@ -365,8 +440,16 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
     <strong>Pourquoi c'est confidentiel :</strong> tant que vous n'avez pas cliqué sur « Sauvegarder », vos notes restent uniquement dans la mémoire de cet onglet — rien n'est envoyé à un serveur, rien n'est écrit ailleurs sur l'ordinateur. Elles disparaissent automatiquement si vous fermez l'onglet ou cliquez sur « Effacer mes données » : pensez donc à sauvegarder régulièrement si vous voulez les conserver.
   </div>
 
+  <!-- ============ Onglets 1 à 4 ============ -->
+  <div class="main-tabs" role="tablist" aria-label="Sections du coffre">
+    <button type="button" class="main-tab actif" role="tab" id="tabBtnOuverture" data-tab="cardOuverture" aria-selected="true" aria-controls="cardOuverture"><span class="main-tab-num">1</span><span>Ouvrir</span></button>
+    <button type="button" class="main-tab" role="tab" id="tabBtnSuivi" data-tab="cardSuivi" aria-selected="false" aria-controls="cardSuivi" tabindex="-1"><span class="main-tab-num">2</span><span>Observations</span></button>
+    <button type="button" class="main-tab" role="tab" id="tabBtnEdt" data-tab="cardEmploiDuTemps" aria-selected="false" aria-controls="cardEmploiDuTemps" tabindex="-1"><span class="main-tab-num">3</span><span>Emploi du temps</span></button>
+    <button type="button" class="main-tab" role="tab" id="tabBtnExport" data-tab="cardExport" aria-selected="false" aria-controls="cardExport" tabindex="-1"><span class="main-tab-num">4</span><span>Sauvegarder</span></button>
+  </div>
+
   <!-- ============ Ouverture / création ============ -->
-  <section class="card" id="cardOuverture">
+  <section class="card tab-panel actif" id="cardOuverture" role="tabpanel" aria-labelledby="tabBtnOuverture">
     <h2>1. Ouvrir mon espace de suivi</h2>
     <p class="hint">Un fichier correspond en général à une classe (ou un dispositif) pour une année scolaire.</p>
 
@@ -417,13 +500,13 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
   </section>
 
   <!-- ============ Suivi individuel (élèves + grille d'analyse BARRY/S4C) ============ -->
-  <section class="card disabled-overlay" id="cardSuivi" style="padding:0;overflow:hidden;">
+  <section class="card tab-panel disabled-overlay" id="cardSuivi" role="tabpanel" aria-labelledby="tabBtnSuivi" style="padding:0;overflow:hidden;">
     <div class="card-step-head">2. Noter mes observations, élève par élève</div>
     <div id="suiviIndividuelApp"></div>
   </section>
 
   <!-- ============ Emploi du temps ============ -->
-  <section class="card disabled-overlay" id="cardEmploiDuTemps">
+  <section class="card tab-panel disabled-overlay" id="cardEmploiDuTemps" role="tabpanel" aria-labelledby="tabBtnEdt">
     <h2>3. Emploi du temps</h2>
     <p class="hint">Consultez l'emploi du temps individuel d'un élève : les créneaux auxquels il a été affecté (onglet « Affectation » de Planning — Gestion), tels qu'enregistrés dans son coffre.</p>
     <div class="field edt-select-wrap">
@@ -433,19 +516,24 @@ th{color:var(--ink-soft);font-weight:600;font-size:12px;text-transform:uppercase
       </select>
       <button type="button" id="edtBtnImprimer" class="btn" disabled>🖨️ Imprimer l'emploi du temps</button>
     </div>
+    <div class="edt-enregistrer" id="edtBarreEnregistrement">
+      <span class="edt-modif-etat" id="edtEtatModif" aria-live="polite">Aucune modification en attente</span>
+      <input type="password" id="edtMdpEnregistrer" placeholder="Mot de passe du fichier" autocomplete="new-password" aria-label="Mot de passe du fichier">
+      <button type="button" id="edtBtnEnregistrer" class="btn btn-primary">💾 Enregistrer les modifications</button>
+      <div class="status" id="statutEdtEnregistrer"></div>
+    </div>
     <div id="edtPecWrap"></div>
     <div id="edtZoneImpression">
       <div id="edtEnteteImpression" class="print-only"></div>
       <div id="edtGrilleWrap"></div>
       <div id="edtGrilleWrapImpression" class="print-only"></div>
-      <div id="edtImpressionLegende" class="print-only"></div>
       <div id="edtImpressionPied" class="print-only"></div>
     </div>
     <div id="edtEditionWrap"></div>
   </section>
 
   <!-- ============ Export / purge ============ -->
-  <section class="card disabled-overlay" id="cardExport">
+  <section class="card tab-panel disabled-overlay" id="cardExport" role="tabpanel" aria-labelledby="tabBtnExport">
     <h2>4. Sauvegarder ou effacer mes données</h2>
     <div class="grid2">
       <div>
@@ -511,11 +599,54 @@ const SYNAPSES_BUILD = {
     el.className = 'status ' + (ok ? 'ok' : 'err');
   }
 
+  /* -------- Onglets 1 à 4 --------
+     Un seul panneau visible à la fois. Tant qu'aucun coffre n'est ouvert,
+     les onglets 2 à 4 sont désactivés (rien à y voir) : seul l'onglet 1
+     « Ouvrir » est utilisable. */
+  const ONGLETS = ['cardOuverture', 'cardSuivi', 'cardEmploiDuTemps', 'cardExport'];
+
+  function boutonOnglet(idPanneau){
+    return document.querySelector('.main-tab[data-tab="' + idPanneau + '"]');
+  }
+
+  function activerOnglet(idPanneau){
+    ONGLETS.forEach((id) => {
+      const actif = id === idPanneau;
+      $(id).classList.toggle('actif', actif);
+      const btn = boutonOnglet(id);
+      btn.classList.toggle('actif', actif);
+      btn.setAttribute('aria-selected', actif ? 'true' : 'false');
+      btn.tabIndex = actif ? 0 : -1;
+    });
+  }
+
+  ONGLETS.forEach((id) => {
+    const btn = boutonOnglet(id);
+    btn.addEventListener('click', () => { if (!btn.disabled) activerOnglet(id); });
+    // Navigation au clavier (flèches gauche/droite, Début/Fin) entre onglets actifs.
+    btn.addEventListener('keydown', (ev) => {
+      const dispo = ONGLETS.filter((i) => !boutonOnglet(i).disabled);
+      const pos = dispo.indexOf(id);
+      let cible = null;
+      if (ev.key === 'ArrowRight') cible = dispo[(pos + 1) % dispo.length];
+      else if (ev.key === 'ArrowLeft') cible = dispo[(pos - 1 + dispo.length) % dispo.length];
+      else if (ev.key === 'Home') cible = dispo[0];
+      else if (ev.key === 'End') cible = dispo[dispo.length - 1];
+      if (cible) { ev.preventDefault(); activerOnglet(cible); boutonOnglet(cible).focus(); }
+    });
+  });
+
   function refreshLockState(){
     const on = coffre.ouvert;
     ['cardSuivi','cardEmploiDuTemps','cardExport'].forEach(id=>{
       $(id).classList.toggle('disabled-overlay', !on);
+      boutonOnglet(id).disabled = !on;
     });
+    // Coffre fermé (ou purgé) : retour à l'onglet 1, le seul utilisable.
+    if (!on) activerOnglet('cardOuverture');
+    // Coffre tout juste ouvert/créé/purgé : rien n'est en attente d'enregistrement.
+    modificationsEnAttente = false;
+    majEtatModif();
     // Construction DOM (jamais innerHTML) : le nom d'établissement est une
     // donnée saisie par l'utilisateur (ou lue depuis un .synapses déchiffré),
     // donc potentiellement non fiable — on ne l'insère jamais comme HTML.
@@ -883,27 +1014,160 @@ const SYNAPSES_BUILD = {
   /** Marque le coffre comme modifié si la fonction existe dans cette page
    *  (elle est définie plus bas, près de l'export) : évite une erreur si
    *  jamais l'ordre des scripts changeait. */
+  /* Suivi des modifications non enregistrées (emploi du temps, prises en
+     charge extérieures) : simple indicateur affiché dans l'onglet 3, remis à
+     zéro à l'ouverture, à la création, à la purge et après un enregistrement. */
+  let modificationsEnAttente = false;
+  function majEtatModif(){
+    const el = $('edtEtatModif');
+    el.textContent = modificationsEnAttente ? '● Modifications non enregistrées' : 'Aucune modification en attente';
+    el.classList.toggle('attente', modificationsEnAttente);
+  }
+  function marquerCoffreModifie(){
+    modificationsEnAttente = true;
+    majEtatModif();
+  }
+
   function marquerCoffreModifieSiDisponible(){
     if (typeof marquerCoffreModifie === 'function') marquerCoffreModifie();
   }
 
-  /** Ouvre un petit formulaire modal-like (dans #edtEditionWrap) pour
-   *  préciser/corriger l'activité et l'adulte de référence d'une case de
-   *  l'emploi du temps, qu'elle vienne du planning (classe/dispositif) ou
-   *  d'une prise en charge extérieure. Ne modifie jamais l'horaire ni le
-   *  lieu : ces informations restent de la responsabilité de Planning —
-   *  Gestion (planning[]) ou du formulaire dédié ci-dessus (PEC). */
-  function ouvrirEditionCase(identifiantSynapses, brut, origine, formatte){
+  /* -------- Smileys choisis & créneaux ULIS personnalisés --------
+     Smiley : chaque créneau a un smiley « automatique » (voir
+     emojiNatureCreneau) que l'on peut remplacer par un smiley choisi.
+     Stockage : champ `emoji` sur l'entrée elle-même (affectation du
+     planning, prise en charge extérieure, créneau ULIS personnalisé) ; pour
+     les récréations/pauses fixes, qui ne sont pas des entrées du coffre,
+     table `edtEmojisFixes` { idRécréation: smiley } de l'élève. Chaîne
+     vide = retour au smiley automatique.
+
+     Créneau ULIS déduit : un « trou » de l'emploi du temps n'existe dans
+     aucune donnée. Dès qu'on le modifie, il devient un créneau à part entière
+     de CET élève, enregistré dans `eleve.creneauxUlisPerso[]`. Volontairement
+     PAS dans planning[] : planning-gestion/planning-jour lisent planning[]
+     pour savoir qui est affecté à quel créneau de la grille ; y glisser une
+     entrée sans créneau de grille correspondant fausserait la répartition.
+     Ces deux champs (`creneauxUlisPerso`, `edtEmojisFixes`) ne passent PAS par
+     listerEleves() (liste blanche de champs) : ils se lisent via getEleve().
+     Un créneau personnalisé garde la priorité « dispositif » (la plus basse) :
+     PEC et classe passent toujours devant. */
+  const EMOJIS_CHOIX = [
+    '📖', '✏️', '🔢', '🗣️', '🏃', '🎨', '🎵', '🔬', '🌍', '🤝',
+    '🧩', '🏫', '⚽', '🍽️', '🏥', '🔔', '🧠', '💬', '🎲', '💻',
+    '🧘', '🎭', '📚', '🖐️', '🕐', '⭐', '🌱', '🚌'
+  ];
+
+  /** Premier « caractère visible » (graphème) d'une saisie : un smiley composé
+   *  (drapeau, famille, teint de peau…) compte pour un seul. */
+  function premierGrapheme(txt){
+    const t = String(txt || '').trim();
+    if (!t) return '';
+    if (typeof Intl !== 'undefined' && Intl.Segmenter) {
+      const it = new Intl.Segmenter(undefined, { granularity: 'grapheme' }).segment(t)[Symbol.iterator]().next();
+      return it.done ? '' : it.value.segment;
+    }
+    return Array.from(t)[0] || '';
+  }
+
+  function emojiPersoValide(v){
+    return (typeof v === 'string' && v.length <= 16) ? v.trim() : '';
+  }
+
+  function lireEmojiPerso(c, identifiantSynapses){
+    if (!c) return '';
+    if (c._origine === 'recreation-fixe') {
+      const e = coffre.getEleve(identifiantSynapses);
+      return emojiPersoValide(e.edtEmojisFixes && e.edtEmojisFixes[c.id]);
+    }
+    return emojiPersoValide((c._brut || c).emoji);
+  }
+
+  function ecrireEmojiFixe(identifiantSynapses, idFixe, emoji){
+    const e = coffre.getEleve(identifiantSynapses);
+    if (!e.edtEmojisFixes || typeof e.edtEmojisFixes !== 'object') e.edtEmojisFixes = {};
+    if (emoji) e.edtEmojisFixes[idFixe] = emoji;
+    else delete e.edtEmojisFixes[idFixe];
+  }
+
+  function lireCreneauxUlisPerso(identifiantSynapses){
+    const e = coffre.getEleve(identifiantSynapses);
+    return Array.isArray(e.creneauxUlisPerso) ? e.creneauxUlisPerso : [];
+  }
+
+  function minutesVersHHMM(total){
+    return String(Math.floor(total / 60)).padStart(2, '0') + ':' + String(total % 60).padStart(2, '0');
+  }
+
+  function creerCreneauUlisPerso(identifiantSynapses, seg, f, valeurs){
+    const e = coffre.getEleve(identifiantSynapses);
+    if (!Array.isArray(e.creneauxUlisPerso)) e.creneauxUlisPerso = [];
+    const alea = Array.from(crypto.getRandomValues(new Uint8Array(4))).map((b) => b.toString(16).padStart(2, '0')).join('');
+    const entree = {
+      id: 'ULP-' + alea,
+      typeLieu: 'dispositif',
+      classeNom: f.lieuNom,
+      jour: Number(f.jour),
+      debut: minutesVersHHMM(seg.debutMin),
+      fin: minutesVersHHMM(seg.finMin),
+      activite: { nom: valeurs.activite, domaineCle: '' },
+      adulteReference: { nom: valeurs.adulteNom, role: valeurs.adulteRole },
+      remarque: '',
+      emoji: valeurs.emoji,
+      creeLe: new Date().toISOString()
+    };
+    e.creneauxUlisPerso.push(entree);
+    return entree;
+  }
+
+  function modifierCreneauUlisPerso(identifiantSynapses, id, valeurs){
+    const p = lireCreneauxUlisPerso(identifiantSynapses).find((x) => x.id === id);
+    if (!p) throw new Error('Créneau ULIS personnalisé introuvable.');
+    p.activite = Object.assign({ nom: '', domaineCle: '' }, p.activite || {}, { nom: valeurs.activite });
+    p.adulteReference = { nom: valeurs.adulteNom, role: valeurs.adulteRole };
+    p.emoji = valeurs.emoji;
+  }
+
+  function supprimerCreneauxUlisPerso(identifiantSynapses, ids){
+    const e = coffre.getEleve(identifiantSynapses);
+    if (!Array.isArray(e.creneauxUlisPerso)) return;
+    e.creneauxUlisPerso = e.creneauxUlisPerso.filter((x) => !ids.includes(x.id));
+  }
+
+  /** Ouvre le formulaire d'édition d'une case de l'emploi du temps (dans
+   *  #edtEditionWrap) : activité, adulte de référence, smiley. `seg` est le
+   *  segment affiché (voir resoudreJourneeContinue) : il peut regrouper
+   *  plusieurs entrées identiques et consécutives (seg.cs), toutes mises à
+   *  jour ensemble pour que le bloc ne se scinde pas après enregistrement.
+   *  Ne modifie jamais l'horaire ni le lieu : ces informations restent de la
+   *  responsabilité de Planning — Gestion (planning[]) ou du formulaire dédié
+   *  (PEC). Un créneau ULIS déduit (seg.synthese) devient, à l'enregistrement,
+   *  un créneau ULIS personnalisé de l'élève ; les récréations/pauses fixes ne
+   *  permettent que le choix du smiley. */
+  function ouvrirEditionCase(identifiantSynapses, seg, formatte){
     const zone = $('edtEditionWrap');
     zone.innerHTML = '';
+
+    const estDeduit = !!seg.synthese;
+    const cs = estDeduit ? [] : (seg.cs && seg.cs.length ? seg.cs : [seg.c]);
+    const seulementFixes = !estDeduit && cs.every((c) => c._origine === 'recreation-fixe');
+    const seulementExterne = !estDeduit && cs.every((c) => c._origine === 'externe');
+    const idsUlisPerso = cs.filter((c) => c._origine === 'ulis-perso').map((c) => (c._brut || c).id);
 
     const boite = document.createElement('div');
     boite.className = 'edt-edition-boite';
 
     const titre = document.createElement('h4');
     titre.style.cssText = 'margin:0 0 8px;font-size:14px;';
-    titre.textContent = formatte.lieuNom + ' — ' + (formatte.debut || '') + (formatte.fin ? ' – ' + formatte.fin : '');
+    titre.textContent = (estDeduit ? 'Créneau ULIS déduit — ' : formatte.lieuNom + ' — ') + (formatte.debut || '') + (formatte.fin ? ' – ' + formatte.fin : '');
     boite.appendChild(titre);
+
+    if (estDeduit) {
+      const note = document.createElement('p');
+      note.className = 'hint';
+      note.style.margin = '0 0 10px';
+      note.textContent = 'Ce créneau est déduit d\'un trou de l\'emploi du temps. En l\'enregistrant, il devient un créneau à part entière de cet élève (modifiable ensuite comme les autres).';
+      boite.appendChild(note);
+    }
 
     const inputActivite = document.createElement('input');
     inputActivite.type = 'text';
@@ -918,33 +1182,125 @@ const SYNAPSES_BUILD = {
     const inputAdulteRole = document.createElement('input');
     inputAdulteRole.type = 'text';
     inputAdulteRole.placeholder = 'Ex. Enseignante titulaire, AESH, ULIS…';
-    inputAdulteRole.value = formatte.adulteRole || (origine === 'externe' ? 'Intervenant extérieur' : '');
-    if (origine === 'externe') { inputAdulteRole.disabled = true; } // fixé par le type "externe"
+    inputAdulteRole.value = formatte.adulteRole || (seulementExterne ? 'Intervenant extérieur' : '');
+    if (seulementExterne) { inputAdulteRole.disabled = true; } // fixé par le type "externe"
 
-    boite.appendChild(ligneChampPec('Activité travaillée', inputActivite));
-    boite.appendChild(ligneChampPec('Adulte de référence', inputAdulteNom));
-    boite.appendChild(ligneChampPec('Rôle de l\'adulte', inputAdulteRole));
+    if (!seulementFixes) {
+      boite.appendChild(ligneChampPec('Activité travaillée', inputActivite));
+      boite.appendChild(ligneChampPec('Adulte de référence', inputAdulteNom));
+      boite.appendChild(ligneChampPec('Rôle de l\'adulte', inputAdulteRole));
+    }
+
+    // --- Choix du smiley ---
+    let emojiChoisi = seg.emojiPerso || '';
+    const emojiAuto = emojiNatureCreneau(formatte, Object.assign({}, seg, { emojiPerso: '' }));
+
+    const groupeEmoji = document.createElement('div');
+    const rangee = document.createElement('div');
+    rangee.className = 'edt-emoji-choix';
+    const btnAuto = document.createElement('button');
+    btnAuto.type = 'button';
+    btnAuto.className = 'edt-emoji-btn edt-emoji-auto';
+    btnAuto.textContent = 'Automatique';
+    btnAuto.title = 'Smiley choisi automatiquement selon le type de créneau et l\'activité';
+    rangee.appendChild(btnAuto);
+    const boutonsEmoji = EMOJIS_CHOIX.map((em) => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = 'edt-emoji-btn';
+      b.textContent = em;
+      b.setAttribute('aria-label', 'Smiley ' + em);
+      b.addEventListener('click', () => { emojiChoisi = em; majEmoji(false); });
+      rangee.appendChild(b);
+      return b;
+    });
+    btnAuto.addEventListener('click', () => { emojiChoisi = ''; majEmoji(false); });
+
+    const libre = document.createElement('div');
+    libre.className = 'edt-emoji-libre';
+    const apercu = document.createElement('span');
+    apercu.className = 'edt-emoji-apercu';
+    apercu.setAttribute('aria-live', 'polite');
+    const inputEmoji = document.createElement('input');
+    inputEmoji.type = 'text';
+    inputEmoji.placeholder = 'Autre smiley…';
+    inputEmoji.maxLength = 16;
+    inputEmoji.setAttribute('aria-label', 'Saisir ou coller un autre smiley');
+    inputEmoji.addEventListener('input', () => {
+      emojiChoisi = premierGrapheme(inputEmoji.value);
+      majEmoji(true);
+    });
+    inputEmoji.addEventListener('blur', () => { inputEmoji.value = emojiChoisi && !EMOJIS_CHOIX.includes(emojiChoisi) ? emojiChoisi : ''; });
+    const aide = document.createElement('span');
+    aide.className = 'hint';
+    aide.style.cssText = 'font-size:12px;margin:0;';
+    aide.textContent = 'Astuce : Windows + point (.), ou Ctrl + Cmd + Espace sur Mac, ouvre le sélecteur de smileys du système.';
+    libre.appendChild(apercu);
+    libre.appendChild(inputEmoji);
+    libre.appendChild(aide);
+
+    function majEmoji(depuisSaisie){
+      apercu.textContent = emojiChoisi || emojiAuto;
+      btnAuto.setAttribute('aria-pressed', emojiChoisi ? 'false' : 'true');
+      boutonsEmoji.forEach((b) => b.setAttribute('aria-pressed', b.textContent === emojiChoisi ? 'true' : 'false'));
+      if (!depuisSaisie) inputEmoji.value = emojiChoisi && !EMOJIS_CHOIX.includes(emojiChoisi) ? emojiChoisi : '';
+    }
+    majEmoji(false);
+
+    groupeEmoji.appendChild(rangee);
+    groupeEmoji.appendChild(libre);
+    boite.appendChild(ligneChampPec('Smiley du créneau', groupeEmoji));
+
+    const erreurEl = document.createElement('p');
+    erreurEl.className = 'edt-edition-erreur';
+    erreurEl.setAttribute('role', 'alert');
+    boite.appendChild(erreurEl);
 
     const actions = document.createElement('div');
     actions.className = 'pec-form-actions';
     const btnEnregistrer = document.createElement('button');
-    btnEnregistrer.className = 'btn primary';
+    btnEnregistrer.className = 'btn btn-primary';
     btnEnregistrer.textContent = 'Enregistrer';
     btnEnregistrer.addEventListener('click', () => {
-      if (origine === 'externe') {
-        coffre.modifierPriseEnChargeExterieure(identifiantSynapses, brut.id, {
-          activite: inputActivite.value.trim(),
-          intervenant: inputAdulteNom.value.trim()
-        });
-      } else {
-        coffre.modifierAffectationCreneau(
-          identifiantSynapses,
-          brut.id || { classeId: brut.classeId, creneauId: brut.creneauId },
-          {
-            activite: { nom: inputActivite.value.trim() },
-            adulteReference: { nom: inputAdulteNom.value.trim(), role: inputAdulteRole.value.trim() }
-          }
-        );
+      const valeurs = {
+        activite: inputActivite.value.trim(),
+        adulteNom: inputAdulteNom.value.trim(),
+        adulteRole: inputAdulteRole.value.trim(),
+        emoji: emojiPersoValide(emojiChoisi)
+      };
+      try {
+        if (estDeduit) {
+          creerCreneauUlisPerso(identifiantSynapses, seg, formatte, valeurs);
+        } else {
+          cs.forEach((c) => {
+            const brut = c._brut || c;
+            if (c._origine === 'recreation-fixe') {
+              ecrireEmojiFixe(identifiantSynapses, c.id, valeurs.emoji);
+            } else if (c._origine === 'externe') {
+              coffre.modifierPriseEnChargeExterieure(identifiantSynapses, brut.id, {
+                activite: valeurs.activite,
+                intervenant: valeurs.adulteNom,
+                emoji: valeurs.emoji
+              });
+            } else if (c._origine === 'ulis-perso') {
+              modifierCreneauUlisPerso(identifiantSynapses, brut.id, valeurs);
+            } else {
+              coffre.modifierAffectationCreneau(
+                identifiantSynapses,
+                brut.id || { classeId: brut.classeId, creneauId: brut.creneauId },
+                {
+                  activite: { nom: valeurs.activite },
+                  adulteReference: { nom: valeurs.adulteNom, role: valeurs.adulteRole },
+                  emoji: valeurs.emoji
+                }
+              );
+            }
+          });
+        }
+      } catch (err) {
+        console.error('Enregistrement du créneau impossible :', err);
+        erreurEl.textContent = 'Enregistrement impossible : ' + err.message;
+        return;
       }
       zone.innerHTML = '';
       afficherEmploiDuTemps(identifiantSynapses);
@@ -956,6 +1312,20 @@ const SYNAPSES_BUILD = {
     btnAnnuler.addEventListener('click', () => { zone.innerHTML = ''; });
     actions.appendChild(btnEnregistrer);
     actions.appendChild(btnAnnuler);
+    if (idsUlisPerso.length) {
+      const btnRetablir = document.createElement('button');
+      btnRetablir.className = 'btn';
+      btnRetablir.textContent = 'Revenir au créneau déduit';
+      btnRetablir.title = 'Supprime la personnalisation : le créneau redevient un créneau ULIS déduit du trou de l\'emploi du temps';
+      btnRetablir.addEventListener('click', () => {
+        if (!confirm('Supprimer ce créneau ULIS personnalisé ? Il redeviendra un créneau déduit, sans activité ni adulte renseignés.')) return;
+        supprimerCreneauxUlisPerso(identifiantSynapses, idsUlisPerso);
+        zone.innerHTML = '';
+        afficherEmploiDuTemps(identifiantSynapses);
+        marquerCoffreModifieSiDisponible();
+      });
+      actions.appendChild(btnRetablir);
+    }
     boite.appendChild(actions);
 
     zone.appendChild(boite);
@@ -1178,7 +1548,7 @@ const SYNAPSES_BUILD = {
 
       let seg;
       if (gagnant) {
-        seg = { debutMin: debutSeg, finMin: finSeg, f: gagnant.f, c: gagnant.c, synthese: false };
+        seg = { debutMin: debutSeg, finMin: finSeg, f: gagnant.f, c: gagnant.c, cs: [gagnant.c], emojiPerso: gagnant.emojiPerso || '', synthese: false };
       } else if (dansCreneauServiceEnseignant(jour, debutSeg, finSeg)) {
         continue; // trou volontairement laissé vide (service de l'enseignant)
       } else {
@@ -1189,7 +1559,7 @@ const SYNAPSES_BUILD = {
             activiteNom: '', domaineCle: '', adulteNom: '', adulteRole: '', remarque: '',
             jour, debut: minutesVersHeureEdt(debutSeg), fin: minutesVersHeureEdt(finSeg)
           },
-          c: null, synthese: true
+          c: null, cs: [], emojiPerso: '', synthese: true
         };
       }
 
@@ -1197,11 +1567,15 @@ const SYNAPSES_BUILD = {
       const memeContenu = precedent && !precedent.synthese && !seg.synthese &&
         precedent.f.typeLieu === seg.f.typeLieu && precedent.f.lieuNom === seg.f.lieuNom &&
         precedent.f.activiteNom === seg.f.activiteNom && precedent.f.adulteNom === seg.f.adulteNom &&
-        precedent.f.remarque === seg.f.remarque;
+        precedent.f.remarque === seg.f.remarque &&
+        (precedent.emojiPerso || '') === (seg.emojiPerso || '');
       const memeVide = precedent && precedent.synthese && seg.synthese;
       if (precedent && precedent.finMin === seg.debutMin && (memeContenu || memeVide)) {
         precedent.finMin = seg.finMin;
         precedent.f = Object.assign({}, precedent.f, { fin: minutesVersHeureEdt(seg.finMin) });
+        // Le bloc fusionné garde la trace de TOUTES les entrées sous-jacentes
+        // (sans doublon) : l'édition les met à jour ensemble.
+        seg.cs.forEach((c) => { if (!precedent.cs.includes(c)) precedent.cs.push(c); });
       } else {
         segments.push(seg);
       }
@@ -1217,6 +1591,57 @@ const SYNAPSES_BUILD = {
   let edtDernierMaxFin = null;
   let edtDernierNomDispositif = null;
   let edtDernierIdentifiant = null;
+
+  /** Smiley correspondant à la NATURE d'un créneau, affiché devant le nom de la
+   *  classe ou du dispositif. Ordre de priorité :
+   *   1. nature « structurelle » : récréation, pause, prise en charge extérieure
+   *      (santé), autre / rituel ;
+   *   2. matière travaillée, reconnue par mots-clés dans le nom de l'activité puis,
+   *      à défaut, dans la clé de domaine (accents et casse ignorés) ;
+   *   3. à défaut, le type de lieu : dispositif (ULIS…) ou classe.
+   *  (Un smiley choisi à la main par l'utilisateur, seg.emojiPerso, passe avant tout.)
+   *  Pour ajouter / corriger une matière : modifier EMOJIS_MATIERES ci-dessous
+   *  (les mots-clés sont testés dans l'ordre, le premier qui correspond gagne). */
+  const EMOJIS_STRUCTURE = { recreation: '⚽', pause: '🍽️', externe: '🏥', autre: '🔔' };
+  const EMOJI_DISPOSITIF = '🧩';
+  const EMOJI_CLASSE = '🏫';
+  const EMOJIS_MATIERES = [
+    { emoji: '🗣️', mots: ['langage', 'oral', 'anglais', 'langue vivante', 'langues', 'lve'] },
+    { emoji: '📖', mots: ['francais', 'lecture', 'lire', 'ecriture', 'ecrire', 'dictee', 'orthograph', 'grammaire', 'conjugaison', 'vocabulaire', 'phonolog', 'graphisme', 'litterature', 'comprehension'] },
+    { emoji: '🔢', mots: ['mathematique', 'maths', 'math', 'nombre', 'numeration', 'calcul', 'geometrie', 'mesure', 'grandeur', 'denombr', 'probleme', 'logique'] },
+    { emoji: '🏃', mots: ['eps', 'sport', 'motricite', 'natation', 'gymnastique', 'jeux collectifs', 'athletisme', 'danse'] },
+    { emoji: '🎨', mots: ['arts plastiques', 'arts visuels', 'arts', 'dessin', 'peinture', 'plastique'] },
+    { emoji: '🎵', mots: ['musique', 'chant', 'education musicale'] },
+    { emoji: '🔬', mots: ['science', 'vivant', 'technolog', 'questionner le monde', 'monde', 'experience'] },
+    { emoji: '🌍', mots: ['histoire', 'geographie'] },
+    { emoji: '🤝', mots: ['emc', 'morale', 'civique', 'vivre ensemble', 'social', 'autonomie'] }
+  ];
+
+  function sansAccents(txt){
+    return String(txt || '').normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+  }
+
+  function emojiNatureCreneau(f, seg){
+    // Smiley choisi par l'utilisateur pour ce créneau : toujours prioritaire.
+    if (seg && seg.emojiPerso) return seg.emojiPerso;
+    const c = (seg && seg.c) || {};
+    if (f.typeLieu === 'recreation' || c.type === 'recreation') return EMOJIS_STRUCTURE.recreation;
+    if (f.typeLieu === 'pause' || c.type === 'pause') return EMOJIS_STRUCTURE.pause;
+    if (f.typeLieu === 'externe') return EMOJIS_STRUCTURE.externe;
+    if (c.type === 'autre') return EMOJIS_STRUCTURE.autre;
+    if (seg && seg.synthese) return EMOJI_DISPOSITIF;
+
+    // Mots entiers ou débuts de mot : « eps » ne doit pas correspondre à « repas »,
+    // « arts » pas à « quartiers » (d'où le contrôle de début de mot).
+    // Le nom d'activité saisi par l'enseignant prime sur la clé technique de domaine.
+    const normaliser = (t) => ' ' + sansAccents(t).replace(/[_:]+/g, ' ') + ' ';
+    for (const source of [normaliser(f.activiteNom), normaliser(f.domaineCle)]) {
+      for (const m of EMOJIS_MATIERES) {
+        if (m.mots.some((mot) => source.indexOf(' ' + mot) !== -1)) return m.emoji;
+      }
+    }
+    return f.typeLieu === 'dispositif' ? EMOJI_DISPOSITIF : EMOJI_CLASSE;
+  }
 
   /** Construit le DOM de la grille (en-tête + colonnes de jours + blocs)
    *  dans `wrapCible`, à l'échelle `px30` (pixels par tranche de 30 min).
@@ -1252,7 +1677,7 @@ const SYNAPSES_BUILD = {
       repere.className = 'edt-heure-repere';
       repere.style.top = (((m-minDebut)/30)*px30) + 'px';
       const label = document.createElement('span');
-      label.className = 'edt-heure-label';
+      label.className = 'edt-heure-label' + (m === minDebut ? ' edt-heure-premier' : '') + (m === maxFin ? ' edt-heure-dernier' : '');
       label.textContent = minutesVersHeureEdt(m);
       repere.appendChild(label);
       axe.appendChild(repere);
@@ -1287,8 +1712,12 @@ const SYNAPSES_BUILD = {
         bloc.className = 'edt-bloc edt-bloc-' + f.typeLieu + (seg.synthese ? ' edt-bloc-deduit' : '');
         if(hauteurBlocPx < 46) bloc.classList.add('edt-duree-courte');
         if(hauteurBlocPx < 26) bloc.classList.add('edt-duree-tres-courte');
+        // Sous 40 px, même le texte inline ne tient pas : à l'impression on ne garde
+        // alors que le lieu (avec son smiley) et l'horaire (voir la feuille de style).
+        if(hauteurBlocPx < 40) bloc.classList.add('edt-duree-minuscule');
         bloc.style.top = (((seg.debutMin-minDebut)/30)*px30) + 'px';
         bloc.style.height = hauteurBlocPx + 'px';
+        bloc.style.setProperty('--edt-h', hauteurBlocPx + 'px');
         bloc.style.left = '4px';
         bloc.style.width = 'calc(100% - 8px)';
         bloc.style.right = 'auto';
@@ -1299,7 +1728,12 @@ const SYNAPSES_BUILD = {
 
         const lieuEl = document.createElement('div');
         lieuEl.className = 'edt-classe';
-        lieuEl.textContent = f.lieuNom;
+        const emojiEl = document.createElement('span');
+        emojiEl.className = 'edt-emoji';
+        emojiEl.setAttribute('aria-hidden', 'true');
+        emojiEl.textContent = emojiNatureCreneau(f, seg);
+        lieuEl.appendChild(emojiEl);
+        lieuEl.appendChild(document.createTextNode(f.lieuNom));
         bloc.appendChild(lieuEl);
 
         const activiteAffichee = f.activiteNom || domaineLisible(f.domaineCle);
@@ -1328,25 +1762,26 @@ const SYNAPSES_BUILD = {
         bloc.appendChild(horaire);
 
         if (seg.synthese) {
-          // Un créneau déduit n'existe pas réellement dans le coffre : rien
-          // à éditer ici, seulement un repère visuel discret pour le
-          // distinguer d'un créneau réellement enregistré (voir aussi le
-          // style .edt-bloc-deduit, en pointillés).
+          // Repère visuel discret pour distinguer un créneau déduit d'un
+          // créneau réellement enregistré (voir aussi le style
+          // .edt-bloc-deduit, en pointillés). Il reste modifiable : l'édition
+          // le transforme en créneau ULIS personnalisé (voir ouvrirEditionCase).
           const badge = document.createElement('div');
           badge.className = 'edt-badge-deduit';
           badge.textContent = 'déduit';
           bloc.appendChild(badge);
-        } else if (seg.c && seg.c._origine !== 'recreation-fixe') {
-          const btnEditer = document.createElement('button');
-          btnEditer.type = 'button';
-          btnEditer.className = 'edt-btn-editer';
-          btnEditer.title = 'Préciser l\'activité / l\'adulte de référence';
-          btnEditer.textContent = '✎';
-          btnEditer.addEventListener('click', () => {
-            ouvrirEditionCase(identifiantSynapses, seg.c._brut || seg.c, seg.c._origine, f);
-          });
-          bloc.appendChild(btnEditer);
         }
+        const btnEditer = document.createElement('button');
+        btnEditer.type = 'button';
+        btnEditer.className = 'edt-btn-editer';
+        btnEditer.title = seg.synthese
+          ? 'Personnaliser ce créneau déduit (activité, adulte, smiley)'
+          : 'Préciser l\'activité / l\'adulte de référence / le smiley';
+        btnEditer.textContent = '✎';
+        btnEditer.addEventListener('click', () => {
+          ouvrirEditionCase(identifiantSynapses, seg, f);
+        });
+        bloc.appendChild(btnEditer);
 
         col.appendChild(bloc);
       });
@@ -1358,6 +1793,63 @@ const SYNAPSES_BUILD = {
     tableWrap.className = 'edt-table-wrap';
     tableWrap.appendChild(planningEl);
     wrapCible.appendChild(tableWrap);
+  }
+
+  // Zone imprimable A4 portrait avec marges 10 mm / 12 mm : 186 mm de large
+  // (≈ 703 px à 96 dpi) et 277 mm de haut (≈ 1047 px). En-tête, ligne des jours,
+  // légende et pied de page occupent ≈ 180 px : il reste ≈ 860 px pour le corps de
+  // la grille, on en vise 840 pour garder une marge de sécurité.
+  const LARGEUR_ZONE_IMPRESSION_PX = 703;
+  const HAUTEUR_GRILLE_IMPRESSION_PX = 840;
+  const NIVEAUX_DENSITE_IMPRESSION = ['', 'edt-dense', 'edt-tres-dense'];
+
+  /** Construit la grille dédiée au papier dans `wrap`.
+   *  1. L'échelle verticale (px par demi-heure) est calculée pour que la grille
+   *     tienne dans la hauteur disponible, quelle que soit l'amplitude horaire.
+   *  2. La grille est d'abord rendue hors écran, à la largeur exacte de la zone
+   *     imprimable, et on VÉRIFIE qu'aucun bloc ne contient plus de texte qu'il
+   *     n'a de place (scrollHeight > clientHeight). Si c'est le cas, on passe au
+   *     cran de police inférieur — jamais de « … » ni de texte coupé tant qu'un
+   *     cran plus petit permet de tout faire tenir. */
+  function construireGrilleImpression(wrap){
+    wrap.innerHTML = '';
+    wrap.classList.remove('edt-dense', 'edt-tres-dense');
+    if (!(edtDernierValides && edtDernierValides.length)) return;
+
+    const totalTranches = Math.max(1, (edtDernierMaxFin - edtDernierMinDebut) / 30);
+    const px30 = Math.max(14, Math.min(60, Math.floor(HAUTEUR_GRILLE_IMPRESSION_PX / totalTranches)));
+
+    wrap.classList.add('edt-mesure');
+    wrap.style.width = LARGEUR_ZONE_IMPRESSION_PX + 'px';
+    try {
+      for (const niveau of NIVEAUX_DENSITE_IMPRESSION) {
+        wrap.classList.remove('edt-dense', 'edt-tres-dense');
+        if (niveau) wrap.classList.add(niveau);
+        wrap.innerHTML = '';
+        construireGrilleEdt(
+          edtDernierValides, edtDernierMinDebut, edtDernierMaxFin,
+          px30, edtDernierNomDispositif, edtDernierIdentifiant, wrap
+        );
+        const coupes = Array.from(wrap.querySelectorAll('.edt-bloc'))
+          .filter((b) => b.scrollHeight > b.clientHeight + 1);
+        if (!coupes.length) break;
+      }
+
+      // Dernier recours, bloc par bloc (et non pour toute la grille) : un bloc
+      // trop court pour l'ensemble de ses lignes, même à la plus petite police,
+      // abandonne d'abord sa remarque, puis la ligne de l'adulte — on retire une
+      // ligne entière plutôt que de la couper au milieu. Le lieu, le smiley et
+      // l'activité sont toujours conservés.
+      for (const classe of ['edt-sans-remarque', 'edt-sans-adulte']) {
+        const encoreCoupes = Array.from(wrap.querySelectorAll('.edt-bloc'))
+          .filter((b) => b.scrollHeight > b.clientHeight + 1);
+        if (!encoreCoupes.length) break;
+        encoreCoupes.forEach((b) => b.classList.add(classe));
+      }
+    } finally {
+      wrap.classList.remove('edt-mesure');
+      wrap.style.width = '';
+    }
   }
 
   function afficherEmploiDuTemps(identifiantSynapses){
@@ -1393,7 +1885,11 @@ const SYNAPSES_BUILD = {
     // nominative dans localStorage.
     const recreations = eleve ? recreationsFixesPourEleve(eleve) : [];
     const casesPlanning = planning.map((c) => Object.assign({ _origine: 'planning', _brut: c }, c));
-    const toutesCases = casesPlanning.concat(recreations, pecActives);
+    // Créneaux ULIS personnalisés (anciens créneaux « déduits » modifiés par
+    // l'utilisateur) : lus directement dans l'élève, hors listerEleves().
+    const ulisPerso = lireCreneauxUlisPerso(identifiantSynapses)
+      .map((p) => Object.assign({ _origine: 'ulis-perso', _brut: p }, p));
+    const toutesCases = casesPlanning.concat(recreations, pecActives, ulisPerso);
 
     if (!toutesCases.length) {
       const vide = document.createElement('div');
@@ -1432,7 +1928,7 @@ const SYNAPSES_BUILD = {
     const valides = casesUniques.map(c => {
       const f = formaterSansCasser(c);
       if(!f) return null;
-      return { c, f, debutMin:heureVersMinutesEdt(f.debut), finMin:heureVersMinutesEdt(f.fin) };
+      return { c, f, debutMin:heureVersMinutesEdt(f.debut), finMin:heureVersMinutesEdt(f.fin), emojiPerso: lireEmojiPerso(c, identifiantSynapses) };
     }).filter(x => x && Number.isFinite(x.debutMin) && Number.isFinite(x.finMin) && x.finMin > x.debutMin);
 
     if(!valides.length){
@@ -1545,29 +2041,6 @@ const SYNAPSES_BUILD = {
     meta.appendChild(ligneDate);
     entete.appendChild(meta);
 
-    // Légende des couleurs utilisées dans la grille, pour rester lisible
-    // sans avoir à deviner à quoi correspond une teinte sur le papier.
-    const legende = $('edtImpressionLegende');
-    legende.innerHTML = '';
-    [
-      { couleur: '#EEF2FB', label: 'Classe' },
-      { couleur: '#EAF1FA', label: 'Dispositif (ULIS)' },
-      { couleur: '#F1EFE9', label: 'Récréation' },
-      { couleur: '#FDF3E7', label: 'Prise en charge extérieure (santé)' }
-    ].forEach((item) => {
-      const puce = document.createElement('span');
-      puce.className = 'edt-imp-puce';
-      const carre = document.createElement('span');
-      carre.className = 'edt-imp-carre';
-      carre.style.background = item.couleur;
-      carre.style.border = '1px solid #B9C0D6';
-      const label = document.createElement('span');
-      label.textContent = item.label;
-      puce.appendChild(carre);
-      puce.appendChild(label);
-      legende.appendChild(puce);
-    });
-
     const pied = $('edtImpressionPied');
     pied.innerHTML = '';
     const confidentiel = document.createElement('div');
@@ -1577,25 +2050,9 @@ const SYNAPSES_BUILD = {
     pied.appendChild(confidentiel);
     pied.appendChild(source);
 
-    // Reconstruit la grille à une échelle dédiée à l'impression : l'échelle
-    // écran (adaptative, jusqu'à 112px/30min pour rester lisible au clic)
-    // dépasse presque toujours la hauteur d'une page A4 paysage. On vise ici
-    // une hauteur totale de grille qui, ajoutée à l'en-tête/légende/pied,
-    // tient sur une seule page, quel que soit le nombre de tranches de la
-    // journée de l'élève (journée courte ou très amplitude horaire).
-    const wrapImpression = $('edtGrilleWrapImpression');
-    wrapImpression.innerHTML = '';
-    if (edtDernierValides && edtDernierValides.length) {
-      const totalTranches = Math.max(1, (edtDernierMaxFin - edtDernierMinDebut) / 30);
-      const HAUTEUR_GRILLE_IMPRESSION_PX = 600; // budget visé pour la grille seule sur la page
-      let px30Impression = Math.floor(HAUTEUR_GRILLE_IMPRESSION_PX / totalTranches);
-      px30Impression = Math.max(14, Math.min(48, px30Impression));
-      construireGrilleEdt(
-        edtDernierValides, edtDernierMinDebut, edtDernierMaxFin,
-        px30Impression, edtDernierNomDispositif, edtDernierIdentifiant,
-        wrapImpression
-      );
-    }
+    // Reconstruit la grille à une échelle dédiée à l'impression, avec vérification
+    // qu'aucun bloc ne coupe son texte (voir construireGrilleImpression).
+    construireGrilleImpression($('edtGrilleWrapImpression'));
 
     window.print();
   });
@@ -1658,6 +2115,7 @@ const SYNAPSES_BUILD = {
     coffre.creer($('nomEtab').value.trim(), dispositif);
     setStatus($('statutOuverture'), 'Nouveau coffre créé en mémoire. Pensez à l\'enregistrer (§3) avant de fermer l\'onglet.', true);
     refreshLockState();
+    activerOnglet('cardSuivi');
     await ouvrirSuivi();
   });
 
@@ -1689,15 +2147,20 @@ const SYNAPSES_BUILD = {
       inputNomFichierExport.value = nomFichierAvecExtensionSynapses(fichier.name);
       setStatus($('statutOuverture'), 'Coffre ouvert avec succès (' + coffre.listerEleves().length + ' élève(s)).', true);
       refreshLockState();
+      activerOnglet('cardSuivi');
       await ouvrirSuivi();
     }catch(e){
       setStatus($('statutOuverture'), e.message, false);
     }
   });
 
-  $('btnExporter').addEventListener('click', async ()=>{
+  /** Chiffre et télécharge le coffre. Partagé par l'onglet 4 (« Sauvegarder
+   *  mon fichier ») et l'onglet 3 (« Enregistrer les modifications ») : même
+   *  mot de passe, même nom de fichier, seul l'endroit où s'affiche le
+   *  message change (statutEl). */
+  async function exporterCoffre(statutEl){
     const mdp = $('mdpExport').value;
-    if (!mdp) { setStatus($('statutExport'), 'Choisissez un mot de passe pour chiffrer le coffre.', false); return; }
+    if (!mdp) { setStatus(statutEl, 'Choisissez un mot de passe pour chiffrer le coffre.', false); return; }
     const force = evaluerForceMdp(mdp);
     if (force.score <= 1) {
       const continuer = confirm('Ce mot de passe est ' + force.label.toLowerCase() + '. Un mot de passe faible protège moins bien les données confidentielles du coffre. Continuer quand même ?');
@@ -1707,18 +2170,35 @@ const SYNAPSES_BUILD = {
       const nomFichier = nomFichierAvecExtensionSynapses(inputNomFichierExport.value);
       inputNomFichierExport.value = nomFichier;
       await coffre.telecharger(mdp, nomFichier);
-      setStatus($('statutExport'), 'Coffre chiffré et téléchargé sous « ' + nomFichier + ' ». Conservez-le sur un support sûr (clé USB).', true);
+      modificationsEnAttente = false;
+      majEtatModif();
+      setStatus(statutEl, 'Coffre chiffré et téléchargé sous « ' + nomFichier + ' ». Conservez-le sur un support sûr (clé USB).', true);
     }catch(e){
-      setStatus($('statutExport'), e.message, false);
+      setStatus(statutEl, e.message, false);
     }
+  }
+
+  $('btnExporter').addEventListener('click', () => exporterCoffre($('statutExport')));
+  $('edtBtnEnregistrer').addEventListener('click', () => exporterCoffre($('statutEdtEnregistrer')));
+
+  // Le mot de passe saisi dans l'onglet 3 et celui de l'onglet 4 sont un seul
+  // et même champ, recopié dans les deux sens.
+  $('edtMdpEnregistrer').addEventListener('input', () => {
+    $('mdpExport').value = $('edtMdpEnregistrer').value;
+    $('mdpExport').dispatchEvent(new Event('input'));
+  });
+  $('mdpExport').addEventListener('input', () => {
+    $('edtMdpEnregistrer').value = $('mdpExport').value;
   });
 
   $('btnPurger').addEventListener('click', ()=>{
     if (!confirm('Détruire toutes les données confidentielles en mémoire ? Cette action est irréversible pour la session en cours.')) return;
     coffre.purger();
-    ['mdpExport','nomFichierExport'].forEach(id=>$(id).value='');
+    ['mdpExport','nomFichierExport','edtMdpEnregistrer'].forEach(id=>$(id).value='');
     fermerSuivi();
     setStatus($('statutExport'), 'Données confidentielles détruites de la mémoire du navigateur.', true);
+    // refreshLockState() ramène à l'onglet 1 : le message y est donc répété.
+    setStatus($('statutOuverture'), 'Données confidentielles détruites de la mémoire du navigateur.', true);
     refreshLockState();
   });
 

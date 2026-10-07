@@ -720,12 +720,11 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 
   <div id="import-gate">
     <h2>Aucun planning chargé</h2>
-    <p>Cette page reste vide tant qu'aucun planning n'a été importé : elle n'affiche plus automatiquement d'anciennes données. Importez le fichier <code>.synapses</code> exporté depuis « Planning — Gestion » pour afficher le cahier journal, puis, si besoin, ouvrez le coffre élèves pour voir les noms.</p>
+    <p>Importez le fichier <code>.synapses</code> de votre planning pour afficher le cahier journal.</p>
     <div class="gate-actions">
       <button class="btn primary" id="btn-ouvrir-import-planning">📥 Importer le planning (.synapses)</button>
-      <button class="btn" id="btn-ouvrir-coffre-depuis-gate">🔐 Ouvrir le coffre élèves</button>
     </div>
-    <p class="gate-note">Les deux fichiers sont indépendants : le planning (classes, grilles, cahier journal) vient de « Planning — Gestion » ; le coffre (identités des élèves) est un fichier <code>.synapses</code> séparé.</p>
+    <p class="gate-note">Vous n'avez pas encore de planning ? Retournez dans <a href="planning-gestion.html">Planning — Gestion</a> pour le créer, puis exportez-le et revenez l'importer ici.</p>
   </div>
 
   <div id="app-content" style="display:none;">
@@ -815,12 +814,53 @@ main{max-width:1400px;margin:0 auto;padding:24px 24px 90px;}
 })();
 </script>
 <script src="../fata-morgana/synapses-coffre.js"></script>
-<script src="planning-core.js"></script>
+<!-- Synapses 2.0 : la page s'appuie sur model/ et core/ (l'ancien moteur V1 n'est plus chargé).
+     Ordre = ordre de dépendance : modèle -> adaptateurs -> utilitaires -> managers. -->
+<script src="../model/entite.js"></script>
+<script src="../model/classe.js"></script>
+<script src="../model/dispositif.js"></script>
+<script src="../model/ecole.js"></script>
+<script src="../model/espace.js"></script>
+<script src="../model/creneau.js"></script>
+<script src="../model/personnel.js"></script>
+<script src="../model/objectif.js"></script>
+<script src="../model/sequence.js"></script>
+<script src="../model/seance.js"></script>
+<script src="../model/occurrence.js"></script>
+<script src="../core/adapters/storage-adapter.js"></script>
+<script src="../core/adapters/local-adapter.js"></script>
+<script src="../core/adapters/coffre-adapter.js"></script>
+<script src="../core/adapters/journal-adapter.js"></script>
+<script src="../core/referentiel-horaire.js"></script>
+<script src="../core/calendrier-scolaire.js"></script>
+<script src="../core/data-manager.js"></script>
+<script src="../core/cahier-journal-manager.js"></script>
+<script src="../core/affectation-seance-manager.js"></script>
+<script src="../core/banque-seances-manager.js"></script>
+<script src="../core/config-planning-manager.js"></script>
+<script src="../core/grille-manager.js"></script>
+<script src="../core/planning-paquet-manager.js"></script>
 
 
 <script>
 "use strict";
-const PC = window.PlanningCore;
+const {
+  DataManager, CalendrierScolaire: CS, ReferentielHoraire: RH, CahierJournalManager: CJ,
+  ConfigPlanningManager, GrilleManager, PlanningPaquetManager,
+  AffectationSeanceManager, BanqueSeancesManager, JournalAdapter
+} = window.SynapsesCore;
+// Un seul LocalAdapter partagé : mêmes clés localStorage que les autres pages.
+const dataManager = new DataManager();
+const configMgr = new ConfigPlanningManager({ localAdapter: dataManager.local });
+const grilleMgr = new GrilleManager({ localAdapter: dataManager.local });
+const affectationsMgr = new AffectationSeanceManager({ localAdapter: dataManager.local });
+const journalAdapter = new JournalAdapter(dataManager.local);
+const cahierJournalMgr = new CJ({ journalAdapter: journalAdapter });
+const banqueMgr = new BanqueSeancesManager({ storageAdapter: dataManager.storage, localAdapter: dataManager.local });
+const paquetMgr = new PlanningPaquetManager({
+  localAdapter: dataManager.local, configManager: configMgr, grilleManager: grilleMgr,
+  affectationManager: affectationsMgr, journalAdapter: journalAdapter
+});
 const $ = id => document.getElementById(id);
 
 function toast(msg){ const t=$("toast"); t.textContent=msg; t.classList.add("show"); setTimeout(()=>t.classList.remove("show"),2400); }
@@ -828,10 +868,10 @@ function escapeAttr(s){ return (s==null?"":String(s)).replace(/"/g,'&quot;'); }
 function escapeHTML(s){ return (s==null?"":String(s)).replace(/[&<>]/g, c=>({"&":"&amp;","<":"&lt;",">":"&gt;"}[c])); }
 
 /* ---------------- État ---------------- */
-let config = PC.chargerConfig();
-let grilles = PC.chargerGrilles();
-let affectations = PC.chargerAffectations();
-let iso = (new URLSearchParams(location.search).get("date")) || PC.dateISO(new Date());
+let config = configMgr.charger();
+let grilles = grilleMgr.charger();
+let affectations = affectationsMgr.charger();
+let iso = (new URLSearchParams(location.search).get("date")) || CS.dateISO(new Date());
 let jour = null;
 // Banque de séquences/séances (index.json du dépôt + banque locale créée
 // dans sequences.html). Chargée une fois de façon asynchrone : tant qu'elle
@@ -842,7 +882,7 @@ let jour = null;
 let banque = {};
 let banqueChargee = false;
 async function chargerBanquePage(){
-  try{ banque = await PC.chargerBanque(); }
+  try{ banque = await banqueMgr.charger(); }
   catch(e){ banque = {}; }
   banqueChargee = true;
   if(sessionActive()) renderJour();
@@ -851,7 +891,7 @@ async function chargerBanquePage(){
 // Liste plate de tous les items (séances) de la banque, tous niveaux et
 // domaines confondus, pour alimenter le sélecteur de chaque carte de
 // groupe. Chaque entrée porte son niveau et son domaine d'origine (perdus
-// dans la structure imbriquée renvoyée par PC.chargerBanque()).
+// dans la structure imbriquée renvoyée par banqueMgr.charger()).
 function seancesPlates(){
   const out = [];
   Object.keys(banque).forEach(niveau=>{
@@ -887,12 +927,12 @@ function seanceLabelDe(ref){
 }
 
 // Options du sélecteur "Lier une séance", regroupées par niveau puis
-// domaine puis séquence, dans l'ordre pédagogique (PC.NIVEAUX) plutôt
+// domaine puis séquence, dans l'ordre pédagogique (ConfigPlanningManager.NIVEAUX) plutôt
 // qu'alphabétique.
 function optionsSeances(g){
   const items = seancesPlates();
   if(!items.length) return "";
-  const rangNiveau = n => { const i = PC.NIVEAUX.indexOf(n); return i===-1 ? 999 : i; };
+  const rangNiveau = n => { const i = ConfigPlanningManager.NIVEAUX.indexOf(n); return i===-1 ? 999 : i; };
   const groupes = new Map();
   items.forEach(it=>{
     const gKey = it.niveau + "|" + it.domaineLabel + "|" + (it.seqTitre||"");
@@ -931,7 +971,7 @@ let classeFiltreCourante = null;
    ne touche à aucune donnée : il ne fait que décider si l'écran d'import
    ou le cahier journal est affiché. Un import réel remplace de toute
    façon entièrement config/grilles/affectations/journal (voir
-   PC.appliquerPaquetPlanning), ce qui règle aussi la pollution des
+   paquetMgr.appliquer), ce qui règle aussi la pollution des
    données elles-mêmes, pas seulement leur affichage.
    BUG CORRIGÉ : ce drapeau était stocké dans localStorage, qui ne
    s'efface JAMAIS tout seul (contrairement à ce que son nom "session"
@@ -1036,6 +1076,39 @@ if($("btn-coffre-toggle")){
   window.addEventListener('pagehide', ()=>{ if(coffre) coffre.purger(); });
 }
 
+/* ---------------- Purge des résidus de répartition automatique ----------------
+   Où vivait le résidu : dans le CAHIER JOURNAL (clé localStorage
+   « synapses_planning_journal »), et donc aussi dans le fichier .synapses
+   exporté depuis Planning — Gestion (paquet.journal). Les moteurs de
+   répartition (semaine / journée / ULIS) écrivent leurs groupes dans le
+   journal avec origine:null, modifie:true et repartitionAuto:true — donc
+   genererDepuisGrille() ne les retire JAMAIS (aucune origine de grille à
+   invalider), et matchFiltreClasse() les affiche sous TOUS les onglets
+   (ni classeId ni dispositifId). Leurs élèves sont des identifiants
+   figés au moment de la répartition, sans lien avec la classe actuelle.
+   Cette page ne fait jamais de répartition : à l'import, on retire donc
+   du paquet tous ces groupes AVANT qu'il ne soit écrit dans le stockage.
+   Les créneaux issus des grilles (classes, dispositifs) et les groupes
+   ajoutés à la main (sans repartitionAuto) ne sont pas touchés. */
+function purgerResidusRepartition(paquet){
+  const bilan = { groupes: 0, eleves: 0 };
+  const journal = paquet && paquet.journal;
+  if(!journal || typeof journal !== "object") return bilan;
+  Object.keys(journal).forEach(date=>{
+    const j = journal[date];
+    if(!j || !Array.isArray(j.groupes)) return;
+    j.groupes = j.groupes.filter(g=>{
+      if(g && g.repartitionAuto){
+        bilan.groupes++;
+        bilan.eleves += (g.eleves || []).length;
+        return false;
+      }
+      return true;
+    });
+  });
+  return bilan;
+}
+
 /* ---------------- Portail d'import : planning .synapses ---------------- */
 $("planning-import-browse-btn").addEventListener("click", ()=> $("planning-import-file").click());
 $("planning-import-file").addEventListener("change", ()=>{
@@ -1050,12 +1123,13 @@ $("btn-planning-import-confirm").addEventListener("click", async ()=>{
   if(!file){ erreurEl.textContent = "Choisissez d'abord un fichier .synapses."; erreurEl.style.display = ""; return; }
   if(!pwd){ erreurEl.textContent = "Saisissez le mot de passe du planning."; erreurEl.style.display = ""; return; }
   try{
-    const enveloppe = await PC.lireFichierJSON(file);
+    const enveloppe = await PlanningPaquetManager.lireFichierJSON(file);
     if(!enveloppe || enveloppe.format !== "synapses-planning-secure"){
       throw new Error("Ce fichier n'est pas un planning .synapses protégé.");
     }
-    const paquet = await PC.dechiffrerPlanningJSON(enveloppe, pwd);
-    const applique = PC.appliquerPaquetPlanning(paquet);
+    const paquet = await paquetMgr.dechiffrer(enveloppe, pwd);
+    const purge = purgerResidusRepartition(paquet);
+    const applique = paquetMgr.appliquer(paquet);
     sessionStorage.setItem(SESSION_KEY, "1");
     closeModal('modal-planning-import');
     $("planning-import-password").value = "";
@@ -1063,19 +1137,14 @@ $("btn-planning-import-confirm").addEventListener("click", async ()=>{
     $("planning-import-file-name").textContent = "Aucun fichier sélectionné.";
     afficherEtatSelonSession();
     rafraichirEtat();
-    toast("Planning importé : " + applique.join(", ") + ".");
+    toast("Planning importé : " + applique.join(", ") + "." +
+      (purge.groupes ? " " + purge.groupes + " groupe(s) de répartition automatique ignoré(s)." : ""));
   }catch(e){
     erreurEl.textContent = e.message || "Import impossible.";
     erreurEl.style.display = "";
   }
 });
 $("btn-ouvrir-import-planning").addEventListener("click", ()=> openModal('modal-planning-import'));
-if($("btn-ouvrir-coffre-depuis-gate")){
-  $("btn-ouvrir-coffre-depuis-gate").addEventListener("click", ()=>{
-    if(!coffreDisponible()){ toast("Le coffre est indisponible : synapses-coffre.js n'a pas pu être chargé."); return; }
-    openModal('modal-coffre');
-  });
-}
 $("btn-changer-planning").addEventListener("click", ()=>{
   if(!confirm("Revenir à l'écran d'import ? Rien n'est supprimé : le planning actuellement enregistré reste intact, vous pourrez le réimporter à tout moment.")) return;
   sessionStorage.removeItem(SESSION_KEY);
@@ -1092,9 +1161,11 @@ $("btn-close-onboarding").addEventListener("click", ()=>{
 
 /* ---------------- Sauvegarde ---------------- */
 function sauver(){
-  const journal = PC.chargerJournal();
+  const journal = journalAdapter.charger();
   journal[iso] = jour;
-  PC.sauverJournal(journal);
+  if(!journalAdapter.sauver(journal)){
+    throw new Error("Impossible d'enregistrer le cahier journal (stockage local plein ou indisponible).");
+  }
 }
 
 /* ---------------- Rendu ---------------- */
@@ -1181,11 +1252,11 @@ function renderClasseFilterBar(){
 
 function renderJour(){
   $("date-picker").value = iso;
-  $("day-title").textContent = PC.formatDateLong(PC.parseISO(iso));
+  $("day-title").textContent = CS.formatDateLong(CS.parseISO(iso));
 
   // Resynchronise le cahier journal du jour avec la grille horaire (classes
   // + dispositifs) actuellement chargée AVANT de l'afficher. Sans cet appel,
-  // cette page se contentait de relire le journal tel quel (PC.journalPourDate)
+  // cette page se contentait de relire le journal tel quel (journalAdapter.pourDate)
   // sans jamais le recalculer depuis les grilles : après un import de
   // planning (nouvelles grilles), ou toute modification faite dans
   // Planning — Gestion, les créneaux affichés ici restaient ceux de
@@ -1194,7 +1265,7 @@ function renderJour(){
   // respecte les groupes déjà personnalisés (modifie=true) et les créneaux
   // volontairement supprimés (jour.exclusions), et ne touche qu'aux groupes
   // encore synchronisés avec leur créneau de grille d'origine.
-  jour = PC.genererJournalDepuisGrille(iso, config, grilles, affectations, {}, coffre);
+  jour = cahierJournalMgr.genererDepuisGrille(iso, config, grilles, affectations, {}, coffre);
 
   $("j-remarque").value = jour.remarque || "";
   $("j-devoirs").value = jour.devoirs || "";
@@ -1221,10 +1292,10 @@ function renderJour(){
   if(!groupesVisibles.length){
     let nomFiltre = "cette classe";
     if(classeFiltreCourante && classeFiltreCourante.startsWith("disp:")){
-      const d = PC.dispositifById(config, classeFiltreCourante.slice(5));
+      const d = configMgr.dispositifById(config, classeFiltreCourante.slice(5));
       if(d) nomFiltre = "« "+escapeHTML(d.nom)+" »";
     } else if(classeFiltreCourante){
-      const cl = PC.classeById(config, classeFiltreCourante.slice(4));
+      const cl = configMgr.classeById(config, classeFiltreCourante.slice(4));
       if(cl) nomFiltre = "« "+escapeHTML(cl.nom)+" »";
     }
     content.innerHTML = `
@@ -1257,7 +1328,7 @@ function renderJour(){
   ========================================================= */
 
   function hm(h){
-    return PC.heureVersMin(h);
+    return RH.heureVersMin(h);
   }
 
   function chevauche(a,b){
@@ -1399,7 +1470,7 @@ function renderJour(){
       head.innerHTML = `
         <input
           class="bloc-label"
-          value="${escapeAttr(PC.libelleBloc(jour,bloc.debut,bloc.fin))}"
+          value="${escapeAttr(CJ.libelleBloc(jour,bloc.debut,bloc.fin))}"
           data-role="label"
           title="Libellé du créneau"
         >
@@ -1426,14 +1497,14 @@ function renderJour(){
 
       head.querySelector('[data-role=label]').addEventListener("change",e=>{
         jour.libellesBlocs[
-          PC.cleBloc(bloc.debut,bloc.fin)
+          CJ.cleBloc(bloc.debut,bloc.fin)
         ] = e.target.value;
         sauver();
       });
 
       head.querySelector('[data-role=debut]').addEventListener("change",e=>{
         const ancienneCle =
-          PC.cleBloc(bloc.debut,bloc.fin);
+          CJ.cleBloc(bloc.debut,bloc.fin);
 
         const label =
           jour.libellesBlocs[ancienneCle];
@@ -1447,7 +1518,7 @@ function renderJour(){
 
         if(label){
           jour.libellesBlocs[
-            PC.cleBloc(e.target.value,bloc.fin)
+            CJ.cleBloc(e.target.value,bloc.fin)
           ] = label;
         }
 
@@ -1457,7 +1528,7 @@ function renderJour(){
 
       head.querySelector('[data-role=fin]').addEventListener("change",e=>{
         const ancienneCle =
-          PC.cleBloc(bloc.debut,bloc.fin);
+          CJ.cleBloc(bloc.debut,bloc.fin);
 
         const label =
           jour.libellesBlocs[ancienneCle];
@@ -1471,7 +1542,7 @@ function renderJour(){
 
         if(label){
           jour.libellesBlocs[
-            PC.cleBloc(bloc.debut,e.target.value)
+            CJ.cleBloc(bloc.debut,e.target.value)
           ] = label;
         }
 
@@ -1492,7 +1563,7 @@ function renderJour(){
           jour.groupes.filter(g=>!bloc.groupes.includes(g));
 
         delete jour.libellesBlocs[
-          PC.cleBloc(bloc.debut,bloc.fin)
+          CJ.cleBloc(bloc.debut,bloc.fin)
         ];
 
         sauver();
@@ -1640,7 +1711,7 @@ function renderJour(){
         const ref = bloc.groupes[0];
 
         jour.groupes.push({
-          id:PC.uid("grp"), debut:bloc.debut, fin:bloc.fin, origine:null, modifie:true,
+          id:CJ.uidParDefaut("grp"), debut:bloc.debut, fin:bloc.fin, origine:null, modifie:true,
           adulte:{type:"enseignant",nom:""},
           titre:ref.titre || "Nouveau groupe",
           domaineCle:ref.domaineCle || "",
@@ -1706,8 +1777,8 @@ function ajouterBloc(){
   const debut = prompt("Heure de début (HH:MM)", "09:00"); if(debut===null) return;
   const fin = prompt("Heure de fin (HH:MM)", "09:30"); if(fin===null) return;
   const label = prompt("Libellé du créneau", "Nouveau créneau") || "Créneau";
-  jour.libellesBlocs[PC.cleBloc(debut,fin)] = label;
-  jour.groupes.push({ id: PC.uid("grp"), debut, fin, origine: null, modifie: true,
+  jour.libellesBlocs[CJ.cleBloc(debut,fin)] = label;
+  jour.groupes.push({ id: CJ.uidParDefaut("grp"), debut, fin, origine: null, modifie: true,
     adulte:{type:"enseignant",nom:""}, titre:"Nouveau groupe", domaineCle:"", niveau:"", seanceRef:null, eleves:[], remarque:"", fixe:false });
   sauver(); renderJour();
 }
@@ -1775,7 +1846,7 @@ function renderGroupeCard(g, siblings){
   }
 
   const typeAdulteActuel = g.adulte ? g.adulte.type : "autonomie";
-  const typesOptions = PC.TYPES_ADULTE.map(t=>`<option value="${t.id}" ${t.id===typeAdulteActuel?'selected':''}>${t.label}</option>`).join("");
+  const typesOptions = CJ.TYPES_ADULTE.map(t=>`<option value="${t.id}" ${t.id===typeAdulteActuel?'selected':''}>${t.label}</option>`).join("");
   const cadenas = g.modifie ? `<span title="Modifié à la main" style="float:right;font-size:11px;color:var(--ink-soft);">🔒</span>` : "";
 
   card.innerHTML = `
@@ -1926,10 +1997,10 @@ function genererPromptIA(){
   const groupes=(jour&&jour.groupes?jour.groupes:[])
     .filter(g=>!g.fixe && g._fixeType!=='recreation' && g._fixeType!=='pause')
     .slice()
-    .sort((a,b)=>PC.heureVersMin(a.debut)-PC.heureVersMin(b.debut));
+    .sort((a,b)=>RH.heureVersMin(a.debut)-RH.heureVersMin(b.debut));
   const L=[];
   L.push("Tu es un enseignant du premier degré. Prépare des devoirs courts, réalistes et directement liés aux apprentissages travaillés aujourd'hui.");
-  L.push(`Date : ${PC.formatDateLong(PC.parseISO(iso))}`);
+  L.push(`Date : ${CS.formatDateLong(CS.parseISO(iso))}`);
   L.push("");
   L.push("Règles :");
   L.push("- Adapter chaque proposition au niveau et aux besoins de l'élève.");
@@ -1991,9 +2062,9 @@ function renderDaySummary(groupesVisibles){
    rester cohérent avec les autres onglets) puis réaffiche le jour.
 --------------------------------------------------------------------- */
 function rafraichirEtat(){
-  config = PC.chargerConfig();
-  grilles = PC.chargerGrilles();
-  affectations = PC.chargerAffectations();
+  config = configMgr.charger();
+  grilles = grilleMgr.charger();
+  affectations = affectationsMgr.charger();
   renderJour();
 }
 
@@ -2047,8 +2118,8 @@ function construireVueImpression(){
     </div>
     <div class="print-date">
       ${escapeHTML(
-        PC.formatDateLong(
-          PC.parseISO(iso)
+        CS.formatDateLong(
+          CS.parseISO(iso)
         )
       )}
     </div>
@@ -2060,7 +2131,7 @@ function construireVueImpression(){
   /* ---------- Outils horaires ---------- */
 
   function hm(h){
-    return PC.heureVersMin(h);
+    return RH.heureVersMin(h);
   }
 
   function chevauche(a,b){
@@ -2223,7 +2294,7 @@ function construireVueImpression(){
     });
 
     const label = ligne.length === 1
-      ? (PC.libelleBloc(jour, ligne[0].debut, ligne[0].fin) || (heureCourteImpr(ligne[0].debut) + "–" + heureCourteImpr(ligne[0].fin)))
+      ? (CJ.libelleBloc(jour, ligne[0].debut, ligne[0].fin) || (heureCourteImpr(ligne[0].debut) + "–" + heureCourteImpr(ligne[0].fin)))
       : (heureCourteImpr(minDebutStr) + "–" + heureCourteImpr(maxFinStr));
 
     const cols = { ens: [], aesh: [], auto: [] };
@@ -2345,9 +2416,9 @@ async function allerA(nouvIso){
   history.replaceState(null, "", url);
   rafraichirEtat();
 }
-$("prev-day").addEventListener("click", ()=> allerA(PC.dateISO(PC.addDays(PC.parseISO(iso), -1))));
-$("next-day").addEventListener("click", ()=> allerA(PC.dateISO(PC.addDays(PC.parseISO(iso), 1))));
-$("btn-today").addEventListener("click", ()=> allerA(PC.dateISO(new Date())));
+$("prev-day").addEventListener("click", ()=> allerA(CS.dateISO(CS.addDays(CS.parseISO(iso), -1))));
+$("next-day").addEventListener("click", ()=> allerA(CS.dateISO(CS.addDays(CS.parseISO(iso), 1))));
+$("btn-today").addEventListener("click", ()=> allerA(CS.dateISO(new Date())));
 $("date-picker").addEventListener("change", e=>{ if(e.target.value) allerA(e.target.value); });
 
 // Si la grille/config/affectations changent dans un autre onglet (Planning
@@ -2356,7 +2427,7 @@ $("date-picker").addEventListener("change", e=>{ if(e.target.value) allerA(e.tar
 // générer automatiquement de séance. On ne le fait que si un planning a
 // été explicitement importé dans cette page (voir portail d'import).
 window.addEventListener("storage", (e)=>{
-  if(sessionActive() && [PC.STORE_CONFIG, PC.STORE_GRILLES, PC.STORE_AFFECT].includes(e.key)){
+  if(sessionActive() && [dataManager.local.cles.config, dataManager.local.cles.grilles, dataManager.local.cles.affectations].includes(e.key)){
     rafraichirEtat();
   }
 });
