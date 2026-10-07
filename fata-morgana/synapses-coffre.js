@@ -166,7 +166,12 @@
       dispositif: dispositif || '',
       // Le référentiel public (programmes, BARRY, S4C, séances...) N'EST
       // JAMAIS recopié ici : seules les données propres à l'élève y figurent.
-      eleves: []
+      eleves: [],
+      // Personnels (enseignants, AESH, ...) : mêmes garanties de
+      // confidentialité que les élèves — seul un identifiant technique
+      // (P-xxxx) sort de ce fichier vers le reste de l'application,
+      // jamais le nom (voir listerPersonnels()).
+      personnels: []
     };
   }
 
@@ -260,6 +265,22 @@
       // lieu, remarque, actif }. `actif` permet de suspendre une prise
       // en charge sans perdre son historique.
       priseEnChargeExterieure: []
+    };
+  }
+
+  /** Structure d'un personnel dans le coffre (chiffré, jamais en clair
+   *  ailleurs — voir listerPersonnels() : seul un id public en sort vers
+   *  le reste de l'application). Le rôle affiché (enseignant, AESH...)
+   *  reste public via model/personnel.js (roleIds), pour que le moteur de
+   *  répartition puisse raisonner sans rouvrir le coffre. */
+  function personnelVide(identifiantPersonnel, nom, roleIds) {
+    return {
+      identifiantPersonnel: identifiantPersonnel,
+      nom: nom || null,
+      roleIds: Array.isArray(roleIds) ? roleIds.slice() : [],
+      classeIds: [],
+      dispositifIds: [],
+      remarque: ''
     };
   }
 
@@ -608,6 +629,88 @@
       const idx = this._data.eleves.findIndex((e) => e.identifiantSynapses === identifiantSynapses);
       if (idx === -1) throw new Error('Élève introuvable : ' + identifiantSynapses);
       this._data.eleves.splice(idx, 1);
+    }
+
+    // -----------------------------------------------------------------
+    // Personnels (enseignants, AESH, ...) — mêmes garanties que les
+    // élèves : identité et détails nominatifs restent exclusivement dans
+    // ce fichier chiffré. listerPersonnels() ne renvoie jamais `nom` vers
+    // l'appelant ; getPersonnel() le fait, réservé aux écrans du coffre
+    // (coffre.html), jamais transmis au planning ni à un moteur d'IA.
+    // -----------------------------------------------------------------
+
+    /** Vue publique : aucune identité nominative, jamais `nom`. Consommée
+     *  par le reste de l'application via CoffreAdapter (domaine protégé). */
+    listerPersonnels() {
+      this._assertOuvert();
+      if (!Array.isArray(this._data.personnels)) this._data.personnels = []; // compat. coffres antérieurs
+      return this._data.personnels.map((p) => ({
+        identifiantPersonnel: p.identifiantPersonnel,
+        roleIds: p.roleIds || [],
+        classeIds: p.classeIds || [],
+        dispositifIds: p.dispositifIds || []
+      }));
+    }
+
+    /** Fiche complète, avec nom — réservé aux écrans du coffre. */
+    getPersonnel(identifiantPersonnel) {
+      this._assertOuvert();
+      if (!Array.isArray(this._data.personnels)) this._data.personnels = [];
+      const p = this._data.personnels.find((x) => x.identifiantPersonnel === identifiantPersonnel);
+      if (!p) throw new Error('Personnel introuvable : ' + identifiantPersonnel);
+      return p;
+    }
+
+    ajouterPersonnel(identifiantPersonnel, nom, roleIds) {
+      this._assertOuvert();
+      if (!Array.isArray(this._data.personnels)) this._data.personnels = [];
+      if (this._data.personnels.some((p) => p.identifiantPersonnel === identifiantPersonnel)) {
+        throw new Error('Identifiant personnel déjà utilisé : ' + identifiantPersonnel);
+      }
+      const p = personnelVide(identifiantPersonnel, nom, roleIds);
+      this._data.personnels.push(p);
+      return p;
+    }
+
+    modifierPersonnel(identifiantPersonnel, patch) {
+      const p = this.getPersonnel(identifiantPersonnel);
+      Object.assign(p, patch || {});
+      return p;
+    }
+
+    supprimerPersonnel(identifiantPersonnel) {
+      this._assertOuvert();
+      const idx = this._data.personnels.findIndex((p) => p.identifiantPersonnel === identifiantPersonnel);
+      if (idx === -1) throw new Error('Personnel introuvable : ' + identifiantPersonnel);
+      this._data.personnels.splice(idx, 1);
+    }
+
+    /** Rattache un personnel à une classe (idempotent, pas de doublon). */
+    rattacherPersonnelClasse(identifiantPersonnel, classeId) {
+      const p = this.getPersonnel(identifiantPersonnel);
+      if (!Array.isArray(p.classeIds)) p.classeIds = [];
+      if (!p.classeIds.includes(classeId)) p.classeIds.push(classeId);
+      return p;
+    }
+
+    retirerPersonnelClasse(identifiantPersonnel, classeId) {
+      const p = this.getPersonnel(identifiantPersonnel);
+      p.classeIds = (p.classeIds || []).filter((id) => id !== classeId);
+      return p;
+    }
+
+    /** Rattache un personnel à un dispositif (idempotent, pas de doublon). */
+    rattacherPersonnelDispositif(identifiantPersonnel, dispositifId) {
+      const p = this.getPersonnel(identifiantPersonnel);
+      if (!Array.isArray(p.dispositifIds)) p.dispositifIds = [];
+      if (!p.dispositifIds.includes(dispositifId)) p.dispositifIds.push(dispositifId);
+      return p;
+    }
+
+    retirerPersonnelDispositif(identifiantPersonnel, dispositifId) {
+      const p = this.getPersonnel(identifiantPersonnel);
+      p.dispositifIds = (p.dispositifIds || []).filter((id) => id !== dispositifId);
+      return p;
     }
 
     /** Enregistre une observation suivant la chaîne d'analyse (§4, §6). */
